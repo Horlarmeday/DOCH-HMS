@@ -1,0 +1,205 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Lab Inventory</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/lab-items">Inventory</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/add-lab-item">Add Items</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Lab Dispense</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label for="">Lab Item</label>
+                                                            <select id="labitem" name="item" class="form-control js-example-basic-single" disabled>
+                                                                <option><%= item.name %> </option>
+                                                            </select>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label for="">Item Code</label>
+                                                            <select class="form-control" disabled>
+                                                                <!-- <option selected disabled>Select</option> -->
+                                                                <option>LAB/ITEM/000<%= item.itemDigit %> </option>
+                                                            </select>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                                <label for="">Item Serial Number</label>
+                                                                <select class="form-control" disabled>
+                                                                    <!-- <option selected disabled>Select</option> -->
+                                                                    <option><%= item.serialnum %> </option>
+                                                                </select>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                                <label for="">Item Quantity</label>
+                                                                <% if(item.rquantity > 0){ %>
+                                                                    <select class="form-control" disabled>
+                                                                            <!-- <option selected disabled>Select</option> -->
+                                                                            <option><%= item.rquantity %> <%= item.unit %> </option>
+                                                                    </select>
+                                                                <% }else{ %>
+                                                                    <select class="form-control" disabled>
+                                                                            <!-- <option selected disabled>Select</option> -->
+                                                                            <option><%= item.quantity %> <%= item.unit %> </option>
+                                                                    </select>
+                                                                <% } %>
+                                                                
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    
+                                                    <h5 style="color:dodgerblue" class="page-title">Quantity</h5><br><br>
+                                                    <div class="form-group row">
+                                                            <input type="hidden" class="form-control" name="name" value="<%= item.name %>">
+                                                        <div class="col-sm-6">
+                                                                <label>Quantity <span class="text-danger"></span></label>
+                                                                <input name="quantity" class="form-control" type="number" id="want" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Unit</label>
+                                                            <select id="unit" name="unit" class="form-control select" onchange="myFunction()">
+                                                                <option selected disabled>Select</option>
+                                                                <option value="Ampoule">Ampoule</option>
+                                                                <option value="Bag">Bag</option>
+                                                                <option value="Bottle">Bottle</option>
+                                                                <option value="Box">Box</option>
+                                                                <option value="Bundle">Bundle</option>
+                                                                <option value="Carton">Carton</option>
+                                                                <option value="Container">Container</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Remaining Quantity <span class="text-danger"></span></label>
+                                                                <input name="rquantity" id="rquantity" class="form-control" type="number" required readonly>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label>Expiry Date <span class="text-danger"></span></label>
+                                                            <input name="expiry" class="form-control" type="text" required value="<%= item.expiration.toDateString() %>" readonly>
+                                                        </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Department</h5><br><br>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label>Dispensed To <span class="text-danger"> *</span></label>
+                                                                <select name="dispenseTo" class="form-control js-example-basic-single" required>
+                                                                        <option selected disabled>Select</option>
+                                                                    <% departments.forEach((department) =>{ %>
+                                                                        <option value="<%= department._id  %>"><%= department.name %></option>
+                                                                       
+                                                                    <% }) %>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label>Received By <span class="text-danger">*</label>
+                                                                <select id="by" name="received" class="form-control js-example-basic-single" required>
+                                                                    <option selected disabled>Select</option>
+                                                                    <% users.forEach((user) =>{ %>
+                                                                        <% if(user.role != 8 && user.role != 1){ %>
+                                                                        <option value="<%= user._id  %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                        <% } %>
+                                                                    <% }) %>
+                                                                      
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label>Date Received <span class="text-danger"></label>
+                                                                <input name="dateReceived" class="form-control" type="text" id="dateReceived" readonly>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                       
+                                                    <button type="submit" class="btn btn-info float-right">Dispense</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+    <% if(item.rquantity > 0){ %>
+        <script>
+                document.getElementById('want').addEventListener("change", myFunction);
+                function myFunction() {
+                    var wantQuantity = document.getElementById('want').value;
+                    const quantity = '<%= item.rquantity %>'
+                    const balance = quantity - wantQuantity
+                    document.getElementById('rquantity').value = balance
+                }
+        </script>
+    <% }else{ %>
+        <script>
+                document.getElementById('want').addEventListener("change", myFunction);
+                function myFunction() {
+                    var wantQuantity = document.getElementById('want').value;
+                    const quantity = '<%= item.quantity %>'
+                    const balance = quantity - wantQuantity
+                    document.getElementById('rquantity').value = balance
+                }
+        </script>
+    <% } %>
+    
+<% include ../../partials/footerCopy %>

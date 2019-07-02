@@ -1,0 +1,143 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Registration Fees</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/registration-fees">Registration Fees</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page-header end -->
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Registration Fees</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                    <tr>
+                                                            <th>S/N</th>
+                                                            <th>PatientID</th>
+                                                            <th>Name</th>
+                                                            <th>Age</th>
+                                                            
+                                                            <th>Phone</th>
+                                                            <th>Payments</th>
+                                                            <th>Total</th>
+                                                            <th>Status</th>
+                                                            <th>Action</th>
+                                                        </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <% users.forEach((patient) => { %>
+                                                        <% if(patient.role === 8){ %>
+                                                        
+                                                    <tr>
+                                                        <%
+                                                            var birthday = new Date(patient.birthday)
+                                                            var today = new Date()
+                                                            var age = today.getFullYear() - birthday.getFullYear()
+                                                            if(today.getMonth() < birthday.getMonth()){
+                                                                age
+                                                            }
+                                                            if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                                                                age
+                                                            }
+                                                        %>
+                                                        <%
+                                                            var total = patient.account.registration + patient.account.consultation
+                                                        %>
+                                                       
+                                                            <td></td>
+                                                            <td><%= patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td><%= age %></td>
+                                                            
+                                                            <td>+234<%= patient.phonenumber %></td>
+                                                            <td>
+                                                                <% if(patient.account.registration && patient.account.consultation){ %>
+                                                                    <span style="color:blue">Registration Fee: </span> &#8358;<%= patient.account.registration %><br>
+                                                                    <span style="color:blue">Consultation Fee: </span> &#8358;<%= patient.account.consultation %>
+                                                                <% } %>
+                                                                <% if(patient.account.registration  && !patient.account.consultation){ %>
+                                                                    <span style="color:blue">Registration Fee: </span> &#8358;<%= patient.account.registration %>
+                                                                <% } %>
+                                                                <% if(patient.account.consultation && !patient.account.registration){ %>
+                                                                    <span style="color:blue">Consultation Fee: </span> &#8358;<%= patient.account.consultation %>
+                                                                <% } %>
+                                                            </td>
+                                                            <td style="font-weight: 900; font-size: 1rem">&#8358;<%= total %></td>
+                                                            <% if(patient.account.paid === false){ %>
+                                                            <td><label class="label label-md bg-warning">pending</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-success">paid</label></td>
+                                                            <% } %>
+                                                            <td>
+                                                                <!-- <button id="pnotify-success" name="<%= patient._id %>" type="button" class="btn btn-success pay"><i class="ti-money"></i> Paid?</button> -->
+                                                                <% if(patient.account.paid){ %>
+                                                                <a href="/invoice/<%= patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                                <% } %>
+                                                    </tr>
+                                                    
+                                                  
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../../partials/footerCopy %>

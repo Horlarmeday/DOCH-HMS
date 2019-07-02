@@ -1,0 +1,123 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Pharmacy Requests</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Requests</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page-header end -->
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Requests</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Name</th>
+                                                        <th>Reason for Visit</th>
+                                                        <th>Drugs Prescribed</th>
+                                                        <th>Usage</th>
+                                                        <th>Status</th>
+                                                        <th>Payment Status</th>
+                                                        <!-- <th>Action</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <% consultations.forEach((consultation)=>{ %>
+                                                        <% if(consultation.pharmacystatus === true){ %>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><%= consultation.patient.patientId %></td>
+                                                        <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
+                                                        <td> <%= consultation.visit %></td>
+                                                        <td>
+                                                                <% consultation.drugsObject.forEach((test)=>{ %>
+                                                        
+                                                                    <p style="font-weight: 700"><%= test.name %></p>
+                                                                <% }) %>
+                                                        </td>
+                                                        <td>
+                                                            
+                                                            Dose: <%= consultation.prescription.dose %> <br>
+                                                            Duration: <%= consultation.prescription.duration %> <br>
+                                                            Frequency: <%= consultation.prescription.frequency %> <br>
+                                                            Direction: <%= consultation.prescription.direction %>
+                                                        </td>
+                                                        <% if(consultation.pharmacyfinish === false){ %>
+                                                        <td><label class="label label-md bg-warning">Ongoing</label></td>
+                                                        <% }else{ %>
+                                                        <td><label class="label label-md bg-success">Finished</label></td>
+                                                        <% } %>
+                                                        
+                                                        <% if(consultation.pharmacypaid === false){ %>
+                                                            <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                            <% } %>
+                                                    </tr>
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../../partials/footerCopy %>

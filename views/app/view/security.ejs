@@ -1,0 +1,94 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+        <!-- Main-body start -->
+        <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Security</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <!-- <li class="breadcrumb-item"><a href="/appointments">Appointments</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Create Appointment</a>
+                                </li> -->
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Change Password</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="post">
+                                                    <div class="form-group">                           
+                                                        <div class="col-sm-12">
+                                                            <label>Old Password <span class="text-danger">*</span></label>
+                                                            <input name="oldPassword" class="form-control" type="password" placeholder="Enter Old Password">     
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label>New Password <span class="text-danger">*</span></label>
+                                                            <input id="newpassword" name="newPassword" class="form-control" type="password" placeholder="Enter New Password">     
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label>Confirm New Password <span class="text-danger">*</span></label>
+                                                            <input id="confirmpassword" type="password" name="confirmNewPassword" class="form-control" placeholder="Confirm New Password">  
+                                                            <p id="message"></p>
+                                                        </div>
+                                                    </div>
+                                                    <button id="save" type="submit" class="btn btn-info float-right">Change Password</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

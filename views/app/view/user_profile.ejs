@@ -1,0 +1,460 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                    <!-- Page-header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Edit Patient</h4>
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Patient Profile</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/patients">Patients</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page-header end -->
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        
+                            <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- Material tab card start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Patient Profile</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <!-- Row start -->
+                                                <div class="row m-b-30">
+                                                    <div class="col-lg-12 col-sm-6">
+                                                        <div>
+                                                            <div>
+                                                                <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Name:</p>
+                                                                <p style="font-size:1.7em; font-weight: 700;display: inline"><%= patient.firstname %> <%= patient.lastname %></p>
+                                                                <p style="font-size:1.2em; font-weight: 500;display: inline; border: 0.5px solid rgb(221, 219, 210); padding: 5px 10px; background-color: rgb(233, 233, 233)" class="float-right"><%= patient.patientId  %></p>
+                                                            </div><br>
+                                                            <div>
+                                                                <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Gender:</p>
+                                                                <p style="font-size:1.3em; font-weight: 100;display: inline"><%= patient.gender %></p>
+                                                                
+                                                                    <a style="font-size:1.2em; font-weight: 500;color: black" class="float-right" href="#"
+                                                                     data-toggle="modal" data-target="#exampleModalCenter"> Patient Allergies 
+                                                                     <small style="color: rgba(0, 115, 170, 0.5)"><i class="ti-plus"></i> Add Alergies</small> </a><br>
+                                                               
+                                                            </div><br>
+                                                            <div>
+                                                                <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Age:</p>
+                                                                <p style="font-size:1.3em; font-weight: 100;display: inline"><%= age %> years (<%= patient.birthday.toDateString() %>)</p>
+                                                                <!-- <a style="font-size:1.2em; font-weight: 500;color: rgba(0, 115, 170, 0.5)" class="float-right" href="#"><i class="ti-plus"></i> Add Operative Plan</a> -->
+                                                            </div>
+                                                            
+                                                        </div><hr>              
+                                                        <!-- Nav tabs -->
+                                                        <ul class="nav nav-tabs md-tabs" role="tablist">
+                                                            <li class="nav-item">
+                                                                <a class="nav-link active" data-toggle="tab" href="#home3" role="tab">History</a>
+                                                                <div class="slide"></div>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-toggle="tab" href="#profile3" role="tab">Details</a>
+                                                                <div class="slide"></div>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-toggle="tab" href="#messages3" role="tab">Photos</a>
+                                                                <div class="slide"></div>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                <a class="nav-link" data-toggle="tab" href="#settings3" role="tab">Appointments</a>
+                                                                <div class="slide"></div>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                    <a class="nav-link" data-toggle="tab" href="#visits" role="tab">Visits</a>
+                                                                    <div class="slide"></div>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                    <a class="nav-link" data-toggle="tab" href="#medication" role="tab">Medication</a>
+                                                                    <div class="slide"></div>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                    <a class="nav-link" data-toggle="tab" href="#labs" role="tab">Labs</a>
+                                                                    <div class="slide"></div>
+                                                            </li>
+                                                            <li class="nav-item">
+                                                                    <a class="nav-link" data-toggle="tab" href="#allergies" role="tab">Allergies</a>
+                                                                    <div class="slide"></div>
+                                                            </li>
+                                                        </ul>
+                                                         <!-- Tab panes -->
+                                                         <div class="tab-content card-block">
+                                                            <div class="tab-pane active" id="home3" role="tabpanel">
+
+                                                            </div>
+                                                            <div class="tab-pane" id="profile3" role="tabpanel">
+                                                            
+                                                                <div class="col-sm-12">
+                                                                <form action="/update-patient" method="post">
+                                                                    <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">First Name</label>
+                                                                                <input type="text" name="fname" class="form-control" placeholder="<%= patient.firstname %>">
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Last Name</label>
+                                                                                <input type="text" name="lname" class="form-control" placeholder="<%= patient.lastname %>">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Email Address</label>
+                                                                                <input type="email" name="email" class="form-control" placeholder="<%= patient.email %>">
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Religion</label>
+                                                                                <select name="religion" class="form-control">
+                                                                                    <option selected disabled>Select</option>
+                                                                                    <option value="Christianity" <%=patient.religion ? 'selected' : '' %>>Christianity</option>
+                                                                                    <option value="Islam" <%=patient.religion ? 'selected' : '' %>>Islam</option>
+                                                                                    <option value="Traditional" <%=patient.religion ? 'selected' : '' %>>Traditional</option>
+                                                                                    <option value="Other" <%=patient.religion ? 'selected' : '' %>>Other</option>
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Date of Birth</label>
+                                                                                <input type="date" name="birthday" class="form-control" placeholder="<%= patient.birthday %>">
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Phone Number</label>
+                                                                                <input type="text" name="phone" class="form-control" placeholder="<%= patient.phonenumber %>">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                                <div class="col-sm-6">
+                                                                                    <label for="">Country</label>
+                                                                                    <select name="country" class="form-control select">
+                                                                                        <option selected disabled>Select</option>
+                                                                                        <option value="Nigeria" <%=patient.country ? 'selected' : '' %>>Nigeria</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-sm-6">
+                                                                                    <label for="">State</label>
+                                                                                    <select name="state" class="form-control select">
+                                                                                            <option selected="selected" disabled>Select State</option>
+                                                                                            <option value="Abia">Abia</option>
+                                                                                            <option value="Adamawa">Adamawa</option>
+                                                                                            <option value="Akwa-Ibom">Akwa-Ibom</option>
+                                                                                            <option value="Anambra">Anambra</option>
+                                                                                            <option value="Bauchi">Bauchi</option>
+                                                                                            <option value="Bayelsa">Bayelsa</option>
+                                                                                            <option value="Benue">Benue</option>
+                                                                                            <option value="Borno">Borno</option>
+                                                                                            <option value="Cross-river">Cross-River</option>
+                                                                                            <option value="Delta">Delta</option>
+                                                                                            <option value="Ebonyi">Ebonyi</option>
+                                                                                            <option value="Edo">Edo</option>
+                                                                                            <option value="Ekiti">Ekiti</option>
+                                                                                            <option value="Enugu">Enugu</option>
+                                                                                            <option value="FCT">FCT</option>
+                                                                                            <option value="Gombe">Gombe</option>
+                                                                                            <option value="Imo" >Imo</option>
+                                                                                            <option value="Jigawa">Jigawa</option>
+                                                                                            <option value="Kaduna">Kaduna</option>
+                                                                                            <option value="Kano">Kano</option>
+                                                                                            <option value="Katsina">Katsina</option>
+                                                                                            <option value="Kebbi">Kebbi</option>
+                                                                                            <option value="Kogi">Kogi</option>
+                                                                                            <option value="Kwara">Kwara</option>
+                                                                                            <option value="Lagos">Lagos</option>
+                                                                                            <option value="Nassrawa">Nassarawa</option>
+                                                                                            <option value="Niger">Niger</option>
+                                                                                            <option value="Ogun">Ogun</option>
+                                                                                            <option value="Ondo">Ondo</option>
+                                                                                            <option value="Osun">Osun</option>
+                                                                                            <option value="Oyo" >Oyo</option>
+                                                                                            <option value="Plateau">Plateau</option>
+                                                                                            <option value="Rivers">Rivers</option>
+                                                                                            <option value="Sokoto">Sokoto</option>
+                                                                                            <option value="Taraba">Taraba</option>
+                                                                                            <option value="Yobe">Yobe</option>
+                                                                                            <option value="Zamfara">Zamfara</option>	
+                                                                                        </select>
+                                                                                </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">City</label>
+                                                                                <input type="text" name="city" class="form-control" placeholder="<%= patient.city %>">
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Home Address</label>
+                                                                                <input type="text" name="address" class="form-control" placeholder="<%= patient.address %>">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Username</label>
+                                                                                <input type="text" name="username" class="form-control" placeholder="<%= patient.username %>">
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Gender</label><br><br>
+                                                                                <!-- <div class="radio radio-inline"> -->
+                                                                                    <label>
+                                                                                        <input type="radio" name="gender" value="<%= patient.gender %>" checked="checked">
+                                                                                        <i class="helper"></i>Female
+                                                                                    </label>
+                                                                                <!-- </div> -->
+                                                                                <!-- <div class="radio radio-inline"> -->
+                                                                                    <label>
+                                                                                        <input type="radio" name="gender" value="<%= patient.gender %>">
+                                                                                        <i class="helper"></i>Male
+                                                                                    </label>
+                                                                                <!-- </div> -->
+                                                                            </div>
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-success float-right">Update</button>
+                                                                </form>
+                                                                </div>
+                                                                
+                                                            </div>
+                                                            <div class="tab-pane" id="messages3" role="tabpanel">
+
+                                                            </div>
+                                                            <div class="tab-pane" id="settings3" role="tabpanel">
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>Date</th>
+                                                                                        <th>Examiner</th>
+                                                                                        <th>Status</th>
+                                                                                        <th>Action</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% patient.appointments.forEach((appointment)=>{ %>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><%= appointment.created.toDateString() %></td>
+                                                                                        <td><%= appointment.doctor.firstname %></td>
+                                                                                        <% if(appointment.taken === true){ %>
+                                                                                        <td><label class="label label-md bg-success">Attended</label></td>
+                                                                                        <% }else{ %>
+                                                                                        <td><label class="label label-md bg-warning">Pending</label></td>
+                                                                                        <% } %>
+                                                                                        <td>
+                                                                                            <form action="/takeup-appointment" method="post">
+                                                                                                <input type="hidden" name="app_id" value="appointment._id">
+                                                                                                <button id="btn-app" type="submit" class="btn btn-success btn-round btn-outline-success">Take Up</button>
+                                                                                            </form>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <% })  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                            </div>
+                                                            <div class="tab-pane" id="visits" role="tabpanel">
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>Start Date</th>
+                                                                                        <th>End Date</th>
+                                                                                        <th>Diagnosis</th>
+                                                                                        <th>Type</th>
+                                                                                        <th>Status</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% patient.appointments.forEach((appointment)=>{ %>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><%= appointment.created.toDateString() %></td>
+                                                                                        <td><%= appointment.doctor.firstname %></td>
+                                                                                        <% if(appointment.taken === true){ %>
+                                                                                        <td><label class="label label-md bg-success">Attended</label></td>
+                                                                                        <% }else{ %>
+                                                                                        <td><label class="label label-md bg-warning">Pending</label></td>
+                                                                                        <% } %>
+                                                                                        <td>
+                                                                                            <form action="/takeup-appointment" method="post">
+                                                                                                <input type="hidden" name="app_id" value="appointment._id">
+                                                                                                <button id="btn-app" type="submit" class="btn btn-success btn-round btn-outline-success">Take Up</button>
+                                                                                            </form>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    <% })  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                            </div>
+                                                            <div class="tab-pane" id="medication" role="tabpanel">
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table id="scr-vrt-dt" class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>Name</th>
+                                                                                        <th>Prescriptions</th>
+                                                                                        <th>PrescribedBy</th>
+                                                                                        <th>Date</th>
+                                                                                        <th>Status</th>
+                                                                                        <!-- <th>Action</th> -->
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% patient.consultations.forEach((consultation)=>{ %>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><%= consultation.drugbrand %></td>
+                                                                                        <td>
+                                                                                            Dose: <%= consultation.prescription.dose %> <br>
+                                                                                            Duration: <%= consultation.prescription.duration %> <br>
+                                                                                            Frequency: <%= consultation.prescription.frequency %> <br>
+                                                                                            Direction: <%= consultation.prescription.direction %>
+                                                                                        </td>
+                                                                                        <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
+                                                                                        <td><%= consultation.prescriptionDate.toDateString() %></td>
+                                                                                        <% if(!consultation.pharmacystatus){ %>
+                                                                                            <td><label class="label label-md bg-warning">Ongoing</label></td>
+                                                                                            <% }else{ %>
+                                                                                                <td><label class="label label-md bg-success">Completed</label></td>
+                                                                                            <% } %>
+                                                                                        
+                                                                                    </tr>
+                                                                                    <% })  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                            </div>
+                                                            <div class="tab-pane" id="labs" role="tabpanel">
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>Date Requested</th>
+                                                                                        <th>Lab Type</th>
+                                                                                        <th>Date Processed</th>
+                                                                                        <th>Result</th>
+                                                                                        <th>Notes</th>
+                                                                                        <th>RequestedBy</th>
+                                                                                        <th>Status</th>
+                                                                                        <!-- <th>Action</th> -->
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% patient.consultations.forEach((consultation)=>{ %>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><%= consultation.created %></td>
+                                                                                        <td>
+                                                                                            <%= consultation.labtype %>
+                                                                                        </td>
+                                                                                        <td><%= consultation.labResultDate.toDateString() %></td>
+                                                                                        <td><%= consultation.labresult %></td>
+                                                                                        <td><%= consultation.notes %></td>
+                                                                                        <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
+                                                                                        <% if(!consultation.labstatus){ %>
+                                                                                        <td><label class="label label-md bg-warning">Ongoing</label></td>
+                                                                                        <% }else{ %>
+                                                                                            <td><label class="label label-md bg-success">Completed</label></td>
+                                                                                        <% } %>
+                                                                                    </tr>
+                                                                                    <% })  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div> 
+                                                            </div>
+                                                            <div class="tab-pane" id="allergies" role="tabpanel">
+                                                                <ul>
+                                                                    <li><%= patient.allergies %></li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Row end -->
+                                                
+                                            </div>
+                                        </div>
+                                        <!-- Material tab card end -->
+                                    </div>
+                                </div>
+
+                    </div>
+                    <!-- Page-body end -->
+                </div>
+                <!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalCenterTitle">Patient Allergy</h5>
+            </div>
+            <div class="modal-body">
+            <form action="/allergies/<%= patient._id %>" method="post">
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <input name="allergies" class="form-control" type="text" placeholder="Enter Patient Allergy">
+                    </div>
+                </div> 
+                <div class="text-center mb-5">
+                     <input type="submit" class="btn btn-primary" value="Save">
+                </div>
+            </form>
+            </div>
+            
+            <!-- <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary">Save changes</button>
+            </div> -->
+          </div>
+        </div>
+        </div>
+            </div>
+            <!-- Main-body end -->
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+    <% include ../../partials/footerCopy %>

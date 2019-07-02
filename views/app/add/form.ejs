@@ -1,0 +1,1293 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Department of Microbiology</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Requests</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/add-lab-request">Add Lab Request</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page-header end -->
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <% if(consultation.labresult){ %>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>URINE/HVS(MICROSCOPY)</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <form action="/urine-test/<%= user._id %>" method="post">
+                                        <table class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Test</th>
+                                                    <th>Result</th>
+                                                    <th>HVS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                  <td></td>  
+                                                  <td>Epithelial Cells</td>  
+                                                  <td><input type="text" name="epitheliaresult" placeholder="<%= consultation.labresult.urine.epitheliaresult %>" class="form-control"></td>  
+                                                  <td><input type="text" name="epitheliahsv" placeholder="<%= consultation.labresult.urine.epitheliahsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>PUS Cells</td>  
+                                                    <td><input type="text" name="pusresult" placeholder="<%= consultation.labresult.urine.pusresult %>" class="form-control"></td>  
+                                                    <td><input type="text" name="pushsv"  placeholder="<%= consultation.labresult.urine.pushsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>T Vaginalis</td>  
+                                                    <td><input type="text" name="vaginalisresult" placeholder="<%= consultation.labresult.urine.vaginalisresult %>"  class="form-control"></td>  
+                                                    <td><input type="text" name="vaginalishsv" placeholder="<%= consultation.labresult.urine.vaginalishsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>Yeast Cells</td>  
+                                                    <td><input type="text" name="yeastresult" placeholder="<%= consultation.labresult.urine.yeastresult %>" class="form-control"></td>  
+                                                    <td><input type="text" name="yeasthsv" placeholder="<%= consultation.labresult.urine.yeasthsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>RBC</td>  
+                                                    <td><input type="text" name="rbcresult" placeholder="<%= consultation.labresult.urine.rbcresult %>" class="form-control"></td>  
+                                                    <td><input type="text" name="rbchsv" placeholder="<%= consultation.labresult.urine.rbchsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>Cast</td>  
+                                                    <td><input type="text" name="castresult" placeholder="<%= consultation.labresult.urine.castresult %>" class="form-control"></td>  
+                                                    <td><input type="text" name="castshsv" placeholder="<%= consultation.labresult.urine.castresult %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>Crystals</td>  
+                                                    <td><input type="text" name="crystalsresult" placeholder="<%= consultation.labresult.urine.crystalsresult %>" class="form-control"></td>  
+                                                    <td><input type="text" name="crystalshsv" placeholder="<%= consultation.labresult.urine.crystalshsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>Parasites</td>  
+                                                    <td><input type="text" name="parasitesresult" placeholder="<%= consultation.labresult.urine.parasitesresult %>" class="form-control"></td>  
+                                                    <td><input type="text" name="parasiteshsv" placeholder="<%= consultation.labresult.urine.parasiteshsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>Others</td>  
+                                                    <td><input type="text" name="othersresult" placeholder="<%= consultation.labresult.urine.othersresult %>" class="form-control"></td>  
+                                                    <td><input type="text" name="othershsv" placeholder="<%= consultation.labresult.urine.othershsv %>" class="form-control"></td>  
+                                                </tr>
+                                                <tr>
+                                                    <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>URINALYSIS/HVS(MICROSCOPY)</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <form action="/urinalysis-test/<%= user._id %>" method="post">
+                                            <table class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Test</th>
+                                                        <th>Appearance</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                      <td></td>  
+                                                      <td>Leukocytes</td>  
+                                                      <td><input type="text" name="leukocytes"  placeholder="<%= consultation.labresult.urinalysis.leukocytes %>" class="form-control"></td>  
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Protein</td>  
+                                                        <td><input type="text" name="protein" placeholder="<%= consultation.labresult.urinalysis.protein %>" class="form-control"></td>  
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Glucose</td>  
+                                                        <td><input type="text" name="glucose" placeholder="<%= consultation.labresult.urinalysis.glucose %>" class="form-control"></td>  
+                                                
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Blood</td>  
+                                                        <td><input type="text" name="blood" placeholder="<%= consultation.labresult.urinalysis.blood %>" class="form-control"></td>  
+                                                       
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>PH</td>  
+                                                        <td><input type="text" name="ph" placeholder="<%= consultation.labresult.urinalysis.ph %>" class="form-control"></td>  
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Ascorbic Acid</td>  
+                                                        <td><input type="text" name="ascorbicacid" placeholder="<%= consultation.labresult.urinalysis.ascorbicacid %>" class="form-control"></td>  
+                                                       
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Urobilinogen</td>  
+                                                        <td><input type="text" name="urobilinogen" placeholder="<%= consultation.labresult.urinalysis.urobilinogen %>" class="form-control"></td>  
+                                                       
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Ketones</td>  
+                                                        <td><input type="text" name="ketones" placeholder="<%= consultation.labresult.urinalysis.ketones %>" class="form-control"></td>  
+                                                       
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>S.gravity</td>  
+                                                        <td><input type="text" name="sgravity" placeholder="<%= consultation.labresult.urinalysis.sgravity %>" class="form-control"></td>  
+                                                      
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Bilirubin</td>  
+                                                        <td><input type="text" name="bilirubin" placeholder="<%= consultation.labresult.urinalysis.bilirubin %>" class="form-control"></td>  
+                                                    </tr>
+                                                    <tr>
+                                                        <td></td>  
+                                                        <td>Nitrite</td>  
+                                                        <td><input type="text" name="nitrite" placeholder="<%= consultation.labresult.urinalysis.nitrite %>" class="form-control"></td>  
+                                                          
+                                                    </tr>
+                                                    <tr>
+                                                        <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                    <!-- Zero config.table start -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>STOOL ANALYSIS</h5>
+                                            <div class="card-header-right">
+                                                <i class="icofont icofont-rounded-down"></i>
+                                                <i class="icofont icofont-refresh"></i>
+                                                <i class="icofont icofont-close-circled"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="dt-responsive table-responsive">
+                                                <form action="/stool-test/<%= user._id %>" method="post">
+                                                <table class="table table-striped table-bordered nowrap">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S/N</th>
+                                                            <th>Test</th>
+                                                            <th>Appearance</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                          <td></td>  
+                                                          <td>PUS Cells</td>  
+                                                          <td><input type="text" name="puscells" placeholder="<%= consultation.labresult.stool.puscells %>" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>RBC</td>  
+                                                            <td><input type="text" name="rbc" placeholder="<%= consultation.labresult.stool.rbc %>" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>OVA/Cyst</td>  
+                                                            <td><input type="text" name="ova" placeholder="<%= consultation.labresult.stool.ova %>" class="form-control"></td>  
+                                                    
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>Undigested Food Particles</td>  
+                                                            <td><input type="text" name="food" placeholder="<%= consultation.labresult.stool.food %>" class="form-control"></td>  
+                                                           
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>Schistosoma Ova</td>  
+                                                            <td><input type="text" name="schistosoma" placeholder="<%= consultation.labresult.stool.schistosoma %>" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>FOB</td>  
+                                                            <td><input type="text" name="fob" placeholder="<%= consultation.labresult.stool.fob %>" class="form-control"></td>  
+                                                           
+                                                        </tr>
+                                                        
+                                                        <tr>
+                                                            <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                        <!-- Zero config.table start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>CULTURE SENSITIVITY REPORT</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="dt-responsive table-responsive">
+                                                    <form action="/culture/<%= user._id %>" method="post">
+                                                    <table class="table table-striped table-bordered nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th></th>
+                                                                <th>Sputum</th>
+                                                                <th>Appearance</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                              <th></th>  
+                                                              <td><textarea name="sputum" class="form-control" placeholder="<%= consultation.labresult.culture.sputum %>" cols="30" rows="10"></textarea></td>  
+                                                              <td><textarea name="appearance" class="form-control" placeholder="<%= consultation.labresult.culture.appearance %>" cols="30" rows="10"></textarea></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <th colspan="7">Culture</th>
+                                                            </tr>
+                                                            <tr>
+                                                                <th></th>
+                                                                <td colspan="7"><textarea class="form-control" name="culture" placeholder="<%= consultation.labresult.culture.culture %>" id="" cols="30" rows="10"></textarea></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                            </tr>
+                                                        </tbody>
+                                                        
+                                                    </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                            <!-- Zero config.table start -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>ANTIBIOTIC SENSITIVITY</h5>
+                                                    <div class="card-header-right">
+                                                        <i class="icofont icofont-rounded-down"></i>
+                                                        <i class="icofont icofont-refresh"></i>
+                                                        <i class="icofont icofont-close-circled"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="dt-responsive table-responsive">
+                                                        <form action="/antibiotic/<%= user._id %>" method="post">
+                                                        <table class="table table-striped table-bordered nowrap">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>S/N</th>
+                                                                    <th>Antibiotic Sensitivity</th>
+                                                                    <th>1</th>
+                                                                    <th>2</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                  <td></td>  
+                                                                  <td>Ciprofloxacin</td>  
+                                                                  <td><input type="text" name="ciprofloxacin1" placeholder="<%= consultation.labresult.antibiotic.ciprofloxacin1 %>" class="form-control"></td>  
+                                                                  <td><input type="text" name="ciprofloxacin2" placeholder="<%= consultation.labresult.antibiotic.ciprofloxacin2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Ampiciline</td>  
+                                                                    <td><input type="text" name="ampiciline1" placeholder="<%= consultation.labresult.antibiotic.ampiciline1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="ampiciline2" placeholder="<%= consultation.labresult.antibiotic.ampiciline2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Sparfloxacin</td>  
+                                                                    <td><input type="text" name="Sparfloxacin1" placeholder="<%= consultation.labresult.antibiotic.Sparfloxacin1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="Sparfloxacin2" placeholder="<%= consultation.labresult.antibiotic.Sparfloxacin2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Erythromycin</td>  
+                                                                    <td><input type="text" name="Erythromycin1" placeholder="<%= consultation.labresult.antibiotic.Erythromycin1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="Erythromycin2" placeholder="<%= consultation.labresult.antibiotic.Erythromycin2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Streptomycin</td>  
+                                                                    <td><input type="text" name="Streptomycin1" placeholder="<%= consultation.labresult.antibiotic.Streptomycin1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="Streptomycin2" placeholder="<%= consultation.labresult.antibiotic.Streptomycin2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Gentamycin</td>  
+                                                                    <td><input type="text" name="Gentamycin1"  placeholder="<%= consultation.labresult.antibiotic.Gentamycin1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="Gentamycin2"  placeholder="<%= consultation.labresult.antibiotic.Gentamycin2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Pefloxacin</td>  
+                                                                    <td><input type="text" name="Pefloxacin1"  placeholder="<%= consultation.labresult.antibiotic.Pefloxacin1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="Pefloxacin2"  placeholder="<%= consultation.labresult.antibiotic.Pefloxacin2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Cotrimoxacole</td>  
+                                                                    <td><input type="text" name="Cotrimoxacole1"  placeholder="<%= consultation.labresult.antibiotic.Cotrimoxacole1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="Cotrimoxacole2"  placeholder="<%= consultation.labresult.antibiotic.Cotrimoxacole2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Chloramphenicol</td>  
+                                                                    <td><input type="text" name="Chloramphenicol1"  placeholder="<%= consultation.labresult.antibiotic.Chloramphenicol1 %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="Chloramphenicol2"  placeholder="<%= consultation.labresult.antibiotic.Chloramphenicol2 %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                        <td></td>  
+                                                                        <td>Ampiclox</td>  
+                                                                        <td><input type="text" name="Ampiclox1"  placeholder="<%= consultation.labresult.antibiotic.Ampiclox1 %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="Ampiclox2"  placeholder="<%= consultation.labresult.antibiotic.Ampiclox2 %>" class="form-control"></td>  
+                                                                    </tr>
+                                                                    <tr>
+                                                                            <td></td>  
+                                                                            <td>Amoxicillin</td>  
+                                                                            <td><input type="text" name="Amoxicillin1"  placeholder="<%= consultation.labresult.antibiotic.Amoxicillin1 %>" class="form-control"></td>  
+                                                                            <td><input type="text" name="Amoxicillin2"  placeholder="<%= consultation.labresult.antibiotic.Amoxicillin2 %>" class="form-control"></td>  
+                                                                        </tr>
+                                                                <tr>
+                                                                        <td></td>  
+                                                                        <td>Clavulanic Acid</td>  
+                                                                        <td><input type="text" name="Clavulanic1"  placeholder="<%= consultation.labresult.antibiotic.Clavulanic1 %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="Clavulanic2"  placeholder="<%= consultation.labresult.antibiotic.Clavulanic2 %>" class="form-control"></td>  
+                                                                    </tr>
+                                                                <tr>
+                                                                            <td></td>  
+                                                                            <td>Ofloxacin</td>  
+                                                                            <td><input type="text" name="Ofloxacin1"  placeholder="<%= consultation.labresult.antibiotic.Ofloxacin1 %>" class="form-control"></td>  
+                                                                            <td><input type="text" name="Ofloxacin2"  placeholder="<%= consultation.labresult.antibiotic.Ofloxacin2 %>" class="form-control"></td>  
+                                                                        </tr>
+                                                                <tr>
+                                                                        <td></td>  
+                                                                        <td>Cefuroxime</td>  
+                                                                        <td><input type="text" name="Cefuroxime1"  placeholder="<%= consultation.labresult.antibiotic.Cefuroxime1 %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="Cefuroxime2"  placeholder="<%= consultation.labresult.antibiotic.Cefuroxime2 %>" class="form-control"></td>  
+                                                                    </tr>
+                                                                <tr>
+                                                                        <td></td>  
+                                                                        <td>Ceftriaxone</td>  
+                                                                        <td><input type="text" name="Ceftriaxone1"  placeholder="<%= consultation.labresult.antibiotic.Ceftriaxone1 %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="Ceftriaxone2"  placeholder="<%= consultation.labresult.antibiotic.Ceftriaxone2 %>" class="form-control"></td>  
+                                                                    </tr>
+                                                                <tr>
+                                                                    <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                                <!-- Zero config.table start -->
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>SEMEN ANALYSIS</h5>
+                                                        <div class="card-header-right">
+                                                            <i class="icofont icofont-rounded-down"></i>
+                                                            <i class="icofont icofont-refresh"></i>
+                                                            <i class="icofont icofont-close-circled"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="dt-responsive table-responsive">
+                                                            <form action="/semen-test/<%= user._id %>" method="post">
+                                                            <table class="table table-striped table-bordered nowrap">
+                                                                <thead>
+                                                                    <tr>
+                                                                            <th></th>
+                                                                            <th colspan="7">SEMEN ANALYSIS</th>
+                                                                            <!-- <th>Glucose Value</th>
+                                                                            <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th>Time Produced</th>
+                                                                        <th>Time Received</th>
+                                                                        <th colspan="3">Time of Analysis</th>
+                                                                           
+                                                                    </tr>
+                                                                    <tr>
+                                                                      <td></td>  
+                                                                      <td><input type="text" name="tproduced" placeholder="<%= consultation.labresult.semenanalysis.tproduced %>" class="form-control" id='datetimepicker5'></td>  
+                                                                      <td><input type="text" name="treceived" placeholder="<%= consultation.labresult.semenanalysis.treceived %>" class="form-control" id='datetimepicker4'></td>  
+                                                                      <td colspan="3"><input type="text" name="tofanalysis" placeholder="<%= consultation.labresult.semenanalysis.tofanalysis %>" class="form-control" id='datetimepicker8'></td> 
+                                                                    </tr>
+                                                                    
+                                                                    <tr>
+                                                                            <th></th>
+                                                                            <th colspan="7">METHOD OF PRODUCTION</th>
+                                                                            <!-- <th>Glucose Value</th>
+                                                                            <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                    </tr>
+                                                                    
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td><input type="text" placeholder="Period of Abstinence" class="form-control" readonly></td>
+                                                                        <td colspan="4"><input type="text" name="pabstinence" placeholder="<%= consultation.labresult.semenanalysis.pabstinence %>" class="form-control"></td>
+                                                                        
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td><input type="text" placeholder="Colour" class="form-control" readonly></td>
+                                                                        <td colspan="4"><input type="text" name="colour" placeholder="<%= consultation.labresult.semenanalysis.colour %>" class="form-control"></td>
+                                                                        
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td><input type="text" placeholder="Viscosity" class="form-control" readonly></td>
+                                                                        <td colspan="4"><input type="text" name="viscosity" placeholder="<%= consultation.labresult.semenanalysis.viscosity %>" class="form-control"></td>
+                                                                       
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td><input type="text" placeholder="Liquefaction" class="form-control" readonly></td>
+                                                                        <td colspan="4"><input type="text" name="liquefaction" placeholder="<%= consultation.labresult.semenanalysis.liquefaction %>" class="form-control"></td>
+                                                                           
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td><input type="text" placeholder="Spillage" class="form-control" readonly></td>
+                                                                        <td colspan="4"><input type="text" name="spillage" placeholder="<%= consultation.labresult.semenanalysis.spillage %>" class="form-control"></td>
+                                                                           
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        <td><input type="text" placeholder="Volume" class="form-control" readonly></td>
+                                                                        <td colspan="4"><input type="text" name="volume" placeholder="<%= consultation.labresult.semenanalysis.volume %>" class="form-control"></td>
+                                                                           
+                                                                    </tr>
+                                                                    <tr>
+                                                                            <td></td>
+                                                                            <td><input type="text" placeholder="Odour" class="form-control" readonly></td>
+                                                                            <td colspan="4"><input type="text" name="odour" placeholder="<%= consultation.labresult.semenanalysis.odour %>" class="form-control"></td>
+                                                                               
+                                                                    </tr>
+                                                                    <tr>
+                                                                            <td></td>
+                                                                            <td><input type="text" placeholder="PH" class="form-control" readonly></td>
+                                                                            <td colspan="4"><input type="text" name="ph" placeholder="<%= consultation.labresult.semenanalysis.ph %>" class="form-control"></td>
+                                                                               
+                                                                    </tr>
+                                                                    <tr>
+                                                                            <th></th>
+                                                                            <th colspan="7">MICROSCOPY</th>
+                                                                            <!-- <th>Glucose Value</th>
+                                                                            <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                    </tr>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><input type="text" placeholder="Pus Cells" class="form-control" readonly></td>
+                                                                            <td colspan="4"><input type="text" name="puscells" placeholder="<%= consultation.labresult.semenanalysis.puscells %>" class="form-control"></td>
+                                                                           
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><input type="text" placeholder="RBC" class="form-control" readonly></td>
+                                                                            <td colspan="4"><input type="text" name="rbc" placeholder="<%= consultation.labresult.semenanalysis.rbc %>" class="form-control"></td>
+                                                                            
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><input type="text" placeholder="Cellula Debris" class="form-control" readonly></td>
+                                                                            <td colspan="4"><input type="text" name="celluladebris" placeholder="<%= consultation.labresult.semenanalysis.celluladebris %>" class="form-control"></td>
+                                                                           
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><input type="text" placeholder="Spermatozoan" class="form-control" readonly></td>
+                                                                            <td colspan="4"><input type="text" name="spermatozoan" placeholder="<%= consultation.labresult.semenanalysis.spermatozoan %>" class="form-control"></td>
+                                                                          
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><input type="text" placeholder="Epithelial Cells" class="form-control" readonly></td>
+                                                                            <td colspan="4"><input type="text" name="epithelialcells" placeholder="<%= consultation.labresult.semenanalysis.epithelialcells %>" class="form-control"></td>
+                                                                            
+                                                                        </tr>
+                                                                        <tr>
+                                                                                <th></th>
+                                                                                <th colspan="7">PERCENTAGE MOTILITY</th>
+                                                                                <!-- <th>Glucose Value</th>
+                                                                                <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                        </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Active" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="active" placeholder="<%= consultation.labresult.semenanalysis.active %>" class="form-control"></td>
+                                                                               
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Sluggish" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="sluggish" placeholder="<%= consultation.labresult.semenanalysis.sluggish %>" class="form-control"></td>
+                                                                                
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Non-Progressive" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="nonprogressive" placeholder="<%= consultation.labresult.semenanalysis.nonprogressive %>" class="form-control"></td>
+                                                                               
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Dead Cells" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="deadcells" placeholder="<%= consultation.labresult.semenanalysis.deadcells %>" class="form-control"></td>
+                                                                              
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th></th>
+                                                                                    <th colspan="7">MORPHOLOGY</th>
+                                                                                    <!-- <th>Glucose Value</th>
+                                                                                    <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                            </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="% Normal Cells" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="normalcells" placeholder="<%= consultation.labresult.semenanalysis.normalcells %>" class="form-control"></td>
+                                                                                   
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="% Abnormal Cells" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="abnormalcells" placeholder="<%= consultation.labresult.semenanalysis.abnormalcells %>" class="form-control"></td>
+                                                                                    
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="Sperm Count" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="spermcount" placeholder="<%= consultation.labresult.semenanalysis.spermcount %>" class="form-control"></td>
+                                                                                   
+                                                                                </tr>
+                                                                              
+                                                                            
+                                                                    <tr>
+                                                                        <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                    </div>
+                    <% }else{ %>
+                        <div class="row">
+                                <div class="col-sm-6">
+                                    <!-- Zero config.table start -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>URINE/HVS(MICROSCOPY)</h5>
+                                            <div class="card-header-right">
+                                                <i class="icofont icofont-rounded-down"></i>
+                                                <i class="icofont icofont-refresh"></i>
+                                                <i class="icofont icofont-close-circled"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="dt-responsive table-responsive">
+                                                <form action="/urine-test/<%= user._id %>" method="post">
+                                                <table class="table table-striped table-bordered nowrap">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S/N</th>
+                                                            <th>Test</th>
+                                                            <th>Result</th>
+                                                            <th>HVS</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                          <td></td>  
+                                                          <td>Epithelial Cells</td>  
+                                                          <td><input type="text" name="epitheliaresult" class="form-control"></td>  
+                                                          <td><input type="text" name="epitheliahsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>PUS Cells</td>  
+                                                            <td><input type="text" name="pusresult" class="form-control"></td>  
+                                                            <td><input type="text" name="pushsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>T Vaginalis</td>  
+                                                            <td><input type="text" name="vaginalisresult" class="form-control"></td>  
+                                                            <td><input type="text" name="vaginalishsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>Yeast Cells</td>  
+                                                            <td><input type="text" name="yeastresult" class="form-control"></td>  
+                                                            <td><input type="text" name="yeasthsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>RBC</td>  
+                                                            <td><input type="text" name="rbcresult" class="form-control"></td>  
+                                                            <td><input type="text" name="rbchsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>Cast</td>  
+                                                            <td><input type="text" name="castresult" class="form-control"></td>  
+                                                            <td><input type="text" name="castshsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>Crystals</td>  
+                                                            <td><input type="text" name="crystalsresult" class="form-control"></td>  
+                                                            <td><input type="text" name="crystalshsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>Parasites</td>  
+                                                            <td><input type="text" name="parasitesresult" class="form-control"></td>  
+                                                            <td><input type="text" name="parasiteshsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>Others</td>  
+                                                            <td><input type="text" name="othersresult" class="form-control"></td>  
+                                                            <td><input type="text" name="othershsv" class="form-control"></td>  
+                                                        </tr>
+                                                        <tr>
+                                                            <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+        
+                                <div class="col-sm-6">
+                                        <!-- Zero config.table start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>URINALYSIS/HVS(MICROSCOPY)</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="dt-responsive table-responsive">
+                                                    <form action="/urinalysis-test/<%= user._id %>" method="post">
+                                                    <table class="table table-striped table-bordered nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S/N</th>
+                                                                <th>Test</th>
+                                                                <th>Appearance</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                              <td></td>  
+                                                              <td>Leukocytes</td>  
+                                                              <td><input type="text" name="leukocytes" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Protein</td>  
+                                                                <td><input type="text" name="protein" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Glucose</td>  
+                                                                <td><input type="text" name="glucose" class="form-control"></td>  
+                                                        
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Blood</td>  
+                                                                <td><input type="text" name="blood" class="form-control"></td>  
+                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>PH</td>  
+                                                                <td><input type="text" name="ph" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Ascorbic Acid</td>  
+                                                                <td><input type="text" name="ascorbicacid" class="form-control"></td>  
+                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Urobilinogen</td>  
+                                                                <td><input type="text" name="urobilinogen" class="form-control"></td>  
+                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Ketones</td>  
+                                                                <td><input type="text" name="ketones" class="form-control"></td>  
+                                                               
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>S.gravity</td>  
+                                                                <td><input type="text" name="sgravity" class="form-control"></td>  
+                                                              
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Bilirubin</td>  
+                                                                <td><input type="text" name="bilirubin" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Nitrite</td>  
+                                                                <td><input type="text" name="nitrite" class="form-control"></td>  
+                                                                  
+                                                            </tr>
+                                                            <tr>
+                                                                <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                            <!-- Zero config.table start -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>STOOL ANALYSIS</h5>
+                                                    <div class="card-header-right">
+                                                        <i class="icofont icofont-rounded-down"></i>
+                                                        <i class="icofont icofont-refresh"></i>
+                                                        <i class="icofont icofont-close-circled"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="dt-responsive table-responsive">
+                                                        <form action="/stool-test/<%= user._id %>" method="post">
+                                                        <table class="table table-striped table-bordered nowrap">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>S/N</th>
+                                                                    <th>Test</th>
+                                                                    <th>Appearance</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                  <td></td>  
+                                                                  <td>PUS Cells</td>  
+                                                                  <td><input type="text" name="puscells" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>RBC</td>  
+                                                                    <td><input type="text" name="rbc" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>OVA/Cyst</td>  
+                                                                    <td><input type="text" name="ova" class="form-control"></td>  
+                                                            
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Undigested Food Particles</td>  
+                                                                    <td><input type="text" name="food" class="form-control"></td>  
+                                                                   
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Schistosoma Ova</td>  
+                                                                    <td><input type="text" name="schistosoma" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>FOB</td>  
+                                                                    <td><input type="text" name="fob" class="form-control"></td>  
+                                                                   
+                                                                </tr>
+                                                                
+                                                                <tr>
+                                                                    <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                                <!-- Zero config.table start -->
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>CULTURE SENSITIVITY REPORT</h5>
+                                                        <div class="card-header-right">
+                                                            <i class="icofont icofont-rounded-down"></i>
+                                                            <i class="icofont icofont-refresh"></i>
+                                                            <i class="icofont icofont-close-circled"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="dt-responsive table-responsive">
+                                                            <form action="/culture/<%= user._id %>" method="post">
+                                                            <table class="table table-striped table-bordered nowrap">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th>Sputum</th>
+                                                                        <th>Appearance</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                      <th></th>  
+                                                                      <td><textarea name="sputum" class="form-control" cols="30" rows="10"></textarea></td>  
+                                                                      <td><textarea name="appearance" class="form-control" cols="30" rows="10"></textarea></td>  
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th colspan="7">Culture</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <td colspan="7"><textarea class="form-control" name="culture" id="" cols="30" rows="10"></textarea></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                                    </tr>
+                                                                </tbody>
+                                                                
+                                                            </table>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                    <!-- Zero config.table start -->
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>ANTIBIOTIC SENSITIVITY</h5>
+                                                            <div class="card-header-right">
+                                                                <i class="icofont icofont-rounded-down"></i>
+                                                                <i class="icofont icofont-refresh"></i>
+                                                                <i class="icofont icofont-close-circled"></i>
+                                                            </div>
+                                                        </div>
+                                                        <div class="card-block">
+                                                            <div class="dt-responsive table-responsive">
+                                                                <form action="/antibiotic/<%= user._id %>" method="post">
+                                                                <table class="table table-striped table-bordered nowrap">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>S/N</th>
+                                                                            <th>Antibiotic Sensitivity</th>
+                                                                            <th>1</th>
+                                                                            <th>2</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                          <td></td>  
+                                                                          <td>Ciprofloxacin</td>  
+                                                                          <td><input type="text" name="ciprofloxacin1" class="form-control"></td>  
+                                                                          <td><input type="text" name="ciprofloxacin2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Ampiciline</td>  
+                                                                            <td><input type="text" name="ampiciline1" class="form-control"></td>  
+                                                                            <td><input type="text" name="ampiciline2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Sparfloxacin</td>  
+                                                                            <td><input type="text" name="Sparfloxacin1" class="form-control"></td>  
+                                                                            <td><input type="text" name="Sparfloxacin2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Erythromycin</td>  
+                                                                            <td><input type="text" name="Erythromycin1" class="form-control"></td>  
+                                                                            <td><input type="text" name="Erythromycin2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Streptomycin</td>  
+                                                                            <td><input type="text" name="Streptomycin1" class="form-control"></td>  
+                                                                            <td><input type="text" name="Streptomycin2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Gentamycin</td>  
+                                                                            <td><input type="text" name="Gentamycin1" class="form-control"></td>  
+                                                                            <td><input type="text" name="Gentamycin2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Pefloxacin</td>  
+                                                                            <td><input type="text" name="Pefloxacin1" class="form-control"></td>  
+                                                                            <td><input type="text" name="Pefloxacin2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Cotrimoxacole</td>  
+                                                                            <td><input type="text" name="Cotrimoxacole1" class="form-control"></td>  
+                                                                            <td><input type="text" name="Cotrimoxacole2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td>Chloramphenicol</td>  
+                                                                            <td><input type="text" name="Chloramphenicol1" class="form-control"></td>  
+                                                                            <td><input type="text" name="Chloramphenicol2" class="form-control"></td>  
+                                                                        </tr>
+                                                                        <tr>
+                                                                                <td></td>  
+                                                                                <td>Ampiclox</td>  
+                                                                                <td><input type="text" name="Ampiclox1" class="form-control"></td>  
+                                                                                <td><input type="text" name="Ampiclox2" class="form-control"></td>  
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <td></td>  
+                                                                                    <td>Amoxicillin</td>  
+                                                                                    <td><input type="text" name="Amoxicillin1" class="form-control"></td>  
+                                                                                    <td><input type="text" name="Amoxicillin2" class="form-control"></td>  
+                                                                                </tr>
+                                                                        <tr>
+                                                                                <td></td>  
+                                                                                <td>Clavulanic Acid</td>  
+                                                                                <td><input type="text" name="Clavulanic1" class="form-control"></td>  
+                                                                                <td><input type="text" name="Clavulanic2" class="form-control"></td>  
+                                                                            </tr>
+                                                                        <tr>
+                                                                                    <td></td>  
+                                                                                    <td>Ofloxacin</td>  
+                                                                                    <td><input type="text" name="Ofloxacin1" class="form-control"></td>  
+                                                                                    <td><input type="text" name="Ofloxacin2" class="form-control"></td>  
+                                                                                </tr>
+                                                                        <tr>
+                                                                                <td></td>  
+                                                                                <td>Cefuroxime</td>  
+                                                                                <td><input type="text" name="Cefuroxime1" class="form-control"></td>  
+                                                                                <td><input type="text" name="Cefuroxime2" class="form-control"></td>  
+                                                                            </tr>
+                                                                        <tr>
+                                                                                <td></td>  
+                                                                                <td>Ceftriaxone</td>  
+                                                                                <td><input type="text" name="Ofloxacin1" class="form-control"></td>  
+                                                                                <td><input type="text" name="Ofloxacin2" class="form-control"></td>  
+                                                                            </tr>
+                                                                        <tr>
+                                                                            <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                        <!-- Zero config.table start -->
+                                                        <div class="card">
+                                                            <div class="card-header">
+                                                                <h5>SEMEN ANALYSIS</h5>
+                                                                <div class="card-header-right">
+                                                                    <i class="icofont icofont-rounded-down"></i>
+                                                                    <i class="icofont icofont-refresh"></i>
+                                                                    <i class="icofont icofont-close-circled"></i>
+                                                                </div>
+                                                            </div>
+                                                            <div class="card-block">
+                                                                <div class="dt-responsive table-responsive">
+                                                                    <form action="/semen-test/<%= user._id %>" method="post">
+                                                                    <table class="table table-striped table-bordered nowrap">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                    <th></th>
+                                                                                    <th colspan="7">SEMEN ANALYSIS</th>
+                                                                                    <!-- <th>Glucose Value</th>
+                                                                                    <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody>
+                                                                            <tr>
+                                                                                <th></th>
+                                                                                <th>Time Produced</th>
+                                                                                <th>Time Received</th>
+                                                                                <th colspan="3">Time of Analysis</th>
+                                                                                   
+                                                                            </tr>
+                                                                            <tr>
+                                                                              <td></td>  
+                                                                              <td><input type="text" name="tproduced" class="form-control" id='datetimepicker5'></td>  
+                                                                              <td><input type="text" name="treceived" class="form-control" id='datetimepicker4'></td>  
+                                                                              <td colspan="3"><input type="text" name="tofanalysis" class="form-control" id='datetimepicker8'></td> 
+                                                                            </tr>
+                                                                            
+                                                                            <tr>
+                                                                                    <th></th>
+                                                                                    <th colspan="7">METHOD OF PRODUCTION</th>
+                                                                                    <!-- <th>Glucose Value</th>
+                                                                                    <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                            </tr>
+                                                                            
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Period of Abstinence" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="pabstinence" class="form-control"></td>
+                                                                                
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Colour" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="colour" class="form-control"></td>
+                                                                                
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Viscosity" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="viscosity" class="form-control"></td>
+                                                                               
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Liquefaction" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="liquefaction" class="form-control"></td>
+                                                                                   
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Spillage" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="spillage" class="form-control"></td>
+                                                                                   
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td></td>
+                                                                                <td><input type="text" placeholder="Volume" class="form-control" readonly></td>
+                                                                                <td colspan="4"><input type="text" name="volume" class="form-control"></td>
+                                                                                   
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="Odour" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="odour" class="form-control"></td>
+                                                                                       
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="PH" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="ph" class="form-control"></td>
+                                                                                       
+                                                                            </tr>
+                                                                            <tr>
+                                                                                    <th></th>
+                                                                                    <th colspan="7">MICROSCOPY</th>
+                                                                                    <!-- <th>Glucose Value</th>
+                                                                                    <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                            </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="Pus Cells" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="puscells" class="form-control"></td>
+                                                                                   
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="RBC" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="rbc" class="form-control"></td>
+                                                                                    
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="Cellula Debris" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="celluladebris" class="form-control"></td>
+                                                                                   
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="Spermatozoan" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="spermatozoan" class="form-control"></td>
+                                                                                  
+                                                                                </tr>
+                                                                                <tr>
+                                                                                    <td></td>
+                                                                                    <td><input type="text" placeholder="Epithelial Cells" class="form-control" readonly></td>
+                                                                                    <td colspan="4"><input type="text" name="epithelialcells" class="form-control"></td>
+                                                                                    
+                                                                                </tr>
+                                                                                <tr>
+                                                                                        <th></th>
+                                                                                        <th colspan="7">PERCENTAGE MOTILITY</th>
+                                                                                        <!-- <th>Glucose Value</th>
+                                                                                        <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                                </tr>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><input type="text" placeholder="Active" class="form-control" readonly></td>
+                                                                                        <td colspan="4"><input type="text" name="active" class="form-control"></td>
+                                                                                       
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><input type="text" placeholder="Sluggish" class="form-control" readonly></td>
+                                                                                        <td colspan="4"><input type="text" name="sluggish" class="form-control"></td>
+                                                                                        
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><input type="text" placeholder="Non-Progressive" class="form-control" readonly></td>
+                                                                                        <td colspan="4"><input type="text" name="nonprogressive" class="form-control"></td>
+                                                                                       
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td><input type="text" placeholder="Dead Cells" class="form-control" readonly></td>
+                                                                                        <td colspan="4"><input type="text" name="deadcells" class="form-control"></td>
+                                                                                      
+                                                                                    </tr>
+                                                                                    <tr>
+                                                                                            <th></th>
+                                                                                            <th colspan="7">MORPHOLOGY</th>
+                                                                                            <!-- <th>Glucose Value</th>
+                                                                                            <th colspan="4">REF RANGE/UNIT</th> -->
+                                                                                    </tr>
+                                                                                        <tr>
+                                                                                            <td></td>
+                                                                                            <td><input type="text" placeholder="% Normal Cells" class="form-control" readonly></td>
+                                                                                            <td colspan="4"><input type="text" name="normalcells" class="form-control"></td>
+                                                                                           
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td></td>
+                                                                                            <td><input type="text" placeholder="% Abnormal Cells" class="form-control" readonly></td>
+                                                                                            <td colspan="4"><input type="text" name="abnormalcells" class="form-control"></td>
+                                                                                            
+                                                                                        </tr>
+                                                                                        <tr>
+                                                                                            <td></td>
+                                                                                            <td><input type="text" placeholder="Sperm Count" class="form-control" readonly></td>
+                                                                                            <td colspan="4"><input type="text" name="spermcount" class="form-control"></td>
+                                                                                           
+                                                                                        </tr>
+                                                                                      
+                                                                                    
+                                                                            <tr>
+                                                                                <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                            </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../../partials/footerCopy %>

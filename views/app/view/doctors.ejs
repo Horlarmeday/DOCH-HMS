@@ -1,0 +1,102 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Doctors</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/doctors">Doctors</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/add-doctor">Add Doctor</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page-header end -->
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Doctors</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                   
+                                                    <th>Name</th>
+                                                    <th>Age</th>
+                                                    <th>Address</th>
+                                                    <th>Phone</th>
+                                                    <th>Email</th>
+                                                    <!-- <th>Status</th>
+                                                    <th>Action</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% allDoctors.forEach((doctor) => { %>
+                                                <tr class="clickable">
+                                                    <a href="/doctor/<%= doctor.id %>">
+                                                        <td></td>
+                                                        <td> <a href="/doctor/<%= doctor.id %>"><%= doctor.firstname %> <%= doctor.lastname %></a></td>
+                                                        <td><%= doctor.age %></td>
+                                                        <td><%= doctor.address %></td>
+                                                        <td>+234<%= doctor.phone %></td>
+                                                        <td><%= doctor.email %></td>
+                                                    </a>
+                                                </tr>
+                                                
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../../partials/footerCopy %>

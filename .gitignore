@@ -1,0 +1,11 @@
+#VSCode 
+.vscode/
+
+#nodemodules
+node_modules/
+
+#Environment VAriables
+.env
+
+#IDEA
+.idea/

@@ -1,0 +1,227 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newDoctors = users.map(doctor =>{
+                                          if (doctor.role === 2){
+                                            const rDoctor = doctor.role === 2
+                                            return rDoctor;
+                                          }                    
+                                        })
+                                        const doctors = newDoctors.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= doctors %></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newPatients = users.map(patient =>{
+                                          if (patient.role === 8){
+                                            const rPatient = patient.role === 8
+                                            return rPatient;
+                                          }                    
+                                        })
+                                        const patients = newPatients.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-warning btn-icon"><i class="icofont icofont-paralysis-disability"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= patients %></h6>
+                                                <p class="text-muted f-18 m-0">Patients</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="sale-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= appointments.length %></h6>
+                                                <p class="text-muted f-18 m-0">Appointments</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="resource-barchart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Visitor Chart End-->
+
+                        <div class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Requests</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Item(s) Requested</th>
+                                                        <th>Quantity</th>
+                                                        <th>Unit</th>
+                                                        <th>RequestedBy</th>
+                                                        <th>Date Requested</th>
+                                                        <th>Time</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% requests.forEach((request) => { %>
+                                                        <% if(!request.granted && !request.declined && (request.department === 'Laboratory')){ %>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td><%= request.item %></td>
+                                                            <td><%= request.quantity %></td>
+                                                            <td><%= request.unit %></td>
+                                                            <td><%= request.requestedby.firstname %> <%= request.requestedby.lastname %></td>
+                                                            <td><%= request.createdAt.toDateString() %></td>
+                                                            <td><%= request.createdAt.toLocaleTimeString()  %></td>
+                                                            <td>
+                                                                <label class="label label-md bg-warning">Pending</label> 
+                                                            </td>
+                                                            <td><button id="approve" type="button" class="btn btn-success">Approve</button>
+                                                            
+                                                                <button id="decline" type="button" class="btn btn-danger">Decline</button>
+                                                            </td>
+                                                        </tr>
+                                                        <% }  %>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Items</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                        <th>S/N</th>
+                                                        <th>Item Name</th>
+                                                        <th>Item Code</th>
+                                                        <th>Quantity</th>
+                                                        <th>Leftover</th>
+                                                        <th>Unit</th>
+                                                        <th>Unit Price(₦)</th>
+                                                        <th>Purchase Cost(₦)</th>
+                                                        <th>Expected Income(₦)</th>
+                                                        <th>Date Received</th>
+                                                        <th>Expiration</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% items.forEach((item) => { %>
+                                                    <tr style="cursor: pointer" onclick="window.location='/lab-dispense-history/<%= item._id %>';">
+                                                        <td></td>
+                                                        <td><%= item.name %></td>
+                                                        <td>LAB/ITEM/000<%= item.itemDigit %></td>
+                                                        <td><%= item.quantity %></td>
+                                                        <td style="color: rgb(210, 30, 150)"><strong><%= item.rquantity %></strong></td>
+                                                        <td><%= item.unit %></td>
+                                                        <td><%= item.price %></td>
+                                                        <td><%= item.cost %></td>
+                                                        <td><%= item.income %></td>
+                                                        <td><%= item.received.toDateString() %></td>
+                                                        <td><%= item.expiration.toDateString() %></td>
+                                                    </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../partials/footerCopy %>

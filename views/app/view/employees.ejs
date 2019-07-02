@@ -1,0 +1,132 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Employees</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/employees">Employees</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/add-employee">Add Employee</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page-header end -->
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Hospital Employees</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Name</th>
+                                                    <th>Employee ID</th>
+                                                    <th>Email</th>
+                                                    <th>Username</th>
+                                                    <th>Mobile</th>
+                                                    <th>Join Date</th>
+                                                    <th>Role</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% users.forEach((user)=>{ %>
+                                                    <% if(user.role !== 1 && user.role !==8){ %>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><%= user.firstname %> <%= user.lastname %></td>
+                                                    <td><%= user.workerId %></td>
+                                                    <td><%= user.email %></td>
+                                                    <td><%= user.username %></td>
+                                                    <td>+234<%= user.phonenumber %></td>
+                                                    <td><%= user.createdAt.toDateString() %></td>
+                                                    <td>
+                                                        <% if(user.role === 2){ %>
+                                                            <label class="label label-md bg-success">Doctor</label>
+                                                        <% }else if(user.role === 3){ %>
+                                                            <label class="label label-md bg-primary">Nurse</label>
+                                                        <% }else if(user.role === 4){ %>
+                                                            <label class="label label-md bg-info">Laboratorist</label>
+                                                        <% }else if(user.role === 5){ %>
+                                                            <label class="label label-md bg-warning">Pharmacist</label>
+                                                        <% }else if(user.role === 6){ %>
+                                                            <label class="label label-md bg-inverse">Accountant</label>
+                                                        <% }else if(user.role === 7){ %>
+                                                            <label class="label label-md bg-default">Receptionist</label>
+                                                        <% }else if (user.role === 9){ %>
+                                                            <label style="background-color: rgb(224, 138, 8)" class="label label-md">Medical Record</label>
+                                                        <% }else if (user.role === 10){ %>
+                                                            <label style="background-color: rgb(86, 148, 167)" class="label label-md">Emergency</label>
+                                                        <% }else if (user.role === 11){ %>
+                                                            <label style="background-color: rgb(8, 181, 224)" class="label label-md">Finance Officer</label>
+                                                        <% }else if (user.role === 12){ %>
+                                                            <label style="background-color: rgb(199, 8, 224)" class="label label-md">NHIS</label>
+                                                        <% }else if (user.role === 13){ %>
+                                                            <label style="background-color: rgb(223, 84, 130)" class="label label-md">Pharmacy Inventory</label>
+                                                        <% }else if (user.role === 14){ %>
+                                                            <label style="background-color: rgba(13, 34, 28, 0.705)" class="label label-md">Lab Inventory</label>
+                                                        <% }else if (user.role === 15){ %>
+                                                            <label style="background-color: rgba(88, 78, 18, 0.705)" class="label label-md">Imaging</label>
+                                                        <% }else if (user.role === 16){ %>
+                                                            <label style="background-color: rgba(252, 236, 145, 0.705)" class="label label-md">ANC</label>
+                                                        <% }  %>
+                                                    </td>
+                                                </tr>
+                                                <% } %> 
+                                                <% }) %> 
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../../partials/footerCopy %>

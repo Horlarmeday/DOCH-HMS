@@ -1,0 +1,164 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Addmitted Patients</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Addmitted Patients</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Patients</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Page-header end -->
+                <%
+                    const allUsers = users.length
+                    const femalepatientInfo = []
+                   
+                %>
+               
+                <% users.forEach((user)=>{ %>
+                    <% femalepatientInfo.push(allUsers) %>
+                <% }) %>
+                
+
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+
+                        <!-- SITE VISIT CHART start -->
+                        <div class="col-md-12 col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Total Patients</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div id="myChart"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- SITE VISIT CHART Ends -->
+                        <!-- SITE VISIT CHART start -->
+                        <div class="col-md-12 col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Payments</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="mChart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SITE VISIT CHART Ends -->
+
+
+                        
+                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.zingchart.com/zingchart.min.js"></script>
+  <script>
+    const chart = {
+      'graphset':[
+          {
+            "type": 'bar',
+            "utc": true,
+            "plotarea": {
+                "adjust-layout":true
+            },
+            "scale-x": {
+                "label":{ /* Scale Title */
+                "text":"Here is the date scale",
+                },
+                "labels":["May", "June","July","Aug", "Sept", "Oct", "Nov", "Dec"] 
+            },
+            "scale-y": {
+                // "values": "100:500",
+                "label":{ /* Scale Title */
+                "text":"Here is the revenue scale",
+                },
+            },
+            "legend": {
+                "toggle-action": "hide",
+                "header": {
+                // "text": "Legend Header"
+                },
+                "item": {
+                "cursor": "pointer"
+                },
+                "draggable": true,
+                "drag-handler": "icon"
+            },
+            "series": [
+                
+                {
+                   "values": ['<%= result[0].totalAmount %>', '<%= result[1].totalAmount %>'],
+                   "background-color":"#6666FF", /* Bar fill color (gradient) */
+                   "alpha":0.3 ,/* Transparency (more transparent) */
+                   "text": "Patients"
+                }
+            ]
+          }
+        ]
+    };
+
+    
+    zingchart.render({
+      id: 'myChart',
+      data: chart,
+    });
+
+    
+  </script>
+
+
+
+<% include ../../partials/footerCopy %>

@@ -1,0 +1,153 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Nurse Triage</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/triages">Triages</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Create Triage</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5><%= user.firstname %> <%= user.lastname %> Triage</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <h5 style="color:dodgerblue" class="page-title">Physical Examination</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Weight <span class="text-danger"> (kg*)</span></label>
+                                                                <input name="weight" id="weight" class="form-control" type="number" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>Height <span class="text-danger"> (m*)</span></label>
+                                                                <input name="height" id="height" class="form-control" type="number" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>BMI <span class="text-danger"> (kg/m^2*)</span></label>
+                                                                <input name="bmi" id="bmi" class="form-control" type="number" readonly>
+                                                                <small>Body Mass Index(BMI) = Weight(in kg) / Height(in m)²</small>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>RVS <span class="text-danger"> (rvs*)</span></label>
+                                                                <input name="rvs" class="form-control" type="text" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>MUAC<span class="text-danger"> (muac*)</span></label>
+                                                                <select name="muac" class="form-control select" required>
+                                                                    <option selected disabled>Select</option>
+                                                                    <option>Green</option>
+                                                                    <option>Yellow</option>
+                                                                    <option>Red</option>
+                                                                </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>Blood Pressure <span class="text-danger"> (mmHg*)</span></label>
+                                                                <input name="blood" class="form-control" type="text" required>
+                                                        </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Vital Signs</h5><br><br>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Pulse <span class="text-danger"> (min*)</span></label>
+                                                                    <div class="cal-icon">
+                                                                        <input name="pulse" type="text" class="form-control" required>
+                                                                    </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>Respiration <span class="text-danger"> (B/min*)</label>
+                                                                    <input name="respiration" class="form-control" type="text" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Temperature <span class="text-danger"> (°C*)</label>
+                                                                    <input name="temperature" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>Heart Rate <span class="text-danger"> (/min*)</label>
+                                                                    <input name="heartrate" class="form-control" type="text" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Dystolic <span class="text-danger"> (mm*)</label>
+                                                                    <input name="dystolic" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>Systolic <span class="text-danger"> (Hg*)</label>
+                                                                    <input name="systolic" class="form-control" type="text" required>
+                                                            </div>
+                                                        </div>
+                                                        <input type="hidden" name="patientid" value="<%= user._id %>">
+                                                    <a href="/triages" class="ml-3 btn btn-danger float-right">Cancel</a>
+                                                    <button type="submit" class="btn btn-info float-right">Save</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

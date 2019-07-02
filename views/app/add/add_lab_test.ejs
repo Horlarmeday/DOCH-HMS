@@ -1,0 +1,102 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+        <!-- Main-body start -->
+        <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Laboratory Tests</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/lab-tests">Lab Tests</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Add Lab Test</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Lab Tests</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="post">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label for="">Test Name</label>
+                                                            <input type="text" name="name" class="form-control" placeholder="Name" required>
+                                                        </div><br>                                                        
+                                                        <div class="col-sm-12">
+                                                            <label for="">Department</label>
+                                                            <select name="lab" class="form-control js-example-basic-single" required>
+                                                                <option selected disabled>Select Department</option>
+                                                                <% labs.forEach((lab)=>{ %>
+                                                                    <option value="<%= lab._id %>"><%= lab.name %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label for="">Price</label>
+                                                            <input type="number" name="price" class="form-control" placeholder="Test Price" required>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label for="">Code</label>
+                                                            <input type="number" name="code" class="form-control" placeholder="Code" required>
+                                                        </div><br>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info float-right">Add Test</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

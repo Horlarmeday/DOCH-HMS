@@ -1,0 +1,116 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Triages</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/triages">Triages</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Triages</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page-header end -->
+                <!-- Page-body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Triages</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Weight</th>
+                                                    <th>Height</th>
+                                                    <th>BMI</th>
+                                                    <th>RVS</th>
+                                                    <th>Pulse</th>
+                                                    <th>Respiration</th>
+                                                    <th>Temperature</th>
+                                                    <th>Heartrate</th>
+                                                    <th>Dystolic</th>
+                                                    <th>Systolic</th>
+                                                    <th>MUAC</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% triages.forEach((triage) => { %>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><%= triage.patient.firstname %> <%= triage.patient.lastname %></td>                                                   
+                                                    <td><%= triage.weight %> <span style="color: darkorange">(kg)</span></td>
+                                                    <td><%= triage.height %> <span style="color: darkorange">(cm)</span></td>
+                                                    <td><%= triage.bmi %> <span style="color: darkorange">(kg/m^2)</span></td>
+                                                    <td><%= triage.rvs %> <span style="color: darkorange"> (rvs)</span></td>
+                                                    <td><%= triage.pulse %> <span style="color: darkorange">(min)</span></td>
+                                                    <td><%= triage.respiration %> <span style="color: darkorange">(B/min)</span></td>
+                                                    <td><%= triage.temperature %> <span style="color: darkorange">(°C)</span></td>
+                                                    <td><%= triage.heartrate %> <span style="color: darkorange">(/min)</span></td>
+                                                    <td><%= triage.dystolic %> <span style="color: darkorange">(mm)</span></td>
+                                                    <td><%= triage.systolic %> <span style="color: darkorange">(Hg)</span></td>
+                                                    <% if(triage.muac === 'Green'){ %>
+                                                    <td><label class="label bg-success label-lg"><%= triage.muac %> </label> </td>
+                                                    <% }else if(triage.muac === 'Red'){ %>
+                                                    <td><label class="label bg-danger label-lg"><%= triage.muac %> </label> </td>
+                                                    <% }else if(triage.muac === 'Yellow'){ %>
+                                                        <td><label class="label bg-warning label-lg"><%= triage.muac %> </label> </td>
+                                                    <% } %> %>
+                                                </tr>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<% include ../../partials/footerCopy %>

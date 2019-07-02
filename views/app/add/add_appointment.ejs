@@ -1,0 +1,133 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+        <!-- Main-body start -->
+        <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Appointment</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/appointments">Appointments</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Create Appointment</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Create Appointment</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="post">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label for="">Patient Name</label>
+                                                            <select name="patient" class="form-control js-example-basic-single">
+                                                                <option selected disabled>Select</option>
+                                                                <% users.forEach((user)=>{ %>
+                                                                    <% if(user.role == 8){ %>
+                                                                        <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div><br>                                                        
+                                                        <div class="col-sm-12">
+                                                            <label for="">Doctor</label>
+                                                            <select name="doctor" class="form-control js-example-basic-single">
+                                                                <option selected disabled>Select</option>
+                                                                <% users.forEach((user)=>{ %>
+                                                                    <% if(user.role == 2){ %>
+                                                                    <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label for="">Department</label>
+                                                            <select name="department" class="form-control">
+                                                                <option selected disabled>Select</option>
+                                                                <% departments.forEach((department)=>{ %>
+                                                                    <option><%= department.name %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label for="">Appointment Type</label>
+                                                            <select name="type" class="form-control">
+                                                                <option selected disabled>Select</option>
+                                                                <option>Immunization</option>
+                                                                <option>Ante Natal</option>
+                                                                <option>Consultation</option>
+                                                            </select>
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label>Date <span class="text-danger">*</span></label>
+                                                            <input name="appointment" class="form-control" type="date">     
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                                <label>Time of Appointment <span class="text-danger">*</span></label>
+                                                                <input name="time" class="form-control" type="text" id='datetimepicker8'>     
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label>Problem <span class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="problem" cols="30" rows="10"></textarea>   
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info float-right">Create Appointment</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

@@ -1,0 +1,174 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newDoctors = users.map(doctor =>{
+                                          if (doctor.role === 2){
+                                            const rDoctor = doctor.role === 2
+                                            return rDoctor;
+                                          }                    
+                                        })
+                                        const doctors = newDoctors.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= doctors %></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newPatients = users.map(patient =>{
+                                          if (patient.role === 8){
+                                            const rPatient = patient.role === 8
+                                            return rPatient;
+                                          }                    
+                                        })
+                                        const patients = newPatients.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-warning btn-icon"><i class="icofont icofont-paralysis-disability"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= patients %></h6>
+                                                <p class="text-muted f-18 m-0">Patients</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="sale-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= appointments.length %></h6>
+                                                <p class="text-muted f-18 m-0">Appointments</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="resource-barchart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Visitor Chart End-->
+
+                        <!-- Product table Start -->
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h5>Upcoming Appointments</h5>
+                                </div>
+                                <div class="card-block product-table">
+                                    <div class="table-responsive">
+                                        <table id="simpletable" class="table">
+                                            <thead>
+                                                <tr class="text-uppercase">
+                                                    <th>S/N</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Type</th>
+                                                    <th>Timing</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <% if(!appointmentIsEmpty){ %>
+                                            <tbody>
+                                                <% appointments.forEach((appointment)=>{ %>
+                                                    <% if(appointment.taken === false){ %>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
+                                                    <td><%= appointment.doctor.firstname %> <%= appointment.doctor.lastname %></td>
+                                                    <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
+                                                    <% if(appointment.taken === true){ %>
+                                                    <td><label class="label label-md bg-success">Attended</label></td>
+                                                    <% }else{ %>
+                                                    <td><label class="label label-md bg-warning">Pending</label></td>
+                                                    <% } %>
+                                                    <td>
+                                                        
+                                                    <a href="/ante-natal/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Take Up</a>
+                                                       
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                                <% }) %>
+                                            </tbody>
+                                            <% }else{ %>
+                                                <tbody>
+                                                    <p class="text-center">There are no appointments</p>
+                                                </tbody>
+                                            <% } %>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product table End -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../partials/footerCopy %>

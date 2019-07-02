@@ -1,0 +1,211 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                            <%
+                            const newPatients = users.map(patient =>{
+                              if (patient.role === 8){
+                                const rPatient = patient.role === 8
+                                return rPatient;
+                              }                    
+                            })
+                            const patients = newPatients.filter(v => v).length;
+                         %>
+                        <!-- View Chart Start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="row">
+                                <div class="col-12 m-b-30">
+                                <div class="chart-stat-card-1">
+                                <div class="col-6 chart-stat-cont card-block text-center">
+                                    <h6 class="m-t-5">Patients</h6>
+                                    <span><%= patients %></span>
+                                </div>
+                                <div class="col-6 chart-stat-graph card-block text-center">
+                                    <span class="resource-barchart1"></span>
+                                </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="row">
+                            <div class="col-12 m-b-30">
+                            <div class="chart-stat-card-2">
+                            <div class="col-6 chart-stat-cont card-block text-center">
+                                <h6 class="m-t-5">Invoice Generated</h6>
+                                <span>1534</span>
+                            </div>
+                            <div class="col-6 chart-stat-graph card-block text-center">
+                                <span class="resource-barchart2"></span>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+                        <%
+                        function getSum(total, sum){
+                            return total + sum;
+                        }
+                        const revenues = payments.map(price =>{
+                            const rTotal = price.amount
+                            return rTotal;
+                                            
+                        })
+                        var revenue;
+                        if(revenues === undefined || revenues.length == 0){
+                            revenue = 0
+                        }else{
+                            revenue = revenues.reduce(getSum)
+                        }
+                        %>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="row">
+                            <div class="col-12 m-b-30">
+                            <div class="chart-stat-card-3">
+                            <div class="col-6 chart-stat-cont card-block text-center">
+                                <h6 class="m-t-5">Revenue</h6>
+                                <span>&#8358;<%= revenue %></span>
+                            </div>
+                            <div class="col-6 chart-stat-graph card-block text-center">
+                                <span class="resource-barchart3"></span>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                        </div>
+      
+      <!-- View Chart End-->
+
+                        <!-- Start -->
+                        <!-- Analythics Start -->
+                         <!-- Bar Chart start -->
+                         <div class="col-md-12 col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>New Patients</h5>
+                                        
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="morris-bar-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bar Chart Ends -->
+                        <!-- Analythics End -->
+
+
+                          <!-- SITE VISIT CHART start -->
+                          <div class="col-md-12 col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Patient Total</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SITE VISIT CHART Ends -->
+
+                        <!-- Reset Order Start -->
+                        <div class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>All Payments</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Patient Name</th>
+                                                        <th>Amount Paid(&#8358;)</th>
+                                                        <th>Payment For</th>
+                                                        <th>Payment Date</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% payments.forEach((payment)=>{ %>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><%= payment.patient.patientId %></td>
+                                                        <td> <%= payment.patient.firstname %> <%= payment.patient.lastname %></td>
+                                                        <td> <%= payment.amount %></td>
+                                                        <td> <%= payment.type %></td>
+                                                        <td> <%= payment.createdAt.toDateString() %></td>
+                                                        <% if(payment.status === true){ %>
+                                                        <td><label class="label label-md bg-success">Active</label></td>
+                                                        <% }else{ %>
+                                                        <td><label class="label label-md bg-warning">Inactive</label></td>
+                                                        <% } %>
+                                                        
+                                                    </tr>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        <!-- Reset Order End -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../partials/footerCopy %>

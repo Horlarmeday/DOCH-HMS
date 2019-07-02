@@ -1,0 +1,180 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newDoctors = allPatients.map(doctor =>{
+                                          if (doctor.role === 2){
+                                            const rDoctor = doctor.role === 2
+                                            return rDoctor;
+                                          }                    
+                                        })
+                                        const doctors = newDoctors.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= doctors %></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newPatients = allPatients.map(patient =>{
+                                          if (patient.role === 8){
+                                            const rPatient = patient.role === 8
+                                            return rPatient;
+                                          }                    
+                                        })
+                                        const patients = newPatients.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-warning btn-icon"><i class="icofont icofont-paralysis-disability"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= patients %></h6>
+                                                <p class="text-muted f-18 m-0">Patients</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="sale-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
+                                            <div class="card-contain">
+                                                <h6></h6>
+                                                <p class="text-muted f-18 m-0">Appointments</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="resource-barchart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Visitor Chart End-->
+
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Old Patients</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Patient ID</th>
+                                                    <th>Name</th>
+                                                    <th>Age</th>
+                                                    <th>Address</th>
+                                                    <th>Phone</th>
+                                                    <th>Email</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% allPatients.forEach((patient) => { %>
+                                                <tr style="cursor: pointer" onclick="window.location='/patient/<%= patient.id %>'">
+                                                    <a href="/patient/<%= patient.id %>">
+                                                        <td></td>
+                                                        <td><%= patient.patientId %></td>
+                                                        <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                        <td><%= patient.age %></td>
+                                                        <td><%= patient.address %></td>
+                                                        <td>+234<%= patient.phone %></td>
+                                                        <td><%= patient.email %></td>
+                                                        <% if(patient.status === false){ %>
+                                                        <td><label class="label label-md bg-success">Not Admitted</label></td>
+                                                        <% }else{ %>
+                                                        <td><label class="label label-md bg-danger">Admitted</label></td>
+                                                        <% } %>
+                                                        <td>
+                                                            <!-- <a class="btn btn-info" href="/invoice/<%= patient.id %>">Invoice</a> -->
+                                                            <a class="btn btn-success" href="/visit/<%= patient.id %>"><i class="ti-shift-right"></i> Check In</a>
+                                                            <a class="btn btn-info" href="/add-appointment/<%= patient.id %>"><i class="ti-shift-right"></i> Add Appointment</a>
+                                                            <!-- <a class="btn btn-danger" href="#">Delete</a> -->
+                                                        </td>
+                                                    </a>
+                                                </tr>
+                                                
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../partials/footerCopy %>

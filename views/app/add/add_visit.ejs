@@ -1,0 +1,135 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page-header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Edit Patient</h4>
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Patient Profile</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Patient</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page-header end -->
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        
+                            <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- Material tab card start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>Visit Information</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <!-- Row start -->
+                                                <div class="row m-b-30">
+                                                    <div class="col-lg-12 col-sm-6">
+                                                        <div>
+                                                            <div>
+                                                                <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Name:</p>
+                                                                <p style="font-size:1.7em; font-weight: 700;display: inline"><%= patient.firstname %> <%= patient.lastname %></p>
+                                                                <a style="font-size:1.2em; font-weight: 500;color: rgba(0, 115, 170, 0.5)" class="float-right" href="#"><i class="ti-plus"></i> Add Alergies</a>
+                                                            </div><br>
+                                                            <div>
+                                                                <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Gender:</p>
+                                                                <p style="font-size:1.3em; font-weight: 100;display: inline"><%= patient.gender %></p>
+                                                                <a style="font-size:1.2em; font-weight: 500;color: rgba(0, 115, 170, 0.5)" class="float-right" href="#"><i class="ti-plus"></i> Add Operative Plan</a>
+                                                            </div><br>
+                                                            <div>
+                                                                <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Age:</p>
+                                                                <p style="font-size:1.3em; font-weight: 100;display: inline"><%= age %> years (<%= patient.birthday.toDateString() %>)</p>
+                                                            </div>
+                                                        </div><hr> 
+                                                        <div class="row">
+                                                            <div class="col-sm-12 mobile-inputs">
+                                                                <form method="POST">
+                                                                    <!-- <div class="form-group">
+                                                                        <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                                    </div> -->
+                                                                    <div class="form-group row">
+                                                                        <div class="col-sm-6">
+                                                                            <label for="">Admission Date <span class="text-danger">*</span></label>
+                                                                            <input type="date" name="admission" class="form-control" placeholder="First Name" required>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="">Discharge Date </label>
+                                                                            <input type="date" name="discharge" class="form-control" placeholder="Last Name">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <div class="col-sm-6">
+                                                                            <label>Visit Type <span class="text-danger">*</span></label>
+                                                                            <select name="visit" class="form-control select" required>
+                                                                                <option selected disabled>Select</option>
+                                                                                <option value="Admission">Admission</option>
+                                                                                <option value="Clinic">Clinic</option>
+                                                                                <option value="Followup">Followup</option>
+                                                                                <option value="Lab">Lab</option>
+                                                                                <option value="Pharmacy">Pharmacy</option>                                                                               
+                                                                            </select>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="">Doctor</label>
+                                                                            <select name="doctor" class="form-control select">
+                                                                                <option selected disabled>Select</option>
+                                                                                <% users.forEach((user)=>{  %>
+                                                                                    <% if(user.role === 2){ %>
+                                                                                    <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                                    <% } %>
+                                                                                <% }) %>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label>Reason for Visit</label>
+                                                                        <textarea class="form-control" name="reason" id="" cols="30" rows="10"></textarea>
+                                                                    </div>
+                                                                    
+                                                                    <button type="submit" class="btn btn-info float-right"><i class="ti-shift-right"></i> Check In</button>
+                                                                    <a href="/patients" class="btn btn-danger float-right mr-2">Cancel</a>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Row end -->             
+                                                    </div>
+                                                    
+                                                
+                                            </div>
+                                        </div>
+                                        <!-- Material tab card end -->
+                                    </div>
+                                </div>
+
+                    </div>
+                    <!-- Page-body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+    <% include ../../partials/footerCopy %>

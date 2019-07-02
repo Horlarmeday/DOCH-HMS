@@ -1,0 +1,305 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newDoctors = allUsers.map(doctor =>{
+                                          if (doctor.role === 2){
+                                            const rDoctor = doctor.role === 2
+                                            return rDoctor;
+                                          }                    
+                                        })
+                                        const doctors = newDoctors.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= doctors %></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newPatients = allUsers.map(patient =>{
+                                          if (patient.role === 8){
+                                            const rPatient = patient.role === 8
+                                            return rPatient;
+                                          }                    
+                                        })
+                                        const patients = newPatients.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-warning btn-icon"><i class="icofont icofont-paralysis-disability"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= patients %></h6>
+                                                <p class="text-muted f-18 m-0">Patients</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="sale-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
+                                            <div class="card-contain">
+                                                <h6>N2,534</h6>
+                                                <p class="text-muted f-18 m-0">Revenue</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="resource-barchart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Visitor Chart End-->
+
+                        <!-- Start -->
+                        <!-- Analythics Start -->
+                         <!-- Bar Chart start -->
+                         <div class="col-md-12 col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>New Patients</h5>
+                                        
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="morris-bar-chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bar Chart Ends -->
+                        <!-- Analythics End -->
+
+
+                          <!-- SITE VISIT CHART start -->
+                          <div class="col-md-12 col-lg-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Patient Total</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div id="chart"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- SITE VISIT CHART Ends -->
+
+
+                        <!-- Total Sale Start -->
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h5>Doctors</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                        <ul>
+                                            <% allUsers.forEach((user)=>{ %>
+                                                <% if(user.role == 2){ %>
+                                            <li>
+                                                <div style="display:inline-block">
+                                                    <div style="display:inline-block" class="float-left mr-10">
+                                                        <a href="#!"><img class="ml-2" style="display:inline-block" src="/assets/images/user.png" alt="User-Profile-Image" width="50"></a>
+                                                    </div>
+                                                    <div class="ml-3" style="padding:0 30px 0 50px">
+                                                        <span style="display:block"><%= user.firstname %> <%= user.lastname %></span>
+                                                        <span style="display:block"><small> <%= user.city %> <%= user.country %></small></span>
+                                                    </div>
+                                               </div>
+                                            </li><hr>
+                                            <% } %>
+                                            <% }) %>
+                                        </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Total Sale Start -->
+
+                        <!-- Product table Start -->
+                        <div class="col-md-8">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h5>Upcoming Appointments</h5>
+                                </div>
+                                <div class="card-block product-table">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr class="text-uppercase">
+                                                    <th>S/N</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Doctor Name</th>
+                                                    <th>Timing</th>
+                                                    <th>Status</th>
+                                                    <th>Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <% if(!appointmentIsEmpty){ %>
+                                            <tbody>
+                                                <% appointments.forEach((appointment)=>{ %>
+                                                    <% if(appointment.taken === false){ %>
+                                                <tr>
+                                                    <td></td>
+                                                    <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
+                                                    <td><%= appointment.doctor.firstname %> <%= appointment.doctor.lastname %></td>
+                                                    <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
+                                                    <% if(appointment.taken === true){ %>
+                                                    <td><label class="label label-md bg-success">Attended</label></td>
+                                                    <% }else{ %>
+                                                    <td><label class="label label-md bg-warning">Pending</label></td>
+                                                    <% } %>
+                                                    <td>
+                                                        <!-- <form action="/takeup-appointment" method="post"> -->
+                                                            <!-- <input type="hidden" name="app_id" value="appointment._id"> -->
+                                                            <a href="/consultation/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Take Up</a>
+                                                        <!-- </form> -->
+                                                    </td>
+                                                </tr>
+                                                <% } %>
+                                                <% }) %>
+                                            </tbody>
+                                            <% }else{ %>
+                                                <tbody>
+                                                    <p class="text-center">There are no appointments</p>
+                                                </tbody>
+                                            <% } %>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product table End -->
+
+                       
+                       
+
+                        <!-- Reset Order Start -->
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h5>New Patient</h5>
+                                </div>
+                                <div class="card-block reset-table p-t-0">
+                                    <div class="table-responsive">
+                                        <table class="table">
+                                            <thead>
+                                                <tr class="text-uppercase">
+                                                    <th>S/N</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Phone Number</th>
+                                                    <th>Created</th>
+                                                    <th>Status</th>
+                                                    <!-- <th>Price</th>
+                                                    <th>Quantity</th> -->
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% allUsers.forEach((user)=>{ %>
+                                                    <% if(user.role == 8){ %>
+                                                <tr>
+                                                    <td></td>
+                                                    <td>
+                                                            <div style="display:inline-block" class="float-left mr-10">
+                                                                    <a href="#!"><img class="ml-2" style="display:inline-block" src="/assets/images/avatar-2.png" alt="User-Profile-Image" width="50"></a>
+                                                                </div>
+                                                                <div class="ml-3" style="padding:0 30px 0 50px">
+                                                                    <span style="display:block"> <%= user.firstname %> <%= user.lastname %></span>
+                                                                    <span style="display:block; text-transform: capitalize"><small> <%= user.city %> <%= user.country %></small></span>
+                                                                </div>
+                                                    </td>
+                                                    <td>+234<%= user.phone %></td>
+                                                    <td><%= user.created %></td>
+                                                    <% if(user.status === true){ %>
+                                                    <td><label class="label label-md bg-success">Active</label></td>
+                                                    <% }else{ %>
+                                                    <td><label class="label label-md bg-danger">Inactive</label></td>
+                                                    <% } %>
+                                                </tr>
+                                                <% } %>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Reset Order End -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../partials/footerCopy %>

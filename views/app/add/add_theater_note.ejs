@@ -1,0 +1,162 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Operation Note</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Operation Notes</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/operation-notes">Operation Notes</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Operation Note</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label for="">Patients</label>
+                                                            <select name="patient" class="form-control js-example-basic-single">
+                                                                <option selected disabled>Select</option>
+                                                                <% users.forEach((user)=>{ %>
+                                                                    <% if(user.role == 8){ %>
+                                                                     <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div>
+                                                    </div><hr>
+                                                    
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Surgery <span class="text-danger"> *</span></label>
+                                                                <textarea name="surgery" class="form-control" id="" cols="30" rows="10"></textarea>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>Indications <span class="text-danger"> *</span></label>
+                                                                <textarea name="indications" class="form-control" id="" cols="30" rows="10"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Anesthesia <span class="text-danger"> *</span></label>
+                                                                <textarea name="anesthesia" class="form-control" id="" cols="30" rows="10"></textarea>
+                                                                
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>RVS <span class="text-danger"> *</span></label>
+                                                                <textarea name="anesthetist" class="form-control" id="" cols="30" rows="10"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Surgeon<span class="text-danger"> *</span></label>
+                                                                <select name="surgeon" class="form-control select">
+                                                                    <option selected disabled>Select</option>
+                                                                    <% users.forEach((user)=>{ %>
+                                                                        <% if(user.role == 0){ %>
+                                                                         <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                        <% } %>
+                                                                    <% }) %>
+                                                                </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Assistance</label>
+                                                            <select name="assistance" class="form-control js-example-basic-multiple" multiple>
+                                                                    <option disabled>Select</option>
+                                                                    <% users.forEach((user)=>{ %>
+                                                                        <% if(user.role == 0){ %>
+                                                                         <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                        <% } %>
+                                                                    <% }) %>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Findings</h5><br><br>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label>Findings <span class="text-danger"> *</span></label>                                                                   
+                                                            <textarea name="findings" class="form-control" id="" cols="30" rows="10"></textarea>                                                                 
+                                                        </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Procedure</h5><br><br>
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label>Procedure <span class="text-danger"> *</label>
+                                                            <textarea name="procedure" class="form-control" id="" cols="30" rows="10"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Post-Operation Order</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <label>Post-Operation Order <span class="text-danger"> *</label>
+                                                            <textarea name="order" class="form-control" id="" cols="30" rows="10"></textarea>
+                                                        </div>
+                                                    </div>
+                                                    <!-- <a href="/triages" class="ml-3 btn btn-danger float-right">Cancel</a> -->
+                                                    <button type="submit" class="btn btn-info float-right">Save</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

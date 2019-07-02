@@ -1,0 +1,232 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newDoctors = users.map(doctor =>{
+                                          if (doctor.role === 2){
+                                            const rDoctor = doctor.role === 2
+                                            return rDoctor;
+                                          }                    
+                                        })
+                                        const doctors = newDoctors.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= doctors %></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newPatients = users.map(patient =>{
+                                          if (patient.role === 8){
+                                            const rPatient = patient.role === 8
+                                            return rPatient;
+                                          }                    
+                                        })
+                                        const patients = newPatients.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-warning btn-icon"><i class="icofont icofont-paralysis-disability"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= patients %></h6>
+                                                <p class="text-muted f-18 m-0">Patients</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="sale-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= appointments.length %></h6>
+                                                <p class="text-muted f-18 m-0">Appointment</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="resource-barchart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Visitor Chart End-->
+
+                        <div class="col-sm-12">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Lab Requests</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Patient ID</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Visit Reason</th>
+                                                    <!-- <th>Department</th> -->
+                                                    <th>Lab Tests</th>
+                                                    <th>RequestedBy</th>
+                                                    <th>Payment Status</th>
+                                                    <th>Add Result</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% consultations.forEach((consultation)=>{ %>
+                                                    <% if(consultation.labstatus === true && consultation.labtestfinish === false){ %>
+                                                <tr >
+                                                    <td></td>
+                                                    <td><%= consultation.patient.patientId %></td>
+                                                    <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
+                                                    <td> <%= consultation.visit %></td>
+                                                   
+                                                    <td>
+                                                            <% consultation.labtestObject.forEach((test)=>{ %>
+                                                                <p style="font-weight: 700"><%= test.name %></p>
+                                                           <% }) %>
+                                                       
+                                                    </td>
+                                                    <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
+                                                    <% if(consultation.labpaid === false){ %>
+                                                    <td><label class="label label-md bg-warning">Not paid</label></td>
+                                                    <% }else{ %>
+                                                    <td><label class="label label-md bg-success">paid</label></td>
+                                                    <% } %>
+                                                    <td>
+                                                        <a class="btn btn-info btn-sm" href="/microbiology-result/<%= consultation.patient._id %>">Add Result</a> M<br><br>
+                                                        <a class="btn btn-info btn-sm" href="/haematology-result/<%= consultation.patient._id %>">Add Result</a> HS<br><br>
+                                                        <a class="btn btn-info btn-sm" href="//chemical-pathology-result/<%= consultation.patient._id %>">Add Result</a> CP
+                                                    </td>
+                                                    <td>
+                                                        <button id="<%= consultation._id %>" class="btn btn-success finish">Finish?</button>
+
+                                                    </td>
+                                                    <!-- <td><a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter3">Add Result</a></td> -->
+                                                </tr>
+                                                
+                                                <% } %>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+<div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Choose test</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="" method="POST">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                <label>Microbiology</label>
+                            </div>
+                            <div class="col-md-6">
+                                <a class="btn btn-info" href="/microbiology-result/<%= consultations[0].patient._id %>">Click</a>
+                            </div>
+                        </div> <hr>
+                        <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label>Haematology and Serology</label>
+                                </div>
+                                <div class="col-md-6">
+                                        <a class="btn btn-info" href="/haematology-result/<%= consultations[0].patient._id %>">Click</a>
+                                </div>
+                        </div> <hr>
+                        <div class="form-group row">
+                                <div class="col-md-6">
+                                    <label>Chemical Pathology</label>
+                                </div>
+                                <div class="col-md-6">
+                                        <a class="btn btn-info" href="/chemical-pathology-result/<%= consultations[0].patient._id %>">Click</a>
+                                </div>
+                        </div> 
+                    </form>
+                </div>
+                
+                <!-- <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+<% include ../partials/footerCopy %>

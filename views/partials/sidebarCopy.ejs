@@ -1,0 +1,901 @@
+<div class="pcoded-main-container">
+        <div class="pcoded-wrapper">
+            <nav class="pcoded-navbar" >
+                <div class="sidebar_toggle"><a href="#"><i class="icon-close icons"></i></a></div>
+                <div class="pcoded-inner-navbar main-menu">
+
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.navigation" >Main</div>
+                    <ul class="pcoded-item pcoded-left-item">
+                        <li class="active">
+                            <a href="/dashboard" data-i18n="nav.documentation.main">
+                                <span class="pcoded-micon"><i class="ti-home"></i></span>
+                                <span class="pcoded-mtext">Dashboard</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                        <!-- <li class="pcoded-hasmenu active pcoded-trigger">
+                            <a href="/dashboard">
+                                <span class="pcoded-micon"><i class="ti-home"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.dash.main">Dashboard</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li> -->
+                        <% if(currentUser.role == 1){ %>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)">
+                                <span class="pcoded-micon"><i class="ti-user"></i></span>
+                                <span class="pcoded-mtext" data-i18n="nav.page_layout.main">Doctors</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+
+                                <li class=" pcoded-hasmenu">
+                                    <a href="/doctors">
+                                        <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                        <span class="pcoded-mtext">Doctors List</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" pcoded-hasmenu">
+                                    <a href="/add-doctor" data-i18n="nav.page_layout.horizontal.main">
+                                        <span class="pcoded-micon"><i class="icon-pie-chart"></i></span>
+                                        <span class="pcoded-mtext">Add Doctor</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 7 || currentUser.role == 9 || currentUser.role == 10){ %>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                <span class="pcoded-micon"><i class="ti-wheelchair"></i></span>
+                                <span class="pcoded-mtext">Patients</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <% if(currentUser.role == 1 || currentUser.role === 7){ %>
+                                <li class=" ">
+                                    <a href="/patients" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Patient List</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <% } %>
+                                <% if(currentUser.role == 1 || currentUser.role === 9){ %>
+                                <li class=" ">
+                                    <a href="/add-patient" data-i18n="nav.navigate.navbar-inverse">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Add New Patient</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <% } %>
+                                <% if(currentUser.role == 1 || currentUser.role === 10){ %>
+                                    <li class=" ">
+                                        <a href="/add-emergency-patient" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Emergency Patient</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                <% } %>
+                                <% if(currentUser.role == 1 || currentUser.role === 10){ %>
+                                    <li class=" ">
+                                        <a href="/make-request" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Make Request</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                <% } %>
+                                <% if(currentUser.role == 1 || currentUser.role === 7){ %>
+                                <li class=" ">
+                                        <a href="/addmitted-patients" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Addmitted Patients</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <% } %>
+                            </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 3){ %>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="ti-pencil-alt"></i></span>
+                                    <span class="pcoded-mtext">Appointments</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/appointments" data-i18n="nav.navigate.navbar">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Appointment List</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-appointment" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Appointment</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 3){ %>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="ti-pulse"></i></span>
+                                    <span class="pcoded-mtext">Nurse Triage</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/triages" data-i18n="nav.navigate.navbar">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Triage List</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-triage" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add triage</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-daily-report" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Daily Report</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                            <a href="/nurse-daily-report" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Daily Report</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                    </li>
+                                </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 2){ %>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="ti-heart"></i></span>
+                                    <span class="pcoded-mtext">Consultation</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/consultations" data-i18n="nav.navigate.navbar">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Consultations</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-consultation" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Consultation</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 2){ %>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="ti-timer"></i></span>
+                                    <span class="pcoded-mtext">Doctor Schedule</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/schedules" data-i18n="nav.navigate.navbar">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Schedule List</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-schedule" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Schedule</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 5 || currentUser.role === 4){ %>
+                            <li class="pcoded-hasmenu">
+                                    <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                        <span class="pcoded-micon"><i class="fa fa-hand-lizard-o"></i></span>
+                                        <span class="pcoded-mtext">Requests</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                    <ul class="pcoded-submenu">
+                                        <% if(currentUser.role == 1){ %>
+                                        <li class=" ">
+                                            <a href="/all-requests" data-i18n="nav.navigate.navbar">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Requests</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <% } %>
+                                        <li class=" ">
+                                            <a href="/make-request" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Make Request</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                       
+                                    </ul>
+                            </li>
+                            <% } %>
+                        <% if(currentUser.role == 1){ %>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="ti-view-grid"></i></span>
+                                    <span class="pcoded-mtext">Department</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/departments" data-i18n="nav.navigate.navbar">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Department List</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-department" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Department</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 4 || currentUser.role == 1){ %>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="ti-support"></i></span>
+                                    <span class="pcoded-mtext">Laboratory</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <% if(currentUser.role == 1){ %>
+                                    <li class=" ">
+                                        <a href="/laboratories" data-i18n="nav.navigate.navbar">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Laboratory List</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-laboratory" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Laboratory</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <% } %>
+                                    <li class=" ">
+                                            <a href="/lab-requests" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Requests</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                    </li>
+                                    <!-- <li class=" ">
+                                        <a href="/lab-completed" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Completed</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li> -->
+                                    <li class=" ">
+                                        <a href="/new-lab-request" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">New Lab Request</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    
+                                </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 5 || currentUser.role == 1){ %>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="ti-folder"></i></span>
+                                    <span class="pcoded-mtext">Pharmacy</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <% if(currentUser.role == 1){ %>
+                                    <li class=" ">
+                                        <a href="/pharmacy-in-patient" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Pharmacy In-patient</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                            <a href="/pharmacy-out-patient" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Pharmacy Out-patient</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <% } %>
+                                    <li class=" ">
+                                        <a href="/pharmacy-requests" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">All Requests</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <!-- <li class=" ">
+                                        <a href="/pharmacy-completed" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Completed</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li> -->
+                                </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role == 14){ %>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                <span class="pcoded-micon"><i class="ti-package"></i></span>
+                                <span class="pcoded-mtext">Lab Inventory</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class=" ">
+                                    <a href="/lab-items" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Items</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="/add-lab-items" data-i18n="nav.navigate.navbar-inverse">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Add Items</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                        <a href="/add-lab-tests" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Lab Test</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <li class=" ">
+                                        <a href="/lab-tests" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Tests</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <!-- <li class=" ">
+                                    <a href="/lab-issue-out" data-i18n="nav.navigate.navbar-inverse">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Dispense</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li> -->
+                            </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role == 13){ %>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                <span class="pcoded-micon"><i class="ti-layers"></i></span>
+                                <span class="pcoded-mtext">Pharmacy Inventory</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class=" ">
+                                        <a href="/add-drug" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Generic Drug</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="/drugs" data-i18n="nav.navigate.navbar-inverse">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Generic Drugs</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li> 
+                                <li class=" ">
+                                        <a href="/add-brand-name" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Brand Name</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="/brand-names" data-i18n="nav.navigate.navbar-inverse">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Brand Name</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li> 
+                                <li class=" ">
+                                    <a href="/pharmacy-items" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Items</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="/add-pharmacy-items" data-i18n="nav.navigate.navbar-inverse">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Add Items</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <!-- <li class=" ">
+                                        <a href="/pharmacy-issue-out" data-i18n="nav.navigate.navbar-inverse">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Dispense</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li> -->
+                            </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 1){ %>
+                    <li class="pcoded-hasmenu">
+                        <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                            <span class="pcoded-micon"><i class="ti-cut"></i></span>
+                            <span class="pcoded-mtext">Theater</span>
+                            <span class="pcoded-mcaret"></span>
+                        </a>
+                        <ul class="pcoded-submenu">
+                            <li class=" ">
+                                <a href="/operation-notes" data-i18n="nav.navigate.navbar">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Operation Notes</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                            <li class=" ">
+                                <a href="/add-operation-note" data-i18n="nav.navigate.navbar-inverse">
+                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                    <span class="pcoded-mtext">Add Operation Note</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <% } %>
+                    <% if(currentUser.role == 1 || currentUser.role === 12){ %>
+                    <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)">
+                                    <span class="pcoded-micon"><i class="fa fa-hospital-o"></i></span>
+                                    <span class="pcoded-mtext">NHIS</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/add-retainership" data-i18n="nav.basic-components.alert">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add HMOS</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/retainerships" data-i18n="nav.basic-components.breadcrumbs">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">HMOs</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                    <% } %>
+                    <% if(currentUser.role == 1 || currentUser.role === 15){ %>
+                        <li class="pcoded-hasmenu">
+                                    <a href="javascript:void(0)">
+                                        <span class="pcoded-micon"><i class="fa fa-hospital-o"></i></span>
+                                        <span class="pcoded-mtext">Medical Imaging</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                    <ul class="pcoded-submenu">
+                                        <li class=" ">
+                                            <a href="/add-imaging-investigation" data-i18n="nav.basic-components.alert">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Add Imaging Investigation</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li class=" ">
+                                                <a href="/investigation-list" data-i18n="nav.basic-components.alert">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Imaging Investigation List</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                        </li>
+                                        <!-- <li class=" ">
+                                            <a href="/add-imaging-result" data-i18n="nav.basic-components.breadcrumbs">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Imaging Result</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li> -->
+                                        <li class=" ">
+                                            <a href="/patient-imaging-requests" data-i18n="nav.basic-components.breadcrumbs">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Imaging Requests</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+    
+                        <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 16){ %>
+                            <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)">
+                                            <span class="pcoded-micon"><i class="fa fa-female"></i></span>
+                                            <span class="pcoded-mtext">ANC</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <li class=" ">
+                                                <a href="/all-antenatal" data-i18n="nav.basic-components.alert">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">AnteNatal Consultations</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            
+                                            
+                                        </ul>
+                                    </li>
+        
+                            <% } %>
+                    <% if(currentUser.role == 6){ %>
+                    <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                <span class="pcoded-micon"><i class="ti-layers"></i></span>
+                                <span class="pcoded-mtext">Accounts</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                    <% if(currentUser.role == 1){ %>
+                                <li class=" ">
+                                    <a href="/accounts" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Billings</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <% } %>
+                                <li class=" ">
+                                    <a href="/registration-fees" data-i18n="nav.advance-components.draggable">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Registration</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                        <a href="/laboratory-fees" data-i18n="nav.advance-components.draggable">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Laboratory Fees</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <li class=" ">
+                                        <a href="/pharmacy-fees" data-i18n="nav.advance-components.draggable">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Pharmacy Fees</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <% if(currentUser.role == 1){ %>
+                                <li class=" ">
+                                        <a href="#" data-i18n="nav.advance-components.draggable">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Invoices</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <% } %>
+<!--                                     
+                                    <li class=" ">
+                                        <a href="#" data-i18n="nav.advance-components.light-box">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Expenses</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="#" data-i18n="nav.advance-components.modal">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Taxes</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="#" data-i18n="nav.advance-components.modal-form">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Provident Fund</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li> -->
+                            </ul>
+                        </li>
+                        <% } %>
+                        <% if(currentUser.role == 7){ %>
+                            <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.extra-components.main">
+                                    <span class="pcoded-micon"><i class="ti-mobile"></i></span>
+                                    <span class="pcoded-mtext">SMS</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/send-sms" data-i18n="nav.extra-components.session-timeout">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Send SMS</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/sent-sms" data-i18n="nav.extra-components.session-idle-timeout">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Sent SMS</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <%  } %>
+                    </ul>
+                    <% if(currentUser.role == 1){ %>
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.ui-element" >Elements</div>
+                    <ul class="pcoded-item pcoded-left-item">
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)">
+                                <span class="pcoded-micon"><i class="ti-id-badge"></i></span>
+                                <span class="pcoded-mtext">Employees</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class=" ">
+                                    <a href="/employees" data-i18n="nav.basic-components.alert">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Employees List</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="/add-employee" data-i18n="nav.basic-components.breadcrumbs">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Add Employee</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.basic-components.button">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Leaves</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.basic-components.box-shadow">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Holiday</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.basic-components.collapse–accordion">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Attendance</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)">
+                                    <span class="pcoded-micon"><i class="fa fa-truck"></i></span>
+                                    <span class="pcoded-mtext">Vendor</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/vendors" data-i18n="nav.basic-components.alert">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Vendors</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                        <a href="/add-vendor" data-i18n="nav.basic-components.breadcrumbs">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Vendor</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
+
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.advance-components.main">
+                                <span class="pcoded-micon"><i class="ti-money"></i></span>
+                                <span class="pcoded-mtext">Accounts</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class=" ">
+                                        <a href="/accounts" data-i18n="nav.advance-components.draggable">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Billings</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.advance-components.draggable">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Invoices</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.advance-components.grid-stack">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Payments</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.advance-components.light-box">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Expenses</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.advance-components.modal">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Taxes</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.advance-components.modal-form">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Provident Fund</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.extra-components.main">
+                                <span class="pcoded-micon"><i class="fa fa-asl-interpreting"></i></span>
+                                <span class="pcoded-mtext">Retainerships</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class=" ">
+                                    <a href="/add-retainership" data-i18n="nav.extra-components.session-timeout">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Add HMO</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="/retainerships" data-i18n="nav.extra-components.session-idle-timeout">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">HMOs</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <!-- <li class="">
+                            <a href="/add-retainership" data-i18n="nav.documentation.main">
+                                <span class="pcoded-micon"><i class="ti-home"></i></span>
+                                <span class="pcoded-mtext">HMOS</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li> -->
+                        
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.extra-components.main">
+                                <span class="pcoded-micon"><i class="ti-wallet"></i></span>
+                                <span class="pcoded-mtext">Payroll</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.extra-components.session-timeout">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Employee Salary</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.extra-components.session-idle-timeout">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Payslip</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="pcoded-hasmenu">
+                            <a href="javascript:void(0)" data-i18n="nav.icons.main">
+                                <span class="pcoded-micon"><i class="ti-comments"></i></span>
+                                <span class="pcoded-mtext">Message</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                            <ul class="pcoded-submenu">
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.icons.font-awesome">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Compose Message</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="#" data-i18n="nav.icons.themify">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Inbox</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <% } %>
+                    <div class="pcoded-navigatio-lavel" data-i18n="nav.category.forms" >Exit</div>
+                    <ul class="pcoded-item pcoded-left-item">
+                        
+                        <li class="">
+                            <a href="/security" data-i18n="nav.documentation.main">
+                                <span class="pcoded-micon"><i class="ti-settings"></i></span>
+                                <span class="pcoded-mtext">Security</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+
+                        
+                        <li class="">
+                            <a href="/logout" data-i18n="nav.submit-issue.main">
+                                <span class="pcoded-micon"><i class="ti-shift-left"></i></span>
+                                <span class="pcoded-mtext">Logout</span>
+                                <span class="pcoded-mcaret"></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </nav>

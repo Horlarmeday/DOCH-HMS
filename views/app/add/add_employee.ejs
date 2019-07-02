@@ -1,0 +1,158 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Create Employee Account</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/employees">Employees</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Create Employee</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Create Employee</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <!-- <div class="form-group">
+                                                        <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                    </div> -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">First Name<span class="text-danger">*</span></label>
+                                                            <input type="text" name="fname" class="form-control" placeholder="First Name" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Last Name<span class="text-danger">*</span></label>
+                                                            <input type="text" name="lname" class="form-control" placeholder="Last Name" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Email Address<span class="text-danger">*</span></label>
+                                                            <input type="email" name="email" class="form-control" placeholder="Email" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Username<span class="text-danger">*</span></label>
+                                                           <input type="text" name="username" class="form-control" placeholder="Username" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Password<span class="text-danger">*</span></label>
+                                                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Phone Number<span class="text-danger">*</span></label>
+                                                            <input type="number" name="phone" class="form-control" placeholder="Phone Number" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Date of Birth<span class="text-danger">*</span></label>
+                                                                <input type="date" name="birthday" class="form-control" placeholder="Date of Birth" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Home Address<span class="text-danger">*</span></label>
+                                                                    <input type="text" name="address" class="form-control" placeholder="Address" required>
+                                                            </div>
+                                                            
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label>Role<span class="text-danger">*</span></label>
+                                                            <select id="role" name="role" class="form-control select" required>
+                                                                <option selected disabled>Select</option>
+                                                                <option value="1">Admin</option>
+                                                                <option value="2">Doctor</option>
+                                                                <option value="3">Nurse</option>
+                                                                <option value="4">Laboratorist</option>
+                                                                <option value="5">Pharmacist</option>
+                                                                <option value="6">Accountant</option>
+                                                                <option value="7">Receptionist</option>
+                                                                <option value="9">Medical Records</option>
+                                                                <option value="0">Surgeon</option>
+                                                                <option value="10">Emergency</option>
+                                                                <option value="11">Finance Officer</option>
+                                                                <option value="12">NHIS</option>
+                                                                <option value="13">Pharmacy Inventory</option>
+                                                                <option value="14">Lab Inventory</option>
+                                                                <option value="15">Imaging</option>
+                                                                <option value="16">ANC</option>
+                                                            </select>
+                                                        </div>
+                                                        <div id="department" class="col-sm-6">
+                                                            <label>Department</label>
+                                                            <select name="department" class="form-control select">
+                                                                <option selected disabled>Select</option>
+                                                                <% departments.forEach((department)=>{ %>
+                                                                    <option value="<%= department.name %>"><%= department.name %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info float-right">Create Employee</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

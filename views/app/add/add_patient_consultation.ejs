@@ -1,0 +1,545 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Add Consultations</h4>
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/consultations">Consultations</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Add Consultation</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Panel card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>DOCTOR CONSULTATION</h5>
+                                        <div class="card-header-right">
+                                            <p style="font-weight: 900"><%= user.patientId %></p>
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block panels-wells">
+                                        <div class="row">
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                                <div class="panel panel-success">
+                                                    <div class="panel-heading bg-success">
+                                                        PATIENT DETAILS
+                                                    </div>
+                                                    <%
+                                                        var birthday = new Date(user.birthday)
+                                                        var today = new Date()
+                                                        var age = today.getFullYear() - birthday.getFullYear()
+                                                        if(today.getMonth() < birthday.getMonth()){
+                                                            age
+                                                        }
+                                                        if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                                                            age
+                                                        }
+                                                    %>
+                                                    <div class="panel-body">
+                                                        <dl class="dl-horizontal row">
+                                                            <dt style="font-size:1em" class="col-sm-3">Patient Name</dt>
+                                                            <dd class="col-sm-9"><%= user.firstname %> <%= user.lastname %></dd>
+                                                            <dt style="font-size:1em" class="col-sm-3">Phone Number</dt>
+                                                            <dd class="col-sm-9">+234<%= user.phonenumber %></dd>
+                                                            <dt style="font-size:1em" class="col-sm-3">Marital Status</dt>
+                                                            <% if(user.mstatus){ %>
+                                                                <dd class="col-sm-9"><%= user.mstatus %></dd>
+                                                            <% }else{ %>
+                                                                <dd class="col-sm-9">Nil</dd>
+                                                            <% } %>
+                                                            <dt style="font-size:1em" class="col-sm-3">Gender</dt>
+                                                            <dd class="col-sm-9"><%= user.gender %></dd>
+                                                            <dt style="font-size:1em" class="col-sm-3">Age</dt>
+                                                            <dd class="col-sm-9"><%= age %></dd>
+                                                        </dl>
+                                                    </div>
+                                                    <div class="panel-footer text-success">
+                                                        Patient
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading bg-info">
+                                                        NURSE TRIAGE - PHYSICAL EXAMINATION
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <dl class="dl-horizontal row">
+                                                            <dt style="font-size:1em" class="col-sm-3">Height</dt>
+                                                            <dd class="col-sm-9"><%= user.triages[0].height %> <span style="color: darkorange">(cm)</span></dd>
+                                                            <dt style="font-size:1em" class="col-sm-3">Weight</dt>
+                                                            <dd class="col-sm-9"><%= user.triages[0].weight %> <span style="color: darkorange">(kg)</span></dd>
+                                                            <dt style="font-size:1em" class="col-sm-3">BMI</dt>
+                                                            <dd class="col-sm-9"><%= user.triages[0].bmi %> <span style="color: darkorange">(kg/m^2)</dd>
+                                                            <dt style="font-size:1em" class="col-sm-3">Heart Rate</dt>
+                                                            <dd class="col-sm-9"><%= user.triages[0].heartrate %> <span style="color: darkorange">(/min)</dd>
+                                                            <dt style="font-size:1em" class="col-sm-3">Date Created</dt>
+                                                            <dd class="col-sm-9"><%= user.triages[0].created.toLocaleString() %></dd>
+                                                        </dl>
+                                                    </div>
+                                                    <div class="panel-footer text-primary">
+                                                       Examination
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6">
+                                                <div class="panel panel-warning">
+                                                    <div class="panel-heading bg-warning">
+                                                      NURSE TRIAGE - VITAL SIGNS
+                                                    </div>
+                                                    <div class="panel-body">
+                                                            <dl class="dl-horizontal row">
+                                                                    <dt style="font-size:1em" class="col-sm-3">Pulse</dt>
+                                                                    <dd class="col-sm-9"><%= user.triages[0].pulse %> <span style="color: darkorange">(min)</dd>
+                                                                    <dt style="font-size:1em" class="col-sm-3">Temperature</dt>
+                                                                    <dd class="col-sm-9"><%= user.triages[0].temperature %> <span style="color: darkorange">(°C)</dd>
+                                                                    <dt style="font-size:1em" class="col-sm-3">Respiration</dt>
+                                                                    <dd class="col-sm-9"><%= user.triages[0].respiration %> <span style="color: darkorange">(B/min)</dd>
+                                                                    <dt style="font-size:1em" class="col-sm-3">Blood Pressure</dt>
+                                                                    <% if(user.triages[0].blood){ %>
+                                                                        <dd class="col-sm-9"><%= user.triages[0].blood %> <span style="color: darkorange">(mmHg)</dd>
+                                                                    <% }else{ %>
+                                                                        <dd class="col-sm-9">-</dd>
+                                                                    <% } %>
+                                                                    <dt style="font-size:1em" class="col-sm-3">RVS</dt>
+                                                                    <dd class="col-sm-9"><%= user.triages[0].rvs %> <span style="color: darkorange">(rvs)</dd>
+                                                             </dl>
+                                                    </div>
+                                                    <div class="panel-footer text-warning">
+                                                        Signs
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- end of row -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Panel card end -->
+                            </div>
+                        </div>
+                        <% if(user.consultations.length < 1){ %>
+
+                        
+                        <form method="post">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <!-- Pagination start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>HISTORY</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="sub-title">Reason of Visit <span style="color:red">*</span> </div>
+                                        <div class="col-sm-12">
+                                            <textarea class="ml-4" name="visit" cols="100" rows="26" placeholder="" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Pagination card end -->
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- Pagination with icon card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>PHYSICAL EXAMINATION</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="sub-title">Observations <span style="color:red">*</span> </div>
+                                        <div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">General Examination</label>
+                                                <div class="col-sm-10">
+                                                    
+                                                    <textarea name="observation" id="" cols="55" rows="10" placeholder="" required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Chest</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="chest" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">CVS</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="cvs" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Abdomen</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="abdomen" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">MSS</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="mss" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Others</label>
+                                                <div class="col-sm-6">
+                                                    <input type="text" name="other" class="form-control" placeholder="" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Pagination with icon card end -->
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- Pagination Large card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>DIAGNOSIS</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="sub-title">Diagnosis <span style="color:red">*</span> </div>
+                                        <div class="col-sm-12">
+                                            <textarea class="ml-4" name="diagnosis" id="" cols="100" rows="12" placeholder="" required></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Pagination Large card end -->
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- Pagination Small card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>TREATMENT</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="sub-title">Treatment <span style="color:red">*</span> </div>
+                                        <div class="col-sm-12">
+                                            <textarea class="ml-4" name="treatment" id="" cols="100" rows="10" placeholder=""  required></textarea>
+                                        </div>
+                                       
+                                        <button class="btn btn-info float-right" type="submit">Save</button>
+                                    </div>
+                                    
+                                   
+                                </div>
+                                <!-- Pagination Small card end -->
+                            </div>
+                        </form>
+                        <% }else{ %>
+                            <form method="post">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <!-- Pagination start -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>HISTORY</h5>
+                                                    <div class="card-header-right">
+                                                        <i class="icofont icofont-rounded-down"></i>
+                                                        <i class="icofont icofont-refresh"></i>
+                                                        <i class="icofont icofont-close-circled"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="sub-title">Reason of Visit <span style="color:red">*</span> </div>
+                                                    <div class="col-sm-12">
+                                                        <textarea class="ml-4" name="visit" cols="100" rows="26" placeholder="<%= user.consultations[0].visit %>" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Pagination card end -->
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <!-- Pagination with icon card start -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>PHYSICAL EXAMINATION</h5>
+                                                    <div class="card-header-right">
+                                                        <i class="icofont icofont-rounded-down"></i>
+                                                        <i class="icofont icofont-refresh"></i>
+                                                        <i class="icofont icofont-close-circled"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="sub-title">Observations <span style="color:red">*</span> </div>
+                                                    <div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">General Examination</label>
+                                                            <div class="col-sm-10">
+                                                                
+                                                                <textarea name="observation" id="" cols="55" rows="10" placeholder="<%= user.consultations[0].physical.observation %>" required></textarea>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">Chest</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" name="chest" class="form-control" placeholder="<%= user.consultations[0].physical.chest %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">CVS</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" name="cvs" class="form-control" placeholder="<%= user.consultations[0].physical.cvs %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">Abdomen</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" name="abdomen" class="form-control" placeholder="<%= user.consultations[0].physical.abdomen %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">MSS</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" name="mss" class="form-control" placeholder="<%= user.consultations[0].physical.mss %>" required>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-2 col-form-label">Others</label>
+                                                            <div class="col-sm-6">
+                                                                <input type="text" name="other" class="form-control" placeholder="<%= user.consultations[0].physical.others %>" required>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Pagination with icon card end -->
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <!-- Pagination Large card start -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>DIAGNOSIS</h5>
+                                                    <div class="card-header-right">
+                                                        <i class="icofont icofont-rounded-down"></i>
+                                                        <i class="icofont icofont-refresh"></i>
+                                                        <i class="icofont icofont-close-circled"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="sub-title">Diagnosis <span style="color:red">*</span> </div>
+                                                    <div class="col-sm-12">
+                                                        <textarea class="ml-4" name="diagnosis" id="" cols="100" rows="12" placeholder="<%= user.consultations[0].diagnosis %>" required></textarea>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Pagination Large card end -->
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <!-- Pagination Small card start -->
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>TREATMENT</h5>
+                                                    <div class="card-header-right">
+                                                        <i class="icofont icofont-rounded-down"></i>
+                                                        <i class="icofont icofont-refresh"></i>
+                                                        <i class="icofont icofont-close-circled"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="sub-title">Treatment <span style="color:red">*</span> </div>
+                                                    <div class="col-sm-12">
+                                                        <textarea class="ml-4" name="treatment" id="" cols="100" rows="10" placeholder="<%= user.consultations[0].treatment %>"  required></textarea>
+                                                    </div>
+                                                   
+                                                    <button class="btn btn-info float-right" type="submit">Save</button>
+                                                </div>
+                                                
+                                               
+                                            </div>
+                                            <!-- Pagination Small card end -->
+                                        </div>
+                                    </form>
+                        <% } %>
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>LAB INVESTIGATION</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <!-- <div class="sub-title">Lab Investigation <span style="color:red">*</span> </div> -->
+                                    <form action="/labtest/<%= user._id %>" method="post">
+                                        <div class="col-sm-12">
+                                            <div class="form-group row">
+                                                <label class="col-sm-2 col-form-label">Select Lab Test</label>
+                                                <div class="col-sm-6">
+                                                    <select name="labtype" id="tests" onchange="showOptions()" class="form-control">
+                                                        <option selected disabled>Select Lab</option>
+                                                        <% labs.forEach((lab)=>{ %>
+                                                            <option value="<%= lab.name %>"><%= lab.name %></option>
+                                                        <% }) %>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-sm-12"> -->
+                                                <select class="labo" name="labtest[]" id='custom-headers1'  multiple='multiple'>
+                                                    
+                                                    <% serology.forEach((name)=>{ %>
+                                                        <option value="<%= name.id %>"><%= name.name %></option>
+                                                    <% }) %>
+                                                    
+                                                </select><br><br>
+                                               
+                                                <button id="pnotify-success" class="btn btn-info" type="submit">Send</button>
+                                            </form><hr>
+                                            <!-- </div>  -->
+                                            <div class="sub-title">Imaging <span style="color:red">*</span> </div>
+                                            <form action="/imaging/<%= user._id %>" method="post">
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Medical Imaging</label>
+                                                    <div class="col-sm-6">
+                                                        <select name="image" class="form-control js-example-basic-multiple" multiple>
+                                                            <option disabled>Select Investigation</option>
+                                                            <% imaging.forEach((image)=>{ %>
+                                                                <option value="<%= image._id %>"><%= image.name %></option>
+                                                            <% }) %>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-info float-right" type="submit">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Pagination Alignment Center card end -->
+                            </div>
+                            <div class="col-sm-6">
+                                <!-- Pagination Alignment end card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>PRESCRIPTION</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="col-sm-12">
+                                         <form action="/prescription/<%= user._id %>" method="post">
+                                            <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Select Generic Drug </label>
+                                                    <div class="col-sm-6">
+                                                        <select name="drug_brand[]" class="form-control js-example-basic-multiple" multiple>
+                                                            <option disabled>Choose Drug Brand</option>
+                                                            <% drugs.forEach((drug)=>{ %>
+                                                                <option value="<%= drug._id %>"><%= drug.name %></option>
+                                                            <% }) %>
+                                                        </select>
+                                                    </div>
+                                            </div>
+                                            
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Dose</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" name="dose" class="form-control" placeholder="Dosage" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Duration</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" name="duration" class="form-control" placeholder="Duration" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Frequency</label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" name="frequency" class="form-control" placeholder="Abdomen" required>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Direction for Usage</label>
+                                                    <div class="col-sm-6">
+                                                            <textarea name="direction" id="" cols="52" rows="10"></textarea>
+                                                    </div>
+                                                </div>
+                                                <button class="btn btn-info float-right" type="submit">Send</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Pagination Alignment card end -->
+                            </div>
+                        
+                        </div>
+                    
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+    <!-- <script>
+          function showOptions() {
+            alert("id is " + s[s.selectedIndex].id); // get id
+          }
+          </script> -->
+<% include ../../partials/footerCopy %>

@@ -1,0 +1,359 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Create Patient Account</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/patients">Patients</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Create Patient</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Create Patient</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form action="/add-patient" method="POST">
+                                                    <!-- <div class="form-group">
+                                                        <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                    </div> -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">First Name <span class="text-danger">*</span> </label>
+                                                            <input type="text" name="fname" class="form-control" placeholder="First Name" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Last Name<span class="text-danger">*</span></label>
+                                                            <input type="text" name="lname" class="form-control" placeholder="Last Name" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Patient ID<span class="text-danger">*</span></label>
+                                                            <input style="font-weight: 700" type="text" class="form-control" placeholder="DOCH/000000<%= counter %>" readonly>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Old Patient ID</label>
+                                                            <input type="text" name="oldpatientID" class="form-control" placeholder="Old Patient ID">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Email Address</label>
+                                                            <input type="email" name="email" class="form-control" placeholder="Email">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Religion<span class="text-danger">*</span></label>
+                                                            <select name="religion" class="form-control" required>
+                                                                <option selected disabled>Select</option>
+                                                                <option>Christianity</option>
+                                                                <option>Islam</option>
+                                                                <option>Traditional</option>
+                                                                <option>Other</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Date of Birth<span class="text-danger">*</span></label>
+                                                            <input type="date" name="birthday" class="form-control" placeholder="Date of Birth" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Phone Number<span class="text-danger">*</span></label>
+                                                            <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Country<span class="text-danger">*</span></label>
+                                                                <select name="country" id="nationality" class="form-control select" required>
+                                                                    <option selected disabled>Select</option>
+                                                                    <option value="nig" data-available-with="">Nigeria</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label for="">State<span class="text-danger">*</span></label>
+                                                                <% include ../../partials/state2 %>
+                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Local Government<span class="text-danger">*</span></label>
+                                                            <% include ../../partials/lga2 %>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Home Address<span class="text-danger">*</span></label>
+                                                            <input type="text" name="address" class="form-control" placeholder="Address" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Marital Status<span class="text-danger">*</span></label>
+                                                            <select name="mstatus" class="form-control" required>
+                                                                <option selected disabled>Select</option>
+                                                                <option>Married</option>
+                                                                <option>Single</option>
+                                                                <option>Divorced</option>
+                                                                <option>Widowed</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Gender<span class="text-danger">*</span></label><br><br>
+                                                                <!-- <div class="radio radio-inline"> -->
+                                                                    <label>
+                                                                        <input type="radio" name="gender" value="Female" checked="checked" required>
+                                                                        <i class="helper"></i>Female
+                                                                    </label>
+                                                                <!-- </div> -->
+                                                                <!-- <div class="radio radio-inline"> -->
+                                                                    <label>
+                                                                        <input type="radio" name="gender" value="Male" required>
+                                                                        <i class="helper"></i>Male
+                                                                    </label>
+                                                                <!-- </div> -->
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <h5 style="color:dodgerblue" class="page-title">Next of Kin Information</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Name<span class="text-danger">*</span></label>
+                                                            <input type="text" name="nextofkinname" class="form-control" placeholder="Next of Kin Name" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Phone Number<span class="text-danger">*</span></label>
+                                                            <input type="number" name="nextofkinphone" class="form-control" placeholder="Next of Kin Phone" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Relationship<span class="text-danger">*</span></label>
+                                                            <select name="relationship" class="form-control" required>
+                                                                <option selected disabled>Select</option>
+                                                                <option>Husband</option>
+                                                                <option>Wife</option>
+                                                                <option>Father</option>
+                                                                <option>Mother</option>
+                                                                <option>Son</option>
+                                                                <option>Daughter</option>
+                                                                <option>Brother</option>
+                                                                <option>Sister</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Address<span class="text-danger">*</span></label>
+                                                            <input type="text" name="nextofkinphone" class="form-control" placeholder="Next of Kin Address" required>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <h5 style="color:dodgerblue" class="page-title">Retainership</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label>Retainership/Insurance</label>
+                                                            <select id="retain" name="retainership" class="form-control">
+                                                                <option selected disabled>Select</option>
+                                                                <option>Yes</option>
+                                                                <option>No</option>
+                                                            </select>
+                                                        </div>
+                                                        <div id="retainershipname" class="col-sm-6">
+                                                            <label>Retainership Name</label>
+                                                            <select id="hmos" name="retainershipname" class="form-control">
+                                                                <option selected disabled>Select</option>
+                                                                <% hmos.forEach((hmo)=>{ %>
+                                                                 <option><%= hmo.hmoname %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div id="hmoname" class="col-sm-6">
+                                                                <label>HMO Name</label>
+                                                                <select id="nhis" name="hmoname" class="form-control" onchange="openPatientId()">
+                                                                    <option selected disabled>Select</option>
+                                                                    <% nHIS.forEach((name)=>{ %>
+                                                                        <option><%= name.name %></option>
+                                                                    <% }) %>
+                                                                </select>
+                                                                <select id="fhss" name="hmoname" class="form-control" onchange="openPatientId()">
+                                                                    <option selected disabled>Select</option>
+                                                                    <% fHSS.forEach((name)=>{ %>
+                                                                        <option><%= name.name %></option>
+                                                                    <% }) %>
+                                                                </select>
+                                                                <select id="privatehmo" name="hmoname" class="form-control" onchange="openPatientId()">
+                                                                    <option selected disabled>Select</option>
+                                                                    <% privateHMO.forEach((name)=>{ %>
+                                                                        <option><%= name.name %></option>
+                                                                    <% }) %>
+                                                                </select>
+                                                                <select id="retainer" name="hmoname" class="form-control" onchange="openPatientId()">
+                                                                    <option selected disabled>Select</option>
+                                                                    <% retainership.forEach((name)=>{ %>
+                                                                        <option><%= name.name %></option>
+                                                                    <% }) %>
+                                                                </select>
+                                                            </div>
+                                                            <div id="patientId" class="col-sm-6">
+                                                                <label for="">Patient HMO Code</label>
+                                                                <input type="text" class="form-control" name="patientcode" placeholder="Patient HMO Code">
+                                                            </div>
+                                                    </div>
+                                                    <h5 id="dependants" style="color:dodgerblue" class="page-title">Dependants</h5><br><br>
+                                                        <div class="form-block1">
+                                                            <div class="form-group row form-clone1">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Name</label>
+                                                                    <input type="text" name="dependantname1" class="form-control" placeholder="Dependant Name">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Date of Birth</label>
+                                                                    <input type="date" name="dateofbirth1" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-block2">
+                                                            <div class="form-group row form-clone2">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Name</label>
+                                                                    <input type="text" name="dependantname2" class="form-control" placeholder="Dependant Name">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Date of Birth</span></label>
+                                                                    <input type="date" name="dateofbirth2" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-block3">
+                                                            <div class="form-group row form-clone3">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Name</label>
+                                                                    <input type="text" name="dependantname3" class="form-control" placeholder="Dependant Name">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Date of Birth</label>
+                                                                    <input type="date" name="dateofbirth3" class="form-control">
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    <a id="btn-addition" style="color: aliceblue" class="btn btn-info add-more-btn add-btn">Add</a>
+                                                    <!-- <a id="btn-subtract" style="color: aliceblue" class="btn btn-danger remove-more-btn">Remove</a> -->
+                                                    <hr>
+                                                    <h5 style="color:dodgerblue" class="page-title">Payments</h5><br><br>
+                                                    <h6>Registration Fee</h6>
+                                                    <div class="form-radio">
+                                                            <div class="radio radiofill radio-inline">
+                                                                <label>
+                                                                    <input id="registration1" type="radio" name="registration" value="1500">
+                                                                    <i class="helper"></i> Adult (&#8358;<span id="regis1">1500</span>)
+                                                                </label>
+                                                            </div>
+                                                            <div class="radio radiofill radio-inline">
+                                                                <label>
+                                                                    <input id="registration2" type="radio" name="registration" value="1000">
+                                                                    <i class="helper"></i> Children (&#8358;<span id="regis2">1000</span>)
+                                                                </label>
+                                                            </div>
+                                                            <div class="radio radiofill radio-inline">
+                                                                <label>
+                                                                    <input id="registration2" type="radio" name="registration" value="5000">
+                                                                    <i class="helper"></i> Family (&#8358;<span id="regis2">5000</span>)
+                                                                </label>
+                                                            </div>
+                                                    </div><br>
+                                                    <h6>Consultation Fee</h6>
+                                                    <!-- <div class="form-group">
+                                                        <div class="border-checkbox-section">
+                                                            <div class="border-checkbox-group border-checkbox-group-primary">
+                                                                <input name="registration" class="border-checkbox" type="checkbox" id="checkbox1" value="500">
+                                                                <label class="border-checkbox-label" for="checkbox1">Registration Fee (&#8358;500)</label>
+                                                            </div>
+                                                            <div class="border-checkbox-group border-checkbox-group-primary">
+                                                                <input name="consultation" class="border-checkbox" type="checkbox" id="checkbox2" value="2000">
+                                                                <label class="border-checkbox-label" for="checkbox2">Consultation Fee (&#8358;2,000)</label>
+                                                            </div> -->
+                                                            <!-- <div class="border-checkbox-group border-checkbox-group-primary">
+                                                                <input name="drug" class="border-checkbox" type="checkbox" id="checkbox3" value="4000">
+                                                                <label class="border-checkbox-label" for="checkbox3">Drug Fee (&#8358;4,000)</label>
+                                                            </div> -->
+                                                        <!-- </div>
+                                                    </div> -->
+                                                    <div class="form-radio">
+                                                        <div class="radio radiofill radio-inline">
+                                                            <label>
+                                                                <input id="consultation1" type="radio" name="consultation" value="3000">
+                                                                <i class="helper"></i> Minor (&#8358;<span id="consult1">3000</span>)
+                                                            </label>
+                                                        </div>
+                                                        <div class="radio radiofill radio-inline">
+                                                            <label>
+                                                                <input id="consultation2" type="radio" name="consultation" value="6000">
+                                                                <i class="helper"></i> Major (&#8358;<span id="consult2">6000</span>)
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info float-right">Create Patient</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

@@ -1,0 +1,116 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+        <!-- Main-body start -->
+        <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Make Request</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/all-requests">Requests</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Make Request</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Make Request</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="post">
+                                                    <div class="form-group">
+                                                        <div  class="col-sm-12">
+                                                            <label for="">Request For?</label>
+                                                            <input type="text" name="item" class="form-control">
+                                                        </div><br>
+                                                        <div class="col-sm-12">
+                                                            <label for="">Inventory</label>
+                                                            <select name="department" class="form-control js-example-basic-single">
+                                                                <option selected disabled>Select</option>
+                                                                <option value="Pharmacy">Pharmacy</option>
+                                                                <option value="Laboratory">Laboratory</option>
+                                                            </select>
+                                                        </div><br>                                                        
+                                                        <div class="col-sm-12">
+                                                            <label for="">Quantity</label>
+                                                            <input name="quantity" class="form-control" type="text">   
+                                                        </div><br>
+                                                        
+                                                        <div class="col-sm-12">
+                                                            <label for="">Unit</label>
+                                                            <select name="unit" class="form-control">
+                                                                <option disabled>Select</option>
+                                                                <option value="Ampoule">Ampoule</option>
+                                                                <option value="Bag">Bag</option>
+                                                                <option value="Bottle">Bottle</option>
+                                                                <option value="Box">Box</option>
+                                                                <option value="Bundle">Bundle</option>
+                                                                <option value="Capsules">Capsules</option>
+                                                                <option value="Caplets">Caplets</option>
+                                                                <option value="Container">Container</option>
+                                                                <option value="Nabules">Nabules</option>
+                                                                <option value="Tablets">Tablets</option>
+                                                                <option value="Vials">Vials</option>
+                                                            </select>
+                                                        </div><br>
+                                                       
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info float-right">Create Request</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

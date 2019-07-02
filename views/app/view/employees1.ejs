@@ -1,0 +1,140 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebar %>
+
+<div class="page-wrapper">
+    <div class="content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+        <% } %>
+        <% if(success && success.length > 0){ %>
+                <div class="alert alert-success alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= success %>
+                </div>
+        <% } %>
+        <div class="row">
+            <div class="col-sm-4 col-3">
+                <h4 class="page-title">Employee</h4>
+            </div>
+            <div class="col-sm-8 col-9 text-right m-b-20">
+                <a href="/add-employee" class="btn btn-primary float-right btn-rounded"><i class="fa fa-plus"></i> Add Employee</a>
+            </div>
+        </div>
+        <div class="row filter-row">
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <label class="focus-label">Employee ID</label>
+                    <input type="text" class="form-control floating">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus">
+                    <label class="focus-label">Employee Name</label>
+                    <input type="text" class="form-control floating">
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <div class="form-group form-focus select-focus">
+                    <label class="focus-label">Role</label>
+                    <select class="select floating">
+                        <option>Select Role</option>
+                        <option>Nurse</option>
+                        <option>Pharmacist</option>
+                        <option>Laboratorist</option>
+                        <option>Accountant</option>
+                        <option>Receptionist</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-3">
+                <a href="#" class="btn btn-success btn-block"> Search </a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="table-responsive">
+                    <table class="table table-striped custom-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th style="min-width:200px;">Name</th>
+                                <th>Employee ID</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th style="min-width: 110px;">Join Date</th>
+                                <th>Role</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% users.forEach((user)=>{ %>
+                                <% if(user.role !== 1 && user.role !==8){ %>
+                                <tr>
+                                    <td></td>
+                                    <td>
+                                        <img width="28" height="28" src="assets/img/user.jpg" class="rounded-circle" alt=""> <h2><%= user.firstname %> <%= user.lastname %></h2>
+                                    </td>
+                                    <td><%= user._id %></td>
+                                    <td><%= user.email %></td>
+                                    <td>+234<%= user.phonenumber %></td>
+                                    <td><%= user.createdAt.toDateString() %></td>
+                                    <td>
+                                        <% if(user.role === 2){ %>
+                                            <span class="custom-badge status-green">Doctor</span>
+                                        <% }else if(user.role === 3){ %>
+                                            <span class="custom-badge status-green">Nurse</span>
+                                        <% }else if(user.role === 4){ %>
+                                            <span class="custom-badge status-green">Laboratorist</span>
+                                        <% }else if(user.role === 5){ %>
+                                            <span class="custom-badge status-green">Pharmacist</span>
+                                        <% }else if(user.role === 6){ %>
+                                            <span class="custom-badge status-green">Accountant</span>
+                                        <% }else if(user.role === 7){ %>
+                                            <span class="custom-badge status-green">Receptionist</span>
+                                        <% } %>
+                                    </td>
+                                    <td class="text-right">
+                                        <div class="dropdown dropdown-action">
+                                            <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a class="dropdown-item" href="edit-employee.html"><i class="fa fa-pencil m-r-5"></i> Edit</a>
+                                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#delete_employee"><i class="fa fa-trash-o m-r-5"></i> Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                               <% } %> 
+                             <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% include ../../partials/notification %>
+</div>
+<div id="delete_employee" class="modal fade delete-modal" role="dialog">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="assets/img/sent.png" alt="" width="50" height="46">
+                <h3>Are you sure want to delete this Employee?</h3>
+                <div class="m-t-20"> <a href="#" class="btn btn-white" data-dismiss="modal">Close</a>
+                    <button type="submit" class="btn btn-danger">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<% include ../../partials/sidebar %>
