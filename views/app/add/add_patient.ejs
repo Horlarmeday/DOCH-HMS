@@ -237,10 +237,10 @@
                                                         </div>
                                                         <div id="retainershipname" class="col-sm-6">
                                                             <label>Retainership Name</label>
-                                                            <select id="hmos" name="retainershipname" class="form-control">
+                                                            <select id="hmos" name="retainershipname" class="form-control" onchange="gethmo()">
                                                                 <option selected disabled>Select</option>
                                                                 <% hmos.forEach((hmo)=>{ %>
-                                                                 <option><%= hmo.hmoname %></option>
+                                                                 <option value="<%= hmo._id %>"><%= hmo.hmoname %></option>
                                                                 <% }) %>
                                                             </select>
                                                         </div>
@@ -248,30 +248,11 @@
                                                     <div class="form-group row">
                                                             <div id="hmoname" class="col-sm-6">
                                                                 <label>HMO Name</label>
-                                                                <select id="nhis" name="hmoname" class="form-control" onchange="openPatientId()">
-                                                                    <option selected disabled>Select</option>
-                                                                    <% nHIS.forEach((name)=>{ %>
-                                                                        <option><%= name.name %></option>
-                                                                    <% }) %>
+                                                                <select id="mySelect" name="hmoname" class="form-control" onchange="openPatientId()">
+                                                                    <!-- <option selected disabled>Select</option> -->
+                                                                    <!-- <option id="mmoname"></option> -->
                                                                 </select>
-                                                                <select id="fhss" name="hmoname" class="form-control" onchange="openPatientId()">
-                                                                    <option selected disabled>Select</option>
-                                                                    <% fHSS.forEach((name)=>{ %>
-                                                                        <option><%= name.name %></option>
-                                                                    <% }) %>
-                                                                </select>
-                                                                <select id="privatehmo" name="hmoname" class="form-control" onchange="openPatientId()">
-                                                                    <option selected disabled>Select</option>
-                                                                    <% privateHMO.forEach((name)=>{ %>
-                                                                        <option><%= name.name %></option>
-                                                                    <% }) %>
-                                                                </select>
-                                                                <select id="retainer" name="hmoname" class="form-control" onchange="openPatientId()">
-                                                                    <option selected disabled>Select</option>
-                                                                    <% retainership.forEach((name)=>{ %>
-                                                                        <option><%= name.name %></option>
-                                                                    <% }) %>
-                                                                </select>
+                                                                
                                                             </div>
                                                             <div id="patientId" class="col-sm-6">
                                                                 <label for="">Patient HMO Code</label>

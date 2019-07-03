@@ -12,6 +12,7 @@ const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
 const testRoutes = require('./routes/tests');
 const appRoutes = require('./routes/app');
+const ajaxRoutes = require('./routes/ajax');
 const config = require('./config/secret');
 const app = express();
 require('dotenv').config()
@@ -88,6 +89,7 @@ app.use(userRoutes);
 app.use(appRoutes);
 app.use(authRoutes);
 app.use(testRoutes);
+app.use(ajaxRoutes);
 app.use(function (req, res, next) {
   res.render('app/view/404')
 })

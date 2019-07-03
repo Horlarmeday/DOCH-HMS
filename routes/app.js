@@ -591,39 +591,39 @@ router.route('/add-patient')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         HMO.find({}, (err, hmos)=>{
             if(err) return next (err)
-            var nHIS = []
-            var fHSS = []
-            var privateHMO = []
-            var retainership = []
-            //FHSS
-            hmos[0].hmoenrols.forEach((name)=>{
-              fHSS.push({
-                'name': name.hmoenrollee
-              })
-            })
-            //NHIS
-            hmos[1].hmoenrols.forEach((name)=>{
-                nHIS.push({
-                  'name': name.hmoenrollee
-                })
-            })
-            //PRIVATE HMO
-            hmos[2].hmoenrols.forEach((name)=>{
-                privateHMO.push({
-                  'name': name.hmoenrollee
-                })
-            })
-            //RETAINERSHIP
-            hmos[3].hmoenrols.forEach((name)=>{
-                retainership.push({
-                  'name': name.hmoenrollee
-                })
-            })
+            // var nHIS = []
+            // var fHSS = []
+            // var privateHMO = []
+            // var retainership = []
+            // //FHSS
+            // hmos[0].hmoenrols.forEach((name)=>{
+            //   fHSS.push({
+            //     'name': name.hmoenrollee
+            //   })
+            // })
+            // //NHIS
+            // hmos[1].hmoenrols.forEach((name)=>{
+            //     nHIS.push({
+            //       'name': name.hmoenrollee
+            //     })
+            // })
+            // //PRIVATE HMO
+            // hmos[2].hmoenrols.forEach((name)=>{
+            //     privateHMO.push({
+            //       'name': name.hmoenrollee
+            //     })
+            // })
+            // //RETAINERSHIP
+            // hmos[3].hmoenrols.forEach((name)=>{
+            //     retainership.push({
+            //       'name': name.hmoenrollee
+            //     })
+            // })
             User.countDocuments({role: 8})
             .exec((err, count)=>{
                 var counter = count + 1
                 if(err) return next (err)
-                res.render('app/add/add_patient', {hmos, counter, nHIS, fHSS, privateHMO, retainership})
+                res.render('app/add/add_patient', {hmos, counter})
             })
         })
     })
