@@ -1,2 +1,2 @@
-# BoroMe
+#DOCH Hospital Management System
 
