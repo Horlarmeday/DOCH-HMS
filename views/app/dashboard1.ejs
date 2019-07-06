@@ -92,8 +92,8 @@
                                         <div class="col-sm-8 card-visitor-button">
                                             <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
                                             <div class="card-contain">
-                                                <h6>N2,534</h6>
-                                                <p class="text-muted f-18 m-0">Revenue</p>
+                                                <h6><%= appointments.length %></h6>
+                                                <p class="text-muted f-18 m-0">Appointments</p>
                                             </div>
                                         </div>
                                         <div class="col-sm-4 text-center">
@@ -150,10 +150,10 @@
                                                             <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
                                                             <td><%= age %></td>
                                                             <td>+234<%= patient.phone %></td>
-                                                            <% if(patient.status === false){ %>
+                                                            <% if(!patient.addmitted){ %>
                                                             <td><label class="label label-md bg-success">Not Admitted</label></td>
                                                             <% }else{ %>
-                                                            <td><label class="label label-md bg-danger">Admitted</label></td>
+                                                            <td><label class="label label-md bg-warning">Admitted</label></td>
                                                             <% } %>
                                                             <td>
                                                                 <a class="btn btn-success" href="/triage/<%= patient.id %>"><i class="ti-shift-right"></i> Add Triage</a>

@@ -21,7 +21,7 @@
                             </a>
                         </li> -->
                         <% if(currentUser.role == 1){ %>
-                        <li class="pcoded-hasmenu">
+                        <!-- <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)">
                                 <span class="pcoded-micon"><i class="ti-user"></i></span>
                                 <span class="pcoded-mtext" data-i18n="nav.page_layout.main">Doctors</span>
@@ -44,7 +44,7 @@
                                     </a>
                                 </li>
                             </ul>
-                        </li>
+                        </li> -->
                         <% } %>
                         <% if(currentUser.role == 1 || currentUser.role === 7 || currentUser.role == 9 || currentUser.role == 10){ %>
                         <li class="pcoded-hasmenu">
@@ -192,7 +192,7 @@
                         </li>
                         <% } %>
                         <% if(currentUser.role == 1 || currentUser.role === 2){ %>
-                        <li class="pcoded-hasmenu">
+                        <!-- <li class="pcoded-hasmenu">
                                 <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                     <span class="pcoded-micon"><i class="ti-timer"></i></span>
                                     <span class="pcoded-mtext">Doctor Schedule</span>
@@ -214,7 +214,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                        </li>
+                        </li> -->
                         <% } %>
                         <% if(currentUser.role == 1 || currentUser.role === 5 || currentUser.role === 4){ %>
                             <li class="pcoded-hasmenu">
@@ -465,7 +465,7 @@
                             </ul>
                         </li>
                         <% } %>
-                        <% if(currentUser.role == 1){ %>
+                        <% if(currentUser.role == 1 || currentUser.role == 2){ %>
                     <li class="pcoded-hasmenu">
                         <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                             <span class="pcoded-micon"><i class="ti-cut"></i></span>
@@ -473,6 +473,13 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                         <ul class="pcoded-submenu">
+                            <li class=" ">
+                                    <a href="/patient-consent-form" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Patient Consent Form</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
                             <li class=" ">
                                 <a href="/operation-notes" data-i18n="nav.navigate.navbar">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

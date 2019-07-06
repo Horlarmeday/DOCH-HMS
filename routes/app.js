@@ -93,27 +93,30 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         .sort('-createdAt')
         .exec((err, users)=>{
             if(err) return next (err)
-            const allPatients = []
-            users.forEach((user)=>{
-                if(user.role === 8){
-                    allPatients.push({
-                        'patientid': user.patientId,
-                        'id': user._id,
-                        'birthday': user.birthday,
-                        'firstname': user.firstname,
-                        'lastname': user.lastname,
-                        'address': user.address,
-                        'phone': user.phonenumber,
-                        'email': user.email,
-                        'status': user.status,
-                        'role': user.role,
-                        'city': user.city,
-                        'country': user.country,
-                        'created': user.createdAt.toDateString(),
-                    })
-                }
+            Appointment.find({}, (err, appointments)=>{
+                if(err) return next (err)
+                const allPatients = []
+                users.forEach((user)=>{
+                    if(user.role === 8){
+                        allPatients.push({
+                            'patientid': user.patientId,
+                            'id': user._id,
+                            'birthday': user.birthday,
+                            'firstname': user.firstname,
+                            'lastname': user.lastname,
+                            'address': user.address,
+                            'phone': user.phonenumber,
+                            'email': user.email,
+                            'status': user.status,
+                            'role': user.role,
+                            'city': user.city,
+                            'country': user.country,
+                            'created': user.createdAt.toDateString(),
+                        })
+                    }
+                })
+                res.render('app/dashboard1', {allPatients, appointments})
             })
-            res.render('app/dashboard1', {allPatients})
         })
     }else if(req.user.role === 2){
         //DOCTORS
@@ -701,7 +704,7 @@ router.route('/add-patient')
                                 'password': process.env.SMSSMARTPASSWORD,
                                 'sender': process.env.SMSSMARTSENDERID,
                                 'recipient' : `234${user.phonenumber}`,
-                                'message' : `Dear ${user.firstname}, Thank you for your patronage with us, your health is important to us and your user ID is ${user.patientId}`,
+                                'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
                                 'routing': 4,
                             })
                             .end(function (response) {
@@ -819,7 +822,7 @@ router.route('/add-emergency-patient')
                             'password': process.env.SMSSMARTPASSWORD,
                             'sender': process.env.SMSSMARTSENDERID,
                             'recipient' : `234${user.phonenumber}`,
-                            'message' : `Dear ${user.firstname}, Thank you for your patronage with us, your health is important to us and your user ID is ${user.patientId}`,
+                            'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
                             'routing': 4,
                         })
                         .end(function (response) {
@@ -1141,6 +1144,49 @@ router.route('/nhis')
             req.flash('success', 'HMO Name was added Successfully!')
             res.redirect('back')
         })
+    })
+})
+
+//cONSENT FORM
+router.route('/patient-consent-form')
+.get(middleware.isLoggedIn, (req, res, next)=>{
+    User.find({}, (err, users)=>{
+        if(err) return next (err)
+        res.render('app/add/consent_form', {users})
+    })
+})
+.post(middleware.isLoggedIn, (req, res, next)=>{
+    const theater = new Theater({
+        patient: req.body.patient,
+        operation: req.body.operation,
+        doctorsign: req.body.doctorsign,
+        doctorsigndate: req.body.doctorsigndate,
+        interpretersign: req.body.interpretersign,
+        interpreterdate: req.body.interpreterdate,
+        interpretername: req.body.interpretername,
+        guardianname: req.body.guardianname,
+        of: req.body.of,
+        upon: req.body.upon,
+        surgeon: req.body.surgeon,
+        guardiansign: req.body.guardiansign,
+        guardianaddress: req.body.guardianaddress,
+        guardiandate: req.body.guardiandate,
+    })
+    theater.save((err)=>{
+        if (err) return next (err)
+        req.flash('success', 'Consent form saved successfully')
+        res.redirect('/consent-form/' + theater._id)
+    })
+})
+
+//CONSENT FORM FILLED
+router.get('/consent-form/:id', middleware.isLoggedIn, (req, res, next)=>{
+    Theater.findOne({_id: req.params.id})
+    .populate('patient')
+    .populate('surgeon')
+    .exec((err, theater)=>{
+          if(err) return next (err)
+        res.render('app/view/consent_form_filled', {theater})
     })
 })
 

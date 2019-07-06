@@ -310,7 +310,7 @@ function showOptions() {
     // alert("id is " + s[s.selectedIndex].id); // get id
 }
 
-
+//getting the hmos
 function gethmo() {
     const hmoid = $('#hmos').val()
     $('#hmoname').show()
@@ -321,7 +321,25 @@ function gethmo() {
             $("#mySelect").append($("<option>",{
                   value: value,
                   text: value
-            }));
+            }))
         })
     })
 }
+
+//getting user age
+function getUserAge() {
+    const userid = $('#patienttriage').val()
+    $('#agecolumn').show()
+    $.post('/get-patient-age', { userid: userid })
+    .done(function(data) {
+        console.log(data)
+        $('#age').val(data)
+        if(data < 1){
+            $('#pulse').show()
+            $('#hrate').hide()
+        }else{
+            $('#pulse').hide()
+            $('#hrate').show()
+        }
+    })
+}   

@@ -1,0 +1,217 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Consent Form</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#">Consent Form</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!"> </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Patient Consent Form</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="post">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label for="">Patients</label>
+                                                            <select id="patienttriage" name="patient" class="form-control js-example-basic-single" onchange="getUserAge()">
+                                                                <option selected disabled>Select</option>
+                                                                <% users.forEach((user)=>{ %>
+                                                                    <% if(user.role == 8){ %>
+                                                                     <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            </select><br><br>
+                                                        </div>
+                                                    
+                                                        <!-- <div id="agecolumn" class="col-sm-12">
+                                                            <label>Age <span class="text-danger">*</span></label>
+                                                            <input class="form-control" type="text" id="age">     
+                                                        </div> -->
+                                                       
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">A. TO THE CONSULTANT</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                                <label style="font-weight: 700">Type of Operation/Procedures</label>
+                                                                <textarea name="operation" class="form-control" cols="30" rows="10"></textarea><br>
+                                                        </div>
+                                                        <div class="col-md-12">
+                                                            <ul>
+                                                                <li style="font-size:1rem"> <span style="font-weight: 700">(i)</span> I confirm that I have nature of the surgery or other procedures to the performed upon the patient 
+                                                                    named below, as well as other appropriate options as are available and the possible risks involved. I
+                                                                    have also advised them of type of anaestetic(if any) proposed. No assurance as been given that the
+                                                                    procedure will be performed by a particular individual. The explanation I have been given is, in my judement, 
+                                                                    suited to the understanding of the patient and/or the parent(s) or guidance(s) of the patient.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Signed/Marked</label>
+                                                                    <input type="text" class="form-control" name="doctorsign">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label style="font-weight: 700">Date</label>
+                                                                        <input type="date" class="form-control" name="doctorsigndate">
+                                                                </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-12">
+                                                            <ul>
+                                                                <li style="font-weight:700">(ii) Non-English Speakers-English Intrepretation
+                                                                </li>
+                                                                <li style="font-size:1rem">
+                                                                    I confirm that the explanation stated in (i) above, was to the best of my knowledge and belief
+                                                                    truly and faitfully Intrepretated to the patient.
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Signed/Marked</label>
+                                                                    <input type="text" class="form-control" name="interpretersign">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Date</label>
+                                                                    <input type="date" class="form-control" name="interpreterdate">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Witness Signature/Name</label>
+                                                                    <input type="text" class="form-control" name="interpretername">
+                                                            </div>
+                                                            
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">B. TO THE PATIENT/GUARDIAN/RESPONSIBLE PERSON</h5><br><br>
+                                                    <div class="form-group row">
+                                                            <div class="col-md-12">
+                                                                    <ul>
+                                                                        <li style="font-size:1rem"> <span style="font-weight: 700">1.</span> If you do not understand the explanation
+                                                                            of the surgery or other procedures to be undergone, or if you require further information you should ask your 
+                                                                            Consultant/Medical Practitioner.
+                                                                        </li> <br>
+                                                                        <li style="font-size:1rem"> <span style="font-weight: 700">2.</span> Please check that all information in the form 
+                                                                            is correct.
+                                                                        </li><br>
+                                                                        <li style="font-size:1rem">If it is, and you understand the explanation then sign the form 
+                                                                        </li>
+                                                                        <li style="font-size:1rem">I <label for="nameofparent">............</label> of <label for="of">............</label> Hereby consent to undergo the proposed
+                                                                             operation to be performed upon myself
+                                                                            [upon <label for="upon">............</label>]. The nature and purpose of which as been explained to me by Mr./Mrs./Dr <label for="dr">............</label> 
+                                                                            I also consent to such further 
+                                                                            or alternative operative measures as may be found necessary prior to, during the course of, and after the operation
+                                                                            and to the administration of general, local or other anaestetic for any of these purposes.
+                                                                            </li>
+                                                                    </ul>
+                                                                </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Name of Patient/Parent/Guardian</label>
+                                                                    <input id="nameofparent" type="text" class="form-control" name="guardianname">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Of</label>
+                                                                    <input id="of" type="text" class="form-control" name="of">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Upon</label>
+                                                                    <input id="upon" type="text" class="form-control" name="upon">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Dr</label>
+                                                                    <select name="surgeon" id="dr" class="form-control  js-example-basic-single">
+                                                                        <option selected disabled>Select</option>
+                                                                        <% users.forEach((user)=>{ %>
+                                                                            <% if(user.role == 2){ %>
+                                                                                <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                            <% } %>
+                                                                        <% }) %>
+                                                                    </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Signed</label>
+                                                                    <input type="text" class="form-control" name="guardiansign">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Address</label>
+                                                                    <input type="text" class="form-control" name="guardianaddress">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label style="font-weight: 700">Date</label>
+                                                                    <input type="date" class="form-control" name="guardiandate">
+                                                            </div>
+                                                            
+                                                    </div>
+                                                   
+                                                    <button  type="submit" class="btn btn-info float-right">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

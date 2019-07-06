@@ -51,4 +51,24 @@ router.post('/get-hmo', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//get patient age
+router.post('/get-patient-age', middleware.isLoggedIn, (req, res, next)=>{
+    const userid = req.body.userid
+    User.findOne({_id: userid}, (err, user)=>{
+        if(err) return next(err)
+        var birthday = new Date(user.birthday)
+        var today = new Date()
+        var age = today.getFullYear() - birthday.getFullYear()
+        if(today.getMonth() < birthday.getMonth()){
+            age
+        }
+        if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+            age
+        }
+        
+        res.json(age)
+    })
+})
+
+
 module.exports = router
