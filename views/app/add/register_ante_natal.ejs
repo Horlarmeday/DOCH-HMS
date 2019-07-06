@@ -1,0 +1,285 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Create Ante-Natal Account</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/all-antenatal">Ante Natal Patients</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Create Patient</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Create Ante-Natal Patient</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <!-- <div class="form-group">
+                                                        <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                    </div> -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">First Name <span class="text-danger">*</span> </label>
+                                                            <input type="text" class="form-control" placeholder="<%= user.firstname %>" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Last Name<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" placeholder="<%= user.lastname %>" required>
+                                                            <input type="hidden" name="patient" value="<%= user._id %>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">ANC ID</label>
+                                                            <input type="text" name="ancId" class="form-control" placeholder="ANC/00<%= antenatalCounter %>" readonly>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Age</label>
+                                                            <input type="number" name="age" class="form-control" placeholder="<%= age %>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Gravida</label>
+                                                            <input type="text" name="gravida" class="form-control" placeholder="Gravida">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Parity<span class="text-danger">*</span></label>
+                                                            <input type="text" name="parity" class="form-control" placeholder="Parity">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">LMP<span class="text-danger">*</span></label>
+                                                            <input type="date" name="lmp" class="form-control" placeholder="LMP" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">EDD<span class="text-danger">*</span></label>
+                                                            <input type="text" name="edd" class="form-control" placeholder="" required readonly>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <h5 style="color:dodgerblue" class="page-title">Next of Kin Information</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Name<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" placeholder="<%= user.nextofkinname %>" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Address<span class="text-danger">*</span></label>
+                                                            <input type="text" class="form-control" placeholder="<%= user.nextofkinaddress %>" required>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    <hr>
+                                                    <h5 style="color:dodgerblue" class="page-title">Medical And Surgical History</h5><br><br>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Medical History<span class="text-danger">*</span></label>
+                                                               <input type="text" class="form-control" name="medicalhistory" placeholder="Medical History">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label for="">Surgical History<span class="text-danger">*</span></label>
+                                                               <input type="text" class="form-control" name="surgicalhistory" placeholder="Surgical History">
+                                                            </div>
+                                                        </div>
+                                                        <div>
+                                                           
+                                                            <div class="form-group row group">
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Blood Transfusion</label>
+                                                                        <input type="text" name="bloodtransfusion" class="form-control" placeholder="Dependant Name">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Family History</label>
+                                                                       <select name="familyhistory" class="form-control">
+                                                                           <option>Select</option>
+                                                                           <option>Twins</option>
+                                                                           <option>Tuberculosis</option>
+                                                                           <option>Diabetes</option>
+                                                                           <option>Hypertension</option>
+                                                                       </select>
+                                                                    </div>
+                                                                    
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    <hr>
+                                                    <h5 style="color:dodgerblue" class="page-title">Previous Pregnancy</h5><br><br>
+                                                    <div id="form-show" class="" data-mfield-options='{"section": ".group","btnAdd":"#btnAdd","btnRemove":".btnRemove"}'>
+                                                        <div >
+                                                            <button type="button" id="btnAdd" class="btn btn-primary">Add</button>
+                                                        </div><br>
+                                                        <div class="group">
+                                                            <div class="form-group row">
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Year</label>
+                                                                        <select name="year" class="form-control">
+                                                                            <option>Select Year</option>
+                                                                            <option>1990</option>
+                                                                            <option>1991</option>
+                                                                            <option>1992</option>
+                                                                            <option>1993</option>
+                                                                            <option>1994</option>
+                                                                            <option>1995</option>
+                                                                            <option>1996</option>
+                                                                            <option>1997</option>
+                                                                            <option>1998</option>
+                                                                            <option>1999</option>
+                                                                            <option>2000</option>
+                                                                            <option>2001</option>
+                                                                            <option>2002</option>
+                                                                            <option>2003</option>
+                                                                            <option>2004</option>
+                                                                            <option>2005</option>
+                                                                            <option>2006</option>
+                                                                            <option>2007</option>
+                                                                            <option>2008</option>
+                                                                            <option>2009</option>
+                                                                            <option>2010</option>
+                                                                            <option>2011</option>
+                                                                            <option>2012</option>
+                                                                            <option>2013</option>
+                                                                            <option>2014</option>
+                                                                            <option>2015</option>
+                                                                            <option>2016</option>
+                                                                            <option>2017</option>
+                                                                            <option>2018</option>
+                                                                            <option>2019</option>
+                                                                            <option>2020</option>
+                                                                            
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Place of Delivery</label>
+                                                                        <input type="text" name="deliveryplace" class="form-control" placeholder="Place of Delivery">
+                                                                    </div>                                                                  
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Maturity</label>
+                                                                    <select name="maturity" class="form-control">
+                                                                        <option>Select</option>
+                                                                        <option>Term</option>
+                                                                        <option>Preterm</option>
+                                                                    </select>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label for="">Duration of Labour</label>
+                                                                        <select name="duration" class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Less than 6 Hours</option>
+                                                                            <option>More than 6 Hours</option>
+                                                                        </select>
+                                                                 </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Type of Delivery</label>
+                                                                        <select name="delivery" class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>CS</option>
+                                                                            <option>SVD</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                            <label for="">Weight (kg)</label>
+                                                                            <input type="text" class="form-control" name="weight">
+                                                                     </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Sex</label>
+                                                                        <select name="sex" class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Male</option>
+                                                                            <option>Female</option>
+                                                                        </select>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                            <label for="">Fate</label>
+                                                                            <select name="fate" class="form-control">
+                                                                                <option>Select</option>
+                                                                                <option>Stillbirth</option>
+                                                                                <option>Alive</option>
+                                                                                <option>Dead</option>
+                                                                            </select>
+                                                                     </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Puerperium</label>
+                                                                    <input type="text" class="form-control" name="puerperium">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                  <button style="margin-top: 26px" type="button" class="btn btn-danger btnRemove">Remove</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info float-right">Create Account</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

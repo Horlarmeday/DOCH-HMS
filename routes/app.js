@@ -2769,19 +2769,72 @@ router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
 });
 
 //ACCEPTING APPOINTMENTS
-router.post('/takeup-appointment', (req, res, next)=>{
-    const appointId = req.body.app_id
-    Appointment.findOne({ _id: appointId })
-        .populate('patient')
-        .exec((err, appointment) => {
-            if(err) return next (err)
-            appointment.taken = true;
-            appointment.save((err)=>{
-                if(err) return next (err)
-                res.redirect('/consultation/' + appointment.patient._id)
+// router.post('/takeup-appointment', (req, res, next)=>{
+//     const appointId = req.body.app_id
+//     Appointment.findOne({ _id: appointId })
+//         .populate('patient')
+//         .exec((err, appointment) => {
+//             if(err) return next (err)
+//             appointment.taken = true;
+//             appointment.save((err)=>{
+//                 if(err) return next (err)
+//                 res.redirect('/consultation/' + appointment.patient._id)
+//             })
+//         })
+// })
+
+//REISTER ANTE NATAL PATIENT
+router.route('/create-ante-natal-patient/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        ANC.countDocuments({}, (err, count)=>{
+            if (err) return next (err)
+            User.findOne({_id: req.params.id}, (err, user)=>{
+                if (err) return next (err)
+                let antenatalCounter = count + 1
+                var birthday = new Date(user.birthday)
+                var today = new Date()
+                var age = today.getFullYear() - birthday.getFullYear()
+                if(today.getMonth() < birthday.getMonth()){
+                    age
+                }
+                if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                    age
+                }
+                res.render('app/add/register_ante_natal', { antenatalCounter, user, age})
             })
         })
-})
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const anc = new ANC()
+            anc.creator = req.user._id,
+            anc.patient = req.body.patient,
+            anc.ancId = req.body.ancId,
+            anc.age = req.body.age,
+            anc.gravida = req.body.gravida,
+            anc.parity = req.body.parity,
+            anc.lmp = req.body.lmp,
+            anc.edd = req.body.edd,
+            anc.medicalhistory = req.body.medicalhistory,
+            anc.surgicalhistory = req.body.surgicalhistory,
+            anc.bloodtransfusion = req.body.bloodtransfusion,
+            anc.familyhistory = req.body.familyhistory,
+            anc.previouspregnancy.push({
+                year: req.body.year,
+                deliveryplace: req.body.deliveryplace,
+                maturity: req.body.maturity,
+                duration: req.body.duration,
+                delivery: req.body.delivery,
+                weight: req.body.weight,
+                sex: req.body.sex,
+                fate: req.body.fate,
+                puerperium: req.body.puerperium,
+            })
+        anc.save((err)=>{
+            if(err) return next (err)
+            req.flash('success', 'Patient account was created successfully')
+            res.redirect('/ante-natal/' + req.params.id)
+        })
+    })
 
 //ANTENATAL
 router.route('/ante-natal/:id')
@@ -2792,24 +2845,28 @@ router.route('/ante-natal/:id')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        const anc = new ANC({
-            presentpregnancy:{
-                creator: req.user._id,
-                patient: req.params.id,
-                thedate: req.body.thedate,
-                weight:  req.body.weight,
-                urinalysis: req.body.urinalysis,
-                bp: req.body.bp,
-                pallor: req.body.pallor,
-                maturity: req.body.maturity,
-                fundalheight: req.body.fundalheight,
-                presentation: req.body.presentation,
-                fetalheartrate: req.body.fetalheartrate,
-                oedema: req.body.oedema,
-                comments: req.body.comments,
-                tcadate: req.body.tcadate,
-                initial: req.body.initial
-            }
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+                if(err) {
+                    req.flash('error', 'Patient ANC record cannot be found')
+                    return res.redirect('back')
+                }
+                anc.presentpregnancy.push({
+                    thedate: req.body.thedate,
+                    weight:  req.body.weight,
+                    urinalysis: req.body.urinalysis,
+                    bp: req.body.bp,
+                    pallor: req.body.pallor,
+                    maturity: req.body.maturity,
+                    fundalheight: req.body.fundalheight,
+                    presentation: req.body.presentation,
+                    fetalheartrate: req.body.fetalheartrate,
+                    oedema: req.body.oedema,
+                    comments: req.body.comments,
+                    tcadate: req.body.tcadate,
+                    initial: req.body.initial
+                })
+            })
         })
         anc.save((err)=>{
             if(err) return next (err)
@@ -2828,7 +2885,7 @@ router.post('/clinical-notes/:id', middleware.isLoggedIn, (req, res, next)=>{
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
             }
-            anc.clinicalnotes = req.body.clinicalnotes
+            anc.clinicalnotes.push(req.body.clinicalnotes)
             
             anc.save((err)=>{
                 if(err) return next (err)
@@ -2851,7 +2908,7 @@ router.post('/antenatal-lab-tests/:id', middleware.isLoggedIn, (req, res, next)=
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
             }
-            anc.labtests = {
+            anc.labtests.push({
                 hb: req.body.hb,
                 hbdate: req.body.hbdate,
                 bloodgroup: req.body.bloodgroup,
@@ -2864,7 +2921,7 @@ router.post('/antenatal-lab-tests/:id', middleware.isLoggedIn, (req, res, next)=
                 serologydate: req.body.serologydate,
                 urinalysis: req.body.urinalysis,
                 urinalysisdate: req.body.urinalysisdate,
-            }
+            })
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Lab test was saved successfully')
@@ -2886,7 +2943,7 @@ router.post('/treatment-and-immunization/:id', middleware.isLoggedIn, (req, res,
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
             }
-            anc.treatment = {
+            anc.treatment.push({
                 tt1: req.body.tt1,
                 tt1next: req.body.tt1next,
                 tt2: req.body.tt2,
@@ -2901,7 +2958,7 @@ router.post('/treatment-and-immunization/:id', middleware.isLoggedIn, (req, res,
                 malariaipt1next: req.body.malariaipt1next,
                 malariaipt2: req.body.malariaipt2,
                 malariaipt2next: req.body.malariaipt2next
-            }
+            })
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Treatment and Immunization result was saved successfully')
@@ -2923,10 +2980,10 @@ router.post('/dates-given/:id', middleware.isLoggedIn, (req, res, next)=>{
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
             }
-            anc.datesgiven = {
+            anc.datesgiven.push({
                 ironfolate: req.body.ironfolate,
                 multivitamin: req.body.multivitamin,
-            }
+            })
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Dates given was saved successfully')

@@ -127,11 +127,11 @@
                                             <% if(!appointmentIsEmpty){ %>
                                             <tbody>
                                                 <% appointments.forEach((appointment)=>{ %>
-                                                    <% if(appointment.taken === false){ %>
+                                                    <% if(appointment.taken === false && appointment.type === 'Ante-Natal'){ %>
                                                 <tr>
                                                     <td></td>
                                                     <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
-                                                    <td><%= appointment.doctor.firstname %> <%= appointment.doctor.lastname %></td>
+                                                    <td><%= appointment.type %></td>
                                                     <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
                                                     <% if(appointment.taken === true){ %>
                                                     <td><label class="label label-md bg-success">Attended</label></td>
@@ -139,8 +139,11 @@
                                                     <td><label class="label label-md bg-warning">Pending</label></td>
                                                     <% } %>
                                                     <td>
-                                                        
-                                                    <a href="/ante-natal/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Take Up</a>
+                                                      <% if(appointment.patient.ancs.length < 1){ %>
+                                                          <a href="/create-ante-natal-patient/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Register Patient</a>
+                                                      <% }else{ %>
+                                                        <a href="/ante-natal/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Take Up</a>
+                                                      <% } %>
                                                        
                                                     </td>
                                                 </tr>

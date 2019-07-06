@@ -154,6 +154,7 @@ $(document).ready(function() {
     })
 
     $('#example-1').multifield();
+    $('#form-show').multifield();
 
 
      //CLICKING DECLINED BUTTON

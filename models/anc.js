@@ -5,7 +5,30 @@ const ancSchema = new mongoose.Schema({
     doctor: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-    presentpregnancy:{
+    ancId: String,
+    age: Number,
+    gravida: String,
+    parity: String,
+    lmp: Date,
+    edd: Date,
+    medicalhistory: String,
+    surgicalhistory: String,
+    bloodtransfusion: String,
+    familyhistory: String,
+    previouspregnancy:[
+        {
+            year: Number,
+            deliveryplace: String,
+            maturity: String,
+            duration: String,
+            delivery: String,
+            weight: Number,
+            sex: String,
+            fate: String,
+            puerperium: String,
+        }
+    ],
+    presentpregnancy:[{
         thedate: {type: Date},
         weight: Number,
         urinalysis: String,
@@ -19,9 +42,11 @@ const ancSchema = new mongoose.Schema({
         comments: String,
         tcadate: {type: Date},
         initial: String
-    },
-    clinicalnotes: String,
-    labtests:{
+    }],
+    clinicalnotes: [
+        String
+    ],
+    labtests:[{
         hb: String,
         hbdate: {type: Date},
         bloodgroup: String,
@@ -34,8 +59,8 @@ const ancSchema = new mongoose.Schema({
         serologydate: {type: Date},
         urinalysis: String,
         urinalysisdate: {type: Date},
-    },
-    treatment: {
+    }],
+    treatment: [{
         tt1: {type: Date},
         tt1next: {type: Date},
         tt2: {type: Date},
@@ -50,11 +75,11 @@ const ancSchema = new mongoose.Schema({
         malariaipt1next: {type: Date},
         malariaipt2: {type: Date},
         malariaipt2next: {type: Date}
-    },
-    datesgiven:{
+    }],
+    datesgiven:[{
         ironfolate: {type: Date},
         multivitamin: {type: Date}
-    },
+    }],
     taken: {type: Boolean, default: false},
     status: {type: Boolean, default: false},
     created: {type: Date, default: Date.now}
