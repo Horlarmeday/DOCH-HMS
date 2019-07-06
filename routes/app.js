@@ -2790,17 +2790,32 @@ router.route('/create-ante-natal-patient/:id')
             if (err) return next (err)
             User.findOne({_id: req.params.id}, (err, user)=>{
                 if (err) return next (err)
-                let antenatalCounter = count + 1
-                var birthday = new Date(user.birthday)
-                var today = new Date()
-                var age = today.getFullYear() - birthday.getFullYear()
-                if(today.getMonth() < birthday.getMonth()){
-                    age
-                }
-                if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
-                    age
-                }
-                res.render('app/add/register_ante_natal', { antenatalCounter, user, age})
+                Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+                    if (err) return next (err)
+                    let antenatalCounter = count + 1
+                    var birthday = new Date(user.birthday)
+                    var today = new Date()
+                    var age = today.getFullYear() - birthday.getFullYear()
+                    if(today.getMonth() < birthday.getMonth()){
+                        age
+                    }
+                    if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                        age
+                    }
+                    if(appointment.taken){
+                        req.flash('error', 'Appointment already taken')
+                        return res.redirect('back')
+                    }else{
+                       appointment.taken = true;
+                       appointment.save((err)=>{
+                           if(err){
+                               req.flash('error', "Error taking the appointment")
+                               return res.redirect('back')
+                           }
+                           res.render('app/add/register_ante_natal', { antenatalCounter, user, age})
+                       })
+                    }
+                })
             })
         })
     })
@@ -2818,6 +2833,7 @@ router.route('/create-ante-natal-patient/:id')
             anc.surgicalhistory = req.body.surgicalhistory,
             anc.bloodtransfusion = req.body.bloodtransfusion,
             anc.familyhistory = req.body.familyhistory,
+            // anc.taken = true,
             anc.previouspregnancy.push({
                 year: req.body.year,
                 deliveryplace: req.body.deliveryplace,
@@ -2831,9 +2847,18 @@ router.route('/create-ante-natal-patient/:id')
             })
         anc.save((err)=>{
             if(err) return next (err)
-            req.flash('success', 'Patient account was created successfully')
-            res.redirect('/ante-natal/' + req.params.id)
         })
+        User.update(
+            {
+                _id: anc.patient
+            },
+            {
+                $push:{ ancs: anc._id}
+            },function(err, count){
+                req.flash('success', 'Patient account was created successfully')
+                res.redirect('/ante-natal/' + req.params.id)
+            }
+        )
     })
 
 //ANTENATAL
@@ -2841,7 +2866,23 @@ router.route('/ante-natal/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         User.findOne({_id: req.params.id}, (err, user)=>{
             if(err) return next (err)
-            res.render('app/add/add_anc', {user})
+            Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+                if (err) return next (err)
+                if(appointment.taken){
+                    req.flash('error', 'Appointment already taken')
+                    return res.redirect('back')
+                }else{
+                   appointment.taken = true;
+                   appointment.save((err)=>{
+                       if(err){
+                           req.flash('error', "Error taking the appointment")
+                           return res.redirect('back')
+                       }
+                       res.render('app/add/add_anc', {user})
+                   })
+                }
+            })
+           
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
@@ -2993,6 +3034,61 @@ router.post('/dates-given/:id', middleware.isLoggedIn, (req, res, next)=>{
     })
 
 })
+
+//Registred Ante natal patients
+router.get('/all-antenatal', middleware.isLoggedIn, (req, res, next)=>{
+    ANC.find({})
+        .populate('patient')
+        .exec((err, ancs)=>{
+            if(err) return next (err)
+            res.render('app/view/antenatals', {ancs})
+        })
+})
+
+//DELIVERY
+router.route('/patient-delivery-information/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({_id: req.params.id}, (err, patient)=>{
+            if(err) return next (err)
+            User.find({}, (err, users)=>{
+                if(err) return next (err)
+                res.render('app/add/add_delivery', {users, patient})
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+            if(err) {
+                req.flash('error', 'Patient ANC record cannot be found')
+                return res.redirect('back')
+            }
+            anc.delivery = {
+                modeofdelivery: req.body.modeofdelivery,
+                dateofdelivery: req.body.dateofdelivery,
+                duration: req.body.duration,
+                conditionofmother: req.body.conditionofmother,
+                onemin: req.body.onemin,
+                tenmin: req.body.tenmin,
+                fivemin: req.body.fivemin,
+                birthweight: req.body.birthweight,
+                sex: req.body.sex,
+                conditionofbaby: req.body.conditionofbaby,
+                placeofdelivery: req.body.placeofdelivery,
+                conducted: req.body.conducted,
+                vitaminAmother: req.body.vitaminAmother,
+                vitaminAbaby: req.body.vitaminAbaby,
+                immunizationdate: req.body.immunizationdate,
+                bcg: req.body.bcg,
+                opvo: req.body.opvo,
+                notifieddate: req.body.notifieddate
+            }
+            anc.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Patient Delivery Info was saved successfully')
+                res.redirect('/all-antenatal')
+            })
+        }) 
+    })
 
 //EMAIL USERS
 router.route('/email-users')

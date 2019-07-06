@@ -64,22 +64,22 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">First Name <span class="text-danger">*</span> </label>
-                                                            <input type="text" class="form-control" placeholder="<%= user.firstname %>" required>
+                                                            <input style="font-weight: 900" type="text" class="form-control" placeholder="<%= user.firstname %>" required readonly>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Last Name<span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" placeholder="<%= user.lastname %>" required>
+                                                            <input style="font-weight: 900" type="text" class="form-control" placeholder="<%= user.lastname %>" required readonly>
                                                             <input type="hidden" name="patient" value="<%= user._id %>">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">ANC ID</label>
-                                                            <input type="text" name="ancId" class="form-control" placeholder="ANC/00<%= antenatalCounter %>" readonly>
+                                                            <input style="font-weight: 900" type="text" name="ancId" class="form-control" value="ANC/00<%= antenatalCounter %>" readonly>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Age</label>
-                                                            <input type="number" name="age" class="form-control" placeholder="<%= age %>">
+                                                            <input style="font-weight: 900" type="number" name="age" class="form-control" value="<%= age %>" readonly>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
@@ -99,7 +99,7 @@
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">EDD<span class="text-danger">*</span></label>
-                                                            <input type="text" name="edd" class="form-control" placeholder="" required readonly>
+                                                            <input type="text" name="edd" class="form-control" placeholder=""  readonly>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -107,11 +107,11 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Next of Kin Name<span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" placeholder="<%= user.nextofkinname %>" required>
+                                                            <input style="font-weight: 900" type="text" class="form-control" placeholder="<%= user.nextofkinname %>" readonly required>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Next of Kin Address<span class="text-danger">*</span></label>
-                                                            <input type="text" class="form-control" placeholder="<%= user.nextofkinaddress %>" required>
+                                                            <input style="font-weight: 900" type="text" class="form-control" placeholder="<%= user.nextofkinaddress %>" readonly required>
                                                         </div>
                                                     </div>
                                                    
@@ -132,7 +132,7 @@
                                                             <div class="form-group row group">
                                                                     <div class="col-sm-6">
                                                                         <label for="">Blood Transfusion</label>
-                                                                        <input type="text" name="bloodtransfusion" class="form-control" placeholder="Dependant Name">
+                                                                        <input type="text" name="bloodtransfusion" class="form-control" placeholder="">
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <label for="">Family History</label>

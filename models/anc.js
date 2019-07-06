@@ -15,6 +15,26 @@ const ancSchema = new mongoose.Schema({
     surgicalhistory: String,
     bloodtransfusion: String,
     familyhistory: String,
+    delivery: {
+        modeofdelivery: String,
+        dateofdelivery: Date,
+        duration: String,
+        conditionofmother: String,
+        onemin: String,
+        tenmin: String,
+        fivemin: String,
+        birthweight: Number,
+        sex: String,
+        conditionofbaby: String,
+        placeofdelivery: String,
+        conducted: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+        vitaminAmother: String,
+        vitaminAbaby: String,
+        immunizationdate: Date,
+        bcg: String,
+        opvo: String,
+        notifieddate: Date
+    },
     previouspregnancy:[
         {
             year: Number,
@@ -81,7 +101,7 @@ const ancSchema = new mongoose.Schema({
         multivitamin: {type: Date}
     }],
     taken: {type: Boolean, default: false},
-    status: {type: Boolean, default: false},
+    status: {type: Boolean, default: true},
     created: {type: Date, default: Date.now}
 });
 

@@ -1,0 +1,202 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Delivery Information</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/all-antenatal">Ante Natal Patients</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Add <%= patient.firstname %> <%= patient.lastname %> Delivery Information</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <!-- <div class="form-group">
+                                                        <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                    </div> -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Mode of Delivery <span class="text-danger">*</span> </label>
+                                                            <select name="modeofdelivery" class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>CS</option>
+                                                                    <option>SVD</option>
+                                                                </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Date of Delivery<span class="text-danger">*</span></label>
+                                                            <input style="font-weight: 900" name="dateofdelivery" type="text" class="form-control" placeholder="<%= new Date().toLocaleDateString() %>" required readonly>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Duration</label>
+                                                            <select name="duration" class="form-control">
+                                                                <option>Select</option>
+                                                                <option>Less than 6 Hours</option>
+                                                                <option>More than 6 Hours</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Condition of Mother</label>
+                                                            <input type="text" name="conditionofmother" class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Apgar Score at 1min</label>
+                                                            <input type="text" name="onemin" class="form-control" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Apgar Score at 5min<span class="text-danger">*</span></label>
+                                                            <input type="text" name="fivemin" class="form-control" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Apgar Score at 10min<span class="text-danger">*</span></label>
+                                                            <input type="date" name="tenmin" class="form-control" placeholder="">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Birth Weight<span class="text-danger">*</span></label>
+                                                            <input type="number" step="any" name="birthweight" class="form-control" placeholder="">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Sex<span class="text-danger">*</span></label>
+                                                            <select name="sex" class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Male</option>
+                                                                    <option>Female</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Condition of Baby<span class="text-danger">*</span></label>
+                                                            <input type="text" name="conditionofbaby" class="form-control" placeholder="" required>
+                                                        </div>
+                                                    </div>
+                                                   
+                                                    
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Place of Delivery<span class="text-danger">*</span></label>
+                                                                <select name="placeofdelivery" class="form-control">
+                                                                        <option>Select</option>
+                                                                        <option>Home</option>
+                                                                        <option>Hospital</option>
+                                                                        <option>HF</option>
+                                                                        <option>Others</option>
+                                                                </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label for="">Conducted By<span class="text-danger">*</span></label>
+                                                                <select name="conducted" class="form-control">
+                                                                    <option>Select</option>
+                                                                    <% users.forEach((user)=>{ %>
+                                                                        <% if(user.role != 8){ %>
+                                                                        <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                    <% } %>
+                                                                    <% }) %>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                            <div class="form-group row group">
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Vitamin A: 200,000 IU to Mother</label>
+                                                                        <input type="text" name="vitaminAmother" class="form-control" placeholder="">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">Vitamin A: 100,000 IU to Baby</label>
+                                                                        <input type="text" name="vitaminAbaby" class="form-control" placeholder="">
+                                                                    </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Baby Immunization Date</label>
+                                                                    <input type="date" name="immunizationdate" class="form-control">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label for="">BCG</label>
+                                                                        <input type="text" name="bcg" class="form-control">
+                                                                 </div>
+                                                            </div>
+                                                            <div class="form-group row">
+                                                                    <div class="col-sm-6">
+                                                                        <label for="">OPVO</label>
+                                                                        <input type="text" name="opvo" class="form-control">
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                            <label for="">Birth Notified Date</label>
+                                                                            <input type="date" class="form-control" name="notifieddate">
+                                                                     </div>
+                                                            </div>
+                                                    <button type="submit" class="btn btn-info float-right">Add Delivery Info</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>
