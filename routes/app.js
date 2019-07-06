@@ -718,122 +718,126 @@ router.route('/add-patient')
         })
     })
 
+//ADD EMERENCY PATIENT
+// router.route('/add-emerggency-patient')
+//     .get(middleware.isLoggedIn, (req, res, next)=>{
+//         res.render('app/add/emergency')
+//     })
+
 //ADD EMERGENCY PATIENT
 router.route('/add-emergency-patient')
 .get(middleware.isLoggedIn, (req, res, next)=>{
         HMO.find({}, (err, hmos)=>{
             if(err) return next (err)
-            var nHIS = []
-            var fHSS = []
-            var privateHMO = []
-            var retainership = []
-            //FHSS
-            hmos[0].hmoenrols.forEach((name)=>{
-              fHSS.push({
-                'name': name.hmoenrollee
-              })
-            })
-            //NHIS
-            hmos[1].hmoenrols.forEach((name)=>{
-                nHIS.push({
-                  'name': name.hmoenrollee
-                })
-            })
-            //PRIVATE HMO
-            hmos[2].hmoenrols.forEach((name)=>{
-                privateHMO.push({
-                  'name': name.hmoenrollee
-                })
-            })
-            //RETAINERSHIP
-            hmos[3].hmoenrols.forEach((name)=>{
-                retainership.push({
-                  'name': name.hmoenrollee
-                })
-            })
+         
             User.countDocuments({role: 8})
             .exec((err, count)=>{
                 var counter = count + 1
                 if(err) return next (err)
-                res.render('app/add/add_emergency_patient', {hmos, counter, nHIS, fHSS, privateHMO, retainership})
+                res.render('app/add/emergency', {hmos, counter})
             })
         })
 })
 .post(middleware.isLoggedIn, (req, res, next)=>{
-    User.countDocuments({ role: 8 })
-    .exec((err, count)=>{
-        if(err) return next (err)
-        User.findOne({ phonenumber: req.body.phone }, function(err, existingUserPhone){
-            if (existingUserPhone){
-                req.flash('error',  'Account with that phone number already exists.');
-                return res.redirect('/add-patient');
-            }else{
-                const user = new User()
-                user.patientId = `DOCH/000000${count + 1}`
-                user.email = req.body.email;
-                user.creator = req.user._id;
-                user.firstname = req.body.fname;
-                user.lastname = req.body.lname;
-                user.oldpatientId = req.body.oldpatientID;
-                user.createdby = 2;
-                user.isVerified = true;
-                user.religion = req.body.religion;
-                user.gender = req.body.gender;
-                user.mstatus = req.body.mstatus;
-                user.phonenumber = req.body.phone;
-                user.lga = req.body.lga;
-                user.birthday = req.body.birthday;
-                user.role = patient;
-                user.address = req.body.address;
-                user.retainership = req.body.retainership;
-                user.nextofkinname = req.body.nextofkinname;
-                user.nextofkinphone = req.body.nextofkinphone;
-                user.nextofkinaddress = req.body.nextofkinaddress;
-                user.relationship = req.body.relationship;
-                user.city = req.body.city;
-                user.state = req.body.state;
-                user.country = req.body.country;
-                user.retainershipname = user.retainershipname;
-                user.hmoname = user.hmoname;
-                user.patientcode = user.patientcode;
-                user.account = {
-                    registration: req.body.registration,
-                    consultation: req.body.consultation,
-                };
-                user.hmodependant.dependant1 = {
-                    name: req.body.dependantname1,
-                    dateofbirth: req.body.dateofbirth1
-                },
-                user.hmodependant.dependant2 = {
-                    name: req.body.dependantname2,
-                    dateofbirth: req.body.dateofbirth2
-                },
-                user.hmodependant.dependant3 = {
-                    name: req.body.dependantname3,
-                    dateofbirth: req.body.dateofbirth3
-                }
-                user.photo = user.gravatar();
-                user.save((err) => {
-                    if (err) { return next(err) }
-                    unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                        .header({'Accept' : 'application/json'})
-                        .send({
-                            'username': process.env.SMSSMARTUSERNAME,
-                            'password': process.env.SMSSMARTPASSWORD,
-                            'sender': process.env.SMSSMARTSENDERID,
-                            'recipient' : `234${user.phonenumber}`,
-                            'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
-                            'routing': 4,
+    async.waterfall([
+        function (done){
+            User.countDocuments({ role: 8 })
+                .exec((err, count)=>{
+                    if(err) return next (err)
+                User.findOne({ phonenumber: req.body.phone }, function(err, existingUserPhone){
+                    if (existingUserPhone){
+                        req.flash('error',  'Account with that phone number already exists.');
+                        return res.redirect('/add-patient');
+                    }else{
+                        const user = new User()
+                        user.patientId = `DOCH/000000${count + 1}`
+                        user.email = req.body.email;
+                        user.creator = req.user._id;
+                        user.firstname = req.body.fname;
+                        user.lastname = req.body.lname;
+                        user.oldpatientId = req.body.oldpatientID;
+                        user.createdby = 2;
+                        user.isVerified = true;
+                        user.religion = req.body.religion;
+                        user.gender = req.body.gender;
+                        user.mstatus = req.body.mstatus;
+                        user.phonenumber = req.body.phone;
+                        user.lga = req.body.lga;
+                        user.birthday = req.body.birthday;
+                        user.role = patient;
+                        user.address = req.body.address;
+                        user.retainership = req.body.retainership;
+                        user.nextofkinname = req.body.nextofkinname;
+                        user.nextofkinphone = req.body.nextofkinphone;
+                        user.nextofkinaddress = req.body.nextofkinaddress;
+                        user.relationship = req.body.relationship;
+                        user.city = req.body.city;
+                        user.state = req.body.state;
+                        user.country = req.body.country;
+                        user.retainershipname = user.retainershipname;
+                        user.hmoname = user.hmoname;
+                        user.patientcode = user.patientcode;
+                        user.account = {
+                            registration: req.body.registration,
+                            consultation: req.body.consultation,
+                        };
+                        
+                        user.photo = user.gravatar();
+                        user.save((err) => {
+                            if (err) { return next(err) }
+                            done(err, user)
                         })
-                        .end(function (response) {
-                            console.log(response.body);
-                        });
-                    req.flash('success', 'Patient has been created')
-                    res.redirect('/dashboard');
+                    }
                 })
-            }
-        })
-    })
+            })
+        }, 
+        function(user, done){
+            const triage = new Triage()
+            triage.creator = req.user._id;
+            triage.patient = user._id;
+            triage.weight = req.body.weight;
+            triage.height = req.body.height;
+            triage.bmi = req.body.bmi;
+            triage.rvs = req.body.rvs;
+            triage.pulse = req.body.pulse;
+            triage.respiration = req.body.respiration;
+            triage.temperature = req.body.temperature;
+            triage.heartrate = req.body.heartrate;
+            triage.dystolic = req.body.dystolic;
+            triage.systolic = req.body.systolic;
+            triage.muac = req.body.muac;
+            triage.save((err) => {
+                if (err) { return next (err) }
+                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                    .header({'Accept' : 'application/json'})
+                    .send({
+                        'username': process.env.SMSSMARTUSERNAME,
+                        'password': process.env.SMSSMARTPASSWORD,
+                        'sender': process.env.SMSSMARTSENDERID,
+                        'recipient' : `234${user.phonenumber}`,
+                        'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
+                        'routing': 4,
+                    })
+                    .end(function (response) {
+                        console.log(response.body);
+                    });
+            })
+            User.update(
+                {
+                    _id: triage.patient
+                },
+                {
+                    $push: { triages: triage._id }
+                }, function (err, count) {
+                    if (err) { return next(err) }
+                    req.flash('success', ' Patient was created successfully')
+                    res.redirect('/dashboard')
+                }
+            );
+
+        }
+    ])
+    
 })
 
 //CREATE DOCTOR SCHEDULE
@@ -1332,7 +1336,7 @@ router.route('/triage/:id')
     .post(middleware.isLoggedIn, (req, res, next)=>{
         const triage = new Triage()
             triage.creator = req.user._id;
-            triage.patient = req.body.patientid;
+            triage.patient = req.params.id
             triage.weight = req.body.weight;
             triage.height = req.body.height;
             triage.bmi = req.body.bmi;
@@ -1467,7 +1471,7 @@ router.route('/add-drug')
                 })
                 drug.save((err)=>{
                     if(err) return next(err)
-                    req.flash('success', 'Drug brand added successfully!')
+                    req.flash('success', 'Generic Drug added successfully!')
                     res.redirect('/add-drug')
                 })
             }
@@ -1744,17 +1748,23 @@ router.route('/consultation/:id')
                     // })
                     Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
                         if (err) { return next(err) }
+                       
                         Imaging.find({}, (err, imaging)=>{
                             if (err) { return next(err) }
-                            appointment.taken = true;
-                            appointment.save((err)=>{
-                                if(err){
-                                    req.flash('error', "Error taking the appointment")
-                                    return res.redirect('back')
-                                }
-                                res.render('app/add/add_patient_consultation', 
-                                { labs, user, drugs, imaging, serology })
-                            })
+                            if(appointment.taken){
+                                req.flash('error', 'Appointment already taken')
+                                return res.redirect('back')
+                            }else{
+                               appointment.taken = true;
+                               appointment.save((err)=>{
+                                   if(err){
+                                       req.flash('error', "Error taking the appointment")
+                                       return res.redirect('back')
+                                   }
+                                   res.render('app/add/add_patient_consultation', 
+                                   { labs, user, drugs, imaging, serology })
+                               })
+                            }
                         })
                         
                     })

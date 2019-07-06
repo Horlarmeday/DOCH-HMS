@@ -81,7 +81,7 @@
                                                         <dl class="dl-horizontal row">
                                                             <dt style="font-size:1em" class="col-sm-3">Patient Name</dt>
                                                             <dd class="col-sm-9"><%= user.firstname %> <%= user.lastname %></dd>
-                                                            <dt style="font-size:1em" class="col-sm-3">Phone Number</dt>
+                                                            <dt style="font-size:1em" class="col-sm-3">Phone </dt>
                                                             <dd class="col-sm-9">+234<%= user.phonenumber %></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Marital Status</dt>
                                                             <% if(user.mstatus){ %>
@@ -131,15 +131,15 @@
                                                     </div>
                                                     <div class="panel-body">
                                                             <dl class="dl-horizontal row">
-                                                                    <dt style="font-size:1em" class="col-sm-3">Pulse</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[0].pulse %> <span style="color: darkorange">(min)</dd>
+                                                                    <dt style="font-size:1em" class="col-sm-3">RVS</dt>
+                                                                    <dd class="col-sm-9"><%= user.triages[0].rvs %> <span style="color: darkorange">(rvs)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Temperature</dt>
                                                                     <dd class="col-sm-9"><%= user.triages[0].temperature %> <span style="color: darkorange">(°C)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Respiration</dt>
                                                                     <dd class="col-sm-9"><%= user.triages[0].respiration %> <span style="color: darkorange">(B/min)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Blood Pressure</dt>
-                                                                    <% if(user.triages[0].blood){ %>
-                                                                        <dd class="col-sm-9"><%= user.triages[0].blood %> <span style="color: darkorange">(mmHg)</dd>
+                                                                    <% if(user.triages[0].dystolic){ %>
+                                                                        <dd class="col-sm-9"><%= user.triages[0].dystolic %>/<%= user.triages[0].systolic %> <span style="color: darkorange">(mmHg)</dd>
                                                                     <% }else{ %>
                                                                         <dd class="col-sm-9">-</dd>
                                                                     <% } %>
@@ -178,7 +178,7 @@
                                     <div class="card-block">
                                         <div class="sub-title">Reason of Visit <span style="color:red">*</span> </div>
                                         <div class="col-sm-12">
-                                            <textarea class="ml-4" name="visit" cols="100" rows="26" placeholder="" required></textarea>
+                                            <textarea class="" name="visit" cols="100" rows="26" placeholder="" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +201,7 @@
                                             <div class="form-group row">
                                                 <label class="col-sm-2 col-form-label">General Examination</label>
                                                 <div class="col-sm-10">
-                                                    
+
                                                     <textarea name="observation" id="" cols="55" rows="10" placeholder="" required></textarea>
                                                 </div>
                                             </div>
@@ -254,7 +254,7 @@
                                     <div class="card-block">
                                         <div class="sub-title">Diagnosis <span style="color:red">*</span> </div>
                                         <div class="col-sm-12">
-                                            <textarea class="ml-4" name="diagnosis" id="" cols="100" rows="12" placeholder="" required></textarea>
+                                            <textarea class="" name="diagnosis" id="" cols="100" rows="12" placeholder="" required></textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -274,7 +274,7 @@
                                     <div class="card-block">
                                         <div class="sub-title">Treatment <span style="color:red">*</span> </div>
                                         <div class="col-sm-12">
-                                            <textarea class="ml-4" name="treatment" id="" cols="100" rows="10" placeholder=""  required></textarea>
+                                            <textarea class="" name="treatment" id="" cols="100" rows="10" placeholder=""  required></textarea>
                                         </div>
                                        
                                         <button class="btn btn-info float-right" type="submit">Save</button>
@@ -485,18 +485,32 @@
                                                     <label class="col-sm-2 col-form-label">Select Generic Drug </label>
                                                     <div class="col-sm-6">
                                                         <select name="drug_brand[]" class="form-control js-example-basic-multiple" multiple>
-                                                            <option disabled>Choose Drug Brand</option>
+                                                            <option disabled>Choose Drug </option>
                                                             <% drugs.forEach((drug)=>{ %>
                                                                 <option value="<%= drug._id %>"><%= drug.name %></option>
                                                             <% }) %>
                                                         </select>
                                                     </div>
                                             </div>
+                                            <div class="form-group row">
+                                                    <label class="col-sm-2 col-form-label">Price</label>
+                                                    <div class="col-sm-6">
+                                                       <input id="drugPrice" type="text" class="form-control" disabled>
+                                                    </div>
+                                            </div>
                                             
                                                 <div class="form-group row">
                                                     <label class="col-sm-2 col-form-label">Dose</label>
                                                     <div class="col-sm-6">
-                                                        <input type="text" name="dose" class="form-control" placeholder="Dosage" required>
+                                                        <select name="dose" class="form-control">
+                                                            <option>Select</option>
+                                                            <option value="5mg">5mg</option>
+                                                            <option value="250mg">250mg</option>
+                                                            <option value="500mg">500mg</option>
+                                                            <option value="750mg">750mg</option>
+                                                            <option value="1000mg">1000mg</option>
+                                                        </select>
+                                                       
                                                     </div>
                                                 </div>
                                                 <div class="form-group row">

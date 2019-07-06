@@ -14,7 +14,18 @@
           headerTag: "h3",
           bodyTag: "fieldset",
           transitionEffect: "slideLeft",
-          autoFocus: true
+          autoFocus: true,
+          onFinished: function(event, currentIndex) {
+           var finish = window.confirm('Are you sure?')
+           if(finish){
+               $('.emergency-form').submit()
+           }else{
+               window.close()
+           }
+            // $('.content input[type="text"]').val('');
+            // $('.content input[type="email"]').val('');
+            // $('.content input[type="password"]').val('');
+        }
       });
       $("#verticle-wizard").steps({
           headerTag: "h3",

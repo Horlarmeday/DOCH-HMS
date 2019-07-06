@@ -295,6 +295,8 @@ $(document).ready(function() {
         $('.form-block3').show()
     });
 
+    
+
 })
 
 function openPatientId() {
@@ -342,4 +344,12 @@ function getUserAge() {
             $('#hrate').show()
         }
     })
-}   
+}
+
+//FUnction to calciulate BMI
+function bmiCalc(){
+    let weight = $('#weight').val()
+    let height = $('#height').val()
+    let bmi = weight/(height**2)
+    $('#bmi').val(bmi)
+}
