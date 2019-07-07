@@ -126,6 +126,7 @@
                                                     <th>Name</th>
                                                     <th>Reason for Visit</th>
                                                     <th>Drugs Prescribed</th>
+                                                    <th>PrescribedBy</th>
                                                     <th>Usage</th>
                                                     <th>Status</th>
                                                     <th>Payment Status</th>
@@ -146,6 +147,7 @@
                                                                 <p style="font-weight: 700"><%= test.name %></p>
                                                             <% }) %>
                                                     </td>
+                                                    <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
                                                     <td>
                                                         
                                                         Dose: <%= consultation.prescription.dose %> <br>

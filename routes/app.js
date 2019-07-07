@@ -239,6 +239,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .populate('doctor')
             .populate('patient')
             .populate('labtestObject')
+            .deepPopulate('labtestObject.lab')
             .exec((err, consultations)=>{
                 if(err) return next (err)
                 Appointment.find({}, (err, appointments)=>{
@@ -1842,20 +1843,19 @@ router.route('/consultation/:id')
                        
                         Imaging.find({}, (err, imaging)=>{
                             if (err) { return next(err) }
-                            if(appointment.taken){
-                                req.flash('error', 'Appointment already taken')
-                                return res.redirect('back')
-                            }else{
+                            // if(appointment.taken){
+                            //     req.flash('error', 'Appointment already taken')
+                            //     return res.redirect('/dashboard')
+                            // }else{
                                appointment.taken = true;
                                appointment.save((err)=>{
                                    if(err){
-                                       req.flash('error', "Error taking the appointment")
-                                       return res.redirect('back')
+                                      return next (err)
                                    }
                                    res.render('app/add/add_patient_consultation', 
                                    { labs, user, drugs, imaging, serology })
                                })
-                            }
+                            //}
                         })
                         
                     })
@@ -1885,7 +1885,7 @@ router.route('/consultation/:id')
     consultation.save((err)=>{
         if(err) return next(err)
     })
-    User.update(
+    User.updateOne(
         {
             _id: req.params.id
         },
@@ -1915,7 +1915,7 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                 consultation.labstatus = true;
                 consultation.save((err)=>{
                     if(err) return next (err)
-                    res.redirect('/consultations')
+                    res.redirect('/dashboard')
                 })
             })
         })
@@ -1945,7 +1945,7 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 consultation.save((err)=>{
                     if(err) return next (err)
-                    res.redirect('/consultations')
+                    res.redirect('/dashboard')
                 })
             })
         })
@@ -1990,6 +1990,7 @@ router.post('/labtest-finish', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.findOne({_id: test}, (err, consultation)=>{
         if(err) return next (err)
         consultation.labtestfinish = true;
+        consultation.labResultDate = Date.now()
         consultation.save((err)=>{
             if(err) return next (err)
             res.redirect('back')
@@ -2227,7 +2228,16 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
     User.findOne({ _id: req.params.id})
         .populate('appointments')
         .populate('consultations')
-        .deepPopulate('appointments.doctor')
+        .populate('payments')
+        .populate('triages')
+        .populate('visits')
+        .deepPopulate([
+            'appointments.doctor',
+            'consultations.drusObject',
+            'consultations.doctor',
+            'consultations.labtestObject',
+            'payments.services'
+        ])
         .exec((err, patient)=>{
         if(err) {return next (err)}
         var birthday = new Date(patient.birthday)
@@ -2240,6 +2250,16 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
             age
         }
         res.render('app/view/user_profile', { patient, age })
+    })
+})
+
+//VIEW LAB RESULT
+router.get('/lab-result', middleware.isLoggedIn, (req, res, next)=>{
+    Consultation.findOne({_id: req.params.id})
+    .populate('labtestObject')
+    .exec((err, consultation)=>{
+        if(err) return next (err)
+        res.render('app/view/lab_result', { consultation })
     })
 })
 

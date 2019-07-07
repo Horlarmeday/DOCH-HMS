@@ -139,17 +139,19 @@
                                                 <tr >
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
-                                                    <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
+                                                    <td> <a href="/patient/<%= consultation.patient._id %>"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
                                                     <td> <%= consultation.visit %></td>
                                                    
                                                     <td>
                                                             <% consultation.labtestObject.forEach((test)=>{ %>
-                                                                <p style="font-weight: 700"><%= test.name %></p>
+                                                                <p style="font-weight: 700"><%= test.name %>
+                                                                <span style="color: sandybrown">(<%= test.lab.name %>)</span>
+                                                                </p>
                                                            <% }) %>
                                                        
                                                     </td>
                                                     <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
-                                                    <% if(consultation.labpaid === false){ %>
+                                                    <% if(!consultation.labpaid){ %>
                                                     <td><label class="label label-md bg-warning">Not paid</label></td>
                                                     <% }else{ %>
                                                     <td><label class="label label-md bg-success">paid</label></td>
@@ -157,11 +159,14 @@
                                                     <td>
                                                         <a class="btn btn-info btn-sm" href="/microbiology-result/<%= consultation.patient._id %>">Add Result</a> M<br><br>
                                                         <a class="btn btn-info btn-sm" href="/haematology-result/<%= consultation.patient._id %>">Add Result</a> HS<br><br>
-                                                        <a class="btn btn-info btn-sm" href="//chemical-pathology-result/<%= consultation.patient._id %>">Add Result</a> CP
+                                                        <a class="btn btn-info btn-sm" href="/chemical-pathology-result/<%= consultation.patient._id %>">Add Result</a> CP
                                                     </td>
                                                     <td>
-                                                        <button id="<%= consultation._id %>" class="btn btn-success finish">Finish?</button>
-
+                                                        <% if(!consultation.labpaid){ %>
+                                                            <button class="btn btn-default ">Not Paid</button>
+                                                        <% }else{ %>
+                                                                <button id="<%= consultation._id %>" class="btn btn-success finish">Send Result?</button>
+                                                        <% } %>
                                                     </td>
                                                     <!-- <td><a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter3">Add Result</a></td> -->
                                                 </tr>

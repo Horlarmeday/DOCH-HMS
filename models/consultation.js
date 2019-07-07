@@ -1,5 +1,5 @@
 const mongoose =  require('mongoose');
-
+const deepPopulate = require('mongoose-deep-populate')(mongoose)
 const consultationSchema = new mongoose.Schema({
     doctor: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
@@ -293,5 +293,6 @@ const consultationSchema = new mongoose.Schema({
     labResultDate: {type: Date},
     created: {type: Date, default: Date.now}
 });
-
+//Populates schema to any level
+consultationSchema.plugin(deepPopulate)
 module.exports = mongoose.model('Consultation', consultationSchema);
