@@ -2236,6 +2236,7 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
             'consultations.drusObject',
             'consultations.doctor',
             'consultations.labtestObject',
+            'consultations.drugsObject',
             'payments.services'
         ])
         .exec((err, patient)=>{

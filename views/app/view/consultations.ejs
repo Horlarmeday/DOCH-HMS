@@ -86,10 +86,8 @@
                                                     <% if(consultation.pharmacystatus){ %>
                                                     <td>  
                                                         <% consultation.drugsObject.forEach((test)=>{ %>
-                                                        
                                                             <p style="font-weight: 700"><%= test.name %></p>
                                                         <% }) %>
-                                                        
                                                     </td>
                                                     <% }else{ %>
                                                         <td> <i style="color: red" class="ti-alert"></i> No Prescribed Drugs yet</td>

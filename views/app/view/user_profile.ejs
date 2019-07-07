@@ -400,9 +400,9 @@
                                                                                     <tr>
                                                                                         <td></td>
                                                                                         <td>
-                                                                                                <% consultation.drugsObject.forEach((test)=>{ %>
-                                                                                                    <p style="font-weight: 700"><%= test.name %></p>
-                                                                                                <% }) %>
+                                                                                            <% consultation.drugsObject.forEach((drug)=>{ %>
+                                                                                                <p style="font-weight: 700"><%= drug.name %></p>
+                                                                                            <% }) %>
                                                                                         </td>
                                                                                         <td>
                                                                                             Dose: <%= consultation.prescription.dose %> <br>
@@ -411,7 +411,7 @@
                                                                                             Direction: <%= consultation.prescription.direction %>
                                                                                         </td>
                                                                                         <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
-                                                                                        <% if(consultation.prescriptionDate){ %>
+                                                                                        <% if(consultation.prescriptionDate !== undefined){ %>
                                                                                           <td><%= consultation.prescriptionDate.toDateString() %></td>
                                                                                           <% }else{ %>
                                                                                             <td></td> 
@@ -456,7 +456,7 @@
                                                                                                     <p style="font-weight: 700"><%= test.name %></p>
                                                                                                <% }) %>
                                                                                         </td>
-                                                                                        <% if(consultation.prescriptionDate){ %>
+                                                                                        <% if(consultation.labResultDate !== undefined){ %>
                                                                                         <td><%= consultation.labResultDate.toDateString() %></td>
                                                                                         <% }else{ %>
                                                                                            <td></td> 
