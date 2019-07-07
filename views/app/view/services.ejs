@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Ante Natal Patients</h4>
+                        <h4>Services</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,9 +35,9 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="/all-antenatal">Ante Natal Records</a>
+                            <li class="breadcrumb-item"><a href="/services">Services</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="!#"></a>
+                            <li class="breadcrumb-item"><a href="/add-service">Add Service</a>
                             </li>
                         </ul>
                     </div>
@@ -50,7 +50,7 @@
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>All Ante Natal Records</h5>
+                                    <h5>Services</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -63,37 +63,27 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Patient ID</th>
-                                                    <th>ANC ID</th>
-                                                    <th>Patient Name</th>
-                                                    <th>Age</th>
-                                                    <th>Date Registered</th>
+                                                    <th>Service</th>
+                                                    <th>Price</th>
                                                     <th>Status</th>
-                                                    <th>Action</th>
+                                                    <th>Posted By</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% ancs.forEach((anc)=>{ %>
+                                                <% services.forEach((service)=>{ %>
                                                 <tr>
                                                     <td></td>
-                                                    <td><%= anc.patient.patientId %></td>
-                                                    <td> <%= anc.ancId %></td>
-                                                    <td> <%= anc.patient.firstname %>  <%= anc.patient.lastname %></td>
-                                                    <td> <%= anc.age %></td>
-                                                    <td> <%= anc.created.toDateString() %></td>
-                                                    <% if(anc.status){ %>
+                                                    <td><%= service.service %></td>
+                                                    <td><%= service.price %></td>
+                                                    
+                                                    <% if (service.status === true){ %>
                                                     <td><label class="label label-md bg-success">Active</label></td>
                                                     <% }else{ %>
-                                                    <td><label class="label label-md bg-warning">Inactive</label></td>
+                                                    <td><label class="label label-md bg-danger">Inctive</label></td>
                                                     <% } %>
-                                                    <% if(anc.status){ %>
-                                                   <td><a class="btn btn-success" href="/patient-delivery-information/<%= anc.patient._id %>">Add Delivery Info</a>
-                                                   <a class="btn btn-danger" href="/post-natal-examination/<%= anc.patient._id %>">Post Natal Examination</a></td>
-                                                   <% }else{ %>
-                                                    <td>Not Active</td>
-                                                    <% } %>
+                                                    <td><%= service.creator.firstname %> <%= service.creator.lastname %></td>
                                                 </tr>
-                                                <% }) %>
+                                                <% })  %>
                                             </tbody>
                                         </table>
                                     </div>

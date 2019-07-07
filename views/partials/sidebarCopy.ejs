@@ -191,30 +191,30 @@
                                 </ul>
                         </li>
                         <% } %>
-                        <% if(currentUser.role == 1 || currentUser.role === 2){ %>
-                        <!-- <li class="pcoded-hasmenu">
+                        <% if(currentUser.role == 1 || currentUser.role === 6){ %>
+                        <li class="pcoded-hasmenu">
                                 <a href="javascript:void(0)" data-i18n="nav.navigate.main">
-                                    <span class="pcoded-micon"><i class="ti-timer"></i></span>
-                                    <span class="pcoded-mtext">Doctor Schedule</span>
+                                    <span class="pcoded-micon"><i class="fa fa-server"></i></span>
+                                    <span class="pcoded-mtext">Services</span>
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                                 <ul class="pcoded-submenu">
                                     <li class=" ">
-                                        <a href="/schedules" data-i18n="nav.navigate.navbar">
+                                        <a href="/services" data-i18n="nav.navigate.navbar">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                            <span class="pcoded-mtext">Schedule List</span>
+                                            <span class="pcoded-mtext">Services</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                     <li class=" ">
-                                        <a href="/add-schedule" data-i18n="nav.navigate.navbar-inverse">
+                                        <a href="/add-service" data-i18n="nav.navigate.navbar-inverse">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                            <span class="pcoded-mtext">Add Schedule</span>
+                                            <span class="pcoded-mtext">Add Service</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                     </li>
                                 </ul>
-                        </li> -->
+                        </li>
                         <% } %>
                         <% if(currentUser.role == 1 || currentUser.role === 5 || currentUser.role === 4){ %>
                             <li class="pcoded-hasmenu">
@@ -596,11 +596,25 @@
                                 <li class=" ">
                                     <a href="/accounts" data-i18n="nav.navigate.navbar">
                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                        <span class="pcoded-mtext">Billings</span>
+                                        <span class="pcoded-mtext">Accounts</span>
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                 </li>
                                 <% } %>
+                                <li class=" ">
+                                    <a href="/billings" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Billings</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                                <li class=" ">
+                                    <a href="/add-billing" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Add Billing</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
                                 <li class=" ">
                                     <a href="/registration-fees" data-i18n="nav.advance-components.draggable">
                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

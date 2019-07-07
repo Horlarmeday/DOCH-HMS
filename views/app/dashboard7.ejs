@@ -137,7 +137,7 @@
                                             <tbody>
                                                 <% users.forEach((patient) => { %>
                                                     <% if(patient.role === 8){ %>
-                                                    <% if(patient.account.paid === false){ %>
+                                                    
                                                 <tr>
                                                     <%
                                                         var birthday = new Date(patient.birthday)
@@ -179,12 +179,17 @@
                                                         <td><label class="label label-md bg-success">paid</label></td>
                                                         <% } %>
                                                         <td>
-                                                            <button value="<%= total %>" id="pnotify-success" name="<%= patient._id %>" type="button" class="btn btn-success pay"><i class="ti-money"></i> Paid?</button>
-                                                            <!-- <a href="/invoice/<%= patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a> -->
+                                                            <% if(!patient.account.paid){ %>
+                                                               <button value="<%= total %>" name="<%= patient._id %>" type="button" class="btn btn-success pay"><i class="ti-money"></i> Paid?</button>
+                                                            <% } %>
+                                                            <% if(patient.account.paid){ %>
+                                                               <a href="/invoice/<%= patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                            <% } %>
+                                                        </td>
                                                    
                                                 </tr>
                                                 
-                                                <% } %>
+                                               
                                                 <% } %>
                                                 <% }) %>
                                             </tbody>
@@ -223,7 +228,7 @@
                                             </thead>
                                             <tbody>
                                                 <% consultations.forEach((consultation) => { %>
-                                                    <% if(!consultation.labpaid){ %>
+                                                    
                                                 <tr>
                                                      
                                                         <td></td>
@@ -259,11 +264,15 @@
                                                         <td><label class="label label-md bg-success">paid</label></td>
                                                         <% } %>
                                                         <td>
+                                                         <% if(!consultation.labpaid){ %>
                                                             <button value="<%= totalAmount %>" id="pnotify-success" name="<%= consultation._id %>" type="button" class="btn btn-success labpay"><i class="ti-money"></i> Paid?</button>
-                                                            <!-- <a href="/invoice/<%= consultation.patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a> -->
-                                                    
+                                                         <% } %>   
+                                                         <% if(consultation.labpaid){ %>
+                                                            <a href="/labtest-invoice/<%= consultation.patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                         <% } %>   
+                                                         </td>
                                                 </tr>
-                                                <% } %>
+                                               
                                                 <% }) %>
                                             </tbody>
                                         </table>
@@ -300,7 +309,7 @@
                                             </thead>
                                             <tbody>
                                                     <% consultations.forEach((consultation) => { %>
-                                                        <% if(!consultation.pharmacypaid){ %>
+                                                       
                                                 <tr>
                                                    
                                                     
@@ -337,13 +346,16 @@
                                                         <td><label class="label label-md bg-success">paid</label></td>
                                                         <% } %>
                                                         <td>
-                                                            <button value="<%= totalPrice %>" id="pnotify-success" name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"><i class="ti-money"></i> Paid?</button>
-                                                            <!-- <a href="/invoice/<%= consultation.patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a> -->
-                                                    
+                                                            <% if(!consultation.pharmacypaid){ %>
+                                                            <button value="<%= totalPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"><i class="ti-money"></i> Paid?</button>
+                                                            <% } %>
+                                                            <% if(consultation.pharmacypaid){ %>
+                                                            <a href="/pharmacy-invoice/<%= consultation.patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                            <% } %>
                                                 </tr>
                                                 
                                                
-                                                <% } %>
+                                                
                                                 <% }) %>
                                             </tbody>
                                         </table>

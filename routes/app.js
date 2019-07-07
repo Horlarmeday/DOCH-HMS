@@ -8,6 +8,7 @@ const Consultation = require('../models/consultation');
 const SMS = require('../models/sms');
 const NurseReport = require('../models/nurseReport')
 const Theater = require('../models/theater')
+const Service = require('../models/service')
 const Vendor = require('../models/vendor')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
@@ -270,6 +271,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         User.find({}, (err, users)=>{
             if(err) return next (err)
             Consultation.find({})
+            .sort('-created')
             .populate('drugsObject')
             .populate('labtestObject')
             .populate('patient')
@@ -277,7 +279,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 if(err) return next (err)
                 res.render('app/dashboard7', { users, consultations })
             })
-        })
+        }).sort('-createdAt')
     }else if(req.user.role === 10){
         //EMERGENCY
         User.find({})
@@ -484,11 +486,12 @@ router.get('/registration-fees', middleware.isLoggedIn, (req, res, next)=>{
         .populate('drugsObject')
         .populate('labtestObject')
         .populate('patient')
+        
         .exec((err, consultations)=>{
             if(err) return next (err)
             res.render('app/view/reg_fee', { users, consultations })
         })
-    })
+    }).sort('-createdAt')
 })
 
 //LABORATORY FEE
@@ -499,6 +502,7 @@ router.get('/laboratory-fees', middleware.isLoggedIn, (req, res, next)=>{
         .populate('drugsObject')
         .populate('labtestObject')
         .populate('patient')
+        .sort('-created')
         .exec((err, consultations)=>{
             if(err) return next (err)
             res.render('app/view/lab_fee', { users, consultations })
@@ -514,6 +518,7 @@ router.get('/pharmacy-fees', middleware.isLoggedIn, (req, res, next)=>{
         .populate('drugsObject')
         .populate('labtestObject')
         .populate('patient')
+        .sort('-created')
         .exec((err, consultations)=>{
             if(err) return next (err)
             res.render('app/view/pharm_fee', { users, consultations })
@@ -1509,6 +1514,8 @@ router.route('/add-brand-name')
         
     })
 
+
+
 //VIEW ALL BRAND NAMES
 router.get('/brand-names', middleware.isLoggedIn, (req, res, next)=>{
     Drug.find({}, (err, drugs)=>{
@@ -1535,6 +1542,90 @@ router.get('/drugs', middleware.isLoggedIn, (req, res, next)=>{
     Drug.find({}, (err, drugs)=>{
         if(err) return next (err)
         res.render('app/view/drugs', { drugs })
+    })
+})
+
+//ADD SERVICE
+router.route('/add-service')
+    .get(middleware.isLoggedIn, (req, res, next) => {
+        res.render('app/add/add_service')
+    })
+    .post(middleware.isLoggedIn, (req, res, next) => {
+        const service = new Service({
+            creator: req.user._id,
+            service: req.body.service,
+            price: req.body.price
+        })
+        service.save((err)=>{
+            if(err) return next(err)
+            req.flash('success', 'Service added successfully!')
+            res.redirect('/add-service')
+        })
+    })
+
+
+//ADD BILLING
+router.route('/add-billing')
+    .get(middleware.isLoggedIn, (req, res, next) => {
+        Service.find({}, (err, services)=>{
+            if(err) return next (err)
+            User.find({}, (err, users)=>{
+                if(err) return next (err)
+                res.render('app/add/add_billing', {services, users})
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next) => {
+        const payment = new Payment()
+            payment.patient = req.body.patient;
+            payment.initiator = req.user._id;
+            payment.amount = req.body.totalamount;
+            var services = req.body.service;
+            var allservices = services.map(s => mongoose.Types.ObjectId(s))
+            payment.services = allservices;
+            modeofpayment = req.body.modeofpayment;
+            comment = req.body.comment;
+            
+        payment.save((err)=>{
+            if(err) return next(err)
+        })
+        User.update(
+            {
+                _id: payment.patient
+            },
+            {
+                $push: {payments: payment._id}
+            },
+            function(err, count){
+                if(err) return next(err)
+                req.flash('success', 'Billing added successfully!')
+                res.redirect('/billings')
+            }
+        )
+    })
+
+
+//VIEW ALL BILLINGS
+router.get('/billings', middleware.isLoggedIn, (req, res, next)=>{
+    Payment.find({})
+    .populate('patient')
+    .populate('initiator')
+    .populate('services')
+    .sort('-createdAt')
+    .exec((err, payments)=>{
+        if(err) return next (err)
+        res.render('app/view/billings', {payments })
+    })
+})
+
+//VIEW SERVICES
+router.get('/services', middleware.isLoggedIn, (req, res, next)=>{
+    Service.find({})
+    .sort('-created')
+    .populate('creator')
+    .exec((err, services)=>{
+        if(err) return next (err)
+        res.render('app/view/services', {services })
     })
 })
 
@@ -2582,7 +2673,7 @@ router.route('/accounts')
                 if (err) return next(err)
                 const payment = new Payment({
                     patient: user._id,
-                    amount: regamount,
+                    amount: req.body.regamount,
                     type: 'Registration & Consultation Fee',
                     initiator: req.user._id,
                     status: true
@@ -2595,7 +2686,7 @@ router.route('/accounts')
                         to: 'admin@doch.com.ng',
                         from: 'DOCH Account<noreply@doch.com.ng>',
                         subject: 'New Payment Made',
-                        html: `<p>Hello Admin,\n\n  A new patient ${user.firstname} ${user.lastname} has just made the sum of &#8358;${regamount} for registration and consultation payment, Thank You.\n</p>`,
+                        html: `<p>Hello Admin,\n\n  A new patient ${user.firstname} ${user.lastname} has just made the sum of &#8358;${payment.amount} for registration and consultation payment, Thank You.\n</p>`,
                     };
                     sgMail.send(msg);
                     User.update(
@@ -2616,6 +2707,19 @@ router.route('/accounts')
         })
     })
 
+//APPROVINg BILIING PAYMENT
+router.post('/approve-billing', middleware.isLoggedIn, (req, res, next)=>{
+    let approve = req.body.approve
+    Payment.findOne({_id: approve}, (err, payment)=>{
+        if(err) return next (err)
+        payment.status = true
+        payment.save((err)=>{
+            if(err) return next (err)
+            res.redirect('back')
+        })
+    })
+})
+
 //LAB TESTS PAYMENT
 router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
     let consultID = req.body.consultationId
@@ -2629,7 +2733,7 @@ router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
             if (err) return next(err)
             const payment = new Payment({
                 patient: consult.patient,
-                amount: labamount,
+                amount: req.body.labamount,
                 type: 'Lab Test Payment',
                 initiator: req.user._id,
                 status: true
@@ -2641,7 +2745,7 @@ router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made payment of &#8358;${labamount} for his/her Lab tests , Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made payment of &#8358;${payment.labamount} for his/her Lab tests , Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
                 User.update(
@@ -2675,7 +2779,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
             if (err) return next(err)
             const payment = new Payment({
                 patient: consult.patient,
-                amount: amount,
+                amount: req.body.amount,
                 type: 'Drugs Payment',
                 initiator: req.user._id,
                 status: true
@@ -2687,7 +2791,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${amount} for his/her drugs, Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
                 User.update(
@@ -2756,7 +2860,7 @@ router.get('/labtest-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
         })
 });
 
-//Lab Test Invoice
+//Pharmacy  Invoice
 router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
     .populate('patient')
@@ -2765,6 +2869,17 @@ router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     .exec((err, consultation)=>{
         if(err) return next (err)
         res.render('app/view/pharminvoice', { consultation })
+    })
+});
+
+//Pharmacy  Invoice
+router.get('/billing-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
+    Payment.findOne({ _id: req.params.id})
+    .populate('patient')
+    .populate('services')
+    .exec((err, payment)=>{
+        if(err) return next (err)
+        res.render('app/view/billinginvoice', { payment })
     })
 });
 
@@ -3082,6 +3197,48 @@ router.route('/patient-delivery-information/:id')
                 opvo: req.body.opvo,
                 notifieddate: req.body.notifieddate
             }
+            anc.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Patient Delivery Info was saved successfully')
+                res.redirect('/all-antenatal')
+            })
+        }) 
+    })
+
+//POST NATAL EXAMINATION
+router.route('/post-natal-examination/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({_id: req.params.id}, (err, patient)=>{
+            if(err) return next (err)
+            res.render('app/add/add_post_delivery', {patient})
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+            if(err) {
+                req.flash('error', 'Patient ANC record cannot be found')
+                return res.redirect('back')
+            }
+            anc.postnatal = {
+                bp: req.body.bp,
+                temp: req.body.temp,
+                pulse: req.body.pulse,
+                respiration: req.body.respiration,
+                generalcondition: req.body.generalcondition,
+                involutionofuterus: req.body.involutionofuterus,
+                lochia: req.body.lochia,
+                episotomy: req.body.episotomy,
+                pelvicexam: req.body.pelvicexam,
+                smeardate: req.body.smeardate,
+                result: req.body.result,
+                hb: req.body.hb,
+                babycondition: req.body.babycondition,
+                wt: req.body.wt,
+                reflexes: req.body.reflexes,
+                feeding: req.body.feeding,
+                umbilicalcord: req.body.umbilicalcord,
+            }
+            anc.status = false;
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Patient Delivery Info was saved successfully')

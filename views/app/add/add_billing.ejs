@@ -1,0 +1,120 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+ <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+    <!-- Main-body start -->
+    <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Add Billing</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/billings">Billings</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Add Billing</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page header end -->
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Basic Form Inputs card start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Add Billings</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-sm-12 mobile-inputs">
+                                            <form method="POST">
+                                                <!-- <div class="form-group">
+                                                    <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                </div> -->
+                                                <div class="form-group">
+                                                        <label for="">Patient</label>
+                                                        <select name="patient" class="form-control js-example-basic-single">
+                                                            <option selected disabled>Select</option>
+                                                            <% users.forEach((user)=>{ %>
+                                                                <% if(user.role == 8){ %>
+                                                                    <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                <% } %>
+                                                            <% }) %>
+                                                        </select><br><br>
+                                                    <!-- <div class="col-sm-12"> -->
+                                                        <label for="">Services</label>
+                                                        <select id="theservice" name="service" class="form-control js-example-basic-multiple" onchange="serviceTotalAmount()" multiple>
+                                                            <option disabled>Select</option>
+                                                            <% services.forEach((service)=>{ %>
+                                                                <option value="<%= service._id %>"><%= service.service %></option>
+                                                            <% }) %>
+                                                        </select><br><br>
+                                                        
+                                                    <!-- </div> -->
+                                                    <!-- <div class="col-sm-12"> -->
+                                                        <label for="">Total Amount</label>
+                                                        <input id="serviceprice" type="text" name="totalamount" class="form-control" ><br>
+                                                    <!-- </div> -->
+                                                        <!-- <label for="">Dosage</label>
+                                                        <input type="text" name="drugname" class="form-control" placeholder="Dosage"><br> -->
+
+                                                        <label for="">Mode of Payment</label>
+                                                        <select name="modeofpayment" class="form-control">
+                                                            <option>Select</option>
+                                                            <option value="Card">Card</option>
+                                                            <option value="ATM">ATM</option>
+                                                            <option value="Transfer">Transfer</option>
+                                                            <option value="Cash">Cash</option>
+                                                        </select><br>
+                                                        <label for="">Comment</label>
+                                                        <input type="text" name="comment" class="form-control" placeholder="Optional">
+                                                </div>
+                                                <button type="submit" class="btn btn-info float-right">Add Drug</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Basic Form Inputs card end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Page body end -->
+            </div>
+        </div>
+        <!-- Main-body end -->
+        <!-- <div id="styleSelector">
+
+        </div> -->
+    </div>
+</div>
+
+<% include ../../partials/footerCopy %>

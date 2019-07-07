@@ -35,6 +35,25 @@ const ancSchema = new mongoose.Schema({
         opvo: String,
         notifieddate: Date
     },
+    postnatal: {
+        bp: String,
+        temp: String,
+        pulse: String,
+        respiration: String,
+        generalcondition: String,
+        involutionofuterus: String,
+        lochia: String,
+        episotomy: String,
+        pelvicexam: String,
+        smeardate: Date,
+        result: String,
+        hb: String,
+        babycondition: String,
+        wt: String,
+        reflexes: String,
+        feeding: String,
+        umbilicalcord: String,
+    },
     previouspregnancy:[
         {
             year: Number,

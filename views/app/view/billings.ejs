@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Drugs Fees</h4>
+                        <h4>Billings</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,7 +35,7 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="/pharmacy-fees">Drugs Fees</a>
+                            <li class="breadcrumb-item"><a href="/billings">Billings</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#"></a>
                             </li>
@@ -50,7 +50,7 @@
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Drugs Fees</h5>
+                                    <h5>Services Billings</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -65,59 +65,49 @@
                                                             <th>S/N</th>
                                                             <th>PatientID</th>
                                                             <th>Patient Name</th>
-                                                            <th>Drugs</th>
+                                                            <th>Service</th>
                                                             <th>Total Amount</th>
                                                             <th>Status</th>
                                                             <th>Action</th>
                                                         </tr>
                                             </thead>
                                             <tbody>
-                                                    <% consultations.forEach((consultation) => { %>
+                                                    <% payments.forEach((payment) => { %>
+                                                        <% if(payment.services.length > 1){ %>
                                                         
                                                 <tr>
                                                    
                                                     
                                                         <td></td>
-                                                        <td><%= consultation.patient.patientId %></td>
-                                                        <td> <a href="/patient/<%= consultation.patient.id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
-                                                        <%
-                                                            function getSum(total, num) {
-                                                                return total + num;
-                                                            }
-                                                            const totalDrugPrice = consultation.drugsObject.map(price =>{
-                                                                const rPrice = price.sellprice
-                                                                return rPrice;
-                                                                               
-                                                            })
-                                                            var totalPrice;
-                                                            if(totalDrugPrice === undefined || totalDrugPrice.length == 0){
-                                                                totalPrice = 0
-                                                            }else{
-                                                                totalPrice = totalDrugPrice.reduce(getSum)
-                                                            }
-                                                            
-                                                        %>
+                                                        <td><%= payment.patient.patientId %></td>
+                                                        <td> <a href="/patient/<%= payment.patient.id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                       
                                                         <td>
-                                                            <% consultation.drugsObject.forEach((drug)=>{ %>
-                                                                <p style="font-weight: 500"><%= drug.name %>
-                                                                <span style="font-weight: 900; color: darkorange">(&#8358;<%= drug.sellprice %>)</span></p>
+                                                            <% payment.services.forEach((service)=>{ %>
+                                                                <p style="font-weight: 500"><%= service.service %>
+                                                                <span style="font-weight: 900; color: darkorange">(&#8358;<%= service.price %>)</span></p>
                                                             <% }) %>
                                                         </td>
-                                                        <td style="font-weight: 900; font-size: 1rem">&#8358;<%= totalPrice %></td>
-                                                        <% if(consultation.pharmacypaid === false){ %>
+                                                        <td style="font-weight: 900; font-size: 1rem">&#8358;<%= payment.amount %></td>
+                                                        <% if(!payment.status){ %>
                                                         <td><label class="label label-md bg-warning">pending</label></td>
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">paid</label></td>
                                                         <% } %>
                                                         <td>
-                                                            <!-- <button id="pnotify-success" name="<%= consultation.patient._id %>" type="button" class="btn btn-success pay"><i class="ti-money"></i> Paid?</button> -->
-                                                            <% if(consultation.pharmacypaid){ %>
-                                                            <a href="/pharmacy-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                            <% if(!payment.status){ %>
+                                                                <button id="<%= payment._id %>" type="button" class="btn btn-success billingpay"><i class="ti-money"></i> Approve?</button>
                                                             <% } %>
+                                                            <% if(payment.status){ %>
+                                                                <a href="/billing-invoice/<%= payment._id %>" class="btn btn-primary"><i class="fa fa-file-text-o"></i> Invoice</a>
+                                                            <% } %>
+
+                                                        </td>
                                                 </tr>
                                                 
                                                
                                                
+                                                <% } %>
                                                 <% }) %>
                                             </tbody>
                                         </table>

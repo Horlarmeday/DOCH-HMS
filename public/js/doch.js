@@ -173,6 +173,27 @@ $(document).ready(function() {
         })
     })
 
+    //APPROVING BILLING PAYMENT
+    $('.billingpay').click(function (event) {
+        let approve = $(this).attr('id')
+        event.preventDefault()
+         let response = window.confirm("Are you sure you want to approve?");
+         if(response){
+            $.ajax({
+                type: 'POST',
+                url: '/approve-billing',
+                data: {
+                    approve: approve
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+         }else{
+             window.close()
+         }
+    })
+
 
     //Getting the cardtype
     $('#cardtype').change(function () {
@@ -353,4 +374,14 @@ function bmiCalc(){
     let height = $('#height').val()
     let bmi = weight/(height**2)
     $('#bmi').val(bmi)
+}
+
+//Getting the total amount of service
+function serviceTotalAmount() {
+    const theservice = $('#theservice').val()
+    $.post('/get-total-amount', { theservice: theservice })
+    .done(function(data) {
+        console.log(data)
+        $('#serviceprice').val(data)
+    })
 }
