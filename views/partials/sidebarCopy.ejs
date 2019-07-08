@@ -166,6 +166,52 @@
                                 </ul>
                         </li>
                         <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role === 3){ %>
+                            <li class="pcoded-hasmenu">
+                                    <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                        <span class="pcoded-micon"><i class="fa fa-folder-open-o"></i></span>
+                                        <span class="pcoded-mtext">Nurse Utilities</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                    <ul class="pcoded-submenu">
+                                        <li class=" ">
+                                            <a href="/nursing-notes" data-i18n="nav.navigate.navbar">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Nursing Notes</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li class=" ">
+                                            <a href="/add-nurse-note" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Add Nursing Note</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li class=" ">
+                                            <a href="/add-nursing-care-plan" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Nursing Care Plan</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li class=" ">
+                                                <a href="/nursing-care-plan" data-i18n="nav.navigate.navbar-inverse">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Care Plans</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                        <li class=" ">
+                                                <a href="/treatment-records" data-i18n="nav.navigate.navbar-inverse">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Treatment Records</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                        </li>
+                                    </ul>
+                            </li>
+                            <% } %>
                         <% if(currentUser.role == 1 || currentUser.role === 2){ %>
                         <li class="pcoded-hasmenu">
                                 <a href="javascript:void(0)" data-i18n="nav.navigate.main">

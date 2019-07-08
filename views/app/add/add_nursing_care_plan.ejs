@@ -1,0 +1,112 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Nursing Care Plan</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/nursing-care-plan">Nursing Care Plan</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Add Nursing Care Plan</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    
+                                                   
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Nursing Dianosis </label>
+                                                                <input name="diagnosis" class="form-control" type="text" >
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>Nursing Objective </label>
+                                                                <input name="objective" class="form-control" type="text" >
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Nursing Action </label>
+                                                                <input name="action" class="form-control" type="text" >
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>Scientific Principle </label>
+                                                                <input name="scientificprinciple" class="form-control" type="text" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        
+                                                        <div class="col-sm-6">
+                                                                <label>Evaluation </label>
+                                                                <input name="evaluation" class="form-control" type="text" >
+                                                        </div>
+                                                    </div>
+
+                                                    <button type="submit" class="btn btn-info float-right">Save</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

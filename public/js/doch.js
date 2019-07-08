@@ -194,6 +194,18 @@ $(document).ready(function() {
          }
     })
 
+    // $('.drugger').click(function (event) {
+    //     const consultId = $(this).attr('id')
+    //     console.log(consultId)
+    //     $.post('/get-drugs-prescription', { consultId: consultId })
+    //     .done(function(data) {
+    //         console.log(data)
+            
+    //     })
+    // })
+
+    
+
 
     //Getting the cardtype
     $('#cardtype').change(function () {
@@ -385,3 +397,5 @@ function serviceTotalAmount() {
         $('#serviceprice').val(data)
     })
 }
+
+//Getting the drug prescriptions

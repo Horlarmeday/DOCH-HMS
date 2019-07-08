@@ -91,6 +91,9 @@ const UserSchema = new mongoose.Schema({
     ancs:[{
         type: mongoose.Schema.Types.ObjectId, ref: "ANC"
     }],
+    treatments:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "Treatment"
+    }],
     // imaging:[{
     //     type: mongoose.Schema.Types.ObjectId, ref: "Imaging"
     // }]

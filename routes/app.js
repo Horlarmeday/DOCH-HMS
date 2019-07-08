@@ -13,7 +13,10 @@ const Vendor = require('../models/vendor')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
 const ANC = require('../models/anc')
+const NurseNote = require('../models/nursenote')
 const Request = require('../models/request')
+const Careplan = require('../models/careplan')
+const Treatment = require('../models/treatment')
 // const Counter = require('../models/counters')
 const labItem = require('../models/labitem')
 const PharmacyItem = require('../models/pharmacyItem')
@@ -1564,6 +1567,115 @@ router.route('/add-service')
             req.flash('success', 'Service added successfully!')
             res.redirect('/add-service')
         })
+    })
+
+//ADD NURSE NOTE
+router.route('/add-nurse-note')
+    .get(middleware.isLoggedIn, (req, res, next) => {
+        User.find({}, (err, users)=>{
+            if(err) return next(err)
+            res.render('app/add/add_nurse_note', {users})
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next) => {
+        const nursenote = new NurseNote({
+            creator: req.user._id,
+            patient: req.body.patient,
+            name: req.body.name,
+            note: req.body.note
+        })
+        nursenote.save((err)=>{
+            if(err) return next(err)
+            req.flash('success', 'Note added successfully!')
+            res.redirect('/add-nurse-note')
+        })
+        
+    })
+
+//VIEW NURSIN NOTES
+router.get('/nursing-notes', middleware.isLoggedIn, (req, res, next)=>{
+    NurseNote.find({})
+    .populate('patient')
+    .exec((err, nursenotes)=>{
+        if(err) return next (err)
+        res.render('app/view/nursing_note', { nursenotes })
+    })
+})
+
+//ADD NURSE CARE PLAN
+router.route('/add-nursing-care-plan')
+    .get(middleware.isLoggedIn, (req, res, next) => {
+        User.find({}, (err, users)=>{
+            if(err) return next(err)
+            res.render('app/add/add_nursing_care_plan', {users})
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next) => {
+        const careplan = new Careplan({
+            creator: req.user._id,
+            patient: req.body.patient,
+            diagnosis: req.body.diagnosis,
+            objective: req.body.objective,
+            action: req.body.action,
+            scientificprinciple: req.body.scientificprinciple,
+            evaluation: req.body.evaluation,
+        })
+        careplan.save((err)=>{
+            if(err) return next(err)
+            req.flash('success', 'Nursin care plan added successfully!')
+            res.redirect('back')
+        })
+        
+    })
+
+//NURSING CARE PLANS
+router.get('/nursing-care-plan', middleware.isLoggedIn, (req, res, next)=>{
+    Careplan.find({})
+    .populate('creator')
+    .exec((err, careplans)=>{
+        if(err) return next (err)
+        res.render('app/view/nursing_care_plan', { careplans })
+    })
+})
+
+//ADD TREATMENT RECORD
+router.route('/treatment-records')
+    .get(middleware.isLoggedIn, (req, res, next) => {
+        Treatment.find({})
+        .populate('patient')
+        .populate('creator')
+        .exec((err, treatments)=>{
+            if(err) return next(err)
+            User.find({}, (err, users)=>{
+                if(err) return next(err)
+                res.render('app/add/add_treatment_record', {users, treatments})
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next) => {
+        const treatment = new Treatment({
+            creator: req.user._id,
+            patient: req.body.patient,
+            treatmenttype: req.body.treatment,
+            description: req.body.description,
+        })
+        treatment.save((err)=>{
+            if(err) return next(err)
+           
+            User.updateOne(
+                {
+                    _id: treatment.patient
+                },
+                {
+                    $push: {treatments: treatment._id}
+                }, function (err, count) {
+                    if(err) return next(err)
+                    req.flash('success', 'Treatment record added successfully!')
+                    res.redirect('back')
+                }
+            )
+        })
+        
     })
 
 
