@@ -259,7 +259,9 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 if(err) return next (err)
                 Consultation.find({})
                 .populate('patient')
-                .populate('drugsObject')
+                .populate('doctor')
+                // .populate('drugsObject')
+                .deepPopulate('drugsObject.drugs')
                 .exec((err, consultations)=>{
                     if(err) return next (err)
                     res.render('app/dashboard6', { appointments, users, consultations })
@@ -273,7 +275,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             if(err) return next (err)
             Consultation.find({})
             .sort('-created')
-            .populate('drugsObject')
+            .deepPopulate('drugsObject.drugs')
             .populate('labtestObject')
             .populate('patient')
             .exec((err, consultations)=>{
@@ -516,7 +518,7 @@ router.get('/pharmacy-fees', middleware.isLoggedIn, (req, res, next)=>{
     User.find({}, (err, users)=>{
         if(err) return next (err)
         Consultation.find({})
-        .populate('drugsObject')
+        .deepPopulate('drugsObject.drugs')
         .populate('labtestObject')
         .populate('patient')
         .sort('-created')
@@ -1388,8 +1390,8 @@ router.route('/add-daily-report')
         nurseReport.p = req.body.p;
         nurseReport.r = req.body.r;
         nurseReport.bp = req.body.bp;
-        nurseReport.input = req.body.input;
-        nurseReport.output = req.body.output;
+        // nurseReport.input = req.body.input;
+        // nurseReport.output = req.body.output;
         nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.body.patient;
@@ -1801,6 +1803,7 @@ router.route('/consultation/:id')
         .populate('triages')
         .populate('consultations')
         .populate('appointments')
+        .deepPopulate('consultations.drugsObject.drugs')
         .exec((err, user)=>{
             if (err) { return next(err) }
             PharmacyItem.find({}, (err, drugs)=>{
@@ -1927,25 +1930,41 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('consultations')
         .exec((err, user)=>{
             if(err) return next (err)
-            Consultation.findOne({ _id: user.consultations[0]._id }, (err, consultation)=>{
+            Consultation.findOne({ _id: user.consultations[0]._id }, (err, theconsultation)=>{
                 if(err) return next (err)
-                // if(req.body.drug_brand) consultation.drug.push(req.body.drug_brand);
-                if(req.body.drug_name) consultation.drugname = req.body.drug_name;
-                var drugs = req.body.drug_brand
-                var alldrugs = drugs.map(s => mongoose.Types.ObjectId(s))
-                consultation.drugsObject = alldrugs;
-                consultation.status = true;
-                consultation.prescriptionDate = Date.now()
-                consultation.pharmacystatus = true;
-                consultation.prescription = {
-                    dose: req.body.dose,
-                    duration: req.body.duration,
-                    frequency: req.body.frequency,
-                    direction: req.body.direction
+                // // if(req.body.drug_brand) consultation.drug.push(req.body.drug_brand);
+                // if(req.body.drug_name) consultation.drugname = req.body.drug_name;
+                if(req.body){
+                    theconsultation.drugsObject.push({
+                        drugs: req.body.drug_brand,
+                        startingdate: req.body.startingdate,
+                        quantity: req.body.quantity,
+                        medicineunit: req.body.medicineunit,
+                        unit: req.body.unit,
+                        dose: req.body.dose,
+                        time: req.body.time,
+                        notes: req.body.notes,
+                        direction: req.body.direction
+                    })
+                    theconsultation.prescriptionDate = Date.now()
+                    theconsultation.pharmacystatus = true;
+                    theconsultation.status = true;
+                    // var drugs = req.body.drug_brand
+                    // var alldrugs = drugs.map(s => mongoose.Types.ObjectId(s))
+                    // consultation.drugsObject = alldrugs;
+                    // consultation.status = true;
+                    // consultation.prescriptionDate = Date.now()
+                    // consultation.pharmacystatus = true;
+                    // consultation.prescription = {
+                    //     dose: req.body.dose,
+                    //     duration: req.body.duration,
+                    //     frequency: req.body.frequency,
+                    //     direction: req.body.direction
+                    // }
                 }
-                consultation.save((err)=>{
+                theconsultation.save((err)=>{
                     if(err) return next (err)
-                    res.redirect('/dashboard')
+                    res.redirect('/consultation/' + req.params.id)
                 })
             })
         })
@@ -2127,7 +2146,8 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({}) 
     .populate('patient')
     .populate('labtestObject')
-    .populate('drugsObject')
+    // .populate('drugsObject')
+    .deepPopulate('drugsObject.drugs')
     .exec((err, consultations)=>{
         if(err) return next (err)
         res.render('app/view/consultations', { consultations })
@@ -2236,7 +2256,7 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
             'consultations.drusObject',
             'consultations.doctor',
             'consultations.labtestObject',
-            'consultations.drugsObject',
+            'consultations.drugsObject.drugs',
             'payments.services'
         ])
         .exec((err, patient)=>{
@@ -2677,7 +2697,7 @@ router.route('/accounts')
             if(err) return next (err)
             Consultation.find({})
             .populate('patient')
-            .populate('drugsObject')
+            .deepPopulate('drugsObject.drugs')
             .populate('labtestObject')
             .exec((err, consultations)=>{
                 if(err) return next (err)

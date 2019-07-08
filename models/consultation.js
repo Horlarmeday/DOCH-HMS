@@ -3,7 +3,17 @@ const deepPopulate = require('mongoose-deep-populate')(mongoose)
 const consultationSchema = new mongoose.Schema({
     doctor: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-    drugsObject: [{type: mongoose.Schema.Types.ObjectId, ref: "PharmacyItem"}],
+    drugsObject: [{
+        drugs: {type: mongoose.Schema.Types.ObjectId, ref: "PharmacyItem"},
+        startingdate: Date,
+        quantity: String,
+        medicineunit: String,
+        unit: String,
+        dose: String,
+        time: String,
+        notes: String,
+        direction: String
+    }],
     // test: [{type: mongoose.Schema.Types.ObjectId, ref: "Test"}],
     imaging: [{type: mongoose.Schema.Types.ObjectId, ref: "Imaging"}],
     visit: String,
@@ -17,12 +27,12 @@ const consultationSchema = new mongoose.Schema({
     },
     drugbrand: [],
     drugname: String,
-    prescription:{
-        dose: String,
-        duration: String,
-        frequency: String,
-        direction: String
-    },
+    // prescription:{
+    //     dose: String,
+    //     duration: String,
+    //     frequency: String,
+    //     direction: String
+    // },
     labpaid: {type: Boolean, default: false},
     pharmacypaid: {type: Boolean, default: false},
     imagingpaid: {type: Boolean, default: false},

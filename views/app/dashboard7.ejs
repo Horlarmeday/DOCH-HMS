@@ -321,7 +321,7 @@
                                                                 return total + num;
                                                             }
                                                             const totalDrugPrice = consultation.drugsObject.map(price =>{
-                                                                const rPrice = price.sellprice
+                                                                const rPrice = price.drugs.sellprice
                                                                 return rPrice;
                                                                                
                                                             })
@@ -335,8 +335,8 @@
                                                         %>
                                                         <td>
                                                             <% consultation.drugsObject.forEach((drug)=>{ %>
-                                                                <p style="font-weight: 500"><%= drug.name %>
-                                                                <span style="font-weight: 900; color: darkorange">(&#8358;<%= drug.sellprice %>)</span></p>
+                                                                <p style="font-weight: 500"><%= drug.drugs.name %>
+                                                                <span style="font-weight: 900; color: darkorange">(&#8358;<%= drug.drugs.sellprice %>)</span></p>
                                                             <% }) %>
                                                         </td>
                                                         <td style="font-weight: 900; font-size: 1rem">&#8358;<%= totalPrice %></td>

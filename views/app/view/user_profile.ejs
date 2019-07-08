@@ -387,7 +387,7 @@
                                                                                     <tr>
                                                                                         <th>S/N</th>
                                                                                         <th>Drugs Prescribed</th>
-                                                                                        <th>Usage</th>
+                                                                                        
                                                                                         <th>PrescribedBy</th>
                                                                                         <th>Date</th>
                                                                                         <th>Status</th>
@@ -401,15 +401,12 @@
                                                                                         <td></td>
                                                                                         <td>
                                                                                             <% consultation.drugsObject.forEach((drug)=>{ %>
-                                                                                                <p style="font-weight: 700"><%= drug.name %></p>
+                                                                                                <p style="font-weight: 700"><%= drug.drugs.name %>
+                                                                                                    <small> <a href="#" data-toggle="modal" data-target="#exampleModalCenter3"> (View prescriptions)</a></small>
+                                                                                                </p>
                                                                                             <% }) %>
                                                                                         </td>
-                                                                                        <td>
-                                                                                            Dose: <%= consultation.prescription.dose %> <br>
-                                                                                            Duration: <%= consultation.prescription.duration %> <br>
-                                                                                            Frequency: <%= consultation.prescription.frequency %> <br>
-                                                                                            Direction: <%= consultation.prescription.direction %>
-                                                                                        </td>
+                                                                                        
                                                                                         <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
                                                                                         <% if(consultation.prescriptionDate !== undefined){ %>
                                                                                           <td><%= consultation.prescriptionDate.toDateString() %></td>

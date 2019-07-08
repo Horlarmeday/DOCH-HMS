@@ -95,4 +95,28 @@ router.post('/get-total-amount', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//get 
+router.post('/get-total-amount', middleware.isLoggedIn, (req, res, next)=>{
+    const theservice = req.body.theservice
+    Service.find({_id: theservice}, (err, service)=>{
+        if(err) return next(err)
+        function getSum(total, num) {
+            return total + num;
+        }
+        const totalBillingPrice = service.map(amount =>{
+            const rPrice = amount.price
+            return rPrice;
+        })
+        console.log(totalBillingPrice)
+        var totalAmount;
+        if(totalBillingPrice === undefined || totalBillingPrice.length == 0){
+            totalAmount = 0
+        }else{
+            totalAmount = totalBillingPrice.reduce(getSum)
+        }
+        
+        res.json(totalAmount)
+    })
+})
+
 module.exports = router

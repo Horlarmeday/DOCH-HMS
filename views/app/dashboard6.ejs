@@ -127,7 +127,7 @@
                                                     <th>Reason for Visit</th>
                                                     <th>Drugs Prescribed</th>
                                                     <th>PrescribedBy</th>
-                                                    <th>Usage</th>
+                                                   
                                                     <th>Status</th>
                                                     <th>Payment Status</th>
                                                     <th>Action</th>
@@ -139,22 +139,18 @@
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
-                                                    <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
+                                                    <td> <a href="/patient/<%= consultation.patient._id %>"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
                                                     <td> <%= consultation.visit %></td>
                                                     <td>
-                                                            <% consultation.drugsObject.forEach((test)=>{ %>
+                                                            <% consultation.drugsObject.forEach((drug)=>{ %>
                                                         
-                                                                <p style="font-weight: 700"><%= test.name %></p>
+                                                                <p style="font-weight: 700"><%= drug.drugs.name %>
+                                                                    <small> <a href="#" data-toggle="modal" data-target="#exampleModalCenter3"> (View prescriptions)</a></small>
+                                                                </p>
                                                             <% }) %>
                                                     </td>
                                                     <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
-                                                    <td>
-                                                        
-                                                        Dose: <%= consultation.prescription.dose %> <br>
-                                                        Duration: <%= consultation.prescription.duration %> <br>
-                                                        Frequency: <%= consultation.prescription.frequency %> <br>
-                                                        Direction: <%= consultation.prescription.direction %>
-                                                    </td>
+                                                    
                                                     <% if(consultation.pharmacyfinish === false){ %>
                                                     <td><label class="label label-md bg-warning">Ongoing</label></td>
                                                     <% }else{ %>
@@ -165,7 +161,7 @@
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">Paid</label></td>
                                                         <% } %>
-                                                    <% if(consultation.pharmacyfinish === false){ %>
+                                                    <% if(!consultation.pharmacyfinish){ %>
                                                         <td><button id="<%= consultation._id %>" class="btn btn-success paid">Prescribed?</button></td>
                                                         <% }else{ %>
                                                         <td><button class="btn btn-success" disabled>Prescribed</button></td>
