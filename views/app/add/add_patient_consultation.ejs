@@ -500,6 +500,9 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                            <% if(user.consultations.length > 0){ %>
+
+                                                            
                                                             <% user.consultations[0].drugsObject.forEach((drug)=>{ %>
                                                             <tr>
                                                                 <td></td>
@@ -513,6 +516,7 @@
                    
                                                             </tr>
                                                             <% }) %>
+                                                            <% } %>
                                                         </tbody>
                                                     </table>
                                                 </div>
