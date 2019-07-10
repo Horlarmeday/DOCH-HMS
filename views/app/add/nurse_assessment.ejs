@@ -86,38 +86,34 @@
                                                                             </div>
                                                                             <div class="form-group row">
                                                                                 <div class="col-sm-6">
-                                                                                    <label>Phone Number </span></label>
+                                                                                    <label>Phone Number </label>
                                                                                     <input type="text" class="form-control" placeholder="+234<%= user.phonenumber %>" readonly>
                                                                                 </div>
                                                                                 <div class="col-sm-6">
-                                                                                        <label>Address <span class="text-danger"> (B/min*)</label>
+                                                                                        <label>Address </label>
                                                                                         <input placeholder="<%= user.address %>" class="form-control" type="text" readonly>
                                                                                 </div>
                                                                             </div>
+                                                                            <h5 style="color:dodgerblue" class="page-title">Next of Kin Information</h5><br><br>
                                                                             <div class="form-group row">
                                                                                 <div class="col-sm-6">
-                                                                                        <label>Next of Kin Name <span class="text-danger"> (kg*)</span></label>
-                                                                                        <input name="weight" id="weight" class="form-control" type="number" required>
+                                                                                        <label>Next of Kin Name </label>
+                                                                                        <input placeholder="<%= user.nextofkinname %>" class="form-control" type="text" readonly>
                                                                                 </div>
                                                                                 <div class="col-sm-6">
-                                                                                        <label>Height <span class="text-danger"> (m*)</span></label>
-                                                                                        <input name="height" id="height" class="form-control" step="any" type="number" onchange="bmiCalc()" required>
+                                                                                        <label>Next of Kin Phone <span class="text-danger"> (m*)</span></label>
+                                                                                        <input placeholder="<%= user.nextofkinphone %>"  class="form-control"type="text"  readonly>
                                                                                 </div>
                                                                             </div>
                                                                             <div class="form-group row">
                                                                                 <div class="col-sm-6">
-                                                                                        <label>BMI <span class="text-danger"> (kg/m^2*)</span></label>
-                                                                                        <input name="bmi" id="bmi" class="form-control" type="number" readonly>
-                                                                                        <small>Body Mass Index(BMI) = Weight(in kg) / Height(in m)²</small>
+                                                                                        <label>Relationship </label>
+                                                                                        <input placeholder="<%= user.relationship %>" class="form-control" type="text" readonly>
+                                                                                        
                                                                                 </div>
                                                                                 <div class="col-sm-6">
-                                                                                        <label>MUAC<span class="text-danger"> (muac*)</span></label>
-                                                                                        <select name="muac" class="form-control select" required>
-                                                                                            <option selected disabled>Select</option>
-                                                                                            <option>Green</option>
-                                                                                            <option>Yellow</option>
-                                                                                            <option>Red</option>
-                                                                                        </select>
+                                                                                        <label>Next of Kin Address</label>
+                                                                                        <input type="text" class="form-control" placeholder="<%= user.nextofkinaddress %>" readonly>
                                                                                 </div>
                                                                                 
                                                                             </div>

@@ -85,6 +85,23 @@
                                 </div>
                             </div>
                         </div>
+                        <%
+                            function getSum(total, num) {
+                                return total + num;
+                            }
+                            const totalRevenueGenerated = payments.map(price =>{
+                                const rPrice = price.amount
+                                return rPrice;
+                                                
+                            })
+                            var totalRevenue;
+                            if(totalRevenueGenerated === undefined || totalRevenueGenerated.length == 0){
+                                totalRevenue = 0
+                            }else{
+                                totalRevenue = totalRevenueGenerated.reduce(getSum)
+                            }
+                                                            
+                        %>
                         <div class="col-md-12 col-xl-4">
                             <div class="card">
                                 <div class="card-block-big card-visitor-block">
@@ -92,7 +109,7 @@
                                         <div class="col-sm-8 card-visitor-button">
                                             <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
                                             <div class="card-contain">
-                                                <h6>N2,534</h6>
+                                                <h6>&#8358;<%= totalRevenue %></h6>
                                                 <p class="text-muted f-18 m-0">Revenue</p>
                                             </div>
                                         </div>

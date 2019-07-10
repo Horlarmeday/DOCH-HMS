@@ -72,25 +72,28 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .populate('patient')
             .exec((err, appointments)=>{
                 if(err) return next (err)
-                let appointmentIsEmpty = true;
-                if (appointments.length > 0) {
-                    appointmentIsEmpty = false;
-                }
-                users.forEach((user)=>{
-                allUsers.push({
-                    'firstname': user.firstname,
-                    'lastname': user.lastname,
-                    'address': user.address,
-                    'phone': user.phonenumber,
-                    'email': user.email,
-                    'status': user.status,
-                    'role': user.role,
-                    'city': user.city,
-                    'country': user.country,
-                    'created': user.createdAt.toDateString(),
+                Payment.find({}, (err, payments)=>{
+                    if(err) return next (err)
+                    let appointmentIsEmpty = true;
+                    if (appointments.length > 0) {
+                        appointmentIsEmpty = false;
+                    }
+                    users.forEach((user)=>{
+                    allUsers.push({
+                        'firstname': user.firstname,
+                        'lastname': user.lastname,
+                        'address': user.address,
+                        'phone': user.phonenumber,
+                        'email': user.email,
+                        'status': user.status,
+                        'role': user.role,
+                        'city': user.city,
+                        'country': user.country,
+                        'created': user.createdAt.toDateString(),
+                    })
                 })
-            })
-                res.render('app/dashboard', {allUsers, appointments, appointmentIsEmpty})
+                res.render('app/dashboard', {allUsers, appointments, appointmentIsEmpty, payments})
+                })
             }) 
         })
     }else if(req.user.role === 3){
@@ -3086,6 +3089,9 @@ router.route('/nurse-assessment/:id')
             if(err) return next (err)
             res.render('app/add/nurse_assessment', {user})
         })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+
     })
 
 //OPERATION NOTES
