@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Lab Test Result</h4>
+                        <h4><%= consultation.patient.firstname %> <%= consultation.patient.firstname %> Lab Result</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -48,99 +48,12 @@
                     <div class="page-body">
                         <div class="row">
                             <!-- Microbiology -->
-                            <div class="col-sm-6">
-                                <!-- Zero config.table start -->
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5>URINE/HVS(MICROSCOPY)</h5>
-                                        <div class="card-header-right">
-                                            <i class="icofont icofont-rounded-down"></i>
-                                            <i class="icofont icofont-refresh"></i>
-                                            <i class="icofont icofont-close-circled"></i>
-                                        </div>
-                                    </div>
-                                    <div class="card-block">
-                                        <div class="dt-responsive table-responsive">
-                                            <form action="/urine-test/<%= user._id %>" method="post">
-                                            <table class="table table-striped table-bordered nowrap">
-                                                <thead>
-                                                    <tr>
-                                                        <th>S/N</th>
-                                                        <th>Test</th>
-                                                        <th>Result</th>
-                                                        <th>HVS</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Epithelial Cells</td>  
-                                                        <td><input type="text" name="epitheliaresult" placeholder="<%= consultation.labresult.urine.epitheliaresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="epitheliahsv" placeholder="<%= consultation.labresult.urine.epitheliahsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>PUS Cells</td>  
-                                                        <td><input type="text" name="pusresult" placeholder="<%= consultation.labresult.urine.pusresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="pushsv"  placeholder="<%= consultation.labresult.urine.pushsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>T Vaginalis</td>  
-                                                        <td><input type="text" name="vaginalisresult" placeholder="<%= consultation.labresult.urine.vaginalisresult %>"  class="form-control"></td>  
-                                                        <td><input type="text" name="vaginalishsv" placeholder="<%= consultation.labresult.urine.vaginalishsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Yeast Cells</td>  
-                                                        <td><input type="text" name="yeastresult" placeholder="<%= consultation.labresult.urine.yeastresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="yeasthsv" placeholder="<%= consultation.labresult.urine.yeasthsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>RBC</td>  
-                                                        <td><input type="text" name="rbcresult" placeholder="<%= consultation.labresult.urine.rbcresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="rbchsv" placeholder="<%= consultation.labresult.urine.rbchsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Cast</td>  
-                                                        <td><input type="text" name="castresult" placeholder="<%= consultation.labresult.urine.castresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="castshsv" placeholder="<%= consultation.labresult.urine.castresult %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Crystals</td>  
-                                                        <td><input type="text" name="crystalsresult" placeholder="<%= consultation.labresult.urine.crystalsresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="crystalshsv" placeholder="<%= consultation.labresult.urine.crystalshsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Parasites</td>  
-                                                        <td><input type="text" name="parasitesresult" placeholder="<%= consultation.labresult.urine.parasitesresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="parasiteshsv" placeholder="<%= consultation.labresult.urine.parasiteshsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Others</td>  
-                                                        <td><input type="text" name="othersresult" placeholder="<%= consultation.labresult.urine.othersresult %>" class="form-control"></td>  
-                                                        <td><input type="text" name="othershsv" placeholder="<%= consultation.labresult.urine.othershsv %>" class="form-control"></td>  
-                                                    </tr>
-                                                    <tr>
-                                                        <button type="submit" class="btn btn-success float-right mb-3">Save</button>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
+                            <% if('urine' in consultation.labresult){ %>
+                                <div class="col-sm-6">
                                     <!-- Zero config.table start -->
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5>URINALYSIS/HVS(MICROSCOPY)</h5>
+                                            <h5>URINE/HVS(MICROSCOPY)</h5>
                                             <div class="card-header-right">
                                                 <i class="icofont icofont-rounded-down"></i>
                                                 <i class="icofont icofont-refresh"></i>
@@ -149,89 +62,184 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/urinalysis-test/<%= user._id %>" method="post">
+                                                <form action="#" method="post">
                                                 <table class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
                                                             <th>S/N</th>
                                                             <th>Test</th>
-                                                            <th>Appearance</th>
+                                                            <th>Result</th>
+                                                            <th>HVS</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>Leukocytes</td>  
-                                                            <td><input type="text" name="leukocytes"  placeholder="<%= consultation.labresult.urinalysis.leukocytes %>" class="form-control"></td>  
+                                                            <td>Epithelial Cells</td>  
+                                                            <td><input type="text" name="epitheliaresult" placeholder="<%= consultation.labresult.urine.epitheliaresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="epitheliahsv" placeholder="<%= consultation.labresult.urine.epitheliahsv %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>Protein</td>  
-                                                            <td><input type="text" name="protein" placeholder="<%= consultation.labresult.urinalysis.protein %>" class="form-control"></td>  
+                                                            <td>PUS Cells</td>  
+                                                            <td><input type="text" name="pusresult" placeholder="<%= consultation.labresult.urine.pusresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="pushsv"  placeholder="<%= consultation.labresult.urine.pushsv %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>Glucose</td>  
-                                                            <td><input type="text" name="glucose" placeholder="<%= consultation.labresult.urinalysis.glucose %>" class="form-control"></td>  
-                                                    
+                                                            <td>T Vaginalis</td>  
+                                                            <td><input type="text" name="vaginalisresult" placeholder="<%= consultation.labresult.urine.vaginalisresult %>"  class="form-control"></td>  
+                                                            <td><input type="text" name="vaginalishsv" placeholder="<%= consultation.labresult.urine.vaginalishsv %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>Blood</td>  
-                                                            <td><input type="text" name="blood" placeholder="<%= consultation.labresult.urinalysis.blood %>" class="form-control"></td>  
-                                                            
+                                                            <td>Yeast Cells</td>  
+                                                            <td><input type="text" name="yeastresult" placeholder="<%= consultation.labresult.urine.yeastresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="yeasthsv" placeholder="<%= consultation.labresult.urine.yeasthsv %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>PH</td>  
-                                                            <td><input type="text" name="ph" placeholder="<%= consultation.labresult.urinalysis.ph %>" class="form-control"></td>  
-                                                            
+                                                            <td>RBC</td>  
+                                                            <td><input type="text" name="rbcresult" placeholder="<%= consultation.labresult.urine.rbcresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="rbchsv" placeholder="<%= consultation.labresult.urine.rbchsv %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>Ascorbic Acid</td>  
-                                                            <td><input type="text" name="ascorbicacid" placeholder="<%= consultation.labresult.urinalysis.ascorbicacid %>" class="form-control"></td>  
-                                                            
+                                                            <td>Cast</td>  
+                                                            <td><input type="text" name="castresult" placeholder="<%= consultation.labresult.urine.castresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="castshsv" placeholder="<%= consultation.labresult.urine.castresult %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>Urobilinogen</td>  
-                                                            <td><input type="text" name="urobilinogen" placeholder="<%= consultation.labresult.urinalysis.urobilinogen %>" class="form-control"></td>  
-                                                            
+                                                            <td>Crystals</td>  
+                                                            <td><input type="text" name="crystalsresult" placeholder="<%= consultation.labresult.urine.crystalsresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="crystalshsv" placeholder="<%= consultation.labresult.urine.crystalshsv %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>Ketones</td>  
-                                                            <td><input type="text" name="ketones" placeholder="<%= consultation.labresult.urinalysis.ketones %>" class="form-control"></td>  
-                                                            
+                                                            <td>Parasites</td>  
+                                                            <td><input type="text" name="parasitesresult" placeholder="<%= consultation.labresult.urine.parasitesresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="parasiteshsv" placeholder="<%= consultation.labresult.urine.parasiteshsv %>" class="form-control"></td>  
                                                         </tr>
                                                         <tr>
                                                             <td></td>  
-                                                            <td>S.gravity</td>  
-                                                            <td><input type="text" name="sgravity" placeholder="<%= consultation.labresult.urinalysis.sgravity %>" class="form-control"></td>  
-                                                            
+                                                            <td>Others</td>  
+                                                            <td><input type="text" name="othersresult" placeholder="<%= consultation.labresult.urine.othersresult %>" class="form-control"></td>  
+                                                            <td><input type="text" name="othershsv" placeholder="<%= consultation.labresult.urine.othershsv %>" class="form-control"></td>  
                                                         </tr>
-                                                        <tr>
-                                                            <td></td>  
-                                                            <td>Bilirubin</td>  
-                                                            <td><input type="text" name="bilirubin" placeholder="<%= consultation.labresult.urinalysis.bilirubin %>" class="form-control"></td>  
-                                                        </tr>
-                                                        <tr>
-                                                            <td></td>  
-                                                            <td>Nitrite</td>  
-                                                            <td><input type="text" name="nitrite" placeholder="<%= consultation.labresult.urinalysis.nitrite %>" class="form-control"></td>  
-                                                                
-                                                        </tr>
-                                                        <tr>
-                                                            <button type="submit" class="btn btn-success float-right mb-3">Save</button>
-                                                        </tr>
+                                                        
                                                     </tbody>
                                                 </table>
                                                 </form>
                                             </div>
                                         </div>
                                     </div>
-                            </div>
+                                </div>
+                            <% }else{ %>
+                                <p>No result</p>
+                            <% } %>
+
+                            <% if('urinalysis' in consultation.labresult){ %>
+                                <div class="col-sm-6">
+                                        <!-- Zero config.table start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>URINALYSIS/HVS(MICROSCOPY)</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="dt-responsive table-responsive">
+                                                    <form action="#" method="post">
+                                                    <table class="table table-striped table-bordered nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S/N</th>
+                                                                <th>Test</th>
+                                                                <th>Appearance</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Leukocytes</td>  
+                                                                <td><input type="text" name="leukocytes"  placeholder="<%= consultation.labresult.urinalysis.leukocytes %>" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Protein</td>  
+                                                                <td><input type="text" name="protein" placeholder="<%= consultation.labresult.urinalysis.protein %>" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Glucose</td>  
+                                                                <td><input type="text" name="glucose" placeholder="<%= consultation.labresult.urinalysis.glucose %>" class="form-control"></td>  
+                                                        
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Blood</td>  
+                                                                <td><input type="text" name="blood" placeholder="<%= consultation.labresult.urinalysis.blood %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>PH</td>  
+                                                                <td><input type="text" name="ph" placeholder="<%= consultation.labresult.urinalysis.ph %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Ascorbic Acid</td>  
+                                                                <td><input type="text" name="ascorbicacid" placeholder="<%= consultation.labresult.urinalysis.ascorbicacid %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Urobilinogen</td>  
+                                                                <td><input type="text" name="urobilinogen" placeholder="<%= consultation.labresult.urinalysis.urobilinogen %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Ketones</td>  
+                                                                <td><input type="text" name="ketones" placeholder="<%= consultation.labresult.urinalysis.ketones %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>S.gravity</td>  
+                                                                <td><input type="text" name="sgravity" placeholder="<%= consultation.labresult.urinalysis.sgravity %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Bilirubin</td>  
+                                                                <td><input type="text" name="bilirubin" placeholder="<%= consultation.labresult.urinalysis.bilirubin %>" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Nitrite</td>  
+                                                                <td><input type="text" name="nitrite" placeholder="<%= consultation.labresult.urinalysis.nitrite %>" class="form-control"></td>  
+                                                                    
+                                                            </tr>
+                                                            <tr>
+                                                                <button type="submit" class="btn btn-success float-right mb-3">Save</button>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                                <% }else{ %>
+                                    <p>No result</p>
+                                <% } %>
+
                             <div class="col-sm-6">
                                         <!-- Zero config.table start -->
                                         <div class="card">
@@ -245,7 +253,7 @@
                                             </div>
                                             <div class="card-block">
                                                 <div class="dt-responsive table-responsive">
-                                                    <form action="/stool-test/<%= user._id %>" method="post">
+                                                    <form action="#" method="post">
                                                     <table class="table table-striped table-bordered nowrap">
                                                         <thead>
                                                             <tr>
@@ -312,7 +320,7 @@
                                                 </div>
                                                 <div class="card-block">
                                                     <div class="dt-responsive table-responsive">
-                                                        <form action="/culture/<%= user._id %>" method="post">
+                                                        <form action="#" method="post">
                                                         <table class="table table-striped table-bordered nowrap">
                                                             <thead>
                                                                 <tr>
@@ -358,7 +366,7 @@
                                                     </div>
                                                     <div class="card-block">
                                                         <div class="dt-responsive table-responsive">
-                                                            <form action="/antibiotic/<%= user._id %>" method="post">
+                                                            <form action="#" method="post">
                                                             <table class="table table-striped table-bordered nowrap">
                                                                 <thead>
                                                                     <tr>
@@ -482,7 +490,7 @@
                                                         </div>
                                                         <div class="card-block">
                                                             <div class="dt-responsive table-responsive">
-                                                                <form action="/semen-test/<%= user._id %>" method="post">
+                                                                <form action="#" method="post">
                                                                 <table class="table table-striped table-bordered nowrap">
                                                                     <thead>
                                                                         <tr>
@@ -678,7 +686,7 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/fbcone-test/<%= user._id %>" method="post">
+                                                <form action="#" method="post">
                                                 <table id="complex-dt" class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
@@ -802,7 +810,7 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/fbctwo-test/<%= user._id %>" method="post">
+                                                <form action="#" method="post">
                                                 <table class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
@@ -933,7 +941,7 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/tests-test/<%= user._id %>" method="post">
+                                                <form action="#" method="post">
                                                 <table class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
@@ -1023,7 +1031,7 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/widal-reaction-test/<%= user._id %>" method="post">
+                                                <form action="#" method="post">
                                                 <table class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
@@ -1088,7 +1096,7 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/urine" method="post">
+                                                <form action="#" method="post">
                                                 <table class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
@@ -1165,7 +1173,7 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/seucranalysis-test/<%= user._id %>" method="post">
+                                                <form action="#" method="post">
                                                 <table class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
@@ -1244,7 +1252,7 @@
                                         </div>
                                         <div class="card-block">
                                             <div class="dt-responsive table-responsive">
-                                                <form action="/lipid-profile-test/<%= user._id %>" method="post">
+                                                <form action="#" method="post">
                                                 <table class="table table-striped table-bordered nowrap">
                                                     <thead>
                                                         <tr>
@@ -1317,7 +1325,7 @@
                                             </div>
                                             <div class="card-block">
                                                 <div class="dt-responsive table-responsive">
-                                                    <form action="/lft-test/<%= user._id %>" method="post">
+                                                    <form action="#" method="post">
                                                     <table class="table table-striped table-bordered nowrap">
                                                         <thead>
                                                             <tr>
@@ -1397,7 +1405,7 @@
                                                     </div>
                                                     <div class="card-block">
                                                         <div class="dt-responsive table-responsive">
-                                                            <form action="/serum-test/<%= user._id %>" method="post">
+                                                            <form action="#" method="post">
                                                             <table class="table table-striped table-bordered nowrap">
                                                                 <thead>
                                                                     <tr>
@@ -1480,7 +1488,7 @@
                                                         </div>
                                                         <div class="card-block">
                                                             <div class="dt-responsive table-responsive">
-                                                                <form action="/analyte-test/<%= user._id %>" method="post">
+                                                                <form action="#" method="post">
                                                                 <table class="table table-striped table-bordered nowrap">
                                                                     <thead>
                                                                         <tr>
@@ -1576,7 +1584,7 @@
                                                                 </div>
                                                                 <div class="card-block">
                                                                     <div class="dt-responsive table-responsive">
-                                                                        <form action="/glucose-test/<%= user._id %>" method="post">
+                                                                        <form action="#" method="post">
                                                                         <table class="table table-striped table-bordered nowrap">
                                                                             <thead>
                                                                                 <tr>
@@ -1630,7 +1638,7 @@
                                                                     </div>
                                                                     <div class="card-block">
                                                                         <div class="dt-responsive table-responsive">
-                                                                            <form action="/ogtt-test/<%= user._id %>" method="post">
+                                                                            <form action="#" method="post">
                                                                             <table class="table table-striped table-bordered nowrap">
                                                                                 <thead>
                                                                                     <tr>
@@ -1765,3 +1773,4 @@
             </div>
         </div>
     </div>
+<% include ../../partials/footerCopy %>

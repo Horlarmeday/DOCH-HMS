@@ -138,9 +138,9 @@
                                                                 <select name="dispenseTo" class="form-control js-example-basic-single" required>
                                                                         <option selected disabled>Select</option>
                                                                     <% departments.forEach((department) =>{ %>
-                                                                        <% if(department.name === 'Pharmacy OPD'){ %>
+                                                                        
                                                                         <option value="<%= department._id  %>"><%= department.name %></option>
-                                                                        <% } %>
+                                                                        
                                                                     <% }) %>
                                                                 </select>
                                                             </div>

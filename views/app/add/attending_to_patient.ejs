@@ -162,7 +162,7 @@
                         <% if(user.consultations.length < 1){ %>
 
                         
-                        <form method="post">
+                        <form action="/consultation/<%= user._id %>" method="post">
                         <div class="row">
                             <div class="col-sm-6">
                                 <!-- Pagination start -->
@@ -286,7 +286,7 @@
                             </div>
                         </form>
                         <% }else{ %>
-                            <form method="post">
+                            <form action="/consultation/<%= user._id %>" method="post">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <!-- Pagination start -->

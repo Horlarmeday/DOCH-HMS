@@ -67,6 +67,7 @@
                                                     <th>Surgery</th>
                                                     <th>Anaesthesia</th>
                                                     <th>Anaesthetist</th>
+                                                    <th>Scrub Nurse</th>
                                                     <th>Surgeon</th>
                                                     <th>Findings</th>
                                                     <th>Procedure</th>
@@ -80,7 +81,8 @@
                                                     <td><%= theater.patient.firstname %> <%= theater.patient.lastname %></td>
                                                     <td><%= theater.surgery %></td>
                                                     <td><%= theater.anaesthesia %></td>
-                                                    <td><%= theater.anaesthetist %></td>
+                                                    <td><%= theater.anesthetist.firstname %> <%= theater.anesthetist.lastname %></td>
+                                                    <td><%= theater.scrubnurse.firstname %> <%= theater.scrubnurse.lastname %></td>
                                                     <td><%= theater.surgeon.firstname %> <%= theater.surgeon.lastname %></td>
                                                     <td><%= theater.findings %></td>
                                                     <td><%= theater.procedure %></td>

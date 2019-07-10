@@ -113,6 +113,28 @@ $(document).ready(function() {
             }
         })
     })
+
+    //CLICKING PRESCRIBED BUTTON
+    $('.seedoctor').click(function (event) {
+        let seen = $(this).attr('name')
+        console.log(seen)
+        event.preventDefault()
+        let checked = window.confirm('Send patient to see the doctor?')
+        if(checked){
+            $.ajax({
+                type: 'POST',
+                url: '/see-doctor',
+                data: {
+                    seen: seen
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
+    })
     
 
     //CLICKING FINISHED BUTTON
@@ -395,6 +417,20 @@ function serviceTotalAmount() {
     .done(function(data) {
         console.log(data)
         $('#serviceprice').val(data)
+    })
+}
+
+function getDrugInfo() {
+    const drugId = $('#itemId').val()
+    $.post('/get-drug-info', { drugId: drugId })
+    .done(function(data) {
+        console.log(data)
+        $('#drugAmount').val(data.price)
+        if(('rquantity' in data && data[1] === undefined)){
+            $('#drugRemainder').val(data.rquantity)
+        }else{
+            $('#drugRemainder').val(data.quantity)
+        }
     })
 }
 

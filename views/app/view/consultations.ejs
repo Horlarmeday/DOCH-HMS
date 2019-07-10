@@ -116,7 +116,7 @@
                                                         <td> <i style="color: red" class="ti-alert"></i> No Lab test yet</td>
                                                     <% } %>
                                                     <% if(consultation.labtestfinish){ %>
-                                                        <td> <a href="#">View Result</a></td>
+                                                        <td> <a href="/lab-result/<%= consultation._id %>">View Result</a></td>
                                                     <% }else{  %>
                                                        <td> <i style="color: red" class="ti-alert"></i> No Result Yet</td>
                                                     <% } %>

@@ -15,7 +15,7 @@ const pharmacyItemSchema = new mongoose.Schema({
     price: Number,
     unit: String,
     quantity: Number,
-    rquantity: {type:Number, default: 0},
+    rquantity: {type:Number},
     cost: Number,
     expiration: {type: Date},
     vendor: String,

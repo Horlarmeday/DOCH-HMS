@@ -32,7 +32,18 @@
           bodyTag: "fieldset",
           transitionEffect: "slide",
           stepsOrientation: "vertical",
-          autoFocus: true
+          autoFocus: true,
+          onFinished: function(event, currentIndex) {
+            var conclusion = window.confirm('Are you sure?')
+            if(conclusion){
+                $('.assessment-form').submit()
+            }else{
+                window.close()
+            }
+             // $('.content input[type="text"]').val('');
+             // $('.content input[type="email"]').val('');
+             // $('.content input[type="password"]').val('');
+         }
       });
 
       $("#design-wizard").steps({

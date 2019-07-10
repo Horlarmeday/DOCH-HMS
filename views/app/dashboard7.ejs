@@ -228,7 +228,7 @@
                                             </thead>
                                             <tbody>
                                                 <% consultations.forEach((consultation) => { %>
-                                                    
+                                                    <% if(consultation.labtestObject.length > 0){ %>
                                                 <tr>
                                                      
                                                         <td></td>
@@ -268,11 +268,12 @@
                                                             <button value="<%= totalAmount %>" id="pnotify-success" name="<%= consultation._id %>" type="button" class="btn btn-success labpay"><i class="ti-money"></i> Paid?</button>
                                                          <% } %>   
                                                          <% if(consultation.labpaid){ %>
-                                                            <a href="/labtest-invoice/<%= consultation.patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                            <a href="/labtest-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
                                                          <% } %>   
                                                          </td>
                                                 </tr>
                                                
+                                                <% } %>
                                                 <% }) %>
                                             </tbody>
                                         </table>
@@ -309,7 +310,7 @@
                                             </thead>
                                             <tbody>
                                                     <% consultations.forEach((consultation) => { %>
-                                                       
+                                                       <% if(consultation.drugsObject.length > 0){ %>
                                                 <tr>
                                                    
                                                     
@@ -350,12 +351,13 @@
                                                             <button value="<%= totalPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"><i class="ti-money"></i> Paid?</button>
                                                             <% } %>
                                                             <% if(consultation.pharmacypaid){ %>
-                                                            <a href="/pharmacy-invoice/<%= consultation.patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                            <a href="/pharmacy-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
                                                             <% } %>
                                                 </tr>
                                                 
                                                
                                                 
+                                                <% } %>
                                                 <% }) %>
                                             </tbody>
                                         </table>

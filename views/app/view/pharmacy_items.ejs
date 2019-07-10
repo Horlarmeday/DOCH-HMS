@@ -87,7 +87,7 @@
                                                     <td><%= item.name %></td>
                                                     <td><%= item.quantity %></td>
                                                     <% if(item.dispensehistory < 1){ %>
-                                                        <td style="color: darkviolet"><strong>0</strong></td>
+                                                        <td style="color: darkviolet"><strong><%= item.quantity %></strong></td>
                                                         <% }else{ %>
                                                         <td style="color: darkviolet"><strong> <%= item.dispensehistory[item.dispensehistory.length -1].rquantity %></strong></td>
                                                     <% } %>

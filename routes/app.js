@@ -17,6 +17,7 @@ const NurseNote = require('../models/nursenote')
 const Request = require('../models/request')
 const Careplan = require('../models/careplan')
 const Treatment = require('../models/treatment')
+const Consentform = require('../models/consentform')
 // const Counter = require('../models/counters')
 const labItem = require('../models/labitem')
 const PharmacyItem = require('../models/pharmacyItem')
@@ -38,6 +39,7 @@ const bcrypt = require('bcrypt-nodejs')
 const Notification = require('../models/notifications')
 const uuidv1 = require('uuid/v4');
 var unirest = require('unirest')
+const { check, validationResult } = require('express-validator');
 
 const patient = 8
 
@@ -95,31 +97,12 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         //NURSE
         User.find({})
         .sort('-createdAt')
+        .populate('triages')
         .exec((err, users)=>{
             if(err) return next (err)
             Appointment.find({}, (err, appointments)=>{
                 if(err) return next (err)
-                const allPatients = []
-                users.forEach((user)=>{
-                    if(user.role === 8){
-                        allPatients.push({
-                            'patientid': user.patientId,
-                            'id': user._id,
-                            'birthday': user.birthday,
-                            'firstname': user.firstname,
-                            'lastname': user.lastname,
-                            'address': user.address,
-                            'phone': user.phonenumber,
-                            'email': user.email,
-                            'status': user.status,
-                            'role': user.role,
-                            'city': user.city,
-                            'country': user.country,
-                            'created': user.createdAt.toDateString(),
-                        })
-                    }
-                })
-                res.render('app/dashboard1', {allPatients, appointments})
+                res.render('app/dashboard1', { appointments, users})              
             })
         })
     }else if(req.user.role === 2){
@@ -130,30 +113,59 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             if(err) return next (err)
             var allUsers = []
             
-            Appointment.find({})
+            Appointment.find({doctor: req.user._id})
             .populate('doctor')
             .populate('patient')
             .exec((err, appointments)=>{
                 if(err) return next (err)
-                var appointmentIsEmpty = true;
-                if (appointments.length > 0) {
-                    appointmentIsEmpty = false;
-                }
-                users.forEach((user)=>{
-                allUsers.push({
-                    'firstname': user.firstname,
-                    'lastname': user.lastname,
-                    'address': user.address,
-                    'phone': user.phonenumber,
-                    'email': user.email,
-                    'status': user.status,
-                    'role': user.role,
-                    'city': user.city,
-                    'country': user.country,
-                    'created': user.createdAt.toDateString(),
+                Triage.find({})
+                .sort('-created')
+                .populate('patient')
+                .exec((err, triages)=>{
+                    if(err) return next (err)
+                    var allTriages = []
+                    triages.forEach((triage)=>{
+                        var birthday = new Date(triage.patient.birthday)
+                        var today = new Date()
+                        var age = today.getFullYear() - birthday.getFullYear()
+                        if(today.getMonth() < birthday.getMonth()){
+                            age
+                        }
+                        if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                            age
+                        }
+                        allTriages.push({
+                            'firstname': triage.patient.firstname,
+                            'lastname': triage.patient.lastname,
+                            'id': triage.patient._id,
+                            'age': age,
+                            'seen': triage.seen,
+                            'taken': triage.taken
+                            
+                        })
+
+                    })
+                    var appointmentIsEmpty = true;
+                    if (appointments.length > 0) {
+                        appointmentIsEmpty = false;
+                    }
+                    
+                    users.forEach((user)=>{
+                    allUsers.push({
+                        'firstname': user.firstname,
+                        'lastname': user.lastname,
+                        'address': user.address,
+                        'phone': user.phonenumber,
+                        'email': user.email,
+                        'status': user.status,
+                        'role': user.role,
+                        'city': user.city,
+                        'country': user.country,
+                        'created': user.createdAt.toDateString(),
+                    })
                 })
+                res.render('app/dashboard2', {allUsers, appointments, appointmentIsEmpty, allTriages})
             })
-                res.render('app/dashboard2', {allUsers, appointments, appointmentIsEmpty})
             }) 
         })
     }else if(req.user.role === 7){
@@ -416,7 +428,9 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
     }
     else if(req.user.role === 16){
         //ANC
-        Consultation.find({}, (err, consultations)=>{
+        Consultation.find({})
+        .sort('-created')
+        .exec((err, consultations)=>{
             if(err) return next (err)
             Appointment.find({})
             .populate('patient')
@@ -598,7 +612,21 @@ router.get('/vendors', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+// router.post('/test-patient', middleware.isLoggedIn, [
+//     check('email').custom(value => {
+//         return User.findByEmail(value).then(user => {
+//           if (user) {
+//             return Promise.reject('E-mail already in use');
+//           }
+//         });
+//     }),
 
+// ], (req, res, next)=>{
+//     User.countDocuments({role: 8})
+//         .exec((err, count)=>{
+//             const user = new User()
+//         })
+// })
 
 //ADD A PATIENT
 router.route('/add-patient')
@@ -650,6 +678,7 @@ router.route('/add-patient')
                     req.flash('error',  'Account with that phone number already exists.');
                     return res.redirect('/add-patient');
                 }else{
+
                     const user = new User()
                     user.patientId = `DOCH/000000${count + 1}`
                     user.email = req.body.email;
@@ -758,7 +787,7 @@ router.route('/add-emergency-patient')
                 User.findOne({ phonenumber: req.body.phone }, function(err, existingUserPhone){
                     if (existingUserPhone){
                         req.flash('error',  'Account with that phone number already exists.');
-                        return res.redirect('/add-patient');
+                        return res.redirect('back');
                     }else{
                         const user = new User()
                         user.patientId = `DOCH/000000${count + 1}`
@@ -1171,7 +1200,7 @@ router.route('/patient-consent-form')
     })
 })
 .post(middleware.isLoggedIn, (req, res, next)=>{
-    const theater = new Theater({
+    const consentform = new Consentform({
         patient: req.body.patient,
         operation: req.body.operation,
         doctorsign: req.body.doctorsign,
@@ -1187,21 +1216,21 @@ router.route('/patient-consent-form')
         guardianaddress: req.body.guardianaddress,
         guardiandate: req.body.guardiandate,
     })
-    theater.save((err)=>{
+    consentform.save((err)=>{
         if (err) return next (err)
         req.flash('success', 'Consent form saved successfully')
-        res.redirect('/consent-form/' + theater._id)
+        res.redirect('/consent-form/' + consentform._id)
     })
 })
 
 //CONSENT FORM FILLED
 router.get('/consent-form/:id', middleware.isLoggedIn, (req, res, next)=>{
-    Theater.findOne({_id: req.params.id})
+    Consentform.findOne({_id: req.params.id})
     .populate('patient')
     .populate('surgeon')
     .exec((err, theater)=>{
           if(err) return next (err)
-        res.render('app/view/consent_form_filled', {theater})
+        res.render('app/view/consent_form_filled', { theater })
     })
 })
 
@@ -1905,6 +1934,63 @@ router.get('/lab-tests', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//ATTENDING TO PATIENT NOT ON APPOINTMENT
+router.route('/attending-to-patient/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        Lab.find({}, (err, labs) => {
+            if (err) { return next(err) }
+            User.findOne({ _id: req.params.id })
+            .populate('triages')
+            .populate('consultations')
+            .populate('appointments')
+            .deepPopulate('consultations.drugsObject.drugs')
+            .exec((err, user)=>{
+                if (err) { return next(err) }
+                PharmacyItem.find({}, (err, drugs)=>{
+                    if (err) { return next(err) }
+                    Lab.find({})
+                    .populate('tests')
+                    .exec((err, labs)=>{
+                        var serology = []
+                        var chemical = []
+                        var micro = []
+                        if (err) { return next(err) }
+                        labs.forEach((lab)=>{
+                            lab.tests.forEach((test)=>{
+                                serology.push({
+                                    'name': test.name,
+                                    'id': test._id
+                                })
+                            })
+                        })
+                        
+                        Triage.findOne({_id: user.triages[user.triages.length -1]._id}, function (err, triage) {
+                            if (err) { return next(err) }
+                           
+                            Imaging.find({}, (err, imaging)=>{
+                                if (err) { return next(err) }
+                               
+                               
+                                    
+                                   triage.taken = true;
+                            
+                                   triage.save((err)=>{
+                                       if(err){
+                                          return next (err)
+                                       }
+                                       res.render('app/add/attending_to_patient', 
+                                       { labs, user, drugs, imaging, serology })
+                                   })
+                                //}
+                            })
+                            
+                        })
+                    })
+                })
+            })
+        })
+    })
+
 
 //ADD PATIENT CONSULTATION
 router.route('/consultation/:id')
@@ -1958,11 +2044,14 @@ router.route('/consultation/:id')
                        
                         Imaging.find({}, (err, imaging)=>{
                             if (err) { return next(err) }
+                           
                             // if(appointment.taken){
                             //     req.flash('error', 'Appointment already taken')
                             //     return res.redirect('/dashboard')
                             // }else{
+                                
                                appointment.taken = true;
+                        
                                appointment.save((err)=>{
                                    if(err){
                                       return next (err)
@@ -2030,6 +2119,7 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                 consultation.labstatus = true;
                 consultation.save((err)=>{
                     if(err) return next (err)
+                    req.flash('success', 'Patient sent for test successfully')
                     res.redirect('/dashboard')
                 })
             })
@@ -2090,8 +2180,12 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
             if(err) return next (err)
             Consultation.findOne({ _id: user.consultations[0]._id }, (err, consultation)=>{
                 if(err) return next (err)
-                if(req.body.image) consultation.imaging.push(req.body.image);
-                consultation.imagingdate = Date.now
+                if(req.body){
+                    let images = req.body.image;
+                    let allImaging = images.map(s => mongoose.Types.ObjectId(s))
+                    consultation.imaging = allImaging
+                }
+                consultation.imagingdate = Date.now()
                 consultation.imagingstatus = true;
                 consultation.save((err)=>{
                     if(err) return next (err)
@@ -2387,10 +2481,14 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
 })
 
 //VIEW LAB RESULT
-router.get('/lab-result', middleware.isLoggedIn, (req, res, next)=>{
+router.get('/lab-result/:id', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.findOne({_id: req.params.id})
+    .populate('patient')
     .populate('labtestObject')
     .exec((err, consultation)=>{
+        var x = Object.keys(consultation.labresult);
+ 
+         console.log(x);
         if(err) return next (err)
         res.render('app/view/lab_result', { consultation })
     })
@@ -2783,23 +2881,38 @@ router.route('/add-operation-note')
         })
    })
    .post(middleware.isLoggedIn, (req, res, next)=>{
+        var assistances = req.body.assistance;
+        var allassitances = assistances.map(t => mongoose.Types.ObjectId(t))
+    
        const theater = new Theater({
            patient: req.body.patient,
            surgery: req.body.surgery,
            indications: req.body.indications,
            anaesthesia: req.body.anaesthesia,
-           anaesthetist: req.body.anaesthetist,
            surgeon: req.body.surgeon,
-           assistance: req.body.assistance,
+           assistance: allassitances,
+           scrubnurse: req.body.scrubnurse,
+           anesthetist: req.body.anesthetist,
            findings: req.body.findings,
            procedure: req.body.procedure,
            order: req.body.order
        })
        theater.save((err)=>{
            if(err) return next(err)
-           req.flash('success', 'Operation Notes saved Successfully!')
-           res.redirect('/operation-notes')
+           User.updateOne(
+               {
+                   _id: theater.patient
+               },
+               {
+                   $push: {theaters: theater._id}
+               },function (err, count) {
+                if(err) return next(err)
+                req.flash('success', 'Operation Notes saved Successfully!')
+                res.redirect('/operation-notes')
+               }
+           )
        })
+
    })
 
 //ADD ACCOUNT
@@ -2966,9 +3079,23 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//NURSE ASSESSMENTS
+router.route('/nurse-assessment/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            if(err) return next (err)
+            res.render('app/add/nurse_assessment', {user})
+        })
+    })
+
 //OPERATION NOTES
 router.get('/operation-notes', middleware.isLoggedIn, (req, res, next)=>{
-    Theater.find({}, (err, theaters)=>{
+    Theater.find({})
+    .populate('patient')
+    .populate('surgeon')
+    .populate('anesthetist')
+    .populate('scrubnurse')
+    .exec((err, theaters)=>{
         if (err) { return next(err) }
         res.render('app/view/theater', {theaters})
     })
@@ -2985,6 +3112,7 @@ router.get('/lab-items', middleware.isLoggedIn, (req, res, next) => {
 //PHARMACY ITEMS
 router.get('/pharmacy-items', middleware.isLoggedIn, (req, res, next) => {
     PharmacyItem.find({})
+    .sort('-created')
     .populate('dispensehistory')
     .exec( (err, items) => {
         if (err) { return next(err) }
@@ -3001,11 +3129,26 @@ router.get('/invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     })
 });
 
+//NURSE SENT PATIENT  TO DOCTOR
+router.post('/see-doctor', middleware.isLoggedIn, (req, res, next)=>{
+    const seen = req.body.seen
+    Triage.findOne({_id: seen}, (err, triage)=>{
+        if(err) return next (err)
+        triage.seen = true
+        triage.save((err)=>{
+            if(err) return next (err)
+            req.flash('success', 'Patient sent to doctor')
+            res.redirect('back')
+        })
+    })
+})
+
+
 //Lab Test Invoice
 router.get('/labtest-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
         .populate('patient')
-        .populate('drugsObject')
+        .populate('drugsObject.drugs')
         .populate('labtestObject')
         .exec((err, consultation)=>{
             if(err) return next (err)
@@ -3017,7 +3160,7 @@ router.get('/labtest-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
 router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
     .populate('patient')
-    .populate('drugsObject')
+    .populate('drugsObject.drugs')
     .populate('labtestObject')
     .exec((err, consultation)=>{
         if(err) return next (err)

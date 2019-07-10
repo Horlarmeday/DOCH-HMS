@@ -14,7 +14,7 @@ const consultationSchema = new mongoose.Schema({
         notes: String,
         direction: String
     }],
-    // test: [{type: mongoose.Schema.Types.ObjectId, ref: "Test"}],
+    
     imaging: [{type: mongoose.Schema.Types.ObjectId, ref: "Imaging"}],
     visit: String,
     physical: {

@@ -35,7 +35,7 @@
                             <div class="card">
                                 <div class="card-block-big card-visitor-block">
                                         <%
-                                        const newDoctors = allPatients.map(doctor =>{
+                                        const newDoctors = users.map(doctor =>{
                                           if (doctor.role === 2){
                                             const rDoctor = doctor.role === 2
                                             return rDoctor;
@@ -62,7 +62,7 @@
                             <div class="card">
                                 <div class="card-block-big card-visitor-block">
                                         <%
-                                        const newPatients = allPatients.map(patient =>{
+                                        const newPatients = users.map(patient =>{
                                           if (patient.role === 8){
                                             const rPatient = patient.role === 8
                                             return rPatient;
@@ -126,12 +126,14 @@
                                                     <th>Name</th>
                                                     <th>Age</th>
                                                     <th>Phone</th>
+                                                    <th>Patient Type</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% allPatients.forEach((patient) => { %>
+                                                <% users.forEach((patient) => { %>
+                                                    <% if(patient.role === 8){ %>
                                                     <%
                                                         var birthday = new Date(patient.birthday)
                                                         var today = new Date()
@@ -144,23 +146,40 @@
                                                         }
                                                     %>
                                                     <tr class="clickable">
-                                                       
                                                             <td></td>
-                                                            <td><%= patient.patientid %></td>
-                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td><%= patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= patient._id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
                                                             <td><%= age %></td>
-                                                            <td>+234<%= patient.phone %></td>
+                                                            <td>+234<%= patient.phonenumber %></td>
+                                                            <% if(patient.createdby == 1){ %>
+                                                                <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                                            <% }else{ %>  
+                                                                <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                                            <% } %>    
                                                             <% if(!patient.addmitted){ %>
                                                             <td><label class="label label-md bg-success">Not Admitted</label></td>
                                                             <% }else{ %>
                                                             <td><label class="label label-md bg-warning">Admitted</label></td>
                                                             <% } %>
                                                             <td>
-                                                                <a class="btn btn-success" href="/triage/<%= patient.id %>"><i class="ti-shift-right"></i> Add Triage</a>
+                                                            <a class="btn btn-success" href="/triage/<%= patient._id %>"><i class="ti-shift-right"></i> Add Triage</a>
+                                                            <a class="btn btn-inverse" href="/nurse-assessment/<%= patient._id %>"><i class="fa fa-stethoscope"></i>  Assess Patient</a>
+
+                                                            <% if(patient.triages.length < 0){ %>
+                                                                <button class="btn btn-default">Add Patient Triage</button>
+                                                                <% }else{ %>
+                                                                    
+                                                                <% if(!patient.triages[patient.triages.length -1].seen){ %>
+                                                                <button  name="<%= patient.triages[patient.triages.length -1]._id %>" class="btn btn-info seedoctor" type="button">Send to Doctor</button>
+                                                                <% }else{ %>
+                                                                    <button class="btn btn-default">Sent</button>
+                                                                <% } %>
+                                                            <% } %>
                                                             </td>
                                                        
                                                     </tr>
                                                     
+                                                    <% } %>
                                                     <% }) %>
                                             </tbody>
                                             <tfoot>
@@ -170,6 +189,7 @@
                                                     <th>Name</th>
                                                     <th>Age</th>
                                                     <th>Phone</th>
+                                                    <th>Patient Type</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
                                                 </tr>

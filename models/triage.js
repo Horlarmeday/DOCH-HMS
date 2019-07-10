@@ -15,6 +15,8 @@ const triageSchema = new mongoose.Schema({
     dystolic: String,
     systolic: String,
     muac: String,
+    taken: {type: Boolean, default: false},
+    seen: {type: Boolean, default: false},
     created: {type: Date, default: Date.now}
 });
 

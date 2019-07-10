@@ -73,7 +73,7 @@
                                             </thead>
                                             <tbody>
                                                     <% consultations.forEach((consultation) => { %>
-                                                       
+                                                        <% if(consultation.labtestObject.length > 0){ %>
                                                     <tr>
                                                          
                                                             <td></td>
@@ -115,6 +115,7 @@
                                                                 <% } %>
                                                     </tr>
                                                    
+                                                    <% } %>
                                                     <% }) %>
                                                 </tbody>
                                         </table>

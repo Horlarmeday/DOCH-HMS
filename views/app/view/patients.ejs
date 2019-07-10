@@ -69,6 +69,7 @@
                                                     <th>Address</th>
                                                     <th>Phone</th>
                                                     <th>Email</th>
+                                                    <th>Patient Type</th>
                                                     <th>Status</th>
                                                     <% if(currentUser.role == 7){ %>
                                                     <th>Action</th>
@@ -86,6 +87,11 @@
                                                         <td><%= patient.address %></td>
                                                         <td>+234<%= patient.phone %></td>
                                                         <td><%= patient.email %></td>
+                                                        <% if(patient.createdby == 1){ %>
+                                                            <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                                        <% }else{ %>  
+                                                            <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                                            <% } %>    
                                                         <% if(patient.status){ %>
                                                         <td><label class="label label-md bg-success">Active</label></td>
                                                         <% }else{ %>

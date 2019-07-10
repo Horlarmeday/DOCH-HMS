@@ -96,15 +96,17 @@ router.post('/get-total-amount', middleware.isLoggedIn, (req, res, next)=>{
 })
 
 //get drugs prescriptions
-router.post('/get-drugs-prescription', middleware.isLoggedIn, (req, res, next)=>{
-    const consultId = req.body.consultId
+router.post('/get-drug-info', middleware.isLoggedIn, (req, res, next)=>{
+    
     const drugId = req.body.drugId
-    Consultation.findOne({_id: consultId})
-    .deepPopulate('drugsObject.drugs')
-    .exec((err, consultation)=>{
+    PharmacyItem.findOne({_id: drugId})
+    .exec((err, drug)=>{
         if(err) return next (err)
-        consultation.drugsObject.forEach((drug)=>{
-            
+        console.log(drug)
+        res.json({
+            price: drug.sellprice,
+            rquantity: drug.rquantity,
+            quantity: drug.quantity
         })
         
     })

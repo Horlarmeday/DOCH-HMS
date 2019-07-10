@@ -108,8 +108,13 @@
                         <!-- Product table Start -->
                         <div class="col-sm-12">
                             <div class="card">
-                                <div class="card-block">
+                                <div class="card-header">
                                     <h5>Upcoming Appointments</h5>
+                                    <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
                                 </div>
                                 <div class="card-block product-table">
                                     <div class="table-responsive">
@@ -160,6 +165,60 @@
                             </div>
                         </div>
                         <!-- Product table End -->
+
+                                                <!-- Product table Start -->
+                                                <div class="col-sm-12">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h5>Patients in-Waiting</h5>
+                                                            <div class="card-header-right">
+                                                                    <i class="icofont icofont-rounded-down"></i>
+                                                                    <i class="icofont icofont-refresh"></i>
+                                                                    <i class="icofont icofont-close-circled"></i>
+                                                                </div>
+                                                        </div>
+                                                        <div class="card-block product-table">
+                                                            <div class="table-responsive">
+                                                                <table class="table">
+                                                                    <thead>
+                                                                        <tr class="text-uppercase">
+                                                                            <th>S/N</th>
+                                                                            <th>Patient Name</th>
+                                                                            <th>Age</th>
+                                                                            <th>Status</th>
+                                                                            <th>Actions</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    
+                                                                    <tbody>
+                                                                        <% allTriages.forEach((triage) => { %>
+                                                                            <% if(triage.taken === false && triage.seen === true){ %>
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            <td><%= triage.firstname %> <%= triage.lastname %></td>
+                                                                            <td><%= triage.age %></td>
+                                               
+                                                                            <% if(triage.taken === true){ %>
+                                                                            <td><label class="label label-md bg-success">Attended</label></td>
+                                                                            <% }else{ %>
+                                                                            <td><label class="label label-md bg-warning">Pending</label></td>
+                                                                            <% } %>
+                                                                            <td>
+                                                                                
+                                                                            <a href="/attending-to-patient/<%= triage.id %>" class="btn btn-success btn-round btn-outline-success">Take Up</a>
+                                                                               
+                                                                            </td>
+                                                                        </tr>
+                                                                        <% } %>
+                                                                        <% }) %>
+                                                                    </tbody>
+                                                                    
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- Product table End -->
 
                     </div>
                 </div>
