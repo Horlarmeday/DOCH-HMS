@@ -164,13 +164,13 @@
                                                             <td>
                                                             <a class="btn btn-success" href="/triage/<%= patient._id %>"><i class="ti-shift-right"></i> Add Triage</a>
                                                             <a class="btn btn-inverse" href="/nurse-assessment/<%= patient._id %>"><i class="fa fa-stethoscope"></i>  Assess Patient</a>
-
-                                                            <% if(patient.triages.length < 0){ %>
-                                                                <button class="btn btn-default">Add Patient Triage</button>
+                                                                
+                                                            <% if(patient.triages.length < 1){ %>
+                                                                <p style="display: inline; color:red">Patient has no Triage</p>
                                                                 <% }else{ %>
                                                                     
                                                                 <% if(!patient.triages[patient.triages.length -1].seen){ %>
-                                                                <button  name="<%= patient.triages[patient.triages.length -1]._id %>" class="btn btn-info seedoctor" type="button">Send to Doctor</button>
+                                                                <button name="<%= patient.triages[patient.triages.length -1]._id %>" class="btn btn-info seedoctor" type="button">Send to Doctor</button>
                                                                 <% }else{ %>
                                                                     <button class="btn btn-default">Sent</button>
                                                                 <% } %>
