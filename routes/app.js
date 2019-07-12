@@ -2160,7 +2160,7 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                 consultation.save((err)=>{
                     if(err) return next (err)
                     req.flash('success', 'Patient sent for test successfully')
-                    res.redirect('/dashboard')
+                    res.redirect('back')
                 })
             })
         })
@@ -2235,7 +2235,7 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                 consultation.imagingstatus = true;
                 consultation.save((err)=>{
                     if(err) return next (err)
-                    res.redirect('/consultations')
+                    res.redirect('back')
                 })
             })
         })

@@ -77,7 +77,7 @@
                                             </thead>
                                             <tbody>
                                                 <% consultations.forEach((consultation)=>{ %>
-                                                <tr>
+                                                <tr style="cursor: pointer" onclick="window.location='/consultation/<%= consultation.patient._id %>'">
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
                                                     <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
@@ -126,11 +126,9 @@
                                                     <% }else{ %>
                                                         <td><label class="label label-md bg-success">Completed</label></td>
                                                     <% } %>
-                                                    <% if(consultation.pharmacystatus){ %>
-                                                        <td><a href="#" class="btn btn-default">Prescribed</a></td>
-                                                        <% }else{ %>
-                                                            <td><a href="/consultation/<%= consultation.patient._id %>" class="btn btn-info">Prescribe</a></td>
-                                                        <% } %>
+                                                    
+                                                    <td><a href="/consultation/<%= consultation.patient._id %>" class="btn btn-info">Prescribe</a></td>
+                                                       
                                                     
                                                 </tr>
                                                 <% }) %>
