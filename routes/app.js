@@ -2857,7 +2857,8 @@ router.get('/dispense-history/:id', middleware.isLoggedIn, (req, res, next)=>{
 router.get('/pharmacy-requests', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({})
     .populate('patient')
-    .populate('drugsObject')
+    .populate('doctor')
+    .populate('drugsObject.drugs')
     .exec((err, consultations)=>{
         if(err) return next(err)
         res.render('app/view/pharm_request', { consultations })
@@ -2927,7 +2928,6 @@ router.route('/add-operation-note')
    .post(middleware.isLoggedIn, (req, res, next)=>{
         var assistances = req.body.assistance;
         var allassitances = assistances.map(t => mongoose.Types.ObjectId(t))
-    
        const theater = new Theater({
            patient: req.body.patient,
            surgery: req.body.surgery,

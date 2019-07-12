@@ -67,7 +67,8 @@
                                                         <th>Name</th>
                                                         <th>Reason for Visit</th>
                                                         <th>Drugs Prescribed</th>
-                                                        <th>Usage</th>
+                                                        <th>PrescribedBy</th>
+                                                       
                                                         <th>Status</th>
                                                         <th>Payment Status</th>
                                                         <!-- <th>Action</th> -->
@@ -75,36 +76,44 @@
                                             </thead>
                                             <tbody>
                                                     <% consultations.forEach((consultation)=>{ %>
-                                                        <% if(consultation.pharmacystatus === true){ %>
+                                                        <% if(consultation.pharmacystatus === true && consultation.pharmacyfinish === false){ %>
                                                     <tr>
                                                         <td></td>
                                                         <td><%= consultation.patient.patientId %></td>
-                                                        <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
+                                                        <td> <a href="/patient/<%= consultation.patient._id %>"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
                                                         <td> <%= consultation.visit %></td>
                                                         <td>
-                                                                <% consultation.drugsObject.forEach((test)=>{ %>
-                                                        
-                                                                    <p style="font-weight: 700"><%= test.name %></p>
+                                                                <% consultation.drugsObject.forEach((drug)=>{ %>
+                                                                    <p style="font-weight: 700"><%= drug.drugs.name %>   
+                                                                    </p>
+                                                                    <p> 
+                                                                        <small> <a class="drugger"  href="#" > 
+                                                                        Starting Date: <%= drug.startingdate.toLocaleDateString() %></a></small><br>
+                                                                        <small> <a class="drugger"  href="#" > 
+                                                                        Quantity: <%= drug.quantity %></a></small><br>
+                                                                        <small> <a class="drugger"  href="#" > 
+                                                                        Dosage: <%= drug.direction %> <%= drug.dose %> in <%= drug.time %></a></small><br>
+                                                                        <small> <a class="drugger"  href="#" > 
+                                                                        Unit: <%= drug.medicineunit %> <%= drug.unit %></a></small><br>
+                                                                        <small> <a class="drugger"  href="#" > 
+                                                                        Notes: <%= drug.medicineunit %> <%= drug.notes %></a></small>
+                                                                    </p>
                                                                 <% }) %>
                                                         </td>
-                                                        <td>
-                                                            
-                                                            Dose: <%= consultation.prescription.dose %> <br>
-                                                            Duration: <%= consultation.prescription.duration %> <br>
-                                                            Frequency: <%= consultation.prescription.frequency %> <br>
-                                                            Direction: <%= consultation.prescription.direction %>
-                                                        </td>
+                                                        <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
+                                                        
                                                         <% if(consultation.pharmacyfinish === false){ %>
                                                         <td><label class="label label-md bg-warning">Ongoing</label></td>
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">Finished</label></td>
                                                         <% } %>
-                                                        
                                                         <% if(consultation.pharmacypaid === false){ %>
                                                             <td><label class="label label-md bg-warning">Not Paid</label></td>
                                                             <% }else{ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>
                                                             <% } %>
+                                                       
+                                                        
                                                     </tr>
                                                     <% } %>
                                                     <% }) %>
