@@ -2147,7 +2147,10 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
         .exec((err, user)=>{
             if(err) return next (err)
             Consultation.findOne({ _id: user.consultations[0]._id }, (err, consultation)=>{
-                if(err) return next (err)
+                if(err) {
+                    req.flash('error', 'Error Prescribing, please create a consultation first!')
+                    return res.redirect('back')
+                }
                 if(req.body.labtype) consultation.labtype = req.body.labtype;
                 // if(req.body.labtest) consultation.labtest.push(req.body.labtest);
                 var tests = req.body.labtest
@@ -2170,7 +2173,10 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
         .exec((err, user)=>{
             if(err) return next (err)
             Consultation.findOne({ _id: user.consultations[0]._id }, (err, theconsultation)=>{
-                if(err) return next (err)
+                if(err) {
+                    req.flash('error', 'Error Prescribing, please create a consultation first!')
+                    return res.redirect('back')
+                }
                 // // if(req.body.drug_brand) consultation.drug.push(req.body.drug_brand);
                 // if(req.body.drug_name) consultation.drugname = req.body.drug_name;
                 if(req.body){
@@ -2216,10 +2222,13 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
         .exec((err, user)=>{
             if(err) return next (err)
             Consultation.findOne({ _id: user.consultations[0]._id }, (err, consultation)=>{
-                if(err) return next (err)
+                if(err) {
+                    req.flash('error', 'Error, please create a consultation first!')
+                    return res.redirect('back')
+                }
                 if(req.body){
                     let images = req.body.image;
-                    let allImaging = images.map(s => mongoose.Types.ObjectId(s))
+                    let allImaging = images.map(v => mongoose.Types.ObjectId(v))
                     consultation.imaging = allImaging
                 }
                 consultation.imagingdate = Date.now()
