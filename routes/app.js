@@ -1993,6 +1993,40 @@ router.route('/attending-to-patient/:id')
             })
         })
     })
+    .post(middleware.isLoggedIn, (req, res, next) => {
+        const consultation = new Consultation({
+            doctor: req.user._id,
+            patient: req.params.id,
+            visit: req.body.visit,
+            physical:{
+                observation: req.body.observation,
+                chest: req.body.chest,
+                cvs: req.body.cvs,
+                abdomen: req.body.abdomen,
+                mss: req.body.mss,
+                other: req.body.other
+            },
+            // labtype: req.body.labtype,
+            // labtest: req.body.labtest,
+            diagnosis: req.body.diagnosis,
+            treatment: req.body.treatment
+        })
+        consultation.save((err)=>{
+            if(err) return next(err)
+        })
+        User.updateOne(
+            {
+                _id: req.params.id
+            },
+            {
+                $push:{consultations: consultation._id}
+            },function (err, count) {
+                if(err) {return next (err)}
+                req.flash('success', 'Patient Investiation saved Successfully!')
+                res.redirect('/attending-to-patient/' + req.params.id)
+            }
+        )
+    })
 
 
 //ADD PATIENT CONSULTATION
@@ -2489,9 +2523,7 @@ router.get('/lab-result/:id', middleware.isLoggedIn, (req, res, next)=>{
     .populate('patient')
     .populate('labtestObject')
     .exec((err, consultation)=>{
-        var x = Object.keys(consultation.labresult);
- 
-         console.log(x);
+        
         if(err) return next (err)
         res.render('app/view/lab_result', { consultation })
     })

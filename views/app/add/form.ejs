@@ -499,13 +499,21 @@
                                                                         <th colspan="3">Time of Analysis</th>
                                                                            
                                                                     </tr>
+                                                                    <% if(consultation.labresult.semenanalysis.tproduced && consultation.labresult.semenanalysis.treceived && consultation.labresult.semenanalysis.tofanalysis){ %>
                                                                     <tr>
                                                                       <td></td>  
                                                                       <td><input type="text" name="tproduced" placeholder="<%= consultation.labresult.semenanalysis.tproduced.toLocaleTimeString() %>" class="form-control" id='datetimepicker5'></td>  
                                                                       <td><input type="text" name="treceived" placeholder="<%= consultation.labresult.semenanalysis.treceived.toLocaleTimeString() %>" class="form-control" id='datetimepicker4'></td>  
                                                                       <td colspan="3"><input type="text" name="tofanalysis" placeholder="<%= consultation.labresult.semenanalysis.tofanalysis.toLocaleTimeString() %>" class="form-control" id='datetimepicker8'></td> 
                                                                     </tr>
-                                                                    
+                                                                    <% }else{ %>
+                                                                        <tr>
+                                                                            <td></td>  
+                                                                            <td><input type="text" name="tproduced" placeholder="<%= consultation.labresult.semenanalysis.tproduced %>" class="form-control" id='datetimepicker5'></td>  
+                                                                            <td><input type="text" name="treceived" placeholder="<%= consultation.labresult.semenanalysis.treceived %>" class="form-control" id='datetimepicker4'></td>  
+                                                                            <td colspan="3"><input type="text" name="tofanalysis" placeholder="<%= consultation.labresult.semenanalysis %>" class="form-control" id='datetimepicker8'></td> 
+                                                                        </tr>
+                                                                    <% } %>
                                                                     <tr>
                                                                             <th></th>
                                                                             <th colspan="7">METHOD OF PRODUCTION</th>

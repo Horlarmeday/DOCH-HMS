@@ -83,7 +83,7 @@
                                                                 <p style="font-weight: 700"><%= test.name %></p>
                                                            <% }) %>
                                                     </td>
-                                                    <td> <a href="/lab-results">View Result</a></td>
+                                                    <td> <a href="/lab-result/<%= request._id %>">View Result</a></td>
                                                     <% if(request.labtestfinish === false){ %>
                                                     <td><label class="label label-md bg-warning">Ongoing</label></td>
                                                     <% }else{ %>
