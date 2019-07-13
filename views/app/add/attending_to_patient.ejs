@@ -108,15 +108,15 @@
                                                     <div class="panel-body">
                                                         <dl class="dl-horizontal row">
                                                             <dt style="font-size:1em" class="col-sm-3">Height</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[0].height %> <span style="color: darkorange">(cm)</span></dd>
+                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].height %> <span style="color: darkorange">(cm)</span></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Weight</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[0].weight %> <span style="color: darkorange">(kg)</span></dd>
+                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].weight %> <span style="color: darkorange">(kg)</span></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">BMI</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[0].bmi %> <span style="color: darkorange">(kg/m^2)</dd>
+                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].bmi %> <span style="color: darkorange">(kg/m^2)</dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Heart Rate</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[0].heartrate %> <span style="color: darkorange">(/min)</dd>
+                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].heartrate %> <span style="color: darkorange">(/min)</dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Date Created</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[0].created.toLocaleString() %></dd>
+                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].created.toLocaleString() %></dd>
                                                         </dl>
                                                     </div>
                                                     <div class="panel-footer text-primary">
@@ -132,19 +132,19 @@
                                                     <div class="panel-body">
                                                             <dl class="dl-horizontal row">
                                                                     <dt style="font-size:1em" class="col-sm-3">RVS</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[0].rvs %> <span style="color: darkorange">(rvs)</dd>
+                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].rvs %> <span style="color: darkorange">(rvs)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Temperature</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[0].temperature %> <span style="color: darkorange">(°C)</dd>
+                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].temperature %> <span style="color: darkorange">(°C)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Respiration</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[0].respiration %> <span style="color: darkorange">(B/min)</dd>
+                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].respiration %> <span style="color: darkorange">(B/min)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Blood Pressure</dt>
-                                                                    <% if(user.triages[0].dystolic){ %>
-                                                                        <dd class="col-sm-9"><%= user.triages[0].dystolic %>/<%= user.triages[0].systolic %> <span style="color: darkorange">(mmHg)</dd>
+                                                                    <% if(user.triages[user.triages.length -1].dystolic){ %>
+                                                                        <dd class="col-sm-9"><%= user.triages[user.triages.length -1].dystolic %>/<%= user.triages[user.triages.length -1].systolic %> <span style="color: darkorange">(mmHg)</dd>
                                                                     <% }else{ %>
                                                                         <dd class="col-sm-9">-</dd>
                                                                     <% } %>
                                                                     <dt style="font-size:1em" class="col-sm-3">RVS</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[0].rvs %> <span style="color: darkorange">(rvs)</dd>
+                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].rvs %> <span style="color: darkorange">(rvs)</dd>
                                                              </dl>
                                                     </div>
                                                     <div class="panel-footer text-warning">

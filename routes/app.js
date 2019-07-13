@@ -1405,7 +1405,7 @@ router.route('/triage/:id')
             }, function (err, count) {
                 if (err) { return next(err) }
                 req.flash('success', ' Patient triage was created successfully')
-                res.redirect('/add-appointment')
+                res.redirect('/dashboard')
             }
         );
     })
