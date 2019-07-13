@@ -126,6 +126,7 @@
                                                         <th>Item(s) Requested</th>
                                                         <th>Quantity</th>
                                                         <th>Unit</th>
+                                                        <th>Department</th>
                                                         <th>RequestedBy</th>
                                                         <th>Date Requested</th>
                                                         <th>Time</th>
@@ -141,15 +142,33 @@
                                                             <td><%= request.item %></td>
                                                             <td><%= request.quantity %></td>
                                                             <td><%= request.unit %></td>
+                                                            <td>
+                                                                <% if(request.requestedby.role == 2){ %>
+                                                                    <span>Doctor</span>
+                                                                <% }else if(request.requestedby.role == 3){ %>
+                                                                    <span>Nurse</span>
+                                                                <% }else if(request.requestedby.role == 4){ %>
+                                                                    <span>Laboratory</span>
+                                                                <% }else if(request.requestedby.role == 5){ %>
+                                                                    <span>Pharmacy</span>
+                                                                <% }else if (request.requestedby.role == 10){ %>
+                                                                    <span>Emergency</span>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= request.requestedby.firstname %> <%= request.requestedby.lastname %></td>
                                                             <td><%= request.createdAt.toDateString() %></td>
                                                             <td><%= request.createdAt.toLocaleTimeString()  %></td>
                                                             <td>
-                                                                <label class="label label-md bg-warning">Pending</label> 
+                                                                <% if(request.granted && !request.declined){ %>
+                                                                    <label class="label label-md bg-success">Granted</label> 
+                                                                <% else if(!request.granted && request.declined){ %>
+                                                                    <label class="label label-md bg-danger">Declined</label> 
+                                                                <% } %>
+                                                                
                                                             </td>
-                                                            <td><button id="approve" type="button" class="btn btn-success">Approve</button>
+                                                            <td><button  type="button" class="btn btn-success approve">Approve</button>
                                                             
-                                                                <button id="decline" type="button" class="btn btn-danger">Decline</button>
+                                                                <button type="button" class="btn btn-danger decline">Decline</button>
                                                             </td>
                                                         </tr>
                                                         <% }  %>

@@ -154,7 +154,7 @@ $(document).ready(function() {
     })
 
     //CLICKING APPROVED BUTTON
-    $('#approve').click(function (event) {
+    $('.approve').click(function (event) {
         let approve = $(this).attr('value')
         event.preventDefault()
         var answer = window.confirm("Are you sure you want to approve?");
@@ -180,7 +180,7 @@ $(document).ready(function() {
 
 
      //CLICKING DECLINED BUTTON
-     $('#decline').click(function (event) {
+     $('.decline').click(function (event) {
         let decline = $(this).attr('value')
         event.preventDefault()
         $.ajax({

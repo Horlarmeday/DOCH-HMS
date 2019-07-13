@@ -2209,18 +2209,22 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('consultations')
         .exec((err, user)=>{
             if(err) return next (err)
-            Consultation.findOne({ _id: user.consultations[user.consultations.length -1]._id }, (err, consultation)=>{
+            Consultation.findOne({ _id: user.consultations[user.consultations.length -1]._id }, (err, foundconsultation)=>{
                 if(err) {
-                    req.flash('error', 'Error Prescribing, please create a consultation first!')
+                    req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-                if(req.body.labtype) consultation.labtype = req.body.labtype;
-                // if(req.body.labtest) consultation.labtest.push(req.body.labtest);
-                var tests = req.body.labtest
-                var alltests = tests.map(s => mongoose.Types.ObjectId(s))
-                consultation.labtestObject = alltests;
-                consultation.labstatus = true;
-                consultation.save((err)=>{
+                if(req.body.labtype) foundconsultation.labtype = req.body.labtype;
+                foundconsultation.labtestObject.push(req.body.labtest);
+                
+
+                    // var tests = req.body.labtest
+                    // var alltests = tests.map(s => mongoose.Types.ObjectId(s))
+                    // consultation.labtestObject.push(req.body.labtest);
+           
+                // consultation.labtestObject.push(req.body.labtest)
+                foundconsultation.labstatus = true;
+                foundconsultation.save((err)=>{
                     if(err) return next (err)
                     req.flash('success', 'Patient sent for test successfully')
                     res.redirect('back')
@@ -2272,7 +2276,7 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 theconsultation.save((err)=>{
                     if(err) return next (err)
-                    res.redirect('/consultation/' + req.params.id)
+                    res.redirect('back')
                 })
             })
         })
@@ -2459,6 +2463,7 @@ router.get('/triages', middleware.isLoggedIn, (req, res, next)=>{
 //VIEW ALL CONSULTATIONS
 router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({}) 
+    .sort('-created')
     .populate('patient')
     .populate('labtestObject')
     // .populate('drugsObject')
@@ -2678,7 +2683,7 @@ router.route('/make-request')
         request.save((err)=>{
             if(err) return next (err)
             req.flash('success', 'Request was sent successfully')
-            res.redirect('/dashboard')
+            res.redirect('back')
         })
     })
 

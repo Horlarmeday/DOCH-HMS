@@ -302,7 +302,7 @@
                                                 <div class="card-block">
                                                     <div class="sub-title">Reason of Visit <span style="color:red">*</span> </div>
                                                     <div class="col-sm-12">
-                                                        <textarea class="ml-4" name="visit" cols="100" rows="26" placeholder="<%= consultation.visit %>" required></textarea>
+                                                        <textarea class="ml-4" name="visit" cols="100" rows="26" placeholder="<%= consultation.visit %>" ></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -326,37 +326,37 @@
                                                             <label class="col-sm-2 col-form-label">General Examination</label>
                                                             <div class="col-sm-10">
                                                                 
-                                                                <textarea name="observation" id="" cols="55" rows="10" placeholder="<%= consultation.physical.observation %>" required></textarea>
+                                                                <textarea name="observation" id="" cols="55" rows="10" placeholder="<%= consultation.physical.observation %>" ></textarea>
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="col-sm-2 col-form-label">Chest</label>
                                                             <div class="col-sm-6">
-                                                                <input type="text" name="chest" class="form-control" placeholder="<%= consultation.physical.chest %>" required>
+                                                                <input type="text" name="chest" class="form-control" placeholder="<%= consultation.physical.chest %>" >
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="col-sm-2 col-form-label">CVS</label>
                                                             <div class="col-sm-6">
-                                                                <input type="text" name="cvs" class="form-control" placeholder="<%= consultation.physical.cvs %>" required>
+                                                                <input type="text" name="cvs" class="form-control" placeholder="<%= consultation.physical.cvs %>" >
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="col-sm-2 col-form-label">Abdomen</label>
                                                             <div class="col-sm-6">
-                                                                <input type="text" name="abdomen" class="form-control" placeholder="<%= consultation.physical.abdomen %>" required>
+                                                                <input type="text" name="abdomen" class="form-control" placeholder="<%= consultation.physical.abdomen %>" >
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="col-sm-2 col-form-label">MSS</label>
                                                             <div class="col-sm-6">
-                                                                <input type="text" name="mss" class="form-control" placeholder="<%= consultation.physical.mss %>" required>
+                                                                <input type="text" name="mss" class="form-control" placeholder="<%= consultation.physical.mss %>" >
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
                                                             <label class="col-sm-2 col-form-label">Others</label>
                                                             <div class="col-sm-6">
-                                                                <input type="text" name="other" class="form-control" placeholder="<%= consultation.physical.others %>" required>
+                                                                <input type="text" name="other" class="form-control" placeholder="<%= consultation.physical.others %>" >
                                                             </div>
                                                         </div>
                                                     </div>
@@ -378,7 +378,7 @@
                                                 <div class="card-block">
                                                     <div class="sub-title">Diagnosis <span style="color:red">*</span> </div>
                                                     <div class="col-sm-12">
-                                                        <textarea class="ml-4" name="diagnosis" id="" cols="100" rows="12" placeholder="<%= consultation.diagnosis %>" required></textarea>
+                                                        <textarea class="ml-4" name="diagnosis" id="" cols="100" rows="12" placeholder="<%= consultation.diagnosis %>" ></textarea>
                                                     </div>
                                                 </div>
                                             </div>
@@ -398,7 +398,7 @@
                                                 <div class="card-block">
                                                     <div class="sub-title">Treatment <span style="color:red">*</span> </div>
                                                     <div class="col-sm-12">
-                                                        <textarea class="ml-4" name="treatment" id="" cols="100" rows="10" placeholder="<%= consultation.treatment %>"  required></textarea>
+                                                        <textarea class="ml-4" name="treatment" id="" cols="100" rows="10" placeholder="<%= consultation.treatment %>"  ></textarea>
                                                     </div>
                                                    
                                                     <button class="btn btn-info float-right" type="submit">Save</button>
@@ -591,29 +591,61 @@
                                 </div>
                                 <div class="card-block">
                                     <!-- <div class="sub-title">Lab Investigation <span style="color:red">*</span> </div> -->
-                                    <form action="/labtest/<%= user._id %>" method="post">
+                                    
                                         <div class="col-sm-12">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">Select Lab Test</label>
-                                                <div class="col-sm-6">
-                                                    <select name="labtype" id="tests" onchange="showOptions()" class="form-control">
-                                                        <option selected disabled>Select Lab</option>
-                                                        <% labs.forEach((lab)=>{ %>
-                                                            <option value="<%= lab.name %>"><%= lab.name %></option>
-                                                        <% }) %>
-                                                    </select>
-                                                </div>
+                                            
+                                            <div class="form-group">
+                                                    <button class="btn btn-info" type="button" data-toggle="modal" data-target="#exampleModalCenter4">Select Test</button>
                                             </div>
+
                                             <!-- <div class="col-sm-12"> -->
-                                                <select class="labo" name="labtest[]" id='custom-headers1'  multiple='multiple'>
-                                                    <% alltests.forEach((name)=>{ %>
-                                                        <option value="<%= name.id %>"><%= name.name %></option>
-                                                    <% }) %>
-                                                    
-                                                </select><br><br>
+                                            <div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <h5 class="modal-title" id="exampleModalCenterTitle">Choose Test</h5>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <form action="/labtest/<%= user._id %>" method="POST">
+                                                                    <div class="form-group row">
+                                                                            <label class="col-sm-3 col-form-label">Select Lab</label>
+                                                                            <div class="col-sm-6">
+                                                                                <select name="labtype" id="tests" onchange="showOptions()" class="form-control">
+                                                                                    <option selected disabled>Select Lab</option>
+                                                                                    <% labs.forEach((lab)=>{ %>
+                                                                                        <option value="<%= lab.name %>"><%= lab.name %></option>
+                                                                                    <% }) %>
+                                                                                </select>
+                                                                            </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-3 col-form-label">Choose</label>                                                                          
+                                                                            <div class="col-sm-6">
+                                                                                <select name="labtest" class="form-control ">
+                                                                                    <option selected disabled>Select Test </option>
+                                                                                    <% alltests.forEach((test)=>{ %>
+                                                                                        <option value="<%= test.id %>"><%= test.name %></option>
+                                                                                    <% }) %>
+                                                                                </select>                                                                  
+                                                                            </div>
+                                                                    </div>
+                                                                    <!-- <div class="form-group row">
+                                                                        <label for="" class="col-sm-2 col-form-label">Price</label>
+                                                                            <div class="col-sm-6">
+                                                                                <input type="text" class="form-control" id="drugAmount" readonly>
+                                                                            </div>
+                                                                    </div> -->
+                                                                                                                                        
+                                                                    <button class="btn btn-info float-right" type="submit">Send</button>
+                                                                </form>
+                                                            </div>
+                                                                                                                            
+                                                        </div>
+                                                    </div>
+                                            </div>
                                                
-                                                <button id="pnotify-success" class="btn btn-info" type="submit">Send</button>
-                                            </form><hr>
+                                                
+                                            
                                             <div class="dt-responsive table-responsive">
                                                 <table id="simpletable" class="table table-striped table-bordered nowrap">
                                                     <thead>
@@ -645,7 +677,7 @@
                                             
                                         </div>
                                     </div>
-                                </div>
+                        </div>
                                 <!-- Pagination Alignment Center card end -->
                             
                     </div>
