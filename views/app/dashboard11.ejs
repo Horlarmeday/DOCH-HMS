@@ -136,7 +136,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <% requests.forEach((request) => { %>
-                                                        <% if(!request.granted && !request.declined && (request.department === 'Pharmacy')){ %>
+                                                        <% if(request.department === 'Pharmacy'){ %>
                                                         <tr>
                                                             <td></td>
                                                             <td><%= request.item %></td>
@@ -166,10 +166,12 @@
                                                                 <% } %>
                                                                 
                                                             </td>
-                                                            <td><button  type="button" value="<%= request._id %>" class="btn btn-success approve">Approve</button>
-                                                            
-                                                                <button type="button" value="<%= request._id %>" class="btn btn-danger decline">Decline</button>
-                                                            </td>
+                                                            <% if(!request.granted && !request.declined){ %>
+                                                                <td><button  type="button" value="<%= request._id %>" class="btn btn-success approve">Approve</button>
+                                                                
+                                                                    <button type="button" value="<%= request._id %>" class="btn btn-danger decline">Decline</button>
+                                                                </td>
+                                                            <% } %>
                                                         </tr>
                                                         <% }  %>
                                                     <% }) %>

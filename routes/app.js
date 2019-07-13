@@ -2690,14 +2690,18 @@ router.route('/make-request')
 //APPROVING REQUEST
 router.post('/approve-request', middleware.isLoggedIn, (req, res, next)=>{
     const approve = req.body.approve 
-    Request.findOne({_id: approve}, (err, request)=>{
+    console.log(approve)
+    Request.findOne({ _id: approve }, (err, request)=>{
         if(err) return next (err)
         request.granted = true;
-    })
-    request.save((err)=>{
-        if(err) return next (err)
-        req.flash('success', 'Request was granted successfully')
-        res.redirect('/dashboard')
+        request.save((err)=>{
+            if(err) {
+                req.flash('error', 'Error granting request')
+                res.redirect('back')
+            }
+            req.flash('success', 'Request was granted successfully')
+            res.redirect('/dashboard')
+        })
     })
 })
 
@@ -2707,11 +2711,11 @@ router.post('/decline-request', middleware.isLoggedIn, (req, res, next)=>{
     Request.findOne({_id: decline}, (err, request)=>{
         if(err) return next (err)
         request.declined = true;
-    })
-    request.save((err)=>{
-        if(err) return next (err)
-        req.flash('success', 'Request was declined successfully')
-        res.redirect('/dashboard')
+        request.save((err)=>{
+            if(err) return next (err)
+            req.flash('success', 'Request was declined successfully')
+            res.redirect('/dashboard')
+        })
     })
 })
 

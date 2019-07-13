@@ -156,6 +156,7 @@ $(document).ready(function() {
     //CLICKING APPROVED BUTTON
     $('.approve').click(function (event) {
         let approve = $(this).attr('value')
+        console.log(approve)
         event.preventDefault()
         var answer = window.confirm("Are you sure you want to approve?");
         if(answer){
@@ -182,6 +183,7 @@ $(document).ready(function() {
      //CLICKING DECLINED BUTTON
      $('.decline').click(function (event) {
         let decline = $(this).attr('value')
+        console.log(decline)
         event.preventDefault()
         $.ajax({
             type: 'POST',
