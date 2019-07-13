@@ -161,7 +161,7 @@
                                                             <td>
                                                                 <% if(request.granted && !request.declined){ %>
                                                                     <label class="label label-md bg-success">Granted</label> 
-                                                                <% else if(!request.granted && request.declined){ %>
+                                                                <% }else if(!request.granted && request.declined){ %>
                                                                     <label class="label label-md bg-danger">Declined</label> 
                                                                 <% } %>
                                                                 
