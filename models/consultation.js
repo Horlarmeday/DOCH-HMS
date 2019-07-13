@@ -287,7 +287,7 @@ const consultationSchema = new mongoose.Schema({
             above5daysdirect: String,
         },
     },
-    imaging: String,
+    // imaging: String,
     labtype: String,
     radiology: String,
     treatment: String,

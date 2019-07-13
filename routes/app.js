@@ -18,6 +18,7 @@ const Request = require('../models/request')
 const Careplan = require('../models/careplan')
 const Treatment = require('../models/treatment')
 const Consentform = require('../models/consentform')
+const Assessment = require('../models/assessment')
 // const Counter = require('../models/counters')
 const labItem = require('../models/labitem')
 const PharmacyItem = require('../models/pharmacyItem')
@@ -2023,7 +2024,7 @@ router.route('/attending-to-patient/:id')
             },function (err, count) {
                 if(err) {return next (err)}
                 req.flash('success', 'Patient Investiation saved Successfully!')
-                res.redirect('/attending-to-patient/' + req.params.id)
+                res.redirect('/edit-consultation/' + consultation._id)
             }
         )
     })
@@ -2135,10 +2136,72 @@ router.route('/consultation/:id')
         },function (err, count) {
             if(err) {return next (err)}
             req.flash('success', 'Patient Consultation saved Successfully!')
-            res.redirect('/consultation/' + req.params.id)
+            res.redirect('/edit-consultation/' + consultation._id)
         }
     )
 })
+
+//Editing consultation
+router.route('/edit-consultation/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        Consultation.findOne({ _id: req.params.id })
+        .populate('patient')
+        .populate('labtestObject')
+        .populate('imaging')
+        .deepPopulate(['drugsObject.drugs', 'labtestObject.lab'])
+        .exec((err, consultation)=>{
+            PharmacyItem.find({}, (err, drugs)=>{
+                Lab.find({})
+                .populate('tests')
+                .exec((err, labs)=>{
+                    let alltests = []
+                    labs.forEach((lab)=>{
+                        lab.tests.forEach((tetest)=>{
+                            alltests.push({
+                                'name': tetest.name,
+                                'id': tetest._id
+                            })
+                        })
+                    })
+                    Imaging.find({}, (err, imaging)=>{
+                        User.findOne({_id: consultation.patient})
+                        .populate('triages')
+                        .populate('consultations')
+                        
+                        
+                        .exec((err, user)=>{
+                            console.log(user)
+                            res.render('app/add/edit_consultation', {consultation, drugs, labs, imaging, alltests, user})
+                        })
+                    })
+                })
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        Consultation.findOne({ _id: req.params.id }, (err, foundConsultation)=>{
+            if (req.body.visit) foundConsultation.visit = req.body.visit
+            if (req.body.diagnosis) foundConsultation.diagnosis = req.body.diagnosis
+            if (req.bodytreatment) foundConsultation.treatment =  req.body.treatment
+            if(req.body.observation) foundConsultation.physical.observation = req.body.observation
+            if(req.body.chest) foundConsultation.physical.chest = req.body.chest
+            if(req.body.cvs) foundConsultation.physical.cvs = req.body.cvs
+            if(req.body.abdomen) foundConsultation.physical.abdomen = req.body.abdomen
+            if(req.body.mss) foundConsultation.physical.mss = req.body.mss
+            if(req.body.other) foundConsultation.physical.abdomen = req.body.other
+            foundConsultation.save((err)=>{
+                if(err){
+                    req.flash('error', 'Error saving patient examination')
+                    return res.redirect('back')
+                }else{
+                    req.flash('success', 'Successfully saved patient examination')
+                    return res.redirect('back')
+                }
+            })
+
+        })
+    })
+
 
 //ADD PATIENT LAB TEST
 router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
@@ -2146,7 +2209,7 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('consultations')
         .exec((err, user)=>{
             if(err) return next (err)
-            Consultation.findOne({ _id: user.consultations[0]._id }, (err, consultation)=>{
+            Consultation.findOne({ _id: user.consultations[user.consultations.length -1]._id }, (err, consultation)=>{
                 if(err) {
                     req.flash('error', 'Error Prescribing, please create a consultation first!')
                     return res.redirect('back')
@@ -2172,7 +2235,7 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('consultations')
         .exec((err, user)=>{
             if(err) return next (err)
-            Consultation.findOne({ _id: user.consultations[0]._id }, (err, theconsultation)=>{
+            Consultation.findOne({ _id: user.consultations[user.consultations.length -1]._id }, (err, theconsultation)=>{
                 if(err) {
                     req.flash('error', 'Error Prescribing, please create a consultation first!')
                     return res.redirect('back')
@@ -2221,12 +2284,12 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('consultations')
         .exec((err, user)=>{
             if(err) return next (err)
-            Consultation.findOne({ _id: user.consultations[0]._id }, (err, consultation)=>{
+            Consultation.findOne({ _id: user.consultations[user.consultations.length -1]._id }, (err, consultation)=>{
                 if(err) {
                     req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-                if(req.body){
+                if(req.body.image){
                     let images = req.body.image;
                     let allImaging = images.map(v => mongoose.Types.ObjectId(v))
                     consultation.imaging = allImaging
@@ -3132,7 +3195,56 @@ router.route('/nurse-assessment/:id')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-
+        const assessment = new Assessment({
+            nurse: req.user._id,
+            patient: req.params.id,
+            immunization: req.body.immunization,
+            lmp: req.body.lmp,
+            presenthistory: req.body.presenthistory,
+            pasthistory: req.body.pasthistory,
+            nutrition: req.body.nutrition,
+            elimination: req.body.elimination,
+            activity: req.body.activity,
+            sleep: req.body.sleep,
+            communication: req.body.communication,
+            perception: req.body.perception,
+            socialstatus: req.body.socialstatus,
+            sexuality: req.body.sexuality,
+            copingwithstress: req.body.copingwithstress,
+            values: req.body.values,
+            others: req.body.others,
+            valuesbrought: req.body.valuesbrought,
+            temp: req.body.temp,
+            height: req.body.height,
+            weight: req.body.weight,
+            respiration: req.body.respiration,
+            pulse: req.body.pulse,
+            bloodpressure: req.body.bloodpressure,
+            urinalysis: req.body.urinalysis,
+            general: req.body.general,
+            palpitation: req.body.palpitation,
+            percussion: req.body.percussion,
+            auscultation: req.body.auscultation,
+            labresult: req.body.labresult,
+            nursingdiagnosis: req.body.nursingdiagnosis,
+        })
+        assessment.save((err)=>{
+            if(err){
+                req.flash('error', err.message)
+                return res.redirect('back')
+            }
+            User.updateOne(
+                {
+                    _id: req.params.id
+                },
+                {
+                    $push: { assessments: assessment._id}
+                }, function (err, count) {
+                    req.flash('success', 'Patient assessment was saved!')
+                    return res.redirect('/dashboard')
+                }
+            )
+        })
     })
 
 //OPERATION NOTES

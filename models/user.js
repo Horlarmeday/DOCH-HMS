@@ -97,6 +97,9 @@ const UserSchema = new mongoose.Schema({
     theaters:[{
         type: mongoose.Schema.Types.ObjectId, ref: "Theater"
     }],
+    assessments:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "Assessment"
+    }],
     // imaging:[{
     //     type: mongoose.Schema.Types.ObjectId, ref: "Imaging"
     // }]
