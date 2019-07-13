@@ -118,183 +118,187 @@
                                                                                 
                                                                             </div>
                                                                     </fieldset>
-                                                                    <h3> Patient Information </h3>
+                                                                    <h3> Nurse History </h3>
                                                                     <fieldset>
                                                                            
                                                                             <div class="form-group row">
                                                                                     <div class="col-sm-6">
-                                                                                        <label for="">First Name <span class="text-danger">*</span> </label>
-                                                                                        <input type="text" name="fname" class="form-control" placeholder="First Name" required>
-                                                                                    </div>
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Last Name<span class="text-danger">*</span></label>
-                                                                                        <input type="text" name="lname" class="form-control" placeholder="Last Name" required>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Patient ID<span class="text-danger">*</span></label>
-                                                                                        <input style="font-weight: 700" type="text" class="form-control" placeholder="" readonly>
-                                                                                    </div>
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Old Patient ID</label>
-                                                                                        <input type="text" name="oldpatientID" class="form-control" placeholder="Old Patient ID">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Email Address</label>
-                                                                                        <input type="email" name="email" class="form-control" placeholder="Email">
-                                                                                    </div>
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Religion<span class="text-danger">*</span></label>
-                                                                                        <select name="religion" class="form-control" required>
+                                                                                        <label for="">Immunizations </label>
+                                                                                       <select name="immunization" class="form-control" required>
                                                                                             <option selected disabled>Select</option>
-                                                                                            <option>Christianity</option>
-                                                                                            <option>Islam</option>
-                                                                                            <option>Traditional</option>
-                                                                                            <option>Other</option>
-                                                                                        </select>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Date of Birth<span class="text-danger">*</span></label>
-                                                                                        <input type="date" name="birthday" class="form-control" placeholder="Date of Birth" required>
-                                                                                    </div>
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Phone Number<span class="text-danger">*</span></label>
-                                                                                        <input type="text" name="phone" class="form-control" placeholder="Phone Number" required>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                        <div class="col-sm-6">
-                                                                                            <label for="">Country<span class="text-danger">*</span></label>
-                                                                                            <select name="country" id="nationality" class="form-control select" required>
-                                                                                                <option selected disabled>Select</option>
-                                                                                                <option value="nig" data-available-with="">Nigeria</option>
-                                                                                            </select>
-                                                                                        </div>
-                                                                                        <div class="col-sm-6">
-                                                                                            <label for="">State<span class="text-danger">*</span></label>
-                                                                                            <% include ../../partials/state2 %>
-                                                                                        </div>
-                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Local Government<span class="text-danger">*</span></label>
-                                                                                        <% include ../../partials/lga2 %>
-                                                                                    </div>
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Home Address<span class="text-danger">*</span></label>
-                                                                                        <input type="text" name="address" class="form-control" placeholder="Address" required>
-                                                                                    </div>
-                                                                                </div>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Marital Status<span class="text-danger">*</span></label>
-                                                                                        <select name="mstatus" class="form-control" required>
-                                                                                            <option selected disabled>Select</option>
-                                                                                            <option>Married</option>
-                                                                                            <option>Single</option>
-                                                                                            <option>Divorced</option>
-                                                                                            <option>Widowed</option>
+                                                                                            <option>BCG</option>
+                                                                                            <option>Poliomoyelities</option>
+                                                                                            <option>Tetanus</option>
+                                                                                            <option>Wooping Cough</option>
+                                                                                            <option>Dipeteria</option>
+                                                                                            <option>Measles</option>
+                                                                                            <option>Otbers</option>
+                                                                                           
                                                                                         </select>
                                                                                     </div>
                                                                                     <div class="col-sm-6">
-                                                                                            <label for="">Gender<span class="text-danger">*</span></label><br><br>
-                                                                                            <!-- <div class="radio radio-inline"> -->
-                                                                                                <label>
-                                                                                                    <input type="radio" name="gender" value="Female" checked="checked" required>
-                                                                                                    <i class="helper"></i>Female
-                                                                                                </label>
-                                                                                            <!-- </div> -->
-                                                                                            <!-- <div class="radio radio-inline"> -->
-                                                                                                <label>
-                                                                                                    <input type="radio" name="gender" value="Male" required>
-                                                                                                    <i class="helper"></i>Male
-                                                                                                </label>
-                                                                                            <!-- </div> -->
+                                                                                        <label for="">LMP<span class="text-danger">*</span></label>
+                                                                                        <input type="text" name="lmp" class="form-control"  required>
                                                                                     </div>
-                                                                                    <% include ../../partials/chained %>     
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Present Medical History</label>
+                                                                                        <textarea name="presenthistory" class="form-control" cols="30" rows="10" required></textarea>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Past Medical History</label>
+                                                                                        <textarea name="pasthistory" class="form-control" cols="30" rows="10" required></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Nutrition</label>
+                                                                                        <input type="text" name="nutrition" class="form-control" required>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Elimination<span class="text-danger">*</span></label>
+                                                                                        <input type="text" name="elimination" class="form-control" required>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Activity/Exercise</label>
+                                                                                        <input type="text" name="activity" class="form-control" required>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Sleep and Rest<span class="text-danger">*</span></label>
+                                                                                        <input type="text" name="sleep" class="form-control" required>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Communication/Special Sense</label>
+                                                                                        <input type="text" name="communication" class="form-control" required>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Perception of Illness<span class="text-danger">*</span></label>
+                                                                                        <input type="text" name="perception" class="form-control" required>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                
+                                                                    </fieldset>
+                                                                    <h3>Nurse History Cont</h3>
+                                                                    <fieldset>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Family/Social Status</label>
+                                                                                <input type="text" name="socialstatus" class="form-control" required>
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Sexuality/Reproduction</label>
+                                                                                <input type="text" name="sexuality" class="form-control"  required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Coping with Stress</label>
+                                                                                <input type="text" name="copingwithstress" class="form-control" required>
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Values and Beliefs</label>
+                                                                                <input type="text" name="values" class="form-control" required>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Other Information: (Habits)</label>
+                                                                                <input type="text" name="others" class="form-control" required>
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Values brought into Hospital</label>
+                                                                                <input type="text" name="valuesbrought" class="form-control" required>
+                                                                            </div>
+                                                                        </div>
                                                                     </fieldset>
                                                                     
-                                                                    <h3> Next of Kin </h3>
+                                                                    <h3> Examination </h3>
                                                                     <fieldset>
-                                                                            <h5 style="color:dodgerblue" class="page-title">Next of Kin Information</h5><br><br>
+                                                                            <h5 style="color:dodgerblue" class="page-title">Physical Measurement</h5><br><br>
                                                                             <div class="form-group row">
                                                                                     <div class="col-sm-6">
-                                                                                        <label for="">Next of Kin Name<span class="text-danger">*</span></label>
-                                                                                        <input type="text" name="nextofkinname" class="form-control" placeholder="Next of Kin Name" required>
+                                                                                        <label for="">Temperature<</label>
+                                                                                        <input type="text" name="temp" class="form-control" required>
                                                                                     </div>
                                                                                     <div class="col-sm-6">
-                                                                                        <label for="">Next of Kin Phone Number<span class="text-danger">*</span></label>
-                                                                                        <input type="number" name="nextofkinphone" class="form-control" placeholder="Next of Kin Phone" required>
+                                                                                        <label for="">Pulse</label>
+                                                                                        <input type="text" name="pulse" class="form-control"required>
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="form-group row">
                                                                                     <div class="col-sm-6">
-                                                                                        <label for="">Relationship<span class="text-danger">*</span></label>
-                                                                                        <select name="relationship" class="form-control" required>
-                                                                                            <option selected disabled>Select</option>
-                                                                                            <option>Husband</option>
-                                                                                            <option>Wife</option>
-                                                                                            <option>Father</option>
-                                                                                            <option>Mother</option>
-                                                                                            <option>Son</option>
-                                                                                            <option>Daughter</option>
-                                                                                            <option>Brother</option>
-                                                                                            <option>Sister</option>
-                                                                                        </select>
+                                                                                        <label for="">Respiration</label>
+                                                                                        <input type="text" name="respiration" class="form-control"required>
                                                                                     </div>
                                                                                     <div class="col-sm-6">
-                                                                                        <label for="">Next of Kin Address<span class="text-danger">*</span></label>
-                                                                                        <input type="text" name="nextofkinaddress" class="form-control" placeholder="Next of Kin Address" required>
+                                                                                        <label for="">Blood Pressure</label>
+                                                                                        <input type="text" name="bloodpressure" class="form-control" required>
                                                                                     </div>
                                                                                 </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Apex Beat</label>
+                                                                                        <input type="text" name="apexbeat" class="form-control"required>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Height</label>
+                                                                                        <input type="number" step="any" name="height" class="form-control" required>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Weight</label>
+                                                                                        <input type="number" step="any" name="weight" class="form-control"required>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Urinalysis</label>
+                                                                                        <input type="text" name="urinalysis" class="form-control" >
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group row">
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">General Inspection (Head to Toe)</label>
+                                                                                       <textarea name="general" class="form-control" cols="30" rows="10"></textarea>
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+                                                                                        <label for="">Palpitation</label>
+                                                                                        <input type="text" name="palpitation" class="form-control" >
+                                                                                    </div>
+                                                                                </div>
+                                                                                
                                                                     </fieldset>
-                                                                    <h3> Payment </h3>
+                                                                    <h3>Examination Cont.</h3>
                                                                     <fieldset>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Percussion</label>
+                                                                                <input type="text" name="percussion" class="form-control" >
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Auscultation</label>
+                                                                                <input type="text" name="auscultation" class="form-control" >
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Laboratory Result</label>
+                                                                                <input type="text" name="labresult" class="form-control" >
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+                                                                                <label for="">Nursing Diagnosis</label>
+                                                                                <textarea name="nursingdiagnosis" class="form-control" cols="30" rows="10"></textarea>
+                                                                            </div>
+                                                                        </div>
                                                                         
-                                                    <h5 style="color:dodgerblue" class="page-title">Payments</h5><br><br>
-                                                    <h6>Registration Fee</h6>
-                                                    <div class="form-radio">
-                                                            <div class="radio radiofill radio-inline">
-                                                                <label>
-                                                                    <input id="registration1" type="radio" name="registration" value="1500">
-                                                                    <i class="helper"></i> Adult (&#8358;<span id="regis1">1500</span>)
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio radiofill radio-inline">
-                                                                <label>
-                                                                    <input id="registration2" type="radio" name="registration" value="1000">
-                                                                    <i class="helper"></i> Children (&#8358;<span id="regis2">1000</span>)
-                                                                </label>
-                                                            </div>
-                                                            <div class="radio radiofill radio-inline">
-                                                                <label>
-                                                                    <input id="registration2" type="radio" name="registration" value="5000">
-                                                                    <i class="helper"></i> Family (&#8358;<span id="regis2">5000</span>)
-                                                                </label>
-                                                            </div>
-                                                    </div><br>
-                                                    <h6>Consultation Fee</h6>
-                                                   
-                                                    <div class="form-radio">
-                                                        <div class="radio radiofill radio-inline">
-                                                            <label>
-                                                                <input id="consultation1" type="radio" name="consultation" value="3000">
-                                                                <i class="helper"></i> Minor (&#8358;<span id="consult1">3000</span>)
-                                                            </label>
-                                                        </div>
-                                                        <div class="radio radiofill radio-inline">
-                                                            <label>
-                                                                <input id="consultation2" type="radio" name="consultation" value="6000">
-                                                                <i class="helper"></i> Major (&#8358;<span id="consult2">6000</span>)
-                                                            </label>
-                                                        </div>
-                                                    </div>
                                                                     </fieldset>
+                                                                   
+                                                                    
                                                                 </form>
                                                             </section>
                                                         </div>
