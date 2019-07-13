@@ -5,7 +5,7 @@ const crypto = require("crypto");
 
 const UserSchema = new mongoose.Schema({
     email:{type: String, unique: true, lowercase: true},
-    username: {type: String, unique: true},
+    username: {type: String},
     isVerified: {type: Boolean, default: false},
     createdby: Number,
     firstname: String,
