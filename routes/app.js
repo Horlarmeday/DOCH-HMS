@@ -245,7 +245,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                             'city': user.city,
                             'age': age,
                             'country': user.country,
-                            'created': user.createdAt.toDateString(),
+                            'created': user.createdAt.toLocaleString(),
                         })
                     }
                 })
@@ -366,6 +366,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 Payment.find({})
                 .sort('-createdAt')
                 .populate('patient')
+                .populate('services')
                 .exec((err, payments)=>{
                     if(err) return next (err)
                     res.render('app/dashboard9', { users, consultations, payments })
@@ -1780,9 +1781,13 @@ router.route('/add-billing')
             payment.patient = req.body.patient;
             payment.initiator = req.user._id;
             payment.amount = req.body.totalamount;
-            var services = req.body.service;
-            var allservices = services.map(s => mongoose.Types.ObjectId(s))
-            payment.services = allservices;
+            if (Array.isArray(req.body.service)){
+                var services = req.body.service;
+                var allservices = services.map(s => mongoose.Types.ObjectId(s))
+                payment.services = allservices;
+            }else{
+                payment.services = req.body.service;
+            }
             payment.modeofpayment = req.body.modeofpayment;
             payment.comment = req.body.comment;
             
@@ -2268,8 +2273,6 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 if(req.body.labtype) foundconsultation.labtype = req.body.labtype;
                 foundconsultation.labtestObject.push(req.body.labtest);
-                
-
                     // var tests = req.body.labtest
                     // var alltests = tests.map(s => mongoose.Types.ObjectId(s))
                     // consultation.labtestObject.push(req.body.labtest);
@@ -2345,14 +2348,14 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                     req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-                // if(req.body.image){
-                //     let images = req.body.image;
-                //     let allImaging = images.map(v => mongoose.Types.ObjectId(v))
-                //     consultation.imaging = allImaging
-                // }
-                consultation.imaging.push(
-                    req.body.image
-                )
+
+                if (Array.isArray(req.body.image)){
+                    let images = req.body.image;
+                    let allImaging = images.map(v => mongoose.Types.ObjectId(v))
+                    consultation.imaging = allImaging
+                }else{
+                    consultation.imaging = req.body.image
+                }
                 consultation.imagingdate = Date.now()
                 consultation.imagingstatus = true;
                 consultation.save((err)=>{
@@ -3114,21 +3117,27 @@ router.route('/add-operation-note')
         })
    })
    .post(middleware.isLoggedIn, (req, res, next)=>{
-        var assistances = req.body.assistance;
-        var allassitances = assistances.map(t => mongoose.Types.ObjectId(t))
-       const theater = new Theater({
-           patient: req.body.patient,
-           surgery: req.body.surgery,
-           indications: req.body.indications,
-           anaesthesia: req.body.anaesthesia,
-           surgeon: req.body.surgeon,
-           assistance: allassitances,
-           scrubnurse: req.body.scrubnurse,
-           anesthetist: req.body.anesthetist,
-           findings: req.body.findings,
-           procedure: req.body.procedure,
-           order: req.body.order
-       })
+       
+
+       const theater = new Theater()
+        theater.patient = req.body.patient;
+        theater.surgery = req.body.surgery;
+        theater.indications = req.body.indications;
+        theater.anaesthesia = req.body.anaesthesia;
+        theater.surgeon = req.body.surgeon;
+        if (Array.isArray(req.body.assistance)){
+            var assistances = req.body.assistance;
+            var allassitances = assistances.map(t => mongoose.Types.ObjectId(t))
+            theater.assistance = allassitances;
+        }else{
+            theater.assistance = req.body.assistance;
+        }
+        theater.scrubnurse = req.body.scrubnurse,
+        theater.anesthetist = req.body.anesthetist,
+        theater.findings = req.body.findings,
+        theater.procedure = req.body.procedure,
+        theater.order = req.body.order
+       
        theater.save((err)=>{
            if(err) return next(err)
            User.updateOne(
@@ -3511,6 +3520,7 @@ router.route('/nurse-assessment/:id')
 //OPERATION NOTES
 router.get('/operation-notes', middleware.isLoggedIn, (req, res, next)=>{
     Theater.find({})
+    .sort('-created')
     .populate('patient')
     .populate('surgeon')
     .populate('anesthetist')
