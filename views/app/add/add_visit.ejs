@@ -66,20 +66,11 @@
                                                                     <!-- <div class="form-group">
                                                                         <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
                                                                     </div> -->
-                                                                    <div class="form-group row">
-                                                                        <div class="col-sm-6">
-                                                                            <label for="">Admission Date <span class="text-danger">*</span></label>
-                                                                            <input type="date" name="admission" class="form-control" placeholder="First Name" required>
-                                                                        </div>
-                                                                        <div class="col-sm-6">
-                                                                            <label for="">Discharge Date </label>
-                                                                            <input type="date" name="discharge" class="form-control" placeholder="Last Name">
-                                                                        </div>
-                                                                    </div>
+                                                                    
                                                                     <div class="form-group row">
                                                                         <div class="col-sm-6">
                                                                             <label>Visit Type <span class="text-danger">*</span></label>
-                                                                            <select name="visit" class="form-control select" required>
+                                                                            <select id="visittype" name="visit" class="form-control select" onchange="showAddmission()" required>
                                                                                 <option selected disabled>Select</option>
                                                                                 <option value="Admission">Admission</option>
                                                                                 <option value="Clinic">Clinic</option>
@@ -100,13 +91,23 @@
                                                                             </select>
                                                                         </div>
                                                                     </div>
+                                                                    <div class="form-group row">
+                                                                            <div id="addmission" class="col-sm-6">
+                                                                                <label for="">Admission Date <span class="text-danger">*</span></label>
+                                                                                <input type="date" name="admission" class="form-control" placeholder="" >
+                                                                            </div>
+                                                                            <div id="discharge" class="col-sm-6">
+                                                                                <label for="">Discharge Date </label>
+                                                                                <input type="date" name="discharge" class="form-control" placeholder="">
+                                                                            </div>
+                                                                    </div>
                                                                     <div class="form-group">
                                                                         <label>Reason for Visit</label>
                                                                         <textarea class="form-control" name="reason" id="" cols="30" rows="10"></textarea>
                                                                     </div>
                                                                     
                                                                     <button type="submit" class="btn btn-info float-right"><i class="ti-shift-right"></i> Check In</button>
-                                                                    <a href="/patients" class="btn btn-danger float-right mr-2">Cancel</a>
+                                                                    <a href="/dashboard" class="btn btn-danger float-right mr-2">Cancel</a>
                                                                 </form>
                                                             </div>
                                                         </div>

@@ -71,7 +71,8 @@
                                                     
                                                     <th>Lab Tests</th>
                                                     <th>Lab Result</th>
-                                                    <th>Status</th>
+                                                    <th>Imaging</th>
+                                                    <!-- <th>Status</th> -->
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -113,20 +114,22 @@
                                                        <% }) %>
                                                     </td>
                                                     <% }else{ %>
-                                                        <td> <i style="color: red" class="ti-alert"></i> No Lab test yet</td>
+                                                        <td> <i style="color: red" class="ti-alert"></i> No Lab test required yet</td>
                                                     <% } %>
                                                     <% if(consultation.labtestfinish){ %>
                                                         <td> <a href="/lab-result/<%= consultation._id %>">View Result</a></td>
                                                     <% }else{  %>
                                                        <td> <i style="color: red" class="ti-alert"></i> No Result Yet</td>
                                                     <% } %>
-
-                                                    <% if(!consultation.status){ %>
-                                                    <td><label class="label label-md bg-warning">Ongoing</label></td>
+                                                    <% if(consultation.imagingstatus){ %>
+                                                        <td>
+                                                                <% consultation.imaging.forEach((image)=>{ %>
+                                                                    <p style="font-weight: 700"><%= image.name %></p>
+                                                               <% }) %>
+                                                        </td>
                                                     <% }else{ %>
-                                                        <td><label class="label label-md bg-success">Completed</label></td>
+                                                        <td> <i style="color: red" class="ti-alert"></i> No Imaging test required yet</td>
                                                     <% } %>
-                                                    
                                                     <td><a href="/edit-consultation/<%= consultation._id %>" class="btn btn-info">Consult</a></td>
                              
                                                 </tr>

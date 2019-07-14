@@ -19264,7 +19264,8 @@ body.menu-bottom .navbar-wrapper {
 #department,
 #retainershipname,
 #hmoname,#patientId, #nhis, #fhss, #privatehmo, #retainer,
- #dependants, .form-block1, .form-block2, .form-block3, #btn-addition, #btn-subtract, #num, .content, #agecolumn, #pulse{
+ #dependants, .form-block1, .form-block2, .form-block3, #btn-addition,
+  #btn-subtract, #num, .content, #agecolumn, #pulse, #addmission, #discharge,#transfer{
 	display: none;
 }
 

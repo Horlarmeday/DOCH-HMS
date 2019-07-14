@@ -46,7 +46,7 @@
                             </ul>
                         </li> -->
                         <% } %>
-                        <% if(currentUser.role == 1 || currentUser.role === 7 || currentUser.role == 9 || currentUser.role == 10){ %>
+                        <% if(currentUser.role == 1 || currentUser.role === 7 || currentUser.role == 9 || currentUser.role == 10 || currentUser.role == 3){ %>
                         <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                 <span class="pcoded-micon"><i class="ti-wheelchair"></i></span>
@@ -90,7 +90,7 @@
                                         </a>
                                     </li>
                                 <% } %>
-                                <% if(currentUser.role == 1 || currentUser.role === 7){ %>
+                                <% if(currentUser.role == 1 || currentUser.role === 7 || currentUser.role === 3){ %>
                                 <li class=" ">
                                         <a href="/addmitted-patients" data-i18n="nav.navigate.navbar-inverse">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

@@ -12,6 +12,7 @@ const Service = require('../models/service')
 const Vendor = require('../models/vendor')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
+const Discharge = require('../models/discharge')
 const ANC = require('../models/anc')
 const NurseNote = require('../models/nursenote')
 const Request = require('../models/request')
@@ -197,6 +198,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                         'address': user.address,
                         'phone': user.phonenumber,
                         'email': user.email,
+                        'addmitted': user.addmitted,
                         'status': user.status,
                         'age': age
                     })
@@ -297,9 +299,13 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .deepPopulate('drugsObject.drugs')
             .populate('labtestObject')
             .populate('patient')
+            .populate('imaging')
             .exec((err, consultations)=>{
                 if(err) return next (err)
-                res.render('app/dashboard7', { users, consultations })
+                Appointment.find({}, (err, appointments)=>{
+                    if(err) return next (err)
+                    res.render('app/dashboard7', { users, consultations, appointments })
+                })
             })
         }).sort('-createdAt')
     }else if(req.user.role === 10){
@@ -417,7 +423,10 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         })
     }else if(req.user.role === 15){
         //IMAGING
-        Consultation.find({}, (err, consultations)=>{
+        Consultation.find({})
+        .populate('patient')
+        .populate('imaging')
+        .exec((err, consultations)=>{
             if(err) return next (err)
             Appointment.find({})
             .populate('patient')
@@ -1415,7 +1424,10 @@ router.route('/add-daily-report')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         User.find({}, function (err, users) {
             if(err) return next (err)
-            res.render('app/add/daily_report', { users })
+            User.findOne({_id: req.params.id}, (err, user)=>{
+                if(err) return next (err)
+                res.render('app/add/daily_report', { users, user })
+            })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
@@ -1431,6 +1443,46 @@ router.route('/add-daily-report')
         nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.body.patient;
+        nurseReport.status = true;
+        nurseReport.save((err) => {
+            if (err) { return next(err) }
+        })
+        User.update(
+            { _id: nurseReport.patient },
+            { $push: { reports: nurseReport._id }},
+            function (err, count) {
+                if(err) return next (err)
+                req.flash('success', 'New Report has been created')
+                res.redirect('/add-daily-report');
+            }
+        )
+    })
+
+//DAILY NURSE REPORT
+router.route('/add-daily-report/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.find({}, function (err, users) {
+            if(err) return next (err)
+            User.findOne({_id: req.params.id}, (err, user)=>{
+                if(err) return next (err)
+                res.render('app/add/add_patient_daily_report', { users, user })
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const nurseReport = new NurseReport();
+        nurseReport.comment = req.body.comment;
+        nurseReport.observation = req.body.observation;
+        nurseReport.t = req.body.t;
+        nurseReport.p = req.body.p;
+        nurseReport.r = req.body.r;
+        nurseReport.bp = req.body.bp;
+        // nurseReport.input = req.body.input;
+        // nurseReport.output = req.body.output;
+        nurseReport.initial = req.body.initial;
+        nurseReport.creator = req.user._id;
+        nurseReport.patient = req.params.id;
+        nurseReport.status = true;
         nurseReport.save((err) => {
             if (err) { return next(err) }
         })
@@ -1731,8 +1783,8 @@ router.route('/add-billing')
             var services = req.body.service;
             var allservices = services.map(s => mongoose.Types.ObjectId(s))
             payment.services = allservices;
-            modeofpayment = req.body.modeofpayment;
-            comment = req.body.comment;
+            payment.modeofpayment = req.body.modeofpayment;
+            payment.comment = req.body.comment;
             
         payment.save((err)=>{
             if(err) return next(err)
@@ -2293,11 +2345,14 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                     req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-                if(req.body.image){
-                    let images = req.body.image;
-                    let allImaging = images.map(v => mongoose.Types.ObjectId(v))
-                    consultation.imaging = allImaging
-                }
+                // if(req.body.image){
+                //     let images = req.body.image;
+                //     let allImaging = images.map(v => mongoose.Types.ObjectId(v))
+                //     consultation.imaging = allImaging
+                // }
+                consultation.imaging.push(
+                    req.body.image
+                )
                 consultation.imagingdate = Date.now()
                 consultation.imagingstatus = true;
                 consultation.save((err)=>{
@@ -2315,6 +2370,19 @@ router.post('/prescribed', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.findOne({_id: prescribe}, (err, consultation)=>{
         if(err) return next (err)
         consultation.pharmacyfinish = true;
+        consultation.save((err)=>{
+            if(err) return next (err)
+            res.redirect('back')
+        })
+    })
+})
+
+//DRUGS PRESCRIBED BY PHARMACY
+router.post('/imaging-done', middleware.isLoggedIn, (req, res, next)=>{
+    let imaging = req.body.imaging
+    Consultation.findOne({_id: imaging}, (err, consultation)=>{
+        if(err) return next (err)
+        consultation.imagingfinish = true;
         consultation.save((err)=>{
             if(err) return next (err)
             res.redirect('back')
@@ -2465,6 +2533,7 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({}) 
     .sort('-created')
     .populate('patient')
+    .populate('imaging')
     .populate('labtestObject')
     // .populate('drugsObject')
     .deepPopulate('drugsObject.drugs')
@@ -2560,6 +2629,52 @@ router.get('/addmitted-patients', middleware.isLoggedIn, (req, res, next)=>{
     User.find({}, (err, users)=>{
         if(err) {return next (err)}
         res.render('app/view/addmitted_patient', { users })
+    }).sort('-updatedAt')
+})
+
+//DISCHARGE FORM
+router.route('/patient-discharge/:id')
+.get(middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id}, (err, user)=>{
+        User.find({}, (err, users)=>{
+            if(err) {return next (err)}
+            res.render('app/add/discharge_patient', { users, user })
+        })
+    })
+    
+})
+.post(middleware.isLoggedIn, (req, res, next)=>{
+    const discharge = new Discharge({
+        patient: req.params.id,
+        dischargetype: req.body.dischargetype,
+        thedate: req.body.thedate,
+        time: req.body.time,
+        nurse: req.body.nurse,
+        comment: req.body.comment,
+        ward: req.body.ward,
+        transferto: req.body.transferto
+    })
+    discharge.save((err)=>{
+        if(err){
+            req.flash('error', 'Error saving discharge form')
+            return res.redirect('back')
+        }
+       
+        User.update(
+            {
+                _id: req.params.id
+            },
+            {
+                $set: {
+                    discharge: true,
+                },
+                
+            },
+            function(err, count){
+                req.flash('success', 'Discharge form saved successfully!')
+                res.redirect('/addmitted-patients')
+            }
+        )
     })
 })
 
@@ -2646,7 +2761,8 @@ router.route('/visit/:id')
                     _id: patient._id
                 },
                 {
-                    $push:{visits: visit._id}
+                    $push:{visits: visit._id},
+                    $set: {addmitted: true}
                 },function (err, count) {
                     if(err) {return next (err)}
                     req.flash('success', 'Patient Sucessfully Checked In!')
@@ -3071,6 +3187,20 @@ router.route('/accounts')
                         html: `<p>Hello Admin,\n\n  A new patient ${user.firstname} ${user.lastname} has just made the sum of &#8358;${payment.amount} for registration and consultation payment, Thank You.\n</p>`,
                     };
                     sgMail.send(msg);
+                    unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                    .header({'Accept' : 'application/json'})
+                    .send({
+                        'username': process.env.SMSSMARTUSERNAME,
+                        'password': process.env.SMSSMARTPASSWORD,
+                        'sender': process.env.SMSSMARTSENDERID,
+                        'recipient' : `234${payment.patient.phonenumber}`,
+                        'message' : `Congratulations, we have recieved the sum of ₦${payment.amount} for your Registration fee. Best regards`,
+                        'routing': 4,
+                        
+                    })
+                    .end(function (response) {
+                        console.log(response.body);
+                    });
                     User.update(
                         {
                             _id: user._id
@@ -3092,11 +3222,35 @@ router.route('/accounts')
 //APPROVINg BILIING PAYMENT
 router.post('/approve-billing', middleware.isLoggedIn, (req, res, next)=>{
     let approve = req.body.approve
-    Payment.findOne({_id: approve}, (err, payment)=>{
+    Payment.findOne({_id: approve})
+    .populate('patient')
+    .exec((err, payment)=>{
         if(err) return next (err)
         payment.status = true
         payment.save((err)=>{
             if(err) return next (err)
+            sgMail.setApiKey(process.env.SENDGRID_MAIL);
+            const msg = {
+                to: 'admin@doch.com.ng',
+                from: 'DOCH Account<noreply@doch.com.ng>',
+                subject: 'New Payment Made',
+                html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made payment of &#8358;${payment.amount} for his/her  billings, Thank You.\n</p>`,
+            };
+            sgMail.send(msg);
+            unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+            .header({'Accept' : 'application/json'})
+            .send({
+                'username': process.env.SMSSMARTUSERNAME,
+                'password': process.env.SMSSMARTPASSWORD,
+                'sender': process.env.SMSSMARTSENDERID,
+                'recipient' : `234${payment.patient.phonenumber}`,
+                'message' : `Congratulations, we have recieved the sum of ₦${payment.amount} for your billings. Best regards`,
+                'routing': 4,
+                
+            })
+            .end(function (response) {
+                console.log(response.body);
+            });
             res.redirect('back')
         })
     })
@@ -3115,21 +3269,38 @@ router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
             if (err) return next(err)
             const payment = new Payment({
                 patient: consult.patient,
-                amount: req.body.labamount,
+                amount: labamount,
                 type: 'Lab Test Payment',
                 initiator: req.user._id,
                 status: true
             })
             payment.save((err)=>{
                 if (err) return next(err)
+                //Send email
                 sgMail.setApiKey(process.env.SENDGRID_MAIL);
                 const msg = {
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made payment of &#8358;${payment.labamount} for his/her Lab tests , Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made payment of &#8358;${payment.amount} for his/her Lab tests , Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
+                //Send SMS
+                //Sending SMS
+                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                .header({'Accept' : 'application/json'})
+                .send({
+                    'username': process.env.SMSSMARTUSERNAME,
+                    'password': process.env.SMSSMARTPASSWORD,
+                    'sender': process.env.SMSSMARTSENDERID,
+                    'recipient' : `234${consult.patient.phonenumber}`,
+                    'message' : `Congratulations, we have recieved the sum of ₦${payment.amount} for your lab test. Best regards`,
+                    'routing': 4,
+                    
+                })
+                .end(function (response) {
+                    console.log(response.body);
+                });
                 User.update(
                     {
                         _id: consult.patient
@@ -3161,7 +3332,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
             if (err) return next(err)
             const payment = new Payment({
                 patient: consult.patient,
-                amount: req.body.amount,
+                amount: amount,
                 type: 'Drugs Payment',
                 initiator: req.user._id,
                 status: true
@@ -3176,6 +3347,87 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                     html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
+                //Send SMS
+                //Sending SMS
+                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                .header({'Accept' : 'application/json'})
+                .send({
+                    'username': process.env.SMSSMARTUSERNAME,
+                    'password': process.env.SMSSMARTPASSWORD,
+                    'sender': process.env.SMSSMARTSENDERID,
+                    'recipient' : `234${consult.patient.phonenumber}`,
+                    'message' : `Congratulations, we have recieved the sum of ₦${payment.amount} for your drugs. Best regards`,
+                    'routing': 4,
+                    
+                })
+                .end(function (response) {
+                    console.log(response.body);
+                });
+                User.update(
+                    {
+                        _id: consult.patient
+                    },
+                    {
+                        $push:{payments: payment._id}
+                    },
+                    function (err, count) {
+                        if (err) return next(err)
+                        req.flash('success', 'Payment Made Approved')
+                        res.redirect('/dashboard')
+                    }
+                )
+            })
+            
+        })
+    })
+})
+
+//Imaging Payment
+router.post('/imaging-payment', middleware.isLoggedIn, (req, res, next)=>{
+    let imagingId = req.body.imagingId
+    let imagingAmount = req.body.imagingAmount
+    Consultation.findOne({ _id: imagingId })
+    .populate('patient')
+
+    .exec(function (err, consult) {
+        if (err) return next(err)
+        consult.imagingpaid = true
+        consult.save((err)=>{
+            if (err) return next(err)
+            const payment = new Payment({
+                patient: consult.patient,
+                amount: imagingAmount,
+                type: 'Imaging Payment',
+                initiator: req.user._id,
+                status: true
+            })
+            payment.save((err)=>{
+                if (err) return next(err)
+                //Sending MAil
+                sgMail.setApiKey(process.env.SENDGRID_MAIL);
+                const msg = {
+                    to: 'admin@doch.com.ng',
+                    from: 'DOCH Account<noreply@doch.com.ng>',
+                    subject: 'New Payment Made',
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her imaging, Thank You.\n</p>`,
+                };
+                sgMail.send(msg);
+
+                //Sending SMS
+                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                .header({'Accept' : 'application/json'})
+                .send({
+                    'username': process.env.SMSSMARTUSERNAME,
+                    'password': process.env.SMSSMARTPASSWORD,
+                    'sender': process.env.SMSSMARTSENDERID,
+                    'recipient' : `234${consult.patient.phonenumber}`,
+                    'message' : `Congratulations, we have recieved the sum of ₦${payment.amount} for your medical imaging test. Best regards`,
+                    'routing': 4,
+                    
+                })
+                .end(function (response) {
+                    console.log(response.body);
+                });
                 User.update(
                     {
                         _id: consult.patient
@@ -3336,7 +3588,19 @@ router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     })
 });
 
-//Pharmacy  Invoice
+//Imaing Invoice
+router.get('/imaging-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
+    Consultation.findOne({ _id: req.params.id})
+    .populate('patient')
+    .populate('imaging')
+    .populate('labtestObject')
+    .exec((err, consultation)=>{
+        if(err) return next (err)
+        res.render('app/view/imaginginvoice', { consultation })
+    })
+});
+
+//Billing  Invoice
 router.get('/billing-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Payment.findOne({ _id: req.params.id})
     .populate('patient')

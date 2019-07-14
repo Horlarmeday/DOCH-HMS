@@ -74,6 +74,30 @@ $(document).ready(function() {
         }
     })
 
+   
+    $('.imagingpay').click(function (event) {
+        let imagingId = $(this).attr('name')
+        let imagingAmount = $(this).attr('value')
+        event.preventDefault()
+        var accepted = window.confirm("Are you sure patient has paid?");
+        if(accepted){
+            $.ajax({
+                type: 'POST',
+                url: '/imaging-payment',
+                data: {
+                    imagingId: imagingId,
+                    imagingAmount: imagingAmount
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+            
+        }else{
+            window.close()
+        }
+    })
+
     //CLICKING PAID FOR DRUGS
     $('.drugpay').click(function (event) {
         let pharmId = $(this).attr('name')
@@ -107,6 +131,22 @@ $(document).ready(function() {
             url: '/prescribed',
             data: {
                 prescribe: prescribe
+            },
+            success:function (data) {
+                location.reload()
+            }
+        })
+    })
+
+     //CLICKING DONE BUTTON
+     $('.done').click(function (event) {
+        let imaging = $(this).attr('id')
+        event.preventDefault()
+        $.ajax({
+            type: 'POST',
+            url: '/imaging-done',
+            data: {
+                imaging: imaging
             },
             success:function (data) {
                 location.reload()
@@ -435,5 +475,31 @@ function getDrugInfo() {
         }
     })
 }
+
+//Sow addmission
+function showAddmission(){
+    let addmission = $('#visittype').val()
+    
+    if(addmission === 'Admission'){
+        $('#addmission').show()
+        $('#discharge').show()
+    }else{
+        $('#addmission').hide()
+        $('#discharge').hide()
+    }
+}
+
+function showTransferTo(){
+    let dischargetype = $('#dischargetype').val()
+    
+    if(dischargetype === 'Transfer'){
+        $('#transfer').show()
+     
+    }else{
+        $('#transfer').hide()
+       
+    }
+}
+
 
 //Getting the drug prescriptions

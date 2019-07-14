@@ -59,6 +59,7 @@ const UserSchema = new mongoose.Schema({
     photo: String,
     status: {type: Boolean, default: true},
     addmitted: {type: Boolean, default: false},
+    discharge: {type: Boolean, default: false},
     retainership: String,
     retainershipname: String,
     patientcode: String,

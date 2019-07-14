@@ -133,7 +133,7 @@
                                             </thead>
                                             <tbody>
                                                 <% consultations.forEach((consultation)=>{ %>
-                                                    <% if(consultation.imagingstatus === true && consultation.imagingfinish === false){ %>
+                                                    <% if(consultation.imagingstatus === true ){ %>
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
@@ -145,7 +145,7 @@
                                                         <% }) %>
                                                     </td>
                                                     <% if(consultation.imagingfinish === false){ %>
-                                                    <td><label class="label label-md bg-warning">Ongoing</label></td>
+                                                    <td><label class="label label-md bg-warning">pending</label></td>
                                                     <% }else{ %>
                                                     <td><label class="label label-md bg-success">Finished</label></td>
                                                     <% } %>
@@ -154,10 +154,10 @@
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">Paid</label></td>
                                                         <% } %>
-                                                    <% if(consultation.pharmacyfinish === false){ %>
-                                                        <td><button id="<%= consultation._id %>" class="btn btn-success paid">Done?</button></td>
+                                                    <% if(consultation.imagingfinish === false){ %>
+                                                        <td><button id="<%= consultation._id %>" class="btn btn-success done">Done?</button></td>
                                                         <% }else{ %>
-                                                        <td><button class="btn btn-success" disabled>Done</button></td>
+                                                        <td><button class="btn btn-default" disabled>Done</button></td>
                                                         <% } %>   
                                                     
                                                 </tr>
