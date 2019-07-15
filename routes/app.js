@@ -1049,9 +1049,7 @@ router.route('/add-appointment')
                                     'password': process.env.SMSSMARTPASSWORD,
                                     'sender': process.env.SMSSMARTSENDERID,
                                     'recipient' : `234${appointment.doctor.phonenumber}`,
-                                    'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with 
-                                    ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by
-                                    ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
+                                    'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
                                     'routing': 4,
                                     
                                 })
@@ -1107,26 +1105,9 @@ router.route('/add-appointment/:id')
             },
             function (appointment, done) {
                 User.findById(appointment.doctor)
-                .populate('appointment')
-                .deepPopulate('appointment.patient')
                 .exec((err, user) => {
                     if (err) return next(err);
-                    unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                    .header({'Accept' : 'application/json'})
-                    .send({
-                        'username': process.env.SMSSMARTUSERNAME,
-                        'password': process.env.SMSSMARTPASSWORD,
-                        'sender': process.env.SMSSMARTSENDERID,
-                        'recipient' : `234${user.phonenumber}`,
-                        'message' : `Dear Dr ${user.firstname} ${user.lastname}, you have an appointment with 
-                        ${user.appointment.patient.firstname} ${user.appointment.patient.lastname} on ${user.appointment.appointmentdate.toDateString()} by
-                         ${user.appointment.appointmenttime.toLocaleTimeString()}`,
-                        'routing': 4,
-                        
-                    })
-                    .end(function (response) {
-                        console.log(response.body);
-                    });
+                    
                     User.update(
                         {
                             _id: user._id
@@ -1152,8 +1133,28 @@ router.route('/add-appointment/:id')
                     },
                     function (err, count) {
                         if (err) return next(err);
-                        req.flash('success', 'Appointment has been created')
-                        res.redirect('/appointments'); 
+                        Appointment.findOne(appointment)
+                            .populate('patient')
+                            .deepPopulate('doctor')
+                            .exec((err, appointment)=>{
+                                console.log(appointment)
+                                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                                .header({'Accept' : 'application/json'})
+                                .send({
+                                    'username': process.env.SMSSMARTUSERNAME,
+                                    'password': process.env.SMSSMARTPASSWORD,
+                                    'sender': process.env.SMSSMARTSENDERID,
+                                    'recipient' : `234${appointment.doctor.phonenumber}`,
+                                    'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
+                                    'routing': 4,
+                                    
+                                })
+                                .end(function (response) {
+                                    console.log(response.body);
+                                });
+                            req.flash('success', 'Patient Appointment has been created')
+                            res.redirect('/dashboard'); 
+                        })
                     }      
                 )
             }
@@ -3230,6 +3231,7 @@ router.route('/accounts')
                     amount: req.body.regamount,
                     type: 'Registration & Consultation Fee',
                     initiator: req.user._id,
+                    modeofpayment: req.body.modeofpayment,
                     status: true
                 })
                 payment.save((err)=>{
@@ -3250,7 +3252,7 @@ router.route('/accounts')
                         'password': process.env.SMSSMARTPASSWORD,
                         'sender': process.env.SMSSMARTSENDERID,
                         'recipient' : `234${payment.patient.phonenumber}`,
-                        'message' : `Dear ${user.patient.firstname} ${user.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+                        'message' : `Dear ${user.firstname} ${user.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
                         'routing': 4,
                         
                     })
@@ -3328,6 +3330,7 @@ router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
                 amount: labamount,
                 type: 'Lab Test Payment',
                 initiator: req.user._id,
+                modeofpayment: req.body.modeofpayment,
                 status: true
             })
             payment.save((err)=>{
@@ -3391,6 +3394,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                 amount: amount,
                 type: 'Drugs Payment',
                 initiator: req.user._id,
+                modeofpayment: req.body.modeofpayment,
                 status: true
             })
             payment.save((err)=>{
@@ -3455,6 +3459,7 @@ router.post('/imaging-payment', middleware.isLoggedIn, (req, res, next)=>{
                 amount: imagingAmount,
                 type: 'Imaging Payment',
                 initiator: req.user._id,
+                modeofpayment: req.body.modeofpayment,
                 status: true
             })
             payment.save((err)=>{

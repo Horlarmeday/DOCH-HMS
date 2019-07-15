@@ -126,11 +126,12 @@
                                                     <th>PatientID</th>
                                                     <th>Name</th>
                                                     <th>Age</th>
-                                                    
+                                                    <th>Patient Type</th>
                                                     <th>Phone</th>
                                                     <th>Payments</th>
                                                     <th>Total</th>
                                                     <th>Status</th>
+                                                    <th>Mode of Payment</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -159,6 +160,12 @@
                                                         <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
                                                         <td><%= age %></td>
                                                         
+                                                            <% if(patient.createdby == 1){ %>
+                                                                <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                                            <% }else{ %>  
+                                                                <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                                            <% } %>  
+                                                        
                                                         <td>+234<%= patient.phonenumber %></td>
                                                         <td>
                                                             <% if(patient.account.registration && patient.account.consultation){ %>
@@ -180,7 +187,22 @@
                                                         <% } %>
                                                         <td>
                                                             <% if(!patient.account.paid){ %>
-                                                               <button value="<%= total %>" name="<%= patient._id %>" type="button" class="btn btn-success pay"><i class="ti-money"></i> Paid?</button>
+                                                                <div class="input-group">
+                                                                        <select id="modeofpayment1" name="modeofpayment" class="form-control" >
+                                                                            <option>Select</option>
+                                                                            <option value="Cash">Cash</option>
+                                                                            <option value="ATM">ATM</option>
+                                                                            <option value="Transfer">Transfer</option>
+                                                                            <option value="Bank Deposit">Bank Deposit</option>
+                                                                        </select>
+                                                                </div>
+                                                            <% }%>
+                                                                
+                                                        </td>
+                                                        <td>
+                                                            <% if(!patient.account.paid){ %>
+            
+                                                               <button value="<%= total %>" name="<%= patient._id %>" type="button" class="btn btn-success pay">Paid?</button>
                                                             <% } %>
                                                             <% if(patient.account.paid){ %>
                                                                <a href="/invoice/<%= patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
@@ -220,9 +242,11 @@
                                                     <th>S/N</th>
                                                     <th>PatientID</th>
                                                     <th>Patient Name</th>
+                                                    <th>Patient Type</th>
                                                     <th>Tests</th>
                                                     <th>Total Amount</th>
                                                     <th>Status</th>
+                                                    <th>Mode of Payment</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -234,6 +258,13 @@
                                                         <td></td>
                                                         <td><%= consultation.patient.patientId %></td>
                                                         <td> <a href="/patient/<%= consultation.patient._id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
+                                                        
+                                                                <% if(consultation.patient.createdby == 1){ %>
+                                                                    <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                                                <% }else{ %>  
+                                                                    <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                                                <% } %>  
+                                                           
                                                         <%
                                                             function getSum(total, num) {
                                                                 return total + num;
@@ -263,6 +294,19 @@
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">paid</label></td>
                                                         <% } %>
+                                                        <td>
+                                                            <% if(!consultation.labpaid){ %>
+                                                                <div class="input-group">
+                                                                        <select id="modeofpayment2" name="modeofpayment" class="form-control" >
+                                                                            <option>Select</option>
+                                                                            <option value="Cash">Cash</option>
+                                                                            <option value="ATM">ATM</option>
+                                                                            <option value="Transfer">Transfer</option>
+                                                                            <option value="Bank Deposit">Bank Deposit</option>
+                                                                        </select>
+                                                                </div>
+                                                            <% }%>
+                                                        </td>
                                                         <td>
                                                          <% if(!consultation.labpaid){ %>
                                                             <button value="<%= totalAmount %>" id="pnotify-success" name="<%= consultation._id %>" type="button" class="btn btn-success labpay"><i class="ti-money"></i> Paid?</button>
@@ -302,9 +346,11 @@
                                                     <th>S/N</th>
                                                     <th>PatientID</th>
                                                     <th>Patient Name</th>
+                                                    <th>Patient Type</th>
                                                     <th>Drugs</th>
                                                     <th>Total Amount</th>
                                                     <th>Status</th>
+                                                    <th>Mode of Payment</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -317,6 +363,11 @@
                                                         <td></td>
                                                         <td><%= consultation.patient.patientId %></td>
                                                         <td> <a href="/patient/<%= consultation.patient.id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
+                                                        <% if(consultation.patient.createdby == 1){ %>
+                                                            <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                                        <% }else{ %>  
+                                                            <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                                        <% } %>  
                                                         <%
                                                             function getSum(total, num) {
                                                                 return total + num;
@@ -346,6 +397,19 @@
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">paid</label></td>
                                                         <% } %>
+                                                        <td>
+                                                                <% if(!consultation.pharmacypaid){ %>
+                                                                    <div class="input-group">
+                                                                            <select id="modeofpayment3" name="modeofpayment" class="form-control" >
+                                                                                <option>Select</option>
+                                                                                <option value="Cash">Cash</option>
+                                                                                <option value="ATM">ATM</option>
+                                                                                <option value="Transfer">Transfer</option>
+                                                                                <option value="Bank Deposit">Bank Deposit</option>
+                                                                            </select>
+                                                                    </div>
+                                                                <% }%>
+                                                        </td>
                                                         <td>
                                                             <% if(!consultation.pharmacypaid){ %>
                                                             <button value="<%= totalPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"><i class="ti-money"></i> Paid?</button>
@@ -385,9 +449,11 @@
                                                         <th>S/N</th>
                                                         <th>PatientID</th>
                                                         <th>Patient Name</th>
+                                                        <th>Patient Type</th>
                                                         <th>Investigation</th>
                                                         <th>Total Amount</th>
                                                         <th>Status</th>
+                                                        <th>Mode of Payment</th>
                                                         <th>Action</th>
                                                     </tr>
                                                 </thead>
@@ -400,6 +466,11 @@
                                                             <td></td>
                                                             <td><%= consultation.patient.patientId %></td>
                                                             <td> <a href="/patient/<%= consultation.patient.id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
+                                                            <% if(consultation.patient.createdby == 1){ %>
+                                                                <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                                            <% }else{ %>  
+                                                                <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                                            <% } %>  
                                                             <%
                                                                 function getSum(total, num) {
                                                                     return total + num;
@@ -430,11 +501,38 @@
                                                             <td><label class="label label-md bg-success">paid</label></td>
                                                             <% } %>
                                                             <td>
+                                                                    <% if(!consultation.imagingpaid){ %>
+                                                                        <div class="input-group">
+                                                                                <select id="modeofpayment4" name="modeofpayment" class="form-control" >
+                                                                                    <option>Select</option>
+                                                                                    <option value="Cash">Cash</option>
+                                                                                    <option value="ATM">ATM</option>
+                                                                                    <option value="Transfer">Transfer</option>
+                                                                                    <option value="Bank Deposit">Bank Deposit</option>
+                                                                                </select>
+                                                                        </div>
+                                                                    <% }%>
+                                                            </td>
+                                                            <td>
                                                                 <% if(!consultation.imagingpaid){ %>
-                                                                <button value="<%= imagingPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success imagingpay"><i class="ti-money"></i> Paid?</button>
+                                                                    <div class="input-group mb-3">
+                                                                        <select name="modeofpayment" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
+                                                                            <option>Select Mode of Payment</option>
+                                                                            <option>Cash</option>
+                                                                            <option>ATM</option>
+                                                                            <option>Transfer</option>
+                                                                            <option>Bank Deposit</option>
+                                                                        </select>
+                                                                        <!-- <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"> -->
+                                                                        <div class="input-group-append">
+                                                                          <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button> -->
+                                                                          <button value="<%= imagingPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success imagingpay"> Paid?</button>
+                                                                        </div>
+                                                                      </div>
                                                                 <% } %>
                                                                 <% if(consultation.imagingpaid){ %>
-                                                                <a href="/imaging-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                                
+                                                                <button href="/imaging-invoice/<%= consultation._id %>" class="btn btn-primary imaging"><i class="ti-receipt"></i> Invoice </button>
                                                                 <% } %>
                                                     </tr>
                                                     

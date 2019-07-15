@@ -30,6 +30,8 @@ $(document).ready(function() {
     $('.pay').click(function (event) {
         let patientId = $(this).attr('name')
         let regamount = $(this).attr('value')
+        let modeofpayment = $('#modeofpayment1').val()
+        console.log(modeofpayment)
         event.preventDefault()
         var accept = window.confirm("Are you sure patient has paid?");
         if(accept){
@@ -38,7 +40,8 @@ $(document).ready(function() {
                 url: '/accounts',
                 data: {
                     patientId: patientId,
-                    regamount: regamount
+                    regamount: regamount,
+                    modeofpayment: modeofpayment
                 },
                 success:function (data) {
                     location.reload()
@@ -54,6 +57,7 @@ $(document).ready(function() {
     $('.labpay').click(function (event) {
         let consultationId = $(this).attr('name')
         let labamount = $(this).attr('value')
+        let modeofpayment = $('#modeofpayment2').val()
         event.preventDefault()
         var confirm = window.confirm("Are you sure patient has paid?");
         if(confirm){
@@ -62,7 +66,8 @@ $(document).ready(function() {
                 url: '/lab-test-payment',
                 data: {
                     consultationId: consultationId,
-                    labamount: labamount
+                    labamount: labamount,
+                    modeofpayment: modeofpayment
                 },
                 success:function (data) {
                     location.reload()
@@ -78,6 +83,7 @@ $(document).ready(function() {
     $('.imagingpay').click(function (event) {
         let imagingId = $(this).attr('name')
         let imagingAmount = $(this).attr('value')
+        let modeofpayment = $('#modeofpayment4').val()
         event.preventDefault()
         var accepted = window.confirm("Are you sure patient has paid?");
         if(accepted){
@@ -86,7 +92,8 @@ $(document).ready(function() {
                 url: '/imaging-payment',
                 data: {
                     imagingId: imagingId,
-                    imagingAmount: imagingAmount
+                    imagingAmount: imagingAmount,
+                    modeofpayment: modeofpayment
                 },
                 success:function (data) {
                     location.reload()
@@ -102,6 +109,7 @@ $(document).ready(function() {
     $('.drugpay').click(function (event) {
         let pharmId = $(this).attr('name')
         let amount = $(this).attr('value')
+        let modeofpayment = $('#modeofpayment3').val()
         event.preventDefault()
         var result = window.confirm("Are you sure patient has paid?");
         if(result){
@@ -110,7 +118,8 @@ $(document).ready(function() {
                 url: '/pharmacy-payment',
                 data: {
                     pharmId: pharmId,
-                    amount: amount
+                    amount: amount,
+                    modeofpayment: modeofpayment 
                 },
                 success:function (data) {
                     location.reload()
