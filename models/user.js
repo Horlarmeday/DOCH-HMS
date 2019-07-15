@@ -4,8 +4,8 @@ const bcrypt = require("bcrypt-nodejs");
 const crypto = require("crypto");
 
 const UserSchema = new mongoose.Schema({
-    email:{type: String, unique: true, lowercase: true},
-    username: {type: String},
+    email:{type: String, lowercase: true},
+    username: {type: String, unique: true},
     isVerified: {type: Boolean, default: false},
     createdby: Number,
     firstname: String,
@@ -101,9 +101,9 @@ const UserSchema = new mongoose.Schema({
     assessments:[{
         type: mongoose.Schema.Types.ObjectId, ref: "Assessment"
     }],
-    // imaging:[{
-    //     type: mongoose.Schema.Types.ObjectId, ref: "Imaging"
-    // }]
+    registeredby:{
+        type: mongoose.Schema.Types.ObjectId, ref: "User"
+    }
 }, { timestamps: true });
 
 UserSchema.pre("save", function (next) {

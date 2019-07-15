@@ -130,6 +130,7 @@
                                                     <th>Email</th>
                                                     <th>Status</th>
                                                     <th>Created</th>
+                                                    <th>Registred By</th>
                                                     <th>Issue Card</th>
                                                 </tr>
                                             </thead>
@@ -151,6 +152,12 @@
                                                         <td><label class="label label-md bg-warning">Not Paid</label></td>
                                                         <% } %>
                                                         <td><%= patient.created %></td>
+                                                        <% if(patient.registeredby){ %>
+
+                                                            <td><%= patient.registeredby.firstname %></td>
+                                                        <% }else{ %>
+                                                            <td></td>
+                                                        <% }  %>
                                                         <% if(patient.paid){ %>
                                                         <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                         <% }else{ %>
