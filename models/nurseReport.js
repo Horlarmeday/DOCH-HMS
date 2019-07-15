@@ -10,6 +10,7 @@ const reportSchema = new mongoose.Schema({
     r: String,
     bp: String,
     initial: String,
+    ward: String,
     input: String,
     output: String,
     status: {type: Boolean, default: false},

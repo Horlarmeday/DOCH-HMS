@@ -69,10 +69,13 @@
                                                     <th>P</th>
                                                     <th>R</th>
                                                     <th>B/P</th>
+                                                    <th>Ward</th>
                                                     
                                                     <th>Initial</th>
                                                     <th>Comments</th>
                                                     <th>Observations</th>
+                                                    <th>Created</th>
+                                                    
                                                     <th>Status</th>
                                                 </tr>
                                             </thead>
@@ -86,10 +89,12 @@
                                                     <td><%= report.p %></td>
                                                     <td><%= report.r %></td>
                                                     <td><%= report.bp %></td>
+                                                    <td><%= report.ward %></td>
                                                     
                                                     <td><%= report.initial %></td>
                                                     <td><%= report.comment %></td>
                                                     <td><%= report.observation %></td>
+                                                    <td><%= report.created.toLocaleString() %></td>
                                                     <% if(report.status){ %>
                                                     <td><label class="label label-md bg-success">Active</label></td>
                                                     <% }else{ %>

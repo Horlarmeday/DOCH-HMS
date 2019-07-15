@@ -1037,8 +1037,30 @@ router.route('/add-appointment')
                     },
                     function (err, count) {
                         if (err) return next(err);
-                        req.flash('success', 'Appointment has been created')
-                        res.redirect('/appointments'); 
+                        Appointment.findOne(appointment)
+                            .populate('patient')
+                            .deepPopulate('doctor')
+                            .exec((err, appointment)=>{
+                                console.log(appointment)
+                                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                                .header({'Accept' : 'application/json'})
+                                .send({
+                                    'username': process.env.SMSSMARTUSERNAME,
+                                    'password': process.env.SMSSMARTPASSWORD,
+                                    'sender': process.env.SMSSMARTSENDERID,
+                                    'recipient' : `234${appointment.doctor.phonenumber}`,
+                                    'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with 
+                                    ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by
+                                    ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
+                                    'routing': 4,
+                                    
+                                })
+                                .end(function (response) {
+                                    console.log(response.body);
+                                });
+                            req.flash('success', 'Appointment has been created')
+                            res.redirect('/appointments'); 
+                        })
                     }      
                 )
             }
@@ -1462,6 +1484,7 @@ router.route('/add-daily-report')
         nurseReport.p = req.body.p;
         nurseReport.r = req.body.r;
         nurseReport.bp = req.body.bp;
+        nurseReport.ward = req.body.ward;
         // nurseReport.input = req.body.input;
         // nurseReport.output = req.body.output;
         nurseReport.initial = req.body.initial;
@@ -1501,6 +1524,7 @@ router.route('/add-daily-report/:id')
         nurseReport.p = req.body.p;
         nurseReport.r = req.body.r;
         nurseReport.bp = req.body.bp;
+        nurseReport.ward = req.body.ward;
         // nurseReport.input = req.body.input;
         // nurseReport.output = req.body.output;
         nurseReport.initial = req.body.initial;
