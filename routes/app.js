@@ -1530,6 +1530,8 @@ router.route('/add-daily-report')
         nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.body.patient;
+        nurseReport.doctor = req.body.doctor;
+        nurseReport.wardround = req.body.wardround;
         nurseReport.status = true;
         nurseReport.save((err) => {
             if (err) { return next(err) }
@@ -1570,6 +1572,8 @@ router.route('/add-daily-report/:id')
         nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.params.id;
+        nurseReport.doctor = req.body.doctor;
+        nurseReport.wardround = req.body.wardround;
         nurseReport.status = true;
         nurseReport.save((err) => {
             if (err) { return next(err) }
@@ -2779,6 +2783,7 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('payments')
         .populate('triages')
         .populate('visits')
+        .populate('reports')
         .populate('retainershipname')
        
         .deepPopulate([
@@ -2787,8 +2792,9 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
             'consultations.doctor',
             'consultations.labtestObject',
             'consultations.drugsObject.drugs',
-            
-            'payments.services'
+            'payments.services',
+            'reports.doctor',
+            'reports.creator'
         ])
         .exec((err, patient)=>{
         if(err) {return next (err)}

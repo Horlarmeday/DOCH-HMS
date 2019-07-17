@@ -1125,7 +1125,7 @@ Tabs css start
     color: #1b8bf9; }
   .md-tabs .nav-item, .md-tabs .main-menu .main-menu-content .nav-item .tree-1 a, .main-menu .main-menu-content .nav-item .tree-1 .md-tabs a, .md-tabs .main-menu .main-menu-content .nav-item .tree-2 a, .main-menu .main-menu-content .nav-item .tree-2 .md-tabs a, .md-tabs .main-menu .main-menu-content .nav-item .tree-3 a, .main-menu .main-menu-content .nav-item .tree-3 .md-tabs a, .md-tabs .main-menu .main-menu-content .nav-item .tree-4 a, .main-menu .main-menu-content .nav-item .tree-4 .md-tabs a {
     background-color: #fff;
-    width: calc(100% / 10);
+    width: calc(100% / 11);
     text-align: center; }
   .md-tabs .nav-link:focus,
   .md-tabs .nav-link:hover {

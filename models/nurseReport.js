@@ -3,6 +3,7 @@ const mongoose =  require('mongoose');
 const reportSchema = new mongoose.Schema({
     creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    doctor: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     comment: String,
     observation: String,
     t: String,
@@ -11,6 +12,7 @@ const reportSchema = new mongoose.Schema({
     bp: String,
     initial: String,
     ward: String,
+    wardround: String,
     input: String,
     output: String,
     status: {type: Boolean, default: false},

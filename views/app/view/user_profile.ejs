@@ -158,6 +158,10 @@
                                                                     <a class="nav-link" data-toggle="tab" href="#assess" role="tab">Assessments</a>
                                                                     <div class="slide"></div>
                                                             </li>
+                                                            <li class="nav-item">
+                                                                    <a class="nav-link" data-toggle="tab" href="#report" role="tab">Nurse Report</a>
+                                                                    <div class="slide"></div>
+                                                            </li>
                                                            
                                                         </ul>
                                                          <!-- Tab panes -->
@@ -652,6 +656,60 @@
                                                                                 <td>France</td>
                                                                             </tr>
                                                                 </table>
+                                                            </div>
+                                                            <div class="tab-pane" id="report" role="tabpanel">
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                            <th>S/N</th>
+                                                                                            <th>T</th>
+                                                                                            <th>P</th>
+                                                                                            <th>R</th>
+                                                                                            <th>B/P</th>
+                                                                                            <th>Ward</th>
+                                                                                            <th>Initial</th>
+                                                                                            <th>Comments</th>
+                                                                                            <th>Observations</th>
+                                                                                            <th>Taken By</th>
+                                                                                            <th>Lead Doctor</th>
+                                                                                            <th>Created</th>
+                                                                                            <th>Status</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% patient.reports.forEach((report)=>{ %>
+                                                                                        
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                                                                         
+                                                                                        <td><%= report.t %> </td>
+                                                                                        <td><%= report.p %> </td>
+                                                                                        <td><%= report.r %> </td>
+                                                                                        <td><%= report.bp %> </td>
+                                                                                  
+                                                                                        <td><%= report.ward %> </td>
+                                                                                        <td><%= report.initial %> </td>
+                                                                                        <td><%= report.comment %> </td>
+                                                                                        <td><%= report.observation %> </td>
+                                                                                        <td><%= report.creator.firstname %> <%= report.creator.lastname %> </td>
+                                                                                        <% if(report.doctor){ %>
+                                                                                            <td><%= report.doctor.firstname %> <%= report.doctor.lastname %> </td>
+                                                                                        <% }else{ %>
+                                                                                            <td>No Doctor</td>
+                                                                                        <% } %>
+                                                                                        <td><%= report.created.toDateString() %></td>
+                                                                                        <% if(report.status){ %>
+                                                                                        <td><label class="label bg-success label-lg"> Active</label> </td>
+                                                                                        <% }else{ %>
+                                                                                            <td><label class="label bg-warning label-lg">Inactive </label> </td>
+                                                                                        <% } %> 
+                                                                                    </tr>
+                                                                                   
+                                                                                    <% })  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </div> 
                                                             </div>
                                                         </div>
                                                     </div>
