@@ -220,37 +220,76 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             }
             Appointment.find({}, (err, appointments)=>{
                 if(err) return next (err)
-                users.forEach((user)=>{
-                    var birthday = new Date(user.birthday)
-                    var today = new Date()
-                    var age = today.getFullYear() - birthday.getFullYear()
-                    if(today.getMonth() < birthday.getMonth()){
-                        age
-                    }
-                    if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
-                        age
-                    }
-                    if(user.role == 8){
-                        allUsers.push({
-                            'registeredby': user.registeredby,
-                            'id': user._id,
-                            'patientId': user.patientId,
-                            'paid': user.account.paid,
-                            'firstname': user.firstname,
-                            'lastname': user.lastname,
-                            'address': user.address,
-                            'phone': user.phonenumber,
-                            'email': user.email,
-                            'status': user.status,
-                            'role': user.role,
-                            'city': user.city,
-                            'age': age,
-                            'country': user.country,
-                            'created': user.createdAt.toLocaleString(),
+               
+                    //Patients registered today
+                    User.find({
+                        "createdAt": {
+                            $lt: new Date(new Date().setHours(23, 59, 59)),
+                            $gte: new Date(new Date().setHours(00, 00, 00))
+                        }
+                    })
+                    .sort('-createdAt')
+                    .populate('registeredby')
+                    .exec((err, usersToday) => {
+                        if(err) return next(err)
+                        //Patients registered this week
+                        User.find({
+                            "createdAt" : { 
+                                $lt: new Date(), 
+                                $gte: new Date(new Date().setDate(new Date().getDate()-7))
+                              } 
                         })
-                    }
-                })
-                res.render('app/dashboard4', {allUsers, users, usersIsEmpty, appointments})
+                        .sort('-createdAt')
+                        .populate('registeredby')
+                        .exec((err, userThisWeek)=>{
+                            if(err) return next(err)
+                            //Patients registered last 30 days
+                            User.find({
+                                "createdAt" : { 
+                                    $lt: new Date(), 
+                                    $gte: new Date(new Date().setDate(new Date().getDate()-30))
+                                  } 
+                            })
+                            .sort('-createdAt')
+                            .populate('registeredby')
+                            .exec((err, usersLast30Days)=>{
+            
+                                users.forEach((user) => {
+                                    var birthday = new Date(user.birthday);
+                                    var today = new Date();
+                                    var age = today.getFullYear() - birthday.getFullYear();
+                                    if (today.getMonth() < birthday.getMonth()) {
+                                        age;
+                                    }
+                                    if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
+                                        age;
+                                    }
+                                    if (user.role == 8) {
+                                        //All registered users
+                                        allUsers.push({
+                                            'registeredby': user.registeredby,
+                                            'id': user._id,
+                                            'patientId': user.patientId,
+                                            'paid': user.account.paid,
+                                            'firstname': user.firstname,
+                                            'lastname': user.lastname,
+                                            'address': user.address,
+                                            'phone': user.phonenumber,
+                                            'email': user.email,
+                                            'status': user.status,
+                                            'role': user.role,
+                                            'city': user.city,
+                                            'age': age,
+                                            'country': user.country,
+                                            'created': user.createdAt.toLocaleString(),
+                                        });
+                                    }
+                                });
+                                res.render('app/dashboard4', { allUsers, users, usersIsEmpty, appointments, usersToday, userThisWeek, usersLast30Days });
+                            })
+                        })
+                    })
+            
             })
         })
     }else if(req.user.role === 4){
@@ -720,9 +759,9 @@ router.route('/add-patient')
                     user.city = req.body.city;
                     user.state = req.body.state;
                     user.country = req.body.country;
-                    user.retainershipname = user.retainershipname;
-                    user.hmoname = user.hmoname;
-                    user.patientcode = user.patientcode;
+                    user.retainershipname = req.body.retainershipname;
+                    user.hmoname = req.body.hmoname;
+                    user.patientcode = req.body.patientcode;
                     user.account = {
                         registration: req.body.registration,
                         consultation: req.body.consultation,
@@ -2486,6 +2525,7 @@ router.get('/laboratories', middleware.isLoggedIn, (req, res, next)=>{
 router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
     User.find({})
     .sort('-createdAt')
+    .populate('registeredby')
     .exec((err, users)=>{
         if(err) return next (err)
         var allPatients = []
@@ -2501,6 +2541,8 @@ router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
             }
             if(user.role == 8){
                 allPatients.push({
+                    'registeredby': user.registeredby,
+                    
                     'createdby': user.createdby,
                     'patientId': user.patientId,
                     'id': user._id,
@@ -2737,12 +2779,15 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('payments')
         .populate('triages')
         .populate('visits')
+        .populate('retainershipname')
+       
         .deepPopulate([
             'appointments.doctor',
             'consultations.drusObject',
             'consultations.doctor',
             'consultations.labtestObject',
             'consultations.drugsObject.drugs',
+            
             'payments.services'
         ])
         .exec((err, patient)=>{
@@ -3688,6 +3733,62 @@ router.get('/billing-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
 //         })
 // })
 
+//PAYMENT PAGE
+router.get('/payments', middleware.isLoggedIn, (req, res, next)=>{
+    //All payments made
+    Payment.find({})
+    .sort('-createdAt')
+    .populate('services')
+    .populate('patient')
+    .populate('initiator')
+    .exec((err, allpayments)=>{
+        if(err) return next (err)
+        //Payments made today
+        Payment.find({
+            'createdAt':{
+                $lt: new Date(new Date().setHours(23, 59, 59)),
+                $gte: new Date(new Date().setHours(00, 00, 00))
+            }
+        })
+        .sort('-createdAt')
+        .populate('services')
+        .populate('patient')
+        .populate('initiator')
+        .exec((err, paymentToday)=>{
+            if(err) return next (err)
+            //Payemnt thhis week
+            Payment.find({
+                'createdAt':{
+                    $lt: new Date(), 
+                    $gte: new Date(new Date().setDate(new Date().getDate()-7))
+                }
+            })
+            .sort('-createdAt')
+            .populate('services')
+            .populate('patient')
+            .populate('initiator')
+            .exec((err, paymentThisWeek)=>{
+                if(err) return next (err)
+                //Payment last 30 days
+                Payment.find({
+                    'createdAt':{
+                        $lt: new Date(), 
+                        $gte: new Date(new Date().setDate(new Date().getDate()-30))
+                    }
+                })
+                .sort('-createdAt')
+                .populate('services')
+                .populate('patient')
+                .populate('initiator')
+                .exec((err, paymentLast30Days)=>{
+                    if(err) return next (err)
+                    res.render('app/view/payments', { allpayments, paymentToday, paymentThisWeek, paymentLast30Days })
+                })
+            })
+        })
+    })
+})
+
 //REISTER ANTE NATAL PATIENT
 router.route('/create-ante-natal-patient/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
@@ -4239,6 +4340,77 @@ router.route('/forgot')
       });
     });
 
+//MEDICAL RECORDS STATS FUNCTION
+function statisticsFunc(users, allUsers, res, usersIsEmpty, appointments, usersToday, userThisWeek, usersLast30Days ) {
+        //Patients registered today
+        User.find({
+            "createdAt": {
+                $lt: new Date(new Date().setHours(23, 59, 59)),
+                $gte: new Date(new Date().setHours(00, 00, 00))
+            }
+        })
+        .sort('-createdAt')
+        .populate('registeredby')
+        .exec((err, usersToday) => {
+            if(err) return next(err)
+            //Patients registered this week
+            User.find({
+                "createdAt" : { 
+                    $lt: new Date(), 
+                    $gte: new Date(new Date().setDate(new Date().getDate()-7))
+                  } 
+            })
+            .sort('-createdAt')
+            .populate('registeredby')
+            .exec((err, userThisWeek)=>{
+                if(err) return next(err)
+                //Patients registered last 30 days
+                User.find({
+                    "createdAt" : { 
+                        $lt: new Date(), 
+                        $gte: new Date(new Date().setDate(new Date().getDate()-30))
+                      } 
+                })
+                .sort('-createdAt')
+                .populate('registeredby')
+                .exec((err, usersLast30Days)=>{
+
+                    users.forEach((user) => {
+                        var birthday = new Date(user.birthday);
+                        var today = new Date();
+                        var age = today.getFullYear() - birthday.getFullYear();
+                        if (today.getMonth() < birthday.getMonth()) {
+                            age;
+                        }
+                        if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
+                            age;
+                        }
+                        if (user.role == 8) {
+                            //All registered users
+                            allUsers.push({
+                                'registeredby': user.registeredby,
+                                'id': user._id,
+                                'patientId': user.patientId,
+                                'paid': user.account.paid,
+                                'firstname': user.firstname,
+                                'lastname': user.lastname,
+                                'address': user.address,
+                                'phone': user.phonenumber,
+                                'email': user.email,
+                                'status': user.status,
+                                'role': user.role,
+                                'city': user.city,
+                                'age': age,
+                                'country': user.country,
+                                'created': user.createdAt.toLocaleString(),
+                            });
+                        }
+                    });
+                    res.render('app/dashboard4', { allUsers, users, usersIsEmpty, appointments, usersToday, userThisWeek, usersLast30Days });
+                })
+            })
+        })
+}
 
 function formatDate(date) {
     var d = (date),

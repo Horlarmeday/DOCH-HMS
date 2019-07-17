@@ -103,6 +103,9 @@ const UserSchema = new mongoose.Schema({
     }],
     registeredby:{
         type: mongoose.Schema.Types.ObjectId, ref: "User"
+    },
+    retainershipname:{
+        type: mongoose.Schema.Types.ObjectId, ref: "HMO"
     }
 }, { timestamps: true });
 

@@ -71,6 +71,7 @@
                                                     <th>Email</th>
                                                     <th>Patient Type</th>
                                                     <th>Status</th>
+                                                    <th>Registered By</th>
                                                     <% if(currentUser.role == 7){ %>
                                                     <th>Action</th>
                                                     <% } %>
@@ -97,6 +98,13 @@
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-primary">Inactive</label></td>
                                                         <% } %>
+                                                        <% if(patient.registeredby){ %>
+                                                        <td>
+                                                                <%= patient.registeredby.firstname %> <%= patient.registeredby.lastname %>
+                                                        </td>
+                                                        <% }else{ %>
+                                                            <td></td>
+                                                        <% }  %>
                                                         <% if(currentUser.role == 7){ %>
                                                         <td>
                                                             <!-- <a class="btn btn-info" href="/invoice/<%= patient.id %>">Invoice</a> -->

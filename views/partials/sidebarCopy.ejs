@@ -290,6 +290,31 @@
                                     </ul>
                             </li>
                             <% } %>
+                            <% if(currentUser.role == 1 || currentUser.role === 11 || currentUser.role === 6){ %>
+                                <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                            <span class="pcoded-micon"><i class="fa fa-money"></i></span>
+                                            <span class="pcoded-mtext">Payments</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                            <li class=" ">
+                                                <a href="/payments" data-i18n="nav.navigate.navbar">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Payments</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <!-- <li class=" ">
+                                                <a href="/add-appointment" data-i18n="nav.navigate.navbar-inverse">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Add Appointment</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li> -->
+                                        </ul>
+                                </li>
+                                <% } %>
                         <% if(currentUser.role == 1){ %>
                         <li class="pcoded-hasmenu">
                                 <a href="javascript:void(0)" data-i18n="nav.navigate.main">

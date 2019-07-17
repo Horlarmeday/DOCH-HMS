@@ -167,6 +167,7 @@
                                                         <th>Patient Name</th>
                                                         <th>Amount Paid(&#8358;)</th>
                                                         <th>Payment For</th>
+                                                        <th>Mode of Payment</th>
                                                         <th>Payment Date</th>
                                                         <th>Status</th>
                                                     </tr>
@@ -189,6 +190,12 @@
                                                                     <% }) %>
                                                                 <% } %>
                                                         </td>
+                                                        <% if(payment.modeofpayment){ %>
+                                                            <td><%= payment.modeofpayment %></td>
+                                                        <% }else{ %>
+                                                            <td>Cash</td>
+                                                        <% } %>
+                                                        
                                                         <td> <%= payment.createdAt.toDateString() %></td>
                                                         <% if(payment.status === true){ %>
                                                         <td><label class="label label-md bg-success">Paid</label></td>

@@ -1,0 +1,438 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <!-- <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <%
+                            const newPayments = allpayments.map(payment =>{
+                                if(payment.status){
+                                    const rPayment = payment.amount
+                                    return rPayment;        
+                                }
+                            })
+                            const payment = newPayments.filter(v => v).length;
+                        %>
+                        
+                        <div class="col-md-6 col-xl-4">
+                                <div class="card">
+                                 <div class="card-block-big card-task">
+                                  <h5>Payment</h5>
+                                  <div class="card-block">
+                                   <div class="row">
+                                    <div class="col-6">
+                                        
+                                     <h2 class="text-success text-left f-60 m-0"><%= payment %></h2>
+                                    
+                                   </div>
+                                   <div class="col-6 text-center">
+                                     <div class="col-12 p-b-20">
+                                      <span class="color-success">23%</span>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="dropdown-default dropdown open">
+                                       <button class="btn btn-default dropdown-toggle waves-effect waves-light " type="button" id="d-down1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Today</button>
+                                       <div class="dropdown-menu" aria-labelledby="d-down1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                        <a id="payment-today" class="dropdown-item waves-light waves-effect" href="#">Today</a>
+                                        <a id="payment-week" class="dropdown-item waves-light waves-effect" href="#">This Week</a>
+                                        <a id="payment-30days" class="dropdown-item waves-light waves-effect" href="#">Last 30 days</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a id="payment-total" class="dropdown-item waves-light waves-effect" href="#">Total</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+                        
+                              <%
+                            function getSum(total, num) {
+                                return total + num;
+                            }
+                            const totalRevenueGenerated = allpayments.map(price =>{
+                                const rPrice = price.amount
+                                return rPrice;
+                                                
+                            })
+                            var totalRevenue;
+                            if(totalRevenueGenerated === undefined || totalRevenueGenerated.length == 0){
+                                totalRevenue = 0
+                            }else{
+                                totalRevenue = totalRevenueGenerated.reduce(getSum)
+                            }
+                                                            
+                        %>
+                        <!-- Visitor Chart End-->
+                        <div class="col-md-6 col-xl-4">
+                                <div class="card">
+                                 <div class="card-block-big card-task">
+                                  <h5>Revenue</h5>
+                                  <div class="card-block">
+                                   <div class="row">
+                                    <div class="col-7">
+                                     <h2 class="text-primary text-left f-60 m-0">&#8358;<%=  totalRevenue %></h2> <span class="color-primary">10%</span>
+                                   </div>
+                                   <!-- <div class="col-6 text-center">
+                                        <div class="col-12 p-b-20">
+                                         <span class="color-primary">10%</span>
+                                        </div>
+                                   </div> -->
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+                              
+                        <!-- Overdue Task Start-->
+
+      
+                        <!-- Registered today -->
+                        <div class="col-sm-12 paymentToday">
+                            <!-- Zero config.table start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Payment Today</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Patient ID</th>
+                                                    <th>Patient Name</th>
+                                                    <th>Amount Paid(&#8358;)</th>
+                                                    <th>Payment For</th>
+                                                    <th>Mode of Payment</th>
+                                                    <th>Payment Date</th>
+                                                    <th>Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% paymentToday.forEach((payment) => { %>
+                                                    <% if(payment.status){ %>
+                                                <tr>
+                                                   
+                                                        <td></td>
+                                                        <td><%= payment.patient.patientId %></td>
+                                                        <td> <a href="/patient/<%= patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                        <td><%= payment.amount %></td>
+                                                        <td>
+                                                            <% if(payment.services.length < 1){ %>
+                                                                <p ><%= payment.type %></p> 
+                                                                <% }else{ %>
+                                                                    <% payment.services.forEach((service)=>{ %>
+                                                                        <p style="font-weight: 700"><%= service.service %>
+                                                                        <span style="font-weight: 900; color: darkorange">(&#8358;<%= service.price %>)</span></p>
+                                                                    <% }) %>
+                                                                <% } %>
+                                                        </td>
+                                                        <% if(payment.modeofpayment){ %>
+                                                            <td><%= payment.modeofpayment %></td>
+                                                        <% }else{ %>
+                                                            <td>Cash</td>
+                                                        <% } %>
+                                                        <td> <%= payment.createdAt.toDateString() %></td>
+                                                        <% if(payment.status === true){ %>
+                                                        <td><label class="label label-md bg-success">Paid</label></td>
+                                                        <% }else{ %>
+                                                        <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                        <% } %>
+                                                        
+                                                </tr>
+                                                
+                                                
+                                              
+                                                
+                                                <% } %>
+                                                <% }) %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Registered this week -->
+                        <div class="col-sm-12 paymentThisWeek">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Payments This Week</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="order-table" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Patient Name</th>
+                                                        <th>Amount Paid(&#8358;)</th>
+                                                        <th>Payment For</th>
+                                                        <th>Mode of Payment</th>
+                                                        <th>Payment Date</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% paymentThisWeek.forEach((payment) => { %>
+                                                        <% if(payment.status){ %>
+                                                    <tr>
+                                                       
+                                                            <td></td>
+                                                            <td><%= payment.patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                            <td><%= payment.amount %></td>
+                                                            <td>
+                                                                <% if(payment.services.length < 1){ %>
+                                                                    <p ><%= payment.type %></p> 
+                                                                    <% }else{ %>
+                                                                        <% payment.services.forEach((service)=>{ %>
+                                                                            <p style="font-weight: 700"><%= service.service %>
+                                                                            <span style="font-weight: 900; color: darkorange">(&#8358;<%= service.price %>)</span></p>
+                                                                        <% }) %>
+                                                                    <% } %>
+                                                            </td>
+                                                            <% if(payment.modeofpayment){ %>
+                                                                <td><%= payment.modeofpayment %></td>
+                                                            <% }else{ %>
+                                                                <td>Cash</td>
+                                                            <% } %>
+                                                            <td> <%= payment.createdAt.toDateString() %></td>
+                                                            <% if(payment.status === true){ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                            <% } %>
+                                                            
+                                                    </tr>
+                                                    
+                                                    
+                                                  
+                                                    
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!--  this month -->
+                        <div class="col-sm-12 paymentLast30Days">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Payment Last 30 days</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="alt-pg-dt" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Patient Name</th>
+                                                        <th>Amount Paid(&#8358;)</th>
+                                                        <th>Payment For</th>
+                                                        <th>Mode of Payment</th>
+                                                        <th>Payment Date</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% paymentLast30Days.forEach((payment) => { %>
+                                                        <% if(payment.status){ %>
+                                                    <tr>
+                                                       
+                                                            <td></td>
+                                                            <td><%= payment.patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                            <td><%= payment.amount %></td>
+                                                            <td>
+                                                                <% if(payment.services.length < 1){ %>
+                                                                    <p ><%= payment.type %></p> 
+                                                                    <% }else{ %>
+                                                                        <% payment.services.forEach((service)=>{ %>
+                                                                            <p style="font-weight: 700"><%= service.service %>
+                                                                            <span style="font-weight: 900; color: darkorange">(&#8358;<%= service.price %>)</span></p>
+                                                                        <% }) %>
+                                                                    <% } %>
+                                                            </td>
+                                                            <% if(payment.modeofpayment){ %>
+                                                                <td><%= payment.modeofpayment %></td>
+                                                            <% }else{ %>
+                                                                <td>Cash</td>
+                                                            <% } %>
+                                                            <td> <%= payment.createdAt.toDateString() %></td>
+                                                            <% if(payment.status === true){ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                            <% } %>
+                                                            
+                                                    </tr>
+                                                    
+                                                    
+                                                  
+                                                    
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!--  total -->
+                        <div class="col-sm-12 allpayments">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Payment Total</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="dom-jqry" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Patient Name</th>
+                                                        <th>Amount Paid(&#8358;)</th>
+                                                        <th>Payment For</th>
+                                                        <th>Mode of Payment</th>
+                                                        <th>Payment Date</th>
+                                                        <th>Status</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% allpayments.forEach((payment) => { %>
+                                                        <% if(payment.status){ %>
+                                                    <tr>
+                                                       
+                                                            <td></td>
+                                                            <td><%= payment.patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                            <td><%= payment.amount %></td>
+                                                            <td>
+                                                                <% if(payment.services.length < 1){ %>
+                                                                    <p ><%= payment.type %></p> 
+                                                                    <% }else{ %>
+                                                                        <% payment.services.forEach((service)=>{ %>
+                                                                            <p style="font-weight: 700"><%= service.service %>
+                                                                            <span style="font-weight: 900; color: darkorange">(&#8358;<%= service.price %>)</span></p>
+                                                                        <% }) %>
+                                                                    <% } %>
+                                                            </td>
+                                                            <% if(payment.modeofpayment){ %>
+                                                                <td><%= payment.modeofpayment %></td>
+                                                            <% }else{ %>
+                                                                <td>Cash</td>
+                                                            <% } %>
+                                                            <td> <%= payment.createdAt.toDateString() %></td>
+                                                            <% if(payment.status === true){ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                            <% } %>
+                                                            
+                                                    </tr>
+                                                    
+                                                    
+                                                  
+                                                    
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../../partials/footerCopy %>

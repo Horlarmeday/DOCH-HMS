@@ -232,7 +232,7 @@ $(document).ready(function() {
      //CLICKING DECLINED BUTTON
      $('.decline').click(function (event) {
         let decline = $(this).attr('value')
-        console.log(decline)
+        
         event.preventDefault()
         $.ajax({
             type: 'POST',
@@ -402,7 +402,67 @@ $(document).ready(function() {
         $('.form-block3').show()
     });
 
-    
+    ///////////////////////////////////////
+    // FILTERING ON MEDICAL RECORDS PAE
+    $('#btn-week').click(function () {
+        $('#thisweek').show()
+        $('#thismonth').hide()
+        $('#today').hide()
+        $('#total').hide()
+    })
+        //LAST 30 DAYS BTN
+    $('#btn-last30').click(function () {
+        $('#thisweek').hide()
+        $('#thismonth').show()
+        $('#today').hide()
+        $('#total').hide()
+    })
+        //TOTAL BTN
+    $('#btn-total').click(function () {
+        $('#thisweek').hide()
+        $('#thismonth').hide()
+        $('#today').hide()
+        $('#total').show()
+    })
+        //TODAY BTN
+   $('#btn-today').click(function name() {
+        $('#thisweek').hide()
+        $('#thismonth').hide()
+        $('#today').show()
+        $('#total').hide()
+    })
+////////////////////////////////////
+
+ ///////////////////////////////////////
+    // FILTERING ON PAYMENT RECORDS PAE
+    $('#payment-week').click(function () {
+        $('.allpayments').hide()
+        $('.paymentToday').hide()
+        $('.paymentThisWeek').show()
+        $('.paymentLast30Days').hide()
+    })
+        //LAST 30 DAYS BTN
+    $('#payment-30days').click(function () {
+        $('.allpayments').hide()
+        $('.paymentToday').hide()
+        $('.paymentThisWeek').hide()
+        $('.paymentLast30Days').show()
+    })
+        //TOTAL BTN
+    $('#payment-total').click(function () {
+        $('.allpayments').show()
+        $('.paymentToday').hide()
+        $('.paymentThisWeek').hide()
+        $('.paymentLast30Days').hide()
+    })
+        //TODAY BTN
+   $('#payment-today').click(function name() {
+        $('.allpayments').hide()
+        $('.paymentToday').show()
+        $('.paymentThisWeek').hide()
+        $('.paymentLast30Days').hide()
+    })
+////////////////////////////////////
 
 })
 
@@ -509,6 +569,26 @@ function showTransferTo(){
        
     }
 }
+
+//Search function
+function myFunction() {
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
 
 
 //Getting the drug prescriptions

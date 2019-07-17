@@ -31,6 +31,65 @@
                 <div class="page-body">
                     <div class="row">
                         <!-- Visitor Chart Start-->
+                        <!-- <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <%
+                            const newPatients = users.map(patient =>{
+                                if (patient.role === 8){
+                                const rPatient = patient.role === 8
+                                return rPatient;
+                                }                    
+                            })
+                            const patients = newPatients.filter(v => v).length;
+                        %>
+                        <div class="col-md-6 col-xl-4">
+                                <div class="card">
+                                 <div class="card-block-big card-task">
+                                  <h5>Patients</h5>
+                                  <div class="card-block">
+                                   <div class="row">
+                                    <div class="col-6">
+                                     <h2 class="text-success text-left f-60 m-0"><%= patients %></h2>
+                                   </div>
+                                   <div class="col-6 text-center">
+                                     <div class="col-12 p-b-20">
+                                      <span class="color-success">23%</span>
+                                    </div>
+                                    <div class="col-12">
+                                      <div class="dropdown-default dropdown open">
+                                       <button class="btn btn-default dropdown-toggle waves-effect waves-light " type="button" id="d-down1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Today</button>
+                                       <div class="dropdown-menu" aria-labelledby="d-down1" data-dropdown-in="fadeIn" data-dropdown-out="fadeOut">
+                                        <a id="btn-today" class="dropdown-item waves-light waves-effect" href="#">Today</a>
+                                        <a id="btn-week" class="dropdown-item waves-light waves-effect" href="#">This Week</a>
+                                        <a id="btn-last30" class="dropdown-item waves-light waves-effect" href="#">Last 30 days</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a id="btn-total" class="dropdown-item waves-light waves-effect" href="#">Total</a>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
+                              </div>
                         <div class="col-md-6 col-xl-4">
                             <div class="card">
                                 <div class="card-block-big card-visitor-block">
@@ -44,38 +103,11 @@
                                         const doctors = newDoctors.filter(v => v).length;
                                      %>
                                     <div class="row">
-                                        <div class="col-sm-8  card-visitor-button">
-                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
-                                            <div class="card-contain">
-                                                <h6><%= doctors %></h6>
-                                                <p class="text-muted f-18 m-0">Doctors</p>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-4 text-center">
-                                            <span class="visitor-chart"></span>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 col-xl-4">
-                            <div class="card">
-                                <div class="card-block-big card-visitor-block">
-                                        <%
-                                        const newPatients = allUsers.map(patient =>{
-                                          if (patient.role === 8){
-                                            const rPatient = patient.role === 8
-                                            return rPatient;
-                                          }                    
-                                        })
-                                        const patients = newPatients.filter(v => v).length;
-                                     %>
-                                    <div class="row">
                                         <div class="col-sm-8 card-visitor-button">
                                             <button class="btn btn-warning btn-icon"><i class="icofont icofont-paralysis-disability"></i></button>
                                             <div class="card-contain">
-                                                <h6><%= patients %></h6>
-                                                <p class="text-muted f-18 m-0">Patients</p>
+                                                <h6><%= doctors %></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
                                             </div>
                                         </div>
                                         <div class="col-sm-4 text-center">
@@ -104,12 +136,15 @@
                             </div>
                         </div>
                         <!-- Visitor Chart End-->
+                        <!-- Overdue Task Start-->
 
-                        <div class="col-sm-12">
+      
+                        <!-- Registered today -->
+                        <div id="today" class="col-sm-12">
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Patients</h5>
+                                    <h5>Patients Registered Today</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -135,8 +170,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% allUsers.forEach((patient) => { %>
-                                                    
+                                                <% usersToday.forEach((patient) => { %>
+                                                    <% if(patient.role == 8){ %>
                                                 <tr class="clickable">
                                                    
                                                         <td></td>
@@ -151,7 +186,7 @@
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-warning">Not Paid</label></td>
                                                         <% } %>
-                                                        <td><%= patient.created %></td>
+                                                        <td><%= patient.createdAt.toLocaleString() %></td>
                                                         <% if(patient.registeredby){ %>
 
                                                             <td><%= patient.registeredby.firstname %></td>
@@ -168,12 +203,231 @@
                                                 
                                                 
                                               
+                                                <% } %>
                                                 <% }) %>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Registered this week -->
+                        <div id="thisweek" class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Patients Registered This Week</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Name</th>
+                                                        <th>Age</th>
+                                                        <th>Address</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th>Status</th>
+                                                        <th>Created</th>
+                                                        <th>Registred By</th>
+                                                        <th>Issue Card</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% userThisWeek.forEach((patient) => { %>
+                                                        <% if(patient.role == 8){ %>
+                                                    <tr class="clickable">
+                                                       
+                                                            <td></td>
+                                                            <td><%= patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td><%= patient.age %></td>
+                                                            <td><%= patient.address %></td>
+                                                            <td>+234<%= patient.phone %></td>
+                                                            <td><%= patient.email %></td>
+                                                            <% if(patient.paid){ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                            <% } %>
+                                                            <td><%= patient.createdAt.toLocaleString() %></td>
+                                                            <% if(patient.registeredby){ %>
+    
+                                                                <td><%= patient.registeredby.firstname %></td>
+                                                            <% }else{ %>
+                                                                <td></td>
+                                                            <% }  %>
+                                                            <% if(patient.paid){ %>
+                                                            <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
+                                                            <% }else{ %>
+                                                                <td><a class="btn btn-default" href="#">Issue</a> </td>
+                                                            <% } %>
+                                                            
+                                                    </tr>
+                                                    
+                                                    
+                                                  
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!-- Registered this month -->
+                        <div id="thismonth" class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Patients Registered Last 30 days</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Name</th>
+                                                        <th>Age</th>
+                                                        <th>Address</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th>Status</th>
+                                                        <th>Created</th>
+                                                        <th>Registred By</th>
+                                                        <th>Issue Card</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% usersLast30Days.forEach((patient) => { %>
+                                                        <% if(patient.role == 8){ %>
+                                                    <tr class="clickable">
+                                                       
+                                                            <td></td>
+                                                            <td><%= patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td><%= patient.age %></td>
+                                                            <td><%= patient.address %></td>
+                                                            <td>+234<%= patient.phone %></td>
+                                                            <td><%= patient.email %></td>
+                                                            <% if(patient.paid){ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                            <% } %>
+                                                            <td><%= patient.createdAt.toLocaleString() %></td>
+                                                            <% if(patient.registeredby){ %>
+    
+                                                                <td><%= patient.registeredby.firstname %></td>
+                                                            <% }else{ %>
+                                                                <td></td>
+                                                            <% }  %>
+                                                            <% if(patient.paid){ %>
+                                                            <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
+                                                            <% }else{ %>
+                                                                <td><a class="btn btn-default" href="#">Issue</a> </td>
+                                                            <% } %>
+                                                            
+                                                    </tr>
+                                                    
+                                                    
+                                                  
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+                        <!-- Registered total -->
+                        <div id="total" class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Patients Registered Total</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Name</th>
+                                                        <th>Age</th>
+                                                        <th>Address</th>
+                                                        <th>Phone</th>
+                                                        <th>Email</th>
+                                                        <th>Status</th>
+                                                        <th>Created</th>
+                                                        <th>Registred By</th>
+                                                        <th>Issue Card</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% allUsers.forEach((patient) => { %>
+                                                        
+                                                    <tr class="clickable">
+                                                       
+                                                            <td></td>
+                                                            <td><%= patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td><%= patient.age %></td>
+                                                            <td><%= patient.address %></td>
+                                                            <td>+234<%= patient.phone %></td>
+                                                            <td><%= patient.email %></td>
+                                                            <% if(patient.paid){ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                            <% } %>
+                                                            <td><%= patient.created %></td>
+                                                            <% if(patient.registeredby){ %>
+    
+                                                                <td><%= patient.registeredby.firstname %></td>
+                                                            <% }else{ %>
+                                                                <td></td>
+                                                            <% }  %>
+                                                            <% if(patient.paid){ %>
+                                                            <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
+                                                            <% }else{ %>
+                                                                <td><a class="btn btn-default" href="#">Issue</a> </td>
+                                                            <% } %>
+                                                            
+                                                    </tr>
+                                                    
+                                                    
+                                                  
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
                         </div>
 
                     </div>
