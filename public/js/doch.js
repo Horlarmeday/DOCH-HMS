@@ -570,6 +570,15 @@ function showTransferTo(){
     }
 }
 
+// function appointmentType() {
+//     let appointmenttype = $('#appointmenttype').val()
+//     if(appointmenttype === 'Ante-Natal'){
+//         $('#doc').hide()
+//     }else{
+//         $('#doc').show()
+//     }
+// }
+
 //Search function
 function myFunction() {
     var input, filter, table, tr, td, i, txtValue;

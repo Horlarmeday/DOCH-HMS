@@ -191,7 +191,7 @@
                                                                         <select id="modeofpayment1" name="modeofpayment" class="form-control" >
                                                                             <option>Select</option>
                                                                             <option value="Cash">Cash</option>
-                                                                            <option value="ATM">ATM</option>
+                                                                            <option value="POS">POS</option>
                                                                             <option value="Transfer">Transfer</option>
                                                                             <option value="Bank Deposit">Bank Deposit</option>
                                                                         </select>
@@ -300,7 +300,7 @@
                                                                         <select id="modeofpayment2" name="modeofpayment" class="form-control" >
                                                                             <option>Select</option>
                                                                             <option value="Cash">Cash</option>
-                                                                            <option value="ATM">ATM</option>
+                                                                            <option value="POS">POS</option>
                                                                             <option value="Transfer">Transfer</option>
                                                                             <option value="Bank Deposit">Bank Deposit</option>
                                                                         </select>
@@ -403,7 +403,7 @@
                                                                             <select id="modeofpayment3" name="modeofpayment" class="form-control" >
                                                                                 <option>Select</option>
                                                                                 <option value="Cash">Cash</option>
-                                                                                <option value="ATM">ATM</option>
+                                                                                <option value="POS">POS</option>
                                                                                 <option value="Transfer">Transfer</option>
                                                                                 <option value="Bank Deposit">Bank Deposit</option>
                                                                             </select>
@@ -506,30 +506,15 @@
                                                                                 <select id="modeofpayment4" name="modeofpayment" class="form-control" >
                                                                                     <option>Select</option>
                                                                                     <option value="Cash">Cash</option>
-                                                                                    <option value="ATM">ATM</option>
+                                                                                    <option value="POS">POS</option>
                                                                                     <option value="Transfer">Transfer</option>
                                                                                     <option value="Bank Deposit">Bank Deposit</option>
                                                                                 </select>
                                                                         </div>
-                                                                    <% }%>
+                                                                    <% } %>
                                                             </td>
                                                             <td>
-                                                                <% if(!consultation.imagingpaid){ %>
-                                                                    <div class="input-group mb-3">
-                                                                        <select name="modeofpayment" class="form-control" aria-label="Recipient's username" aria-describedby="button-addon2">
-                                                                            <option>Select Mode of Payment</option>
-                                                                            <option>Cash</option>
-                                                                            <option>ATM</option>
-                                                                            <option>Transfer</option>
-                                                                            <option>Bank Deposit</option>
-                                                                        </select>
-                                                                        <!-- <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2"> -->
-                                                                        <div class="input-group-append">
-                                                                          <!-- <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button> -->
-                                                                          <button value="<%= imagingPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success imagingpay"> Paid?</button>
-                                                                        </div>
-                                                                      </div>
-                                                                <% } %>
+                                                                
                                                                 <% if(consultation.imagingpaid){ %>
                                                                 
                                                                 <button href="/imaging-invoice/<%= consultation._id %>" class="btn btn-primary imaging"><i class="ti-receipt"></i> Invoice </button>

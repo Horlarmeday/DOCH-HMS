@@ -70,12 +70,13 @@
                                                     <th>R</th>
                                                     <th>B/P</th>
                                                     <th>Ward</th>
-                                                    
+                                                    <th>Ward Round</th>
                                                     <th>Initial</th>
                                                     <th>Comments</th>
                                                     <th>Observations</th>
                                                     <th>Created</th>
-                                                    
+                                                    <th>Taken By</th>
+                                                    <th>Lead Doctor</th>
                                                     <th>Status</th>
                                                 </tr>
                                             </thead>
@@ -90,15 +91,21 @@
                                                     <td><%= report.r %></td>
                                                     <td><%= report.bp %></td>
                                                     <td><%= report.ward %></td>
-                                                    
+                                                    <td><%= report.wardround %></td>
                                                     <td><%= report.initial %></td>
                                                     <td><%= report.comment %></td>
                                                     <td><%= report.observation %></td>
                                                     <td><%= report.created.toLocaleString() %></td>
+                                                    <td><%= report.creator.firstname %> <%= report.creator.lastname %></td>
+                                                    <% if(report.doctor){ %>
+                                                        <td><%= report.doctor.firstname %> <%= report.doctor.lastname %> </td>
+                                                    <% }else{ %>
+                                                        <td>No Doctor</td>
+                                                    <% } %>
                                                     <% if(report.status){ %>
                                                     <td><label class="label label-md bg-success">Active</label></td>
                                                     <% }else{ %>
-                                                    <td><label class="label label-md bg-danger">Inctive</label></td>
+                                                    <td><label class="label label-md bg-warning">Inctive</label></td>
                                                     <% } %>
                                                 </tr>
                                                 <% })  %>

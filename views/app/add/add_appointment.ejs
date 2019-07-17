@@ -67,8 +67,17 @@
                                                                     <% } %>
                                                                 <% }) %>
                                                             </select>
-                                                        </div><br>                                                        
+                                                        </div><br>   
                                                         <div class="col-sm-12">
+                                                                <label for="">Appointment Type</label>
+                                                                <select id="appointmenttype" name="type" class="form-control" onchange="appointmentType()">
+                                                                    <option selected disabled>Select</option>
+                                                                    <option value="Immunization">Immunization</option>
+                                                                    <option value="Ante-Natal">Ante Natal</option>
+                                                                    <option value="Consultation">Consultation</option>
+                                                                </select>
+                                                            </div><br>                                                     
+                                                        <div id="doc" class="col-sm-12">
                                                             <label for="">Doctor</label>
                                                             <select name="doctor" class="form-control js-example-basic-single">
                                                                 <option selected disabled>Select</option>
@@ -88,15 +97,7 @@
                                                                 <% }) %>
                                                             </select>
                                                         </div><br>
-                                                        <div class="col-sm-12">
-                                                            <label for="">Appointment Type</label>
-                                                            <select name="type" class="form-control">
-                                                                <option selected disabled>Select</option>
-                                                                <option value="Immunization">Immunization</option>
-                                                                <option value="Ante-Natal">Ante Natal</option>
-                                                                <option value="Consultation">Consultation</option>
-                                                            </select>
-                                                        </div><br>
+                                                        
                                                         <div class="col-sm-12">
                                                             <label>Date <span class="text-danger">*</span></label>
                                                             <input name="appointment" class="form-control" type="date">     

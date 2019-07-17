@@ -79,7 +79,11 @@
                                                     <td></td>
                                                     <td><%= appointment.uniqueid %></td>
                                                     <td> <%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
+                                                    <% if(appointment.doctor){ %>
                                                     <td> <%= appointment.doctor.firstname %></td>
+                                                    <% }else{ %>
+                                                    <td>No Doctor</td>
+                                                    <% } %>
                                                     <td> <%= appointment.department %></td>
                                                     <td> <%= appointment.appointmentdate.toDateString() %></td>
                                                     <td> <%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>

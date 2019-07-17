@@ -487,6 +487,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         .exec((err, consultations)=>{
             if(err) return next (err)
             Appointment.find({})
+            .sort('created')
             .populate('patient')
             .exec((err, appointments)=>{
                 if(err) return next (err)
@@ -1593,6 +1594,8 @@ router.route('/add-daily-report/:id')
 router.get('/nurse-daily-report', middleware.isLoggedIn, (req, res, next)=>{
     NurseReport.find({})
     .populate('patient')
+    .populate('creator')
+    .populate('doctor')
     .exec((err, nursereports)=>{
         if(err) return next (err)
         res.render('app/view/nurse_reports', { nursereports })
