@@ -125,6 +125,7 @@
                                                     <th>Patient Name</th>
                                                     <th>Doctor Name</th>
                                                     <th>Type</th>
+                                                    <th>Date</th>
                                                     <th>Timing</th>
                                                     <th>Status</th>
                                                     <th>Actions</th>
@@ -139,6 +140,7 @@
                                                     <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
                                                     <td><%= appointment.doctor.firstname %> <%= appointment.doctor.lastname %></td>
                                                     <td><%= appointment.type %></td>
+                                                    <td><%= appointment.appointmentdate.toDateString() %></td>
                                                     <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
                                                     <% if(appointment.taken === true){ %>
                                                     <td><label class="label label-md bg-success">Attended</label></td>
