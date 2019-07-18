@@ -410,7 +410,7 @@
                                         </div>
                                     </form>
                         <% } %>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <!-- Pagination Alignment end card start -->
                             <div class="card">
                                 <div class="card-header">
@@ -432,13 +432,16 @@
                                                     <thead>
                                                         <tr>
                                                             <th>S/N</th>
+                                                            <th>Route</th>
                                                             <th>Drug</th>
                                                             <th>Starting Date</th>
-                                                            <th>Dosage</th>
-                                                            <th>Quantity</th>
-                                                            <th>Unit</th>
+                                                            <th>Unit Dose</th>
+                                                            <th>Frequency</th>
+                                                            <th>Duration</th>
+                                                            <th>Total to Dispense</th>
+                                                            <th>Price</th>
+                                                            <th>Pharmacy</th>
                                                             <th>Notes</th>
-                                                            
                                                             
                                                         </tr>
                                                     </thead>
@@ -449,12 +452,20 @@
                                                         <% consultation.drugsObject.forEach((drug)=>{ %>
                                                         <tr>
                                                             <td></td>
-                                                           
+                                                            <td><%= drug.unit %></td>
                                                             <td> <%= drug.drugs.name %></td>
                                                             <td> <%= drug.startingdate.toDateString() %></td>
-                                                            <td> <%= drug.direction %> <%= drug.dose %> in <%= drug.time %></td>
+                                                            <td> <%= drug.time %></td>
+                                                            <td> <%= drug.direction %></td>
+                                                            <td> <%= drug.duration %></td>
                                                             <td> <%= drug.quantity %></td>
-                                                            <td><%= drug.medicineunit %><%= drug.unit %></td>
+                                                            <td> <%= drug.price %></td>
+                                                            <% if(drug.pharmacyfinish){ %>
+                                                                <td><label class="label label-md bg-success">Drugs Prescribed</label></td>
+                                                            <% }else{ %>
+                                                                <td><label class="label label-md bg-warning">Not Yet</label></td>
+                                                            <% } %>
+
                                                             <td><%= drug.notes %></td>
                
                                                         </tr>
@@ -463,7 +474,6 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                             <!-- Center page ends -->
                                             <div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                                                     <div class="modal-dialog modal-dialog-centered" role="document">
                                                         <div class="modal-content">
@@ -473,8 +483,8 @@
                                                             <div class="modal-body">
                                                                 <form action="/prescription/<%= user._id %>" method="POST">
                                                                     <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Choose</label>                                                                          
-                                                                            <div class="col-sm-6">
+                                                                        <label class="col-sm-3 col-form-label">Choose</label>                                                                          
+                                                                            <div class="col-sm-8">
                                                                                 <select id="itemId" name="drug_brand" class="form-control " onchange="getDrugInfo()">
                                                                                     <option selected disabled>Select Drug </option>
                                                                                     <% drugs.forEach((drug)=>{ %>
@@ -484,53 +494,52 @@
                                                                             </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label for="" class="col-sm-2 col-form-label">Price</label>
-                                                                            <div class="col-sm-6">
-                                                                                <input type="text" class="form-control" id="drugAmount" readonly>
+                                                                        <label for="" class="col-sm-3 col-form-label">Price</label>
+                                                                            <div class="col-sm-8">
+                                                                                <input name="price" type="text" class="form-control" id="drugAmount" readonly>
                                                                             </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label for="" class="col-sm-2 col-form-label">Quantity Remaining</label>
-                                                                            <div class="col-sm-6">
+                                                                        <label for="" class="col-sm-3 col-form-label">Quantity Remaining</label>
+                                                                            <div class="col-sm-8">
                                                                                 <input type="text" class="form-control" id="drugRemainder" readonly>
                                                                             </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                        <label class="col-sm-2 col-form-label">Starting Date</label>
-                                                                        <div class="col-sm-6">
+                                                                        <label class="col-sm-3 col-form-label">Starting Date</label>
+                                                                        <div class="col-sm-8">
                                                                             <input type="date" class="form-control" name="startingdate" required>
                                                                         </div>
                                                                     </div> 
+                                                                    
                                                                     <div class="form-group row">
-                                                                        <label for="" class="col-sm-2 col-form-label">Quantity</label>
-                                                                        <div class="col-sm-6">
-                                                                            <input type="text" class="form-control" name="quantity" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="form-group row">
-                                                                        <label for="" class="col-sm-2 col-form-label">Medicine Unit</label>
-                                                                            <div class="col-sm-4">
-                                                                                    <input type="text" class="form-control" name="medicineunit" required>
-                                                                            </div>
-                                                                            <div class="col-sm-4">
+                                                                        <label for="" class="col-sm-3 col-form-label">Route</label>
+                                                                            
+                                                                            <div class="col-sm-8">
                                                                                 <select name="unit" class="form-control">
-                                                                                        <option>Select Unit</option>
-                                                                                        <option>mg</option>
-                                                                                        <option>mg/1cc</option>
-                                                                                        <option>mg/2cc</option>
-                                                                                        <option>mg/3cc</option>
-                                                                                        <option>mg/4cc</option>
-                                                                                        <option>mg/5cc</option>
-                                                                                        <option>mcg</option>
-                                                                                        <option>grams</option>
-                                                                                        <option>mL</option>
+                                                                                        <option>Select </option>
+                                                                                        <option>im</option>
+                                                                                        <option>IV</option>
+                                                                                        <option>Eye</option>
+                                                                                        <option>SC</option>
+                                                                                        <option>PO</option>
+                                                                                        <option>Sublingna</option>
+                                                                                        <option>Rectal</option>
+                                                                                        <option>Ear</option>
+                                                                                
                                                                                 </select>
                                                                             </div>
+                                                                    </div>
+                                                                    <div class="form-group row">
+                                                                        <label class="col-sm-3 col-form-label">Duration</label>
+                                                                        <div class="col-sm-8">
+                                                                            <input type="number" class="form-control duration" name="duration" required>
+                                                                        </div>
                                                                     </div> 
                                                                     <div class="form-group row">
-                                                                        <label for="" class="col-sm-3 col-form-label">Directions</label>
+                                                                        <label for="" class="col-sm-3 col-form-label">Frequency</label>
                                                                         <div class="col-sm-2">
-                                                                            <input type="text" class="form-control" name="direction" required>
+                                                                            <input type="text" class="form-control frequency" name="direction" required>
                                                                         </div>
                                                                         <div class="col-sm-3">
                                                                             <select name="dose" class="form-control" required>
@@ -548,21 +557,25 @@
                                                                         </div>
                                                                         <p class="mt-2">in</p>
                                                                         <div class="col-sm-3">
-                                                                            <select name="time" class="form-control" required>
-                                                                                    <option>Select</option>
-                                                                                    <option>a.m</option>
-                                                                                    <option>p.m</option>
-                                                                                    <option>stat</option>
-                                                                                    <option>ante</option>
-                                                                                    <option>p.r.n</option>
-                                                                                    <option>a.c</option>
-                                                                                    <option>p.c</option>
+                                                                            <select name="time" class="form-control time" required onchange="dosageCalc()">
+                                                                                <option>Select</option>
+                                                                                <option value="1">OD</option>
+                                                                                <option value="2">BD</option>
+                                                                                <option value="3">TDS</option>
+                                                                                <option value="4">QDS</option>
+                                                                                <option value="6">Q4H</option>
                                                                             </select>
                                                                         </div>
                                                                     </div>
                                                                     <div class="form-group row">
-                                                                            <label for="" class="col-sm-2 col-form-label">Notes</label>
-                                                                            <div class="col-sm-6">
+                                                                            <label for="" class="col-sm-3 col-form-label">Quantity</label>
+                                                                            <div class="col-sm-8">
+                                                                                <input type="text" class="form-control quantity" name="quantity" required readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                    <div class="form-group row">
+                                                                            <label for="" class="col-sm-3 col-form-label">Notes</label>
+                                                                            <div class="col-sm-8">
                                                                                 <input type="text" class="form-control" name="notes">
                                                                             </div>
                                                                     </div>
@@ -579,7 +592,7 @@
                             </div>
                             <!-- Pagination Alignment card end -->
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-sm-12">
                             <div class="card">
                                 <div class="card-header">
                                     <h5>LAB INVESTIGATION</h5>
@@ -680,8 +693,8 @@
                         </div>
                                 <!-- Pagination Alignment Center card end -->
                             
-                    </div>
-                            <div class="col-sm-6">
+                        </div>
+                            <div class="col-sm-12">
                                 <!-- Pagination Alignment end card start -->
                                 <div class="card">
                                     <div class="card-header">

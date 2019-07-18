@@ -6,6 +6,7 @@ const ancSchema = new mongoose.Schema({
     creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     ancId: String,
+    occupation: String,
     age: Number,
     gravida: String,
     parity: String,

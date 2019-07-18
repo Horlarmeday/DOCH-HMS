@@ -12,7 +12,9 @@ const consultationSchema = new mongoose.Schema({
         dose: String,
         time: String,
         notes: String,
-        direction: String
+        duration: String,
+        direction: String,
+        price: Number
     }],
     imaging: [{type: mongoose.Schema.Types.ObjectId, ref: "Imaging"}],
     visit: String,

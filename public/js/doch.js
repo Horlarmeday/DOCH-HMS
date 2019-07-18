@@ -570,6 +570,16 @@ function showTransferTo(){
     }
 }
 
+//Function to calculate drugs dosage
+function dosageCalc(){
+    let duration = $('.duration').val()
+    let frequency = $('.frequency').val()
+    let time = $('.time').val()
+
+    let dosage = duration * frequency * time
+    $('.quantity').val(dosage)
+}
+
 // function appointmentType() {
 //     let appointmenttype = $('#appointmenttype').val()
 //     if(appointmenttype === 'Ante-Natal'){

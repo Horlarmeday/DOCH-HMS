@@ -78,7 +78,7 @@
                                             </thead>
                                             <tbody>
                                                 <% consultations.forEach((consultation)=>{ %>
-                                                <tr style="cursor: pointer" onclick="window.location='/consultation/<%= consultation.patient._id %>'">
+                                                <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
                                                     <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>

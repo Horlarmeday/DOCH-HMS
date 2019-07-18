@@ -735,7 +735,7 @@ router.route('/add-patient')
                 }else{
 
                     const user = new User()
-                    user.patientId = `DOCH/000000${count + 1}`
+                    user.patientId = `DOCH/00000${count + 1}`
                     user.registeredby = req.user._id;
                     user.email = req.body.email;
                     user.creator = req.user._id;
@@ -2405,7 +2405,9 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                         dose: req.body.dose,
                         time: req.body.time,
                         notes: req.body.notes,
-                        direction: req.body.direction
+                        direction: req.body.direction,
+                        duration: req.body.duration,
+                        price: req.body.price
                     })
                     theconsultation.prescriptionDate = Date.now()
                     theconsultation.pharmacystatus = true;
@@ -3215,12 +3217,13 @@ router.route('/add-operation-note')
    .get(middleware.isLoggedIn, (req, res, next)=>{
         User.find({}, (err, users)=>{
             if(err) return next (err)
-            res.render('app/add/add_theater_note', {users})
+            PharmacyItem.find({}, (err, drugs)=>{
+                if(err) return next (err)
+                res.render('app/add/add_theater_note', {users, drugs})
+            })
         })
    })
    .post(middleware.isLoggedIn, (req, res, next)=>{
-       
-
        const theater = new Theater()
         theater.patient = req.body.patient;
         theater.surgery = req.body.surgery;
@@ -3234,10 +3237,10 @@ router.route('/add-operation-note')
         }else{
             theater.assistance = req.body.assistance;
         }
-        theater.scrubnurse = req.body.scrubnurse,
-        theater.anesthetist = req.body.anesthetist,
-        theater.findings = req.body.findings,
-        theater.procedure = req.body.procedure,
+        theater.scrubnurse = req.body.scrubnurse;
+        theater.anesthetist = req.body.anesthetist;
+        theater.findings = req.body.findings;
+        theater.procedure = req.body.procedure;
         theater.order = req.body.order
        
        theater.save((err)=>{
@@ -3257,6 +3260,11 @@ router.route('/add-operation-note')
        })
 
    })
+
+//Medication for Theater
+router.post('/theater-prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
+    
+})
 
 //ADD ACCOUNT
 router.route('/accounts')
@@ -3817,10 +3825,7 @@ router.route('/create-ante-natal-patient/:id')
                     if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
                         age
                     }
-                    if(appointment.taken){
-                        req.flash('error', 'Appointment already taken')
-                        return res.redirect('back')
-                    }else{
+                    
                        appointment.taken = true;
                        appointment.save((err)=>{
                            if(err){
@@ -3829,7 +3834,7 @@ router.route('/create-ante-natal-patient/:id')
                            }
                            res.render('app/add/register_ante_natal', { antenatalCounter, user, age})
                        })
-                    }
+                    
                 })
             })
         })
@@ -3840,6 +3845,7 @@ router.route('/create-ante-natal-patient/:id')
             anc.patient = req.body.patient,
             anc.ancId = req.body.ancId,
             anc.age = req.body.age,
+            anc.occupation = req.body.occupation,
             anc.gravida = req.body.gravida,
             anc.parity = req.body.parity,
             anc.lmp = req.body.lmp,
