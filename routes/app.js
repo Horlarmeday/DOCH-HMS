@@ -2412,18 +2412,7 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                     theconsultation.prescriptionDate = Date.now()
                     theconsultation.pharmacystatus = true;
                     theconsultation.status = true;
-                    // var drugs = req.body.drug_brand
-                    // var alldrugs = drugs.map(s => mongoose.Types.ObjectId(s))
-                    // consultation.drugsObject = alldrugs;
-                    // consultation.status = true;
-                    // consultation.prescriptionDate = Date.now()
-                    // consultation.pharmacystatus = true;
-                    // consultation.prescription = {
-                    //     dose: req.body.dose,
-                    //     duration: req.body.duration,
-                    //     frequency: req.body.frequency,
-                    //     direction: req.body.direction
-                    // }
+                    
                 }
                 theconsultation.save((err)=>{
                     if(err) return next (err)
