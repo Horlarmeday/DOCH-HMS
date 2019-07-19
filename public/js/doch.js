@@ -504,11 +504,11 @@ function getUserAge() {
         console.log(data)
         $('#age').val(data)
         if(data < 1){
-            $('#pulse').show()
-            $('#hrate').hide()
-        }else{
             $('#pulse').hide()
             $('#hrate').show()
+        }else{
+            $('#pulse').show()
+            $('#hrate').hide()
         }
     })
 }

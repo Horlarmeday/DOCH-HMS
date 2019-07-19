@@ -14,6 +14,8 @@ const triageSchema = new mongoose.Schema({
     heartrate: String,
     dystolic: String,
     systolic: String,
+    fheartrate: String,
+    spo2: String,
     muac: String,
     taken: {type: Boolean, default: false},
     seen: {type: Boolean, default: false},

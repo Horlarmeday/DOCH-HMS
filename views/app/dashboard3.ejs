@@ -143,11 +143,15 @@
                                                         <td><%= patient.address %></td>
                                                         <td>+234<%= patient.phone %></td>
                                                         <td><%= patient.email %></td>
-                                                        <% if(!patient.addmitted){ %>
-                                                        <td><label class="label label-md bg-success">Not Admitted</label></td>
-                                                        <% }else{ %>
-                                                        <td><label class="label label-md bg-inverse">Admitted</label></td>
+
+                                                        <% if(patient.addmitted && patient.discharge){ %>
+                                                        <td><label class="label label-md bg-success">Discharged</label></td>
+                                                        <% }else if(!patient.addmitted && !patient.discharge){ %>
+                                                        <td><label class="label label-md bg-inverse">Not Admitted</label></td>
+                                                        <% }else if(patient.addmitted && !patient.discharge){ %>
+                                                        <td><label class="label label-md bg-danger">Admitted</label></td>
                                                         <% } %>
+                                                        
                                                         <td>
                                                             <!-- <a class="btn btn-info" href="/invoice/<%= patient.id %>">Invoice</a> -->
                                                             <a class="btn btn-success" href="/visit/<%= patient.id %>"><i class="ti-shift-right"></i> Check In</a>

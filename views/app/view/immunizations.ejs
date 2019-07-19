@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Addmitted Patients</h4>
+                        <h4>Immunizations</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,9 +35,9 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#!">Addmitted Patients</a>
+                            <li class="breadcrumb-item"><a href="#">Immunizations</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#!">Patients</a>
+                            <li class="breadcrumb-item"><a href="/add-immunization">Add Immunization</a>
                             </li>
                         </ul>
                     </div>
@@ -50,7 +50,7 @@
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Addmitted Patients</h5>
+                                    <h5>Immunizations</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -63,39 +63,46 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Patient ID</th>
-                                                    <th>Name</th>
-                                                    <th>Sex</th>
+                                                    <th>Mother's Name</th>
+                                                    <th>Mother's Phone</th>
+                                                    <th>Address</th>
+                                                    <th>Baby's Name</th>
                                                     <th>Date of Birth</th>
-                                                    <th>City</th>
-                                                    <th>Ward</th>
-                                                    <th>Status</th>
-                                                    <th>Add Observation</th>
-                                                    <th>Action</th>
+                                                    <th>Place of Birth</th>
+                                                    <th>At Birth</th>
+                                                    <th>At 6weeks</th>
+                                                    <th>At 10weeks</th>
+                                                    <th>At 14weeks</th>
+                                                    <th>At 14weeks</th>
+                                                    <th>At 6months</th>
+                                                    <th>At 9months</th>
+                                                    <th>At 1year</th>
+                                                    <th>At 15months</th>
+                                                    <th>At 2years</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% users.forEach((user)=>{ %>
-                                                    <% if(user.role == 8 && user.addmitted === true){ %>
+                                                <% immunizations.forEach((immunization)=>{ %>
                                                 <tr>
                                                     <td></td>
-                                                    <td><%= user.patientId %></td>
-                                                    <td><%= user.firstname %> <%= user.lastname %></td>
-                                                    <td><%= user.gender %></td>
-                                                    <td><%= user.birthday.toDateString() %></td>
-                                                    <td><%= user.address %></td>
-                                                    <td><%= user.ward %></td>
-                                                    <% if(user.addmitted && user.discharge){ %>
-                                                    <td><label class="label label-md bg-success">Discharged</label></td>
-                                                    <% }else{ %>
-                                                    <td><label class="label label-md bg-danger">Admitted</label></td>
-                                                    <% } %>
-                                                    <td><a class="btn btn-inverse" href="/add-daily-report/<%= user._id %>">Observation</a></td>
-                                                    <td><a class="btn btn-success" href="/patient-discharge/<%= user._id %>">Discharge/Transfer</a>
-                                                    <a class="btn btn-warning" href="/nurse-assessment/<%= user._id %>"><i class="fa fa-stethoscope"></i>  Assess Patient</a></td>
+                                                    <td><%= immunization.patient.firstname %> <%= immunization.patient.lastname %></td>
+                                                    <td><%=  immunization.patient.phonenumber %></td>
+                                                    <td><%=  immunization.patient.address %></td>
+                                                    <td><%=  immunization.name %></td>
+                                                    <td><%=  immunization.dateofbirth %></td>
+                                                    <td><%=  immunization.placeofbirth %></td>
+                                                    <td><%=  immunization.atBirth %></td>
+                                                    <td><%=  immunization.at6weeks %></td>
+                                                    <td><%=  immunization.at10weeks %></td>
+                                                    <td><%=  immunization.at14weeks %></td>
+                                                    <td><%=  immunization.at6months %></td>
+                                                    <td><%=  immunization.at9months %></td>
+                                                    <td><%=  immunization.at1year %></td>
+                                                    <td><%=  immunization.at15months %></td>
+                                                    <td><%=  immunization.at2years %></td>
+                                                    
                                                 </tr>
-                                                <% } %> 
-                                                <% }) %> 
+                                                <% })  %>
                                             </tbody>
                                         </table>
                                     </div>

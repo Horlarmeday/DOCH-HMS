@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
     allergies: [],
     state: String,
     country: String,
+    ward: String,
     department: String,
     birthday: {type: Date},
     workerId: String,
@@ -100,6 +101,9 @@ const UserSchema = new mongoose.Schema({
     }],
     assessments:[{
         type: mongoose.Schema.Types.ObjectId, ref: "Assessment"
+    }],
+    immunizations:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "Immunization"
     }],
     registeredby:{
         type: mongoose.Schema.Types.ObjectId, ref: "User"

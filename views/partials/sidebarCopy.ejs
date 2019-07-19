@@ -634,11 +634,11 @@
                                 </li>
     
                         <% } %>
-                        <% if(currentUser.role == 1 || currentUser.role === 16){ %>
+                        <% if(currentUser.role == 1 || currentUser.role === 3){ %>
                             <li class="pcoded-hasmenu">
                                         <a href="javascript:void(0)">
                                             <span class="pcoded-micon"><i class="fa fa-female"></i></span>
-                                            <span class="pcoded-mtext">ANC</span>
+                                            <span class="pcoded-mtext">Pregnancy</span>
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                         <ul class="pcoded-submenu">
@@ -649,12 +649,60 @@
                                                     <span class="pcoded-mcaret"></span>
                                                 </a>
                                             </li>
-                                            
-                                            
+                                       
                                         </ul>
                                     </li>
         
                             <% } %>
+                            <% if(currentUser.role == 1 || currentUser.role === 3){ %>
+                                <li class="pcoded-hasmenu">
+                                            <a href="javascript:void(0)">
+                                                <span class="pcoded-micon"><i class="fa fa-h-square"></i></span>
+                                                <span class="pcoded-mtext">Immunization</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                <li class=" ">
+                                                    <a href="/add-immunization" data-i18n="nav.basic-components.alert">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Add Immunization </span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                                <li class=" ">
+                                                        <a href="/immunizations" data-i18n="nav.basic-components.alert">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext"> Immunization </span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                
+                                                
+                                            </ul>
+                                        </li>
+            
+                                <% } %>
+                                <% if(currentUser.role === 3){ %>
+                                    <li class="pcoded-hasmenu">
+                                                <a href="javascript:void(0)">
+                                                    <span class="pcoded-micon"><i class="fa fa-folder-o"></i></span>
+                                                    <span class="pcoded-mtext">Ward Inventory</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                                <ul class="pcoded-submenu">
+                                                    <li class=" ">
+                                                        <a href="/ward-inventory" data-i18n="nav.basic-components.alert">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Ward Inventory </span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li>
+                                                    
+                                                    
+                                                </ul>
+                                            </li>
+                
+                                    <% } %>
                     <% if(currentUser.role == 6){ %>
                     <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.navigate.main">

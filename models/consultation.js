@@ -14,7 +14,8 @@ const consultationSchema = new mongoose.Schema({
         notes: String,
         duration: String,
         direction: String,
-        price: Number
+        price: Number,
+        prescribedOn: {type: Date, default: Date.now}
     }],
     imaging: [{type: mongoose.Schema.Types.ObjectId, ref: "Imaging"}],
     visit: String,

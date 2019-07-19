@@ -20,6 +20,7 @@ const Careplan = require('../models/careplan')
 const Treatment = require('../models/treatment')
 const Consentform = require('../models/consentform')
 const Assessment = require('../models/assessment')
+const Immunization = require('../models/immunization')
 // const Counter = require('../models/counters')
 const labItem = require('../models/labitem')
 const PharmacyItem = require('../models/pharmacyItem')
@@ -105,9 +106,15 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         .populate('triages')
         .exec((err, users)=>{
             if(err) return next (err)
-            Appointment.find({}, (err, appointments)=>{
+            Appointment.find({})
+            .populate('patient')
+            .exec((err, appointments)=>{
+                var appointmentIsEmpty = true
+                if(appointmentIsEmpty > 0){
+                    appointmentIsEmpty = false
+                }
                 if(err) return next (err)
-                res.render('app/dashboard1', { appointments, users})              
+                res.render('app/dashboard1', { appointments, users, appointmentIsEmpty})              
             })
         })
     }else if(req.user.role === 2){
@@ -199,6 +206,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                         'phone': user.phonenumber,
                         'email': user.email,
                         'addmitted': user.addmitted,
+                        'discharge': user.discharge,
                         'status': user.status,
                         'age': age
                     })
@@ -1227,6 +1235,8 @@ router.route('/add-triage')
             triage.dystolic = req.body.dystolic;
             triage.systolic = req.body.systolic;
             triage.muac = req.body.muac;
+            triage.muac = req.body.muac;
+            triage.fheartrate = req.body.fheartrate;
             triage.save((err) => {
                 if (err) { return next (err) }
             })
@@ -1489,6 +1499,8 @@ router.route('/triage/:id')
             triage.dystolic = req.body.dystolic;
             triage.systolic = req.body.systolic;
             triage.muac = req.body.muac;
+            triage.fheartrate = req.body.fheartrate;
+            triage.spo2 = req.body.spo2;
             triage.save((err) => {
                 if (err) { return next (err) }
             })
@@ -1521,14 +1533,28 @@ router.route('/add-daily-report')
         const nurseReport = new NurseReport();
         nurseReport.comment = req.body.comment;
         nurseReport.observation = req.body.observation;
-        nurseReport.t = req.body.t;
-        nurseReport.p = req.body.p;
-        nurseReport.r = req.body.r;
-        nurseReport.bp = req.body.bp;
+        nurseReport.weight = req.body.weight;
+        nurseReport.height = req.body.height;
+        nurseReport.bmi = req.body.bmi;
+        nurseReport.rvs = req.body.rvs;
+        nurseReport.pulse = req.body.pulse;
+        nurseReport.respiration = req.body.respiration;
+        nurseReport.temperature = req.body.temperature;
+        nurseReport.heartrate = req.body.heartrate;
+        nurseReport.blood = req.body.blood;
+        nurseReport.dystolic = req.body.dystolic;
+        nurseReport.systolic = req.body.systolic;
+        nurseReport.muac = req.body.muac;
+        nurseReport.fheartrate = req.body.fheartrate;
+        nurseReport.spo2 = req.body.spo2;
+        // nurseReport.t = req.body.t;
+        // nurseReport.p = req.body.p;
+        // nurseReport.r = req.body.r;
+        // nurseReport.bp = req.body.bp;
         nurseReport.ward = req.body.ward;
         // nurseReport.input = req.body.input;
         // nurseReport.output = req.body.output;
-        nurseReport.initial = req.body.initial;
+        // nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.body.patient;
         nurseReport.doctor = req.body.doctor;
@@ -1563,14 +1589,28 @@ router.route('/add-daily-report/:id')
         const nurseReport = new NurseReport();
         nurseReport.comment = req.body.comment;
         nurseReport.observation = req.body.observation;
-        nurseReport.t = req.body.t;
-        nurseReport.p = req.body.p;
-        nurseReport.r = req.body.r;
-        nurseReport.bp = req.body.bp;
+        nurseReport.weight = req.body.weight;
+        nurseReport.height = req.body.height;
+        nurseReport.bmi = req.body.bmi;
+        nurseReport.rvs = req.body.rvs;
+        nurseReport.pulse = req.body.pulse;
+        nurseReport.respiration = req.body.respiration;
+        nurseReport.temperature = req.body.temperature;
+        nurseReport.heartrate = req.body.heartrate;
+        nurseReport.blood = req.body.blood;
+        nurseReport.dystolic = req.body.dystolic;
+        nurseReport.systolic = req.body.systolic;
+        nurseReport.muac = req.body.muac;
+        nurseReport.fheartrate = req.body.fheartrate;
+        nurseReport.spo2 = req.body.spo2;
+        // nurseReport.t = req.body.t;
+        // nurseReport.p = req.body.p;
+        // nurseReport.r = req.body.r;
+        // nurseReport.bp = req.body.bp;
         nurseReport.ward = req.body.ward;
         // nurseReport.input = req.body.input;
         // nurseReport.output = req.body.output;
-        nurseReport.initial = req.body.initial;
+        // nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.params.id;
         nurseReport.doctor = req.body.doctor;
@@ -1593,6 +1633,7 @@ router.route('/add-daily-report/:id')
 //DAILY NURSE REPORT
 router.get('/nurse-daily-report', middleware.isLoggedIn, (req, res, next)=>{
     NurseReport.find({})
+    .sort('-created')
     .populate('patient')
     .populate('creator')
     .populate('doctor')
@@ -2634,6 +2675,76 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//VIEW WARD TRIAGE
+router.get('/nurse-report-triage/:id', middleware.isLoggedIn, (req, res, next)=>{
+    NurseReport.find({_id: req.params.id})
+    .sort('-created')
+    .populate('patient')
+    .exec((err, nursereports)=>{
+        if(err) return next (err)
+        res.render('app/view/patient_ward_triage', { nursereports })
+    })
+})
+
+//IMMUNIZATION
+router.route('/add-immunization')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.find({}, (err, users)=>{
+            if(err) return next(err)
+            res.render('app/add/add_immunization', {users})
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const immunization = new Immunization({
+            patient: req.body.patient,
+            creator: req.user._id,
+            name: req.body.name,
+            dateofbirth: req.body.dateofbirth,
+            birthweight: req.body.birthweight,
+            placeofbirth: req.body.placeofbirth,
+            // mothersname: req.body.mothersname,
+            // mothersphone: req.body.mothersphone,
+            address: req.body.address,
+            atBirth: req.body.atBirth,
+            at6weeks: req.body.at6weeks,
+            at10weeks: req.body.at10weeks,
+            at14weeks: req.body.at14weeks,
+            at6months: req.body.at6months,
+            at9months: req.body.at9months,
+            at1year: req.body.at1year,
+            at15months: req.body.at15months,
+            at2years: req.body.at2years,
+        })
+        immunization.save((err)=>{
+            if(err) return next (err)
+            User.updateOne(
+                {
+                    _id: immunization.patient
+                },
+                {
+                    $push: { immunizations: immunization._id }
+                },function (err, count) {
+                    if(err) return next (err)
+                    req.flash('success', 'Patient Immunization saved successfully!')
+                    res.redirect('back')
+                }
+
+            )
+            
+        })
+    })
+
+//VIEW IMMUNIZATION
+router.get('/immunizations', middleware.isLoggedIn, (req, res, next)=>{
+    Immunization.find({})
+        .sort('-created')
+        .populate('patient')
+        .exec((err, immunizations)=>{
+            if(err) return next (err)
+            res.render('app/view/immunizations', {immunizations})
+        })
+})
+
 //TAKE PICTURES
 // router.route('/take-picture')
 // .get(middleware.isLoggedIn, (req, res, next)=>{
@@ -2719,6 +2830,7 @@ router.get('/departments', middleware.isLoggedIn, (req, res, next)=>{
 router.get('/addmitted-patients', middleware.isLoggedIn, (req, res, next)=>{
     User.find({}, (err, users)=>{
         if(err) {return next (err)}
+        
         res.render('app/view/addmitted_patient', { users })
     }).sort('-updatedAt')
 })
@@ -2845,7 +2957,7 @@ router.route('/visit/:id')
             if(err) {return next (err)}
             const visit = new Visit()
             visit.admissiondate = req.body.admission;
-            visit.dischargedate = req.body.discharge;
+            visit.ward = req.body.ward;
             visit.visittype = req.body.visit;
             visit.doctor = req.body.doctor;
             visit.reason = req.body.reason;
@@ -2858,7 +2970,7 @@ router.route('/visit/:id')
                 },
                 {
                     $push:{visits: visit._id},
-                    $set: {addmitted: true}
+                    $set: {addmitted: true, ward: visit.ward}
                 },function (err, count) {
                     if(err) {return next (err)}
                     req.flash('success', 'Patient Sucessfully Checked In!')
@@ -3140,6 +3252,7 @@ router.get('/dispense-history/:id', middleware.isLoggedIn, (req, res, next)=>{
 //PHARMACY DISPENSE HISTORY
 router.get('/pharmacy-requests', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({})
+    .sort('-created')
     .populate('patient')
     .populate('doctor')
     .populate('drugsObject.drugs')

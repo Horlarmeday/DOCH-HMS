@@ -83,67 +83,87 @@
                                                                 <label>Temperature <span class="text-danger"> (°C*)</label>
                                                                 <input name="temperature" class="form-control" type="text" required>
                                                         </div>
-                                                        <div id="hrate" class="col-sm-6">
-                                                                <label>Heart Rate <span class="text-danger"> (b/min*)</label>
-                                                                <input name="heartrate" class="form-control" type="text" >
-                                                        </div>
-                                                        <div id="pulse" class="col-sm-6">
-                                                            <label>Pulse <span class="text-danger"> (b/min*)</span></label>
-                                                            <div class="cal-icon">
-                                                                <input name="pulse" type="text" class="form-control" >
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-6">
-                                                                <label>Diastolic <span class="text-danger"> (mmHg)</label>
-                                                                <input name="dystolic" class="form-control" type="text" required>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                                <label>Systolic <span class="text-danger"> (mmHg)</label>
-                                                                <input name="systolic" class="form-control" type="text" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-6">
-                                                            <label>RVS <span class="text-danger"> (rvs*)</span></label>
-                                                            <select name="rvs" class="form-control" required>
-                                                                <option>Select</option>
-                                                                <option value="+ve">+ve</option>
-                                                                <option value="-ve">-ve</option>
-                                                            </select>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                                <label>Respiration <span class="text-danger"> (B/min*)</label>
-                                                                <input name="respiration" class="form-control" type="text" required>
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-group row">
                                                         <div class="col-sm-6">
                                                                 <label>Weight <span class="text-danger"> (kg*)</span></label>
                                                                 <input name="weight" id="weight" class="form-control" type="number" required>
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                                <label>Height <span class="text-danger"> (m*)</span></label>
-                                                                <input name="height" id="height" class="form-control" step="any" type="number" required>
-                                                        </div>
+                                                        
+                                                        
                                                     </div>
                                                     <div class="form-group row">
-                                                        <div class="col-sm-6">
-                                                                <label>BMI <span class="text-danger"> (kg/m^2*)</span></label>
-                                                                <input name="bmi" id="bmi" class="form-control" type="number" readonly>
-                                                                <small>Body Mass Index(BMI) = Weight(in kg) / Height(in m)²</small>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                                <label>MUAC<span class="text-danger"> (muac*)</span></label>
-                                                                <select name="muac" class="form-control select" required>
-                                                                    <option selected disabled>Select</option>
-                                                                    <option>Green</option>
-                                                                    <option>Yellow</option>
-                                                                    <option>Red</option>
-                                                                </select>
-                                                        </div>
+                                                            <div id="hrate" class="col-sm-6">
+                                                                    <label>Heart Rate <span class="text-danger"> (b/min*)</label>
+                                                                    <input name="heartrate" class="form-control" type="text">
+                                                            </div>
+                                                            <div id="pulse" class="col-sm-6">
+                                                                <label>Pulse <span class="text-danger"> (b/min*)</span></label>
+                                                                <div class="cal-icon">
+                                                                    <input name="pulse" type="text" class="form-control" >
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>Height <span class="text-danger"> (m*)</span></label>
+                                                                    <input name="height" id="height" class="form-control" type="number" step="any" required>
+                                                            </div>
+                                                            
+                                                            
                                                         
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Respiration <span class="text-danger"> (B/min*)</label>
+                                                                    <input name="respiration" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>BMI <span class="text-danger"> (kg/m^2*)</span></label>
+                                                                    <input name="bmi" id="bmi" class="form-control" type="number" readonly>
+                                                                    <small>Body Mass Index(BMI) = Weight(in kg) / Height(in m)²</small>
+                                                            </div>
+                                                            
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Systolic <span class="text-danger"> (mmHg)</label>
+                                                                    <input name="systolic" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>MUAC<span class="text-danger"> (muac*)</span></label>
+                                                                    <select name="muac" class="form-control select" required>
+                                                                        <option selected disabled>Select</option>
+                                                                        <option>Green</option>
+                                                                        <option>Yellow</option>
+                                                                        <option>Red</option>
+                                                                    </select>
+                                                            </div>
+                                                            
+                                                            
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Diastolic <span class="text-danger"> (mmHg)</label>
+                                                                    <input name="dystolic" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>RVST <span class="text-danger"> (rvs*)</span></label>
+                                                                    <select name="rvs" class="form-control" required>
+                                                                        <option value="+ve">+ve</option>
+                                                                        <option value="-ve">-ve</option>
+                                                                    </select>
+                                                            </div>
+
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Fetal Heartrate <span class="text-danger"> (mmHg)</label>
+                                                                    <input name="fheartrate" class="form-control" type="text" >
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>SPO2 </label>
+                                                                    <input name="spo2" class="form-control" type="text" >
+                                                            </div>
+
                                                     </div>
                                                   
                                                     

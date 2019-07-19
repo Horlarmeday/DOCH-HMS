@@ -65,13 +65,9 @@
                                                     <th>S/N</th>
                                                     <th>Patient ID</th>
                                                     <th>Patient Name</th>
-                                                    <th>T</th>
-                                                    <th>P</th>
-                                                    <th>R</th>
-                                                    <th>B/P</th>
+                                                    <th>Triage</th>
                                                     <th>Ward</th>
                                                     <th>Ward Round</th>
-                                                    <th>Initial</th>
                                                     <th>Comments</th>
                                                     <th>Observations</th>
                                                     <th>Created</th>
@@ -85,14 +81,11 @@
                                                 <tr>
                                                     <td></td>
                                                     <td><%= report.patient.patientId %></td>
-                                                    <td><%= report.patient.firstname %> <%= report.patient.lasttname %></td>
-                                                    <td><%= report.t %></td>
-                                                    <td><%= report.p %></td>
-                                                    <td><%= report.r %></td>
-                                                    <td><%= report.bp %></td>
+                                                    <td><%= report.patient.firstname %> <%= report.patient.lastname %></td>
+                                                    <td><a href="/nurse-report-triage/<%= report._id %>" class="btn btn-success">View Triage</a></td>
                                                     <td><%= report.ward %></td>
                                                     <td><%= report.wardround %></td>
-                                                    <td><%= report.initial %></td>
+                                                    
                                                     <td><%= report.comment %></td>
                                                     <td><%= report.observation %></td>
                                                     <td><%= report.created.toLocaleString() %></td>
@@ -115,6 +108,9 @@
                                 </div>
                             </div>
                         </div>
+
+                       
+
                     </div>
                 </div>
             </div>

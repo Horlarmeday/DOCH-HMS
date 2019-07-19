@@ -125,9 +125,9 @@
                                                     <th>Patient ID</th>
                                                     <th>Name</th>
                                                     <th>Reason for Visit</th>
-                                                    <th>Drugs Prescribed</th>
+                                                    <th>Drugs & Prescriptions</th>
+                                                    
                                                     <th>PrescribedBy</th>
-                                                   
                                                     <th>Status</th>
                                                     <th>Payment Status</th>
                                                     <th>Action</th>
@@ -136,48 +136,66 @@
                                             <tbody>
                                                 <% consultations.forEach((consultation)=>{ %>
                                                     <% if(consultation.pharmacystatus === true && consultation.pharmacyfinish === false){ %>
+                                                       
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
                                                     <td> <a href="/patient/<%= consultation.patient._id %>"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
                                                     <td> <%= consultation.visit %></td>
                                                     <td>
-                                                            <% consultation.drugsObject.forEach((drug)=>{ %>
-                                                                <p style="font-weight: 700"><%= drug.drugs.name %>   
-                                                                </p>
-                                                                <p> 
-                                                                    <small> <a class="drugger"  href="#" > 
-                                                                    Starting Date: <%= drug.startingdate.toLocaleDateString() %></a></small><br>
-                                                                    <small> <a class="drugger"  href="#" > 
-                                                                    Quantity: <%= drug.quantity %></a></small><br>
-                                                                    <small> <a class="drugger"  href="#" > 
-                                                                    Dosage: <%= drug.direction %> <%= drug.dose %> in <%= drug.time %></a></small><br>
-                                                                    <small> <a class="drugger"  href="#" > 
-                                                                    Unit: <%= drug.medicineunit %> <%= drug.unit %></a></small><br>
-                                                                    <small> <a class="drugger"  href="#" > 
-                                                                    Notes: <%= drug.medicineunit %> <%= drug.notes %></a></small>
-                                                                </p>
-                                                            <% }) %>
+                                                        <% consultation.drugsObject.forEach((drug)=>{ %>
+                                                            <p style="font-weight: 700; color: green"><%= drug.drugs.name %>   
+                                                            </p>
+                                                            <p> 
+                                                                <small style="font-weight: 900">Starting Date:  <a class="drugger"  href="#"> 
+                                                                <%= drug.startingdate.toLocaleDateString() %></a></small><br>
+                                                                <small style="font-weight: 900">Route:  <a class="drugger"  href="#" > 
+                                                                <%= drug.unit %></a></small><br>
+                                                                <small style="font-weight: 900"> Unit Dose: <a class="drugger"  href="#" > 
+                                                                <%= drug.time %> </a></small><br>
+                                                                <small style="font-weight: 900">Frequency:
+                                                                    <% if(drug.direction == 1){ %>
+                                                                        <a class="drugger"  href="#"> OD</a>
+                                                                    <% }else if(drug.direction == 2){ %>
+                                                                        <a class="drugger"  href="#">BD</a>
+                                                                    <% }else if(drug.direction == 3){ %>
+                                                                        <a class="drugger"  href="#" >TDS</a>
+                                                                    <% }else if(drug.direction == 4){ %>
+                                                                        <a class="drugger"  href="#" >QDS</a>
+                                                                    <% }else if(drug.direction == 6){ %>
+                                                                        <a class="drugger"  href="#" >Q4H</a>
+                                                                    <% } %>
+                                                                </small><br>
+                                                                <small style="font-weight: 900">Duration:  <a class="drugger"  href="#" > 
+                                                                <%= drug.duration %> </a></small><br>
+                                                                <small style="font-weight: 900"> Quantity to Dispense:  <a class="drugger"  href="#" > 
+                                                               <%= drug.quantity %> </a></small><br>
+                                                                <small style="font-weight: 900">Notes:  <a class="drugger"  href="#" > 
+                                                                <%= drug.notes %> </a></small>
+                                                            </p>
+                                                            
+                                                        <% }) %>
                                                     </td>
-                                                    <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
-                                                    
-                                                    <% if(consultation.pharmacyfinish === false){ %>
-                                                    <td><label class="label label-md bg-warning">Ongoing</label></td>
-                                                    <% }else{ %>
-                                                    <td><label class="label label-md bg-success">Finished</label></td>
-                                                    <% } %>
-                                                    <% if(consultation.pharmacypaid === false){ %>
-                                                        <td><label class="label label-md bg-warning">Not Paid</label></td>
-                                                        <% }else{ %>
-                                                        <td><label class="label label-md bg-success">Paid</label></td>
-                                                        <% } %>
-                                                    <% if(!consultation.pharmacyfinish){ %>
-                                                        <td><button id="<%= consultation._id %>" class="btn btn-success paid">Prescribed?</button></td>
-                                                        <% }else{ %>
-                                                        <td><button class="btn btn-success" disabled>Prescribed</button></td>
-                                                        <% } %>   
-                                                    
+                                                        <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
+                                                        
+                                                        <% if(consultation.pharmacyfinish === false){ %>
+                                                            <td><label class="label label-md bg-warning">Ongoing</label></td>
+                                                            <% }else{ %>
+                                                                <td><label class="label label-md bg-success">Finished</label></td>
+                                                                <% } %>
+                                                                <% if(consultation.pharmacypaid === false){ %>
+                                                                    <td><label class="label label-md bg-warning">Not Paid</label></td>
+                                                                    <% }else{ %>
+                                                                        <td><label class="label label-md bg-success">Paid</label></td>
+                                                                        <% } %>
+                                                                        <% if(!consultation.pharmacyfinish){ %>
+                                                                            <td><button id="<%= consultation._id %>" class="btn btn-success paid">Prescribed?</button></td>
+                                                                            <% }else{ %>
+                                                                                <td><button class="btn btn-success" disabled>Prescribed</button></td>
+                                                                                <% } %>   
+                                                                                
                                                 </tr>
+                                                
                                                 <% } %>
                                                 <% }) %>
                                             </tbody>

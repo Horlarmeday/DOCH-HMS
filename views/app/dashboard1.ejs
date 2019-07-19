@@ -106,7 +106,7 @@
                         <!-- Visitor Chart End-->
 
                         <!-- Scroll - Vertical table start -->
-                        <div class="col-md-12">
+                        <div class="col-sm-12">
                         <div class="card">
                                 <div class="card-header">
                                     <h5>New Patients</h5>
@@ -118,14 +118,13 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="dt-responsive table-responsive">
-                                        <table id="scr-vrt-dt" class="table table-striped table-bordered nowrap">
+                                        <table id="order-table" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
                                                     <th>Patient ID</th>
                                                     <th>Name</th>
                                                     <th>Age</th>
-                                                    <th>Phone</th>
                                                     <th>Patient Type</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
@@ -150,7 +149,7 @@
                                                             <td><%= patient.patientId %></td>
                                                             <td> <a href="/patient/<%= patient._id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
                                                             <td><%= age %></td>
-                                                            <td>+234<%= patient.phonenumber %></td>
+                                                         
                                                             <% if(patient.createdby == 1){ %>
                                                                 <td><label class="label label-bg bg-success">Normal Patient</label></td>
                                                             <% }else{ %>  
@@ -162,8 +161,8 @@
                                                             <td><label class="label label-md bg-warning">Admitted</label></td>
                                                             <% } %>
                                                             <td>
-                                                            <a class="btn btn-success" href="/triage/<%= patient._id %>"><i class="ti-shift-right"></i> Add Triage</a>
-                                                            <a class="btn btn-inverse" href="/nurse-assessment/<%= patient._id %>"><i class="fa fa-stethoscope"></i>  Assess Patient</a>
+                                                            
+                                                            
                                                                 
                                                             <% if(patient.triages.length < 1){ %>
                                                                 <p style="display: inline; color:red">Patient has no Triage</p>
@@ -175,6 +174,7 @@
                                                                     <button class="btn btn-default">Sent</button>
                                                                 <% } %>
                                                             <% } %>
+                                                            <a class="btn btn-success" href="/triage/<%= patient._id %>"><i class="ti-shift-right"></i> Add Triage</a>
                                                             </td>
                                                        
                                                     </tr>
@@ -188,7 +188,7 @@
                                                     <th>Patient ID</th>
                                                     <th>Name</th>
                                                     <th>Age</th>
-                                                    <th>Phone</th>
+                                                
                                                     <th>Patient Type</th>
                                                     <th>Status</th>
                                                     <th>Action</th>
@@ -198,7 +198,126 @@
                                     </div>
                                 </div>
                         </div>
-                    </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Ante-Natal Appointments</h5>
+                                        <div class="card-header-right">
+                                                <i class="icofont icofont-rounded-down"></i>
+                                                <i class="icofont icofont-refresh"></i>
+                                                <i class="icofont icofont-close-circled"></i>
+                                            </div>
+                                    </div>
+                                    <div class="card-block product-table">
+                                        <div class="table-responsive">
+                                            <table id="simpletable" class="table">
+                                                <thead>
+                                                    <tr class="text-uppercase">
+                                                        <th>S/N</th>
+                                                        <th>Patient Name</th>
+                                                        <th>Type</th>
+                                                        <th>Date</th>
+                                                        <th>Timing</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <% if(!appointmentIsEmpty){ %>
+                                                <tbody>
+                                                    <% appointments.forEach((appointment)=>{ %>
+                                                        <% if(appointment.taken === false && appointment.type === 'Ante-Natal'){ %>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
+                                                        <td><%= appointment.type %></td>
+                                                        <td><%= appointment.appointmentdate.toLocaleDateString('en-us') %></td>
+                                                        <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
+                                                        <% if(appointment.taken === true){ %>
+                                                        <td><label class="label label-md bg-success">Attended</label></td>
+                                                        <% }else{ %>
+                                                        <td><label class="label label-md bg-warning">Pending</label></td>
+                                                        <% } %>
+                                                        <td>
+                                                          <% if(appointment.patient.ancs.length < 1){ %>
+                                                              <a href="/create-ante-natal-patient/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Register Patient</a>
+                                                          <% }else{ %>
+                                                            <a href="/ante-natal/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Take Up</a>
+                                                          <% } %>
+                                                           
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                                <% }else{ %>
+                                                    <tbody>
+                                                        <p class="text-center">There are no appointments</p>
+                                                    </tbody>
+                                                <% } %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Immunization Appointments</h5>
+                                            <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                        </div>
+                                        <div class="card-block product-table">
+                                            <div class="table-responsive">
+                                                <table id="alt-pg-dt" class="table">
+                                                    <thead>
+                                                        <tr class="text-uppercase">
+                                                            <th>S/N</th>
+                                                            <th>Patient Name</th>
+                                                            <th>Type</th>
+                                                            <th>Date</th>
+                                                            <th>Timing</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <% if(!appointmentIsEmpty){ %>
+                                                    <tbody>
+                                                        <% appointments.forEach((appointment)=>{ %>
+                                                            <% if(appointment.taken === false && appointment.type === 'Immunization'){ %>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
+                                                            <td><%= appointment.type %></td>
+                                                            <td><%= appointment.appointmentdate.toLocaleDateString('en-us') %></td>
+                                                            <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
+                                                            <% if(appointment.taken === true){ %>
+                                                            <td><label class="label label-md bg-success">Attended</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Pending</label></td>
+                                                            <% } %>
+                                                            <td>
+                                                                <a href="/add-immunization" class="btn btn-success btn-round btn-outline-success">Immunization</a>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                        <% }) %>
+                                                    </tbody>
+                                                    <% }else{ %>
+                                                        <tbody>
+                                                            <p class="text-center">There are no appointments</p>
+                                                        </tbody>
+                                                    <% } %>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                     </div>
                 </div>
             </div>
