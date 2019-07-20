@@ -105,6 +105,9 @@ const UserSchema = new mongoose.Schema({
     immunizations:[{
         type: mongoose.Schema.Types.ObjectId, ref: "Immunization"
     }],
+    iocharts:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "Iochart"
+    }],
     registeredby:{
         type: mongoose.Schema.Types.ObjectId, ref: "User"
     },

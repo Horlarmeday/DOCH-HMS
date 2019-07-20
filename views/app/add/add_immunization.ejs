@@ -61,14 +61,8 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Mother Name</label>
-                                                            <select name="patient" class="form-control js-example-basic-single" >
-                                                                <option selected disabled>Select</option>
-                                                                <% users.forEach((user)=>{ %>
-                                                                    <% if(user.role == 8){ %>
-                                                                     <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
-                                                                    <% } %>
-                                                                <% }) %>
-                                                            </select><br><br>
+                                                            <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                            <input type="hidden" name="patient" value="<%= user._id %>">
                                                         </div>
                                                     
                                                         <div class="col-sm-6">

@@ -21,6 +21,8 @@ const Treatment = require('../models/treatment')
 const Consentform = require('../models/consentform')
 const Assessment = require('../models/assessment')
 const Immunization = require('../models/immunization')
+const Iochart = require('../models/iochart')
+const WardInventory = require('../models/wardinventory')
 // const Counter = require('../models/counters')
 const labItem = require('../models/labitem')
 const PharmacyItem = require('../models/pharmacyItem')
@@ -1480,7 +1482,16 @@ router.route('/triage/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         User.findOne({ _id: req.params.id}, (err, user)=>{
             if(err) return next (err)
-            res.render('app/add/add_patient_triage', { user })
+            var birthday = new Date(user.birthday)
+            var today = new Date()
+            var age = today.getFullYear() - birthday.getFullYear()
+            if(today.getMonth() < birthday.getMonth()){
+                age
+            }
+            if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                age
+            }
+            res.render('app/add/add_patient_triage', { user, age })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
@@ -1859,17 +1870,91 @@ router.get('/nursing-care-plan', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//INTAKE AND OUTPUT CHART
+router.route('/ward-inventory')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        WardInventory.find({})
+        .populate('creator')
+        .exec((err, wardInventory)=>{
+            if(err) return next(err)
+            res.render('app/add/ward_inventory', {wardInventory})
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const wardinventory = new WardInventory({
+            creator: req.user._id,
+            item: req.body.item,
+            quantity: req.body.quantity,
+            consumed: req.body.consumed,
+            price: req.body.price,
+            status: true
+        })
+        wardinventory.save((err)=>{
+            if(err) return next(err)
+            req.flash('success', 'Inventory saved successfully')
+            res.redirect('back')
+        })
+    })
+
+
+//WARD INVENTORY
+//INTAKE AND OUTPUT CHART
+router.route('/intake-output-chart/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            if(err) return next(err)
+            res.render('app/add/io_chart', {user})
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const iochart = new Iochart({
+            creator: req.user._id,
+            patient: req.body.patient,
+            oral: req.body.oral,
+            rectal: req.body.rectal,
+            intraveneous: req.body.intraveneous,
+            insulin: req.body.insulin,
+            intotal: req.body.intotal,
+            urine: req.body.urine,
+            gastricContents: req.body.gastricContents,
+            fistula: req.body.fistula,
+            total: req.body.total,
+            notes: req.body.notes,
+            status: true
+        })
+        iochart.save((err)=>{
+            if(err) return next(err)
+            User.updateOne(
+                {
+                    _id: iochart.patient
+                },
+                {
+                    $push: {iocharts: iochart._id}
+                },function(err, count){
+                    if(err) return next(err)
+                    req.flash('success', 'Intake & Output chart saved successfully')
+                    res.redirect('/addmitted-patients')
+                }
+            )
+        })
+    })
+
+
 //ADD TREATMENT RECORD
 router.route('/treatment-records')
     .get(middleware.isLoggedIn, (req, res, next) => {
         Treatment.find({})
         .populate('patient')
         .populate('creator')
+        .populate('drugs')
         .exec((err, treatments)=>{
             if(err) return next(err)
             User.find({}, (err, users)=>{
                 if(err) return next(err)
-                res.render('app/add/add_treatment_record', {users, treatments})
+                Drug.find({}, (err, drugs)=>{
+                    if(err) return next(err)
+                    res.render('app/add/add_treatment_record', {users, treatments, drugs})
+                })
             })
         })
     })
@@ -1877,6 +1962,8 @@ router.route('/treatment-records')
         const treatment = new Treatment({
             creator: req.user._id,
             patient: req.body.patient,
+            dosage: req.body.dosage,
+            drugs: req.body.drug,
             treatmenttype: req.body.treatment,
             description: req.body.description,
         })
@@ -2689,9 +2776,15 @@ router.get('/nurse-report-triage/:id', middleware.isLoggedIn, (req, res, next)=>
 //IMMUNIZATION
 router.route('/add-immunization')
     .get(middleware.isLoggedIn, (req, res, next)=>{
-        User.find({}, (err, users)=>{
+        User.find({_id: req.params.id}, (err, user)=>{
             if(err) return next(err)
-            res.render('app/add/add_immunization', {users})
+            Appointment.find({_id: user.appointments[user.appointments.length -1]._id}, (err, appointment)=>{
+                appointment.taken = true;
+                appointment.save((err)=>{
+                    if(err) return next(err)
+                    res.render('app/add/add_immunization', {user})
+                })
+            })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{

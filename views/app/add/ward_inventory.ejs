@@ -26,7 +26,7 @@
                 <!-- Page header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Treatment Record</h4>
+                        <h4>Ward Inventory</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,7 +35,7 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#">Treatment Record</a>
+                            <li class="breadcrumb-item"><a href="#">Ward Inventory</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#!"></a>
                             </li>
@@ -51,7 +51,7 @@
                             <!-- Basic Form Inputs card start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Add Treatment Record</h5>
+                                    <h5>Add  Record</h5>
                                     <div class="card-header-right">
                                             <i class="icofont icofont-rounded-down"></i>
                                             <i class="icofont icofont-refresh"></i>
@@ -66,29 +66,20 @@
                                                     <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
                                                 </div> -->
                                                 <div class="form-group">
-                                                        <label for="">Patient Name</label>
-                                                        <select name="patient" class="form-control js-example-basic-single">
-                                                            <option selected disabled>Select</option>
-                                                            <% users.forEach((user)=>{ %>
-                                                                <% if(user.role == 8){ %>
-                                                                    <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
-                                                                <% } %>
-                                                            <% }) %>
-                                                        </select><br><br>
+                                                        <label for="">Item</label>
+                                                        <input type="text" class="form-control" name="item"><br>
                                                     <!-- <div class="col-sm-12"> -->
-                                                        <label for="">Drugs</label>
-                                                        <select name="drug" class="form-control js-example-basic-single">
-                                                            <option selected disabled>Select</option>
-                                                            <% drugs.forEach((drug)=>{ %>
-                                                                    <option value="<%= drug._id %>"><%= drug.generic %> </option>
-                                                            <% }) %>
-                                                        </select><br><br>
-                                                        <label for="">Dosage</label>
-                                                        <input type="text" name="dosage" class="form-control" placeholder="Dosage"><br>
+                                                        <label for="">Approved Quantity</label>
+                                                        <input type="number" class="form-control" name="quantity"><br>
+
+                                                        <label for="">Quantity Consumed</label>
+                                                        <input type="number" name="consumed" class="form-control"><br>
                                                     <!-- </div> -->
+                                                        <label for="">Price</label>
+                                                        <input type="number" name="price" class="form-control"><br>
                                                     <!-- <div class="col-sm-12"> -->
                                                         <label for="">Comments </label>
-                                                        <textarea name="description" class="form-control" cols="30" rows="10"></textarea>
+                                                        <textarea name="comments" class="form-control" cols="30" rows="10"></textarea>
                                                         
                                                     <!-- </div> -->
                                                         <!-- <label for="">Brand Name</label>
@@ -123,26 +114,27 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Patient</th>
-                                                        <th>Drug</th>
-                                                        <th>Dosage</th>
+                                                        <th>Item</th>
+                                                        <th>Approved Quantity</th>
+                                                        <th>Quantity Consumed</th>
+                                                        <th>Price</th>
                                                         <th>Comments</th>
-                                                        <th>Nurse</th>
+                                                        <th>CreatedBy</th>
                                                         <th>Date</th>
                                                        
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <% treatments.forEach((treatment)=>{ %>
+                                                    <% wardInventory.forEach((ward)=>{ %>
                                                     <tr>
                                                         <td></td>
-                                                        <td> <%= treatment.patient.firstname %> <%= treatment.patient.lastname %></td>
-                                                        <td><%= treatment.drugs.generic %></td>
-                                                        <td><%= treatment.dosage %></td>
-                                                        <td><%= treatment.description %></td>
-                                                       <td><%= treatment.creator.firstname %> <%= treatment.creator.lastname %></td>
-                                                      
-                                                        <td> <%= treatment.created.toDateString() %></td>
+                                                        <td> <%= ward.item %> </td>
+                                                        <td><%= ward.quantity %></td>
+                                                        <td><%= ward.consumed %></td>
+                                                        <td><%= ward.price %></td>
+                                                       <td><%= ward.comments %> </td>
+                                                      <td><%= ward.creator.firstname %> <%= ward.creator.lastname %> </td>
+                                                        <td> <%= ward.created.toDateString() %></td>
                                                         
                                                     </tr>
                                                     <% }) %>

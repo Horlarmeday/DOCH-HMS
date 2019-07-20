@@ -27,7 +27,7 @@
                     <!-- Page header start -->
                     <div class="page-header">
                         <div class="page-header-title">
-                            <h4>Nurse Triage</h4>
+                            <h4>Intake and Output Chart</h4>
                             
                         </div>
                         <div class="page-header-breadcrumb">
@@ -52,44 +52,35 @@
                                 <!-- Basic Form Inputs card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5><%= user.firstname %> <%= user.lastname %> Triage</h5>
+                                        <h5><%= user.firstname %> <%= user.lastname %> IO Chart</h5>
                                     </div>
                                     <div class="card-block">
                                         <div class="row">
                                             <div class="col-sm-12 mobile-inputs">
                                                 <form method="POST">
-                                                    
-                                                    <h5 style="color:dodgerblue" class="page-title">Vital Signs</h5><br><br>
+                                                    <h5 style="color:dodgerblue" class="page-title">INTAKE</h5><br><br>
+                                                    <input type="hidden" name="patient" value="<%= user._id %>">
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
-                                                                <label>Temperature <span class="text-danger"> (°C*)</label>
-                                                                <input name="temperature" class="form-control" type="text" required>
+                                                                <label>Oral </label>
+                                                                <input name="oral" class="form-control" type="text" required>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                                <label>Weight <span class="text-danger"> (kg*)</span></label>
-                                                                <input name="weight" id="weight" class="form-control" type="number" required>
+                                                                <label>Rectal </label>
+                                                                <input name="rectal" class="form-control" type="text" required>
                                                         </div>
-                                                        
-                                                        
                                                     </div>
                                                     <div class="form-group row">
-                                                        <% if(age > 0){ %>
+                                                            
                                                             <div  class="col-sm-6">
-                                                                <label>Pulse <span class="text-danger"> (b/min*)</span></label>
-                                                                <div class="cal-icon">
-                                                                    <input name="pulse" type="text" class="form-control" >
-                                                                </div>
+                                                                <label>Intravenous </label>
+                                                                <!-- <div class="cal-icon"> -->
+                                                                    <input name="intraveneous" type="text" class="form-control" >
+                                                                <!-- </div> -->
                                                             </div>
-                                                        <% }else{ %>
-                                                            <div  class="col-sm-6">
-                                                                    <label>Heart Rate <span class="text-danger"> (b/min*)</label>
-                                                                    <input name="heartrate" class="form-control" type="text">
-                                                            </div>
-                                                        <% } %>
-                                                            
                                                             <div class="col-sm-6">
-                                                                    <label>Height <span class="text-danger"> (m*)</span></label>
-                                                                    <input name="height" id="height" class="form-control" type="number" step="any" required>
+                                                                    <label>Insulin </label>
+                                                                    <input name="insulin" class="form-control" type="text" required>
                                                             </div>
                                                             
                                                             
@@ -97,59 +88,40 @@
                                                     </div>
                                                     <div class="form-group row">
                                                             <div class="col-sm-6">
-                                                                    <label>Respiration <span class="text-danger"> (B/min*)</label>
-                                                                    <input name="respiration" class="form-control" type="text" required>
+                                                                    <label>Total </label>
+                                                                    <input name="intotal" class="form-control" type="text" required>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                    <label>BMI <span class="text-danger"> (kg/m^2*)</span></label>
-                                                                    <input name="bmi" id="bmi" class="form-control" type="number" readonly>
-                                                                    <small>Body Mass Index(BMI) = Weight(in kg) / Height(in m)²</small>
-                                                            </div>
-                                                            
-                                                        
                                                         
                                                     </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Output</h5><br><br>
                                                     <div class="form-group row">
                                                             <div class="col-sm-6">
-                                                                    <label>Systolic <span class="text-danger"> (mmHg)</label>
-                                                                    <input name="systolic" class="form-control" type="text" required>
+                                                                    <label>Urine </label>
+                                                                    <input name="urine" class="form-control" type="text" required>
                                                             </div>
                                                             <div class="col-sm-6">
-                                                                    <label>MUAC<span class="text-danger"> (muac*)</span></label>
-                                                                    <select name="muac" class="form-control select" required>
-                                                                        <option selected disabled>Select</option>
-                                                                        <option>Green</option>
-                                                                        <option>Yellow</option>
-                                                                        <option>Red</option>
-                                                                    </select>
+                                                                    <label>Gastric Contents</label>
+                                                                    <input name="gastricContents" class="form-control" type="text" required>
                                                             </div>
                                                             
                                                             
                                                     </div>
                                                     <div class="form-group row">
                                                             <div class="col-sm-6">
-                                                                    <label>Diastolic <span class="text-danger"> (mmHg)</label>
-                                                                    <input name="dystolic" class="form-control" type="text" required>
+                                                                    <label>Fistula</label>
+                                                                    <input name="fistula" class="form-control" type="text" required>
                                                             </div>
                                                             <div class="col-sm-6">
-                                                                    <label>RVST <span class="text-danger"> (rvs*)</span></label>
-                                                                    <select name="rvs" class="form-control" required>
-                                                                        <option value="+ve">+ve</option>
-                                                                        <option value="-ve">-ve</option>
-                                                                    </select>
+                                                                    <label>Total <span class="text-danger"> (rvs*)</span></label>
+                                                                    <input name="total" class="form-control" type="text" required>
                                                             </div>
 
                                                     </div>
                                                     <div class="form-group row">
                                                             <div class="col-sm-6">
-                                                                    <label>Fetal Heart rate <span class="text-danger"> (mmHg)</label>
-                                                                    <input name="fheartrate" class="form-control" type="text" >
+                                                                    <label>Notes </label>
+                                                                 <textarea name="notes" class="form-control" cols="30" rows="10"></textarea>
                                                             </div>
-                                                            <div class="col-sm-6">
-                                                                    <label>SPO2 </label>
-                                                                    <input name="spo2" class="form-control" type="text" >
-                                                            </div>
-
                                                     </div>
                                                     
                                                     

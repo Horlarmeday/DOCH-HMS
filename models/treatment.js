@@ -3,6 +3,8 @@ const mongoose =  require('mongoose');
 const treatmentSchema = new mongoose.Schema({
     treatmenttype: String,
     description: String,
+    dosage: String,
+    drugs: {type: mongoose.Schema.Types.ObjectId, ref: "Drug"},
     creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     status: {type: Boolean, default: false},
