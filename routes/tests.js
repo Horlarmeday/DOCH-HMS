@@ -35,7 +35,7 @@ router.get('/microbiology-result/:id', middleware.isLoggedIn, (req, res, next)=>
     .populate('consultations')
     .exec((err, user)=>{
         if(err) return next (err)
-        Consultation.findOne({_id: user.consultations[0]._id}, (err, consultation)=>{
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
             // console.log(consultation)
             res.render('app/add/form', {user, consultation})
         }) 
@@ -52,6 +52,7 @@ router.post('/urine-test/:id', middleware.isLoggedIn, (req, res, next)=>{
         Consultation.findOne({_id: user.consultations[0]._id}, (err, consultation)=>{
             
             consultation.labresult.urine = {
+                // type: req.body.type,
                 epitheliaresult: req.body.epitheliaresult,
                 epitheliahsv: req.body.epitheliahsv,
                 pusresult: req.body.pusresult,
@@ -88,6 +89,7 @@ router.post('/urinalysis-test/:id', middleware.isLoggedIn, (req, res, next)=>{
         if(err) return next (err)
         Consultation.findOne({_id: user.consultations[0]._id}, (err, consultation)=>{
             consultation.labresult.urinalysis = {
+                appearance: req.body.appearance,
                 leukocytes: req.body.leukocytes,
                 protein: req.body.protein,
                 glucose: req.body.glucose,
@@ -117,6 +119,7 @@ router.post('/stool-test/:id', middleware.isLoggedIn, (req, res, next)=>{
         if(err) return next (err)
         Consultation.findOne({_id: user.consultations[0]._id}, (err, consultation)=>{
             consultation.labresult.stool = {
+                appearance: req.body.appearance,
                 puscells: req.body.puscells,
                 rbc: req.body.rbc,
                 ova: req.body.ova,

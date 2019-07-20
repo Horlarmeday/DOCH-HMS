@@ -44,6 +44,7 @@ const consultationSchema = new mongoose.Schema({
     labresult: {
         //MICROBIOLOGY
         urine: {
+            type: String,
             epitheliaresult: String,
             epitheliahsv: String,
             pusresult: String,
@@ -64,6 +65,7 @@ const consultationSchema = new mongoose.Schema({
             othershsv: String
         },
         urinalysis:{
+            appearance: String,
             leukocytes: String,
             protein: String,
             glucose: String,
@@ -77,6 +79,7 @@ const consultationSchema = new mongoose.Schema({
             nitrite: String,
         },
         stool:{
+            appearance: String,
             puscells: String,
             rbc: String,
             ova: String,

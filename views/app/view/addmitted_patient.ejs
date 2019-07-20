@@ -81,7 +81,7 @@
                                                 <tr>
                                                     <td></td>
                                                     <td><%= user.patientId %></td>
-                                                    <td><%= user.firstname %> <%= user.lastname %></td>
+                                                    <td> <a href="/patient/<%= user._id %>"><%= user.firstname %> <%= user.lastname %></a></td>
                                                     <td><%= user.gender %></td>
                                                     <td><%= user.birthday.toDateString() %></td>
                                                     <td><%= user.address %></td>
