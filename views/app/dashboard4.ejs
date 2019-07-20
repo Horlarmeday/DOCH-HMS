@@ -181,7 +181,7 @@
                                                         <td><%= patient.address %></td>
                                                         <td>+234<%= patient.phone %></td>
                                                         <td><%= patient.email %></td>
-                                                        <% if(patient.paid){ %>
+                                                        <% if(patient.account.paid){ %>
                                                         <td><label class="label label-md bg-success">Paid</label></td>
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-warning">Not Paid</label></td>
@@ -193,7 +193,7 @@
                                                         <% }else{ %>
                                                             <td></td>
                                                         <% }  %>
-                                                        <% if(patient.paid){ %>
+                                                        <% if(patient.account.paid){ %>
                                                         <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                         <% }else{ %>
                                                             <td><a class="btn btn-default" href="#">Issue</a> </td>
@@ -254,7 +254,7 @@
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phone %></td>
                                                             <td><%= patient.email %></td>
-                                                            <% if(patient.paid){ %>
+                                                            <% if(patient.account.paid){ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>
                                                             <% }else{ %>
                                                             <td><label class="label label-md bg-warning">Not Paid</label></td>
@@ -266,7 +266,7 @@
                                                             <% }else{ %>
                                                                 <td></td>
                                                             <% }  %>
-                                                            <% if(patient.paid){ %>
+                                                            <% if(patient.account.paid){ %>
                                                             <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                             <% }else{ %>
                                                                 <td><a class="btn btn-default" href="#">Issue</a> </td>
@@ -327,7 +327,7 @@
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phone %></td>
                                                             <td><%= patient.email %></td>
-                                                            <% if(patient.paid){ %>
+                                                            <% if(patient.account.paid){ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>
                                                             <% }else{ %>
                                                             <td><label class="label label-md bg-warning">Not Paid</label></td>
@@ -339,7 +339,7 @@
                                                             <% }else{ %>
                                                                 <td></td>
                                                             <% }  %>
-                                                            <% if(patient.paid){ %>
+                                                            <% if(patient.account.paid){ %>
                                                             <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                             <% }else{ %>
                                                                 <td><a class="btn btn-default" href="#">Issue</a> </td>
@@ -412,7 +412,7 @@
                                                             <% }else{ %>
                                                                 <td></td>
                                                             <% }  %>
-                                                            <% if(patient.paid){ %>
+                                                            <% if(patient.account.paid){ %>
                                                             <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                             <% }else{ %>
                                                                 <td><a class="btn btn-default" href="#">Issue</a> </td>

@@ -4458,76 +4458,76 @@ router.route('/forgot')
     });
 
 //MEDICAL RECORDS STATS FUNCTION
-function statisticsFunc(users, allUsers, res, usersIsEmpty, appointments, usersToday, userThisWeek, usersLast30Days ) {
-        //Patients registered today
-        User.find({
-            "createdAt": {
-                $lt: new Date(new Date().setHours(23, 59, 59)),
-                $gte: new Date(new Date().setHours(00, 00, 00))
-            }
-        })
-        .sort('-createdAt')
-        .populate('registeredby')
-        .exec((err, usersToday) => {
-            if(err) return next(err)
-            //Patients registered this week
-            User.find({
-                "createdAt" : { 
-                    $lt: new Date(), 
-                    $gte: new Date(new Date().setDate(new Date().getDate()-7))
-                  } 
-            })
-            .sort('-createdAt')
-            .populate('registeredby')
-            .exec((err, userThisWeek)=>{
-                if(err) return next(err)
-                //Patients registered last 30 days
-                User.find({
-                    "createdAt" : { 
-                        $lt: new Date(), 
-                        $gte: new Date(new Date().setDate(new Date().getDate()-30))
-                      } 
-                })
-                .sort('-createdAt')
-                .populate('registeredby')
-                .exec((err, usersLast30Days)=>{
+// function statisticsFunc(users, allUsers, res, usersIsEmpty, appointments, usersToday, userThisWeek, usersLast30Days ) {
+//         //Patients registered today
+//         User.find({
+//             "createdAt": {
+//                 $lt: new Date(new Date().setHours(23, 59, 59)),
+//                 $gte: new Date(new Date().setHours(00, 00, 00))
+//             }
+//         })
+//         .sort('-createdAt')
+//         .populate('registeredby')
+//         .exec((err, usersToday) => {
+//             if(err) return next(err)
+//             //Patients registered this week
+//             User.find({
+//                 "createdAt" : { 
+//                     $lt: new Date(), 
+//                     $gte: new Date(new Date().setDate(new Date().getDate()-7))
+//                   } 
+//             })
+//             .sort('-createdAt')
+//             .populate('registeredby')
+//             .exec((err, userThisWeek)=>{
+//                 if(err) return next(err)
+//                 //Patients registered last 30 days
+//                 User.find({
+//                     "createdAt" : { 
+//                         $lt: new Date(), 
+//                         $gte: new Date(new Date().setDate(new Date().getDate()-30))
+//                       } 
+//                 })
+//                 .sort('-createdAt')
+//                 .populate('registeredby')
+//                 .exec((err, usersLast30Days)=>{
 
-                    users.forEach((user) => {
-                        var birthday = new Date(user.birthday);
-                        var today = new Date();
-                        var age = today.getFullYear() - birthday.getFullYear();
-                        if (today.getMonth() < birthday.getMonth()) {
-                            age;
-                        }
-                        if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
-                            age;
-                        }
-                        if (user.role == 8) {
-                            //All registered users
-                            allUsers.push({
-                                'registeredby': user.registeredby,
-                                'id': user._id,
-                                'patientId': user.patientId,
-                                'paid': user.account.paid,
-                                'firstname': user.firstname,
-                                'lastname': user.lastname,
-                                'address': user.address,
-                                'phone': user.phonenumber,
-                                'email': user.email,
-                                'status': user.status,
-                                'role': user.role,
-                                'city': user.city,
-                                'age': age,
-                                'country': user.country,
-                                'created': user.createdAt.toLocaleString(),
-                            });
-                        }
-                    });
-                    res.render('app/dashboard4', { allUsers, users, usersIsEmpty, appointments, usersToday, userThisWeek, usersLast30Days });
-                })
-            })
-        })
-}
+//                     users.forEach((user) => {
+//                         var birthday = new Date(user.birthday);
+//                         var today = new Date();
+//                         var age = today.getFullYear() - birthday.getFullYear();
+//                         if (today.getMonth() < birthday.getMonth()) {
+//                             age;
+//                         }
+//                         if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
+//                             age;
+//                         }
+//                         if (user.role == 8) {
+//                             //All registered users
+//                             allUsers.push({
+//                                 'registeredby': user.registeredby,
+//                                 'id': user._id,
+//                                 'patientId': user.patientId,
+//                                 'paid': user.account.paid,
+//                                 'firstname': user.firstname,
+//                                 'lastname': user.lastname,
+//                                 'address': user.address,
+//                                 'phone': user.phonenumber,
+//                                 'email': user.email,
+//                                 'status': user.status,
+//                                 'role': user.role,
+//                                 'city': user.city,
+//                                 'age': age,
+//                                 'country': user.country,
+//                                 'created': user.createdAt.toLocaleString(),
+//                             });
+//                         }
+//                     });
+//                     res.render('app/dashboard4', { allUsers, users, usersIsEmpty, appointments, usersToday, userThisWeek, usersLast30Days });
+//                 })
+//             })
+//         })
+// }
 
 function formatDate(date) {
     var d = (date),
