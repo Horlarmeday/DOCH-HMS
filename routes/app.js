@@ -2774,7 +2774,7 @@ router.get('/nurse-report-triage/:id', middleware.isLoggedIn, (req, res, next)=>
 })
 
 //IMMUNIZATION
-router.route('/add-immunization')
+router.route('/add-immunization/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         User.find({_id: req.params.id}, (err, user)=>{
             if(err) return next(err)
@@ -4226,6 +4226,14 @@ router.post('/treatment-and-immunization/:id', middleware.isLoggedIn, (req, res,
 
 })
 
+//THEATER ITEMS
+router.route('/theater-items')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+
+    })
 //DATES GIVEN
 router.post('/dates-given/:id', middleware.isLoggedIn, (req, res, next)=>{
     User.findOne({_id: req.params.id})
