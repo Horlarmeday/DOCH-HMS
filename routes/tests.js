@@ -36,6 +36,8 @@ router.get('/microbiology-result/:id', middleware.isLoggedIn, (req, res, next)=>
     .exec((err, user)=>{
         if(err) return next (err)
         Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            let result = Object.keys(consultation.labresult);
+            console.log(result)
             // console.log(consultation)
             res.render('app/add/form', {user, consultation})
         }) 
@@ -49,7 +51,7 @@ router.post('/urine-test/:id', middleware.isLoggedIn, (req, res, next)=>{
     .populate('consultations')
     .exec((err, user)=>{
         if(err) return next (err)
-        Consultation.findOne({_id: user.consultations[0]._id}, (err, consultation)=>{
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
             
             consultation.labresult.urine = {
                 // type: req.body.type,

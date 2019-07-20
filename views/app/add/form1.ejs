@@ -43,9 +43,12 @@
                     </div>
                 </div>
                 <!-- Page-header end -->
+                <%
+                  let result = Object.keys(consultation.labresult);
+               %>
                 <!-- Page-body start -->
                 <div class="page-body">
-                    <% if(consultation.labresult){ %>
+                    <% if(result[0] !== undefined){ %>
                     <div class="row">
                         <div class="col-sm-6">
                             <!-- Zero config.table start -->

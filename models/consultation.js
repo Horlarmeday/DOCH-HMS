@@ -44,7 +44,7 @@ const consultationSchema = new mongoose.Schema({
     labresult: {
         //MICROBIOLOGY
         urine: {
-            type: String,
+            
             epitheliaresult: String,
             epitheliahsv: String,
             pusresult: String,
