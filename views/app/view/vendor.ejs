@@ -63,23 +63,32 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Vendor Name</th>
-                                                    <th>Location</th>
-                                                    <th>Status</th>
+                                                    <th>Name</th>
+                                                    <th>Vendor ID</th>
+                                                    <th>Email</th>
+                                                    <th>Username</th>
+                                                    <th>Mobile</th>
+                                                    <th>Company</th>
+                                                    <th>Address</th>
+                                                    <th>Created Date</th>
+                                                    
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% vendors.forEach((vendor)=>{ %>
+                                                <% users.forEach((user)=>{ %>
+                                                    <% if(user.role == 17){ %>
                                                 <tr>
                                                     <td></td>
-                                                    <td><%= vendor.name %></td>
-                                                    <td><%= vendor.location %></td>
-                                                    <% if(vendor.status === true){ %>
-                                                    <td><label class="label label-md bg-success">Active</label></td>
-                                                    <% }else{ %>
-                                                    <td><label class="label label-md bg-danger">Inctive</label></td>
-                                                    <% } %>
+                                                    <td><%= user.firstname %> <%= user.lastname %></td>
+                                                    <td><%= user.vendorId %></td>
+                                                    <td><%= user.email %></td>
+                                                    <td><%= user.username %></td>
+                                                    <td>0<%= user.phonenumber %></td>
+                                                    <td><%= user.company %></td>
+                                                    <td><%= user.address %></td>
+                                                    <td><%= user.createdAt.toDateString() %></td>
                                                 </tr>
+                                                <% }  %>
                                                 <% })  %>
                                             </tbody>
                                         </table>

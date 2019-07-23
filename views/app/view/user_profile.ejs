@@ -150,10 +150,17 @@
                                                                     <a class="nav-link" data-toggle="tab" href="#vitalsigns" role="tab">Vital Signs</a>
                                                                     <div class="slide"></div>
                                                             </li>
+                                                            <% if(patient.gender === 'Female'){ %>
                                                             <li class="nav-item">
-                                                                    <a class="nav-link" data-toggle="tab" href="#allergies" role="tab">Allergies</a>
+                                                                    <a class="nav-link" data-toggle="tab" href="#allergies" role="tab">ANC/Immunizations</a>
                                                                     <div class="slide"></div>
                                                             </li>
+                                                            <% }else{ %>
+                                                                <li class="nav-item">
+                                                                        <a class="nav-link" data-toggle="tab" href="#allergies" role="tab">Allergies</a>
+                                                                        <div class="slide"></div>
+                                                                </li>
+                                                            <% } %>
                                                             <li class="nav-item">
                                                                     <a class="nav-link" data-toggle="tab" href="#assess" role="tab">Assessments</a>
                                                                     <div class="slide"></div>
@@ -633,12 +640,104 @@
                                                                         </div> 
                                                             </div>
                                                             <div class="tab-pane" id="allergies" role="tabpanel">
-                                                                    <ul>
-                                                                        <% patient.allergies.forEach((allergy)=>{ %>
+                                                                <h5>Allergies</h5>
+                                                                <p><%= patient.allergies %></p> <br><br>
+                                                                <% if(patient.gender === 'Female'){ %>
+                                                                    <h5>ANC</h5>
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table  class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>Medical History</th>
+                                                                                        <th>Surgical History</th>
+                                                                                        <th>Family History</th>
+                                                                                        <th>ANC Examinations</th>
+                                                                                        <th>Date</th>
+                                                                                    
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% if(patient.ancs.length > 0){ %>
+                                                                                    <% patient.ancs.forEach((anc)=>{ %>
+                                                                                    
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td>
+                                                                                                <%= anc.medicalhistory %>
+                                                                                        </td>
+                                                                                        
+                                                                                    
+                                                                                        <td><%= anc.surgicalhistory %></td>
+                                                                                        
+                                                                                        <td><%= anc.familyhistory %></td> 
+                                                                                        <td><a href="#">View</a></td> 
+                                                                                        <td><%= anc.created.toDateString() %></td> 
+                                                                                        
+                                                                                    </tr>
+                                                                                
+                                                                                    <% })  %>
+                                                                                    <% }  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                    </div> <br><br>
 
-                                                                            <li><%=  allergy  %></li>
-                                                                        <% }) %>
-                                                                    </ul>
+                                                                    <h5>Immunization</h5>
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table  class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>Baby's Name</th>
+                                                                                        <th>Date of Birth</th>
+                                                                                        <th>Place of Birth</th>
+                                                                                        <th>At Birth</th>
+                                                                                        <th>At 6weeks</th>
+                                                                                        <th>At 10weeks</th>
+                                                                                        <th>At 14weeks</th>
+                                                                                        <th>At 6months</th>
+                                                                                        <th>At 9months</th>
+                                                                                        <th>At 1year</th>
+                                                                                        <th>At 15months</th>
+                                                                                        <th>At 2years</th>
+                                                                                    
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% if(patient.immunizations.length > 0){ %>
+                                                                                    <% patient.immunizations.forEach((immunization)=>{ %>
+                                                                                    
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td>
+                                                                                                <%= immunization.dateofbirth %>
+                                                                                        </td>
+                                                                                        
+                                                                                    
+                                                                                        <td><%= immunization.placeofbirth %></td>
+                                                                                        <td><%= immunization.atBirth %></td>
+                                                                                        <td><%= immunization.at6weeks %></td>
+                                                                                        <td><%= immunization.at10weeks %></td>
+                                                                                        <td><%= immunization.at14weeks %></td>
+                                                                                        <td><%= immunization.at6months %></td>
+                                                                                        <td><%= immunization.at9months %></td>
+                                                                                        <td><%= immunization.at1year %></td>
+                                                                                        <td><%= immunization.at15months %></td>
+                                                                                        
+                                                                                        <td><%= immunization.at2years %></td> 
+                                                                                        
+                                                                                    
+                                                                                        
+                                                                                    </tr>
+                                                                                
+                                                                                    <% })  %>
+                                                                                    <% }  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                    </div>
+                                                                <% }else{ %>
+
+                                                                <% } %>
                                                             </div>
                                                             <div class="tab-pane" id="assess" role="tabpanel">
                                                                

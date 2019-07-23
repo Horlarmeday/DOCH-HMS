@@ -618,6 +618,57 @@ router.route('/add-vendor')
         res.render('app/add/add_vendor')
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
+        // const country = 'Nigeria';
+        User.findOne({username: req.body.username}, (err, existingUsername)=>{
+            if(err) {return next (err)}
+            if(existingUsername){
+                req.flash('error',  'Account with that username already exists.');
+                return res.redirect('/add-vendor');
+            }else{
+                User.findOne({ phonenumber: req.body.phone }, function(err, existingUserPhone){
+                    if (existingUserPhone){
+                        req.flash('error',  'Account with that phone number already exists.');
+                        return res.redirect('/add-vendor');
+                    }
+                })
+                uniq = uuidv1()
+                var stamp = uniq.substr(uniq.length - 7);
+                const vendor = new User();
+                const { username, fname, lname, email, password, phone, role, address, company } = req.body;
+                if(!fname || !lname || !username || !email || !password || !phone || !role || !address ){
+                    req.flash('error',  'Please enter input fields');
+                    return res.redirect('/add-vendor')
+                }
+                vendor.vendorId = stamp;
+                vendor.firstname = fname;
+                vendor.lastname = lname;
+                vendor.username = username;
+                vendor.company = company;
+                vendor.email = email;
+                vendor.isVerified = true;
+                vendor.phonenumber = phone;
+                vendor.password = password;
+                vendor.address = address;
+                vendor.role = role;
+                //vendor.status = true;
+                vendor.photo = vendor.gravatar();
+                vendor.save((err) => {
+                    if (err) { return next(err) }
+                    req.flash('success', 'Vendor has been created')
+                    res.redirect('/vendors');
+                })
+            }
+        })   
+    })
+
+//CREATE VENDOR SUPPLY
+router.route('/add-vendor-supply')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.find({}, (err, users)=>{
+            res.render('app/add/add_supply', {users})
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
         const vendor = new Vendor({
             name: req.body.name,
             location: req.body.location
@@ -672,9 +723,9 @@ router.get('/patient-imaging-requests', middleware.isLoggedIn, (req, res, next)=
 
 //VENDORS
 router.get('/vendors', middleware.isLoggedIn, (req, res, next)=>{
-    Vendor.find({}, (err, vendors)=>{
+    User.find({}, (err, users)=>{
         if(err) return next(err)
-        res.render('app/view/vendor', {vendors})
+        res.render('app/view/vendor', {users})
     })
 })
 
@@ -969,7 +1020,7 @@ router.route('/add-employee')
         User.findOne({username: req.body.username}, (err, existingUsername)=>{
             if(err) {return next (err)}
             if(existingUsername){
-                req.flash('error',  'Account with that email address already exists.');
+                req.flash('error',  'Account with that username already exists.');
                 return res.redirect('/add-employee');
             }else{
                 User.findOne({ phonenumber: req.body.phone }, function(err, existingUserPhone){
@@ -2677,7 +2728,7 @@ router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
             if(user.role == 8){
                 allPatients.push({
                     'registeredby': user.registeredby,
-                    
+                    'gender': user.gender,
                     'createdby': user.createdby,
                     'patientId': user.patientId,
                     'id': user._id,
@@ -2992,6 +3043,8 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('triages')
         .populate('visits')
         .populate('reports')
+        .populate('ancs')
+        .populate('immunizations')
         .populate('retainershipname')
        
         .deepPopulate([
@@ -4131,10 +4184,7 @@ router.route('/ante-natal/:id')
             if(err) return next (err)
             Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
                 if (err) return next (err)
-                if(appointment.taken){
-                    req.flash('error', 'Appointment already taken')
-                    return res.redirect('back')
-                }else{
+                
                    appointment.taken = true;
                    appointment.save((err)=>{
                        if(err){
@@ -4143,7 +4193,7 @@ router.route('/ante-natal/:id')
                        }
                        res.render('app/add/add_anc', {user})
                    })
-                }
+                
             })
            
         })

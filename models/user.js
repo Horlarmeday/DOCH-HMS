@@ -28,6 +28,8 @@ const UserSchema = new mongoose.Schema({
     department: String,
     birthday: {type: Date},
     workerId: String,
+    vendorId: String,
+    company: String,
     patientId: String,
     oldpatientId: String,
     passwordResetToken: String,

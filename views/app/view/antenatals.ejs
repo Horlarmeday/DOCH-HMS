@@ -74,7 +74,7 @@
                                             </thead>
                                             <tbody>
                                                 <% ancs.forEach((anc)=>{ %>
-                                                <tr>
+                                                <tr >
                                                     <td></td>
                                                     <td><%= anc.patient.patientId %></td>
                                                     <td> <%= anc.ancId %></td>
@@ -87,8 +87,11 @@
                                                     <td><label class="label label-md bg-warning">Inactive</label></td>
                                                     <% } %>
                                                     <% if(anc.status){ %>
-                                                   <td><a class="btn btn-success" href="/patient-delivery-information/<%= anc.patient._id %>">Add Delivery Info</a>
-                                                   <a class="btn btn-danger" href="/post-natal-examination/<%= anc.patient._id %>">Post Natal Examination</a></td>
+                                                   <td>
+                                                       <a class="btn btn-inverse" href="/ante-natal/<%= anc.patient._id %>">Ante Natal </a>
+                                                       <a class="btn btn-success" href="/patient-delivery-information/<%= anc.patient._id %>">Delivery Info</a>
+                                                   <a class="btn btn-danger" href="/post-natal-examination/<%= anc.patient._id %>">Post Natal Examination</a>
+                                                </td>
                                                    <% }else{ %>
                                                     <td>Not Active</td>
                                                     <% } %>

@@ -68,6 +68,7 @@
                                                     <th>Age</th>
                                                     <th>Address</th>
                                                     <th>Phone</th>
+                                                    <th>Gender</th>
                                                     <th>Email</th>
                                                     <th>Patient Type</th>
                                                     <th>Status</th>
@@ -87,6 +88,7 @@
                                                         <td><%= patient.age %></td>
                                                         <td><%= patient.address %></td>
                                                         <td>+234<%= patient.phone %></td>
+                                                        <td><%= patient.gender %></td>
                                                         <td><%= patient.email %></td>
                                                         <% if(patient.createdby == 1){ %>
                                                             <td><label class="label label-bg bg-success">Normal Patient</label></td>
