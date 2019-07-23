@@ -9,6 +9,7 @@ const SMS = require('../models/sms');
 const NurseReport = require('../models/nurseReport')
 const Theater = require('../models/theater')
 const Service = require('../models/service')
+const Paid = require('../models/paid')
 const Vendor = require('../models/vendor')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
@@ -346,7 +347,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             if(err) return next (err)
             Consultation.find({})
             .sort('-created')
-            .deepPopulate('drugsObject.drugs')
+            .deepPopulate(['drugsObject.drugs', 'drugsObject.paid'])
             .populate('labtestObject')
             .populate('patient')
             .populate('imaging')
@@ -2523,28 +2524,36 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 // // if(req.body.drug_brand) consultation.drug.push(req.body.drug_brand);
                 // if(req.body.drug_name) consultation.drugname = req.body.drug_name;
-                if(req.body){
-                    theconsultation.drugsObject.push({
-                        drugs: req.body.drug_brand,
-                        startingdate: req.body.startingdate,
-                        quantity: req.body.quantity,
-                        medicineunit: req.body.medicineunit,
-                        unit: req.body.unit,
-                        dose: req.body.dose,
-                        time: req.body.time,
-                        notes: req.body.notes,
-                        direction: req.body.direction,
-                        duration: req.body.duration,
-                        price: req.body.price
-                    })
-                    theconsultation.prescriptionDate = Date.now()
-                    theconsultation.pharmacystatus = true;
-                    theconsultation.status = true;
-                    
-                }
-                theconsultation.save((err)=>{
+                const paid = new Paid({
+                    drugs: req.body.drug_brand,
+                    price: req.body.price
+                })
+                paid.save((err)=>{
                     if(err) return next (err)
-                    res.redirect('back')
+                    if(req.body){
+                        theconsultation.drugsObject.push({
+                            paid: paid,
+                            drugs: req.body.drug_brand,
+                            startingdate: req.body.startingdate,
+                            quantity: req.body.quantity,
+                            medicineunit: req.body.medicineunit,
+                            unit: req.body.unit,
+                            dose: req.body.dose,
+                            time: req.body.time,
+                            notes: req.body.notes,
+                            direction: req.body.direction,
+                            duration: req.body.duration,
+                            price: req.body.price
+                        })
+                        theconsultation.prescriptionDate = Date.now()
+                        theconsultation.pharmacystatus = true;
+                        theconsultation.status = true;
+                    }
+                    theconsultation.save((err)=>{
+                        if(err) return next (err)
+                        res.redirect('back')
+                        
+                    })
                 })
             })
         })
@@ -2946,7 +2955,7 @@ router.route('/patient-discharge/:id')
         thedate: req.body.thedate,
         time: req.body.time,
         nurse: req.body.nurse,
-        comment: req.body.comment,
+        comment: req.body.comments,
         ward: req.body.ward,
         transferto: req.body.transferto
     })
@@ -3437,7 +3446,6 @@ router.route('/add-operation-note')
         theater.findings = req.body.findings;
         theater.procedure = req.body.procedure;
         theater.order = req.body.order
-       
        theater.save((err)=>{
            if(err) return next(err)
            User.updateOne(
@@ -3449,17 +3457,56 @@ router.route('/add-operation-note')
                },function (err, count) {
                 if(err) return next(err)
                 req.flash('success', 'Operation Notes saved Successfully!')
-                res.redirect('/operation-notes')
+                res.redirect('/theater-prescription/'+ theater._id)
                }
            )
        })
-
    })
 
 //Medication for Theater
-router.post('/theater-prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
-    
-})
+router.route('/theater-prescription/:id')
+        .get(middleware.isLoggedIn, (req, res, next)=>{
+            Theater.findOne({ _id: req.params.id })
+                .populate('patient')
+                .populate('surgeon')
+                .populate('scrubnurse')
+                .populate('anesthetist')
+                .populate('assistance')
+                .deepPopulate('drugsObject.drugs')
+                .exec((err, theater)=>{
+                    if(err) return next (err)
+                    PharmacyItem.find({}, (err, drugs)=>{
+                        res.render('app/add/add_patient_operation_note', {theater, drugs})
+                    })
+                })
+        })
+        .post(middleware.isLoggedIn, (req, res, next)=>{
+            Theater.findOne({_id: req.params.id}, (err, theater)=>{
+                if(err) return next (err)
+                if(req.body){
+                    theater.drugsObject.push({
+                        drugs: req.body.drug_brand,
+                        startingdate: req.body.startingdate,
+                        quantity: req.body.quantity,
+                        medicineunit: req.body.medicineunit,
+                        unit: req.body.unit,
+                        dose: req.body.dose,
+                        time: req.body.time,
+                        notes: req.body.notes,
+                        direction: req.body.direction,
+                        duration: req.body.duration,
+                        price: req.body.price,
+                        dateprescribed: Date.now()
+                    })
+                }
+                theater.save((err)=>{
+                    if(err) return next (err)
+                    req.flash('success', 'Drugs precription saved successfully')
+                    res.redirect('back')
+                })
+            })
+        })
+
 
 //ADD ACCOUNT
 router.route('/accounts')

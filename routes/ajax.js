@@ -5,7 +5,9 @@ const mongoose = require('mongoose');
 const Department = require('../models/department');
 const Appointment = require('../models/appointment');
 const Consultation = require('../models/consultation');
+const Paid = require('../models/paid')
 const SMS = require('../models/sms');
+const Total = require('../models/total');
 const NurseReport = require('../models/nurseReport')
 const Theater = require('../models/theater')
 const Vendor = require('../models/vendor')
@@ -109,6 +111,40 @@ router.post('/get-drug-info', middleware.isLoggedIn, (req, res, next)=>{
             quantity: drug.quantity
         })
         
+    })
+})
+
+router.post('/get-drug-price', middleware.isLoggedIn, (req, res, next)=>{
+    const drugword = req.body.drugword
+    Paid.findOne({_id: drugword})
+    .exec((err, paid)=>{
+        if(err) return next (err)
+        paid.checked = true;
+        paid.save((err)=>{
+            if(err) return next (err)
+            const total = new Total()
+            total.all += paid.price
+            total.save((err)=>{
+                if(err) return next(err)
+                Total.find({}, (err, alltotal)=>{
+                    function getSum(total, num) {
+                        return total + num;
+                    }
+                    const DrugPrice = alltotal.map(amount =>{
+                        const rPrice = amount.all
+                        return rPrice;
+                    })
+             
+                    var drugAmount;
+                    if(DrugPrice === undefined || DrugPrice.length == 0){
+                        drugAmount = 0
+                    }else{
+                        drugAmount = DrugPrice.reduce(getSum)
+                    }
+                    res.json(drugAmount)
+                })
+            })
+        })
     })
 })
 

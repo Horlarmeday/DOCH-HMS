@@ -1,4 +1,5 @@
 const mongoose =  require('mongoose');
+const deepPopulate = require('mongoose-deep-populate')(mongoose)
 
 const theaterSchema = new mongoose.Schema({
     surgeon: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
@@ -14,7 +15,8 @@ const theaterSchema = new mongoose.Schema({
         notes: String,
         direction: String,
         price: Number,
-        duration: String
+        duration: String,
+        dateprescribed: Date
     }],
     surgery: String,
     indications: String,
@@ -28,4 +30,6 @@ const theaterSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now}
 });
 
+//Populates schema to any level
+theaterSchema.plugin(deepPopulate)
 module.exports = mongoose.model('Theater', theaterSchema);

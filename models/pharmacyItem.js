@@ -6,6 +6,7 @@ const pharmacyItemSchema = new mongoose.Schema({
     dispensehistory: [{ 
         type: mongoose.Schema.Types.ObjectId, ref: 'PharmDispense'
     }],
+    checked: {type: Boolean, default: false},
     itemDigit: Number,
     name: String,
     income: Number,

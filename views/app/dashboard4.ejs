@@ -172,14 +172,25 @@
                                             <tbody>
                                                 <% usersToday.forEach((patient) => { %>
                                                     <% if(patient.role == 8){ %>
-                                                <tr class="clickable">
+                                                        <%
+                                                            var birthday = new Date(patient.birthday);
+                                                            var today = new Date();
+                                                            var age = today.getFullYear() - birthday.getFullYear();
+                                                            if (today.getMonth() < birthday.getMonth()) {
+                                                                age;
+                                                            }
+                                                            if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
+                                                                age;
+                                                            }
+                                                        %>
+                                                    <tr class="clickable">
                                                    
                                                         <td></td>
                                                         <td><%= patient.patientId %></td>
                                                         <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
-                                                        <td><%= patient.age %></td>
+                                                        <td><%= age %></td>
                                                         <td><%= patient.address %></td>
-                                                        <td>+234<%= patient.phone %></td>
+                                                        <td>+234<%= patient.phonenumber %></td>
                                                         <td><%= patient.email %></td>
                                                         <% if(patient.account.paid){ %>
                                                         <td><label class="label label-md bg-success">Paid</label></td>
@@ -245,14 +256,25 @@
                                                 <tbody>
                                                     <% userThisWeek.forEach((patient) => { %>
                                                         <% if(patient.role == 8){ %>
+                                                            <%
+                                                                var birthday = new Date(patient.birthday);
+                                                                var today = new Date();
+                                                                var age = today.getFullYear() - birthday.getFullYear();
+                                                                if (today.getMonth() < birthday.getMonth()) {
+                                                                    age;
+                                                                }
+                                                                if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
+                                                                    age;
+                                                                }
+                                                            %>
                                                     <tr class="clickable">
                                                        
                                                             <td></td>
                                                             <td><%= patient.patientId %></td>
                                                             <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
-                                                            <td><%= patient.age %></td>
+                                                            <td><%= age %></td>
                                                             <td><%= patient.address %></td>
-                                                            <td>+234<%= patient.phone %></td>
+                                                            <td>+234<%= patient.phonenumber %></td>
                                                             <td><%= patient.email %></td>
                                                             <% if(patient.account.paid){ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>
@@ -318,14 +340,27 @@
                                                 <tbody>
                                                     <% usersLast30Days.forEach((patient) => { %>
                                                         <% if(patient.role == 8){ %>
+
+                                                            <%
+                                                                var birthday = new Date(patient.birthday);
+                                                                var today = new Date();
+                                                                var age = today.getFullYear() - birthday.getFullYear();
+                                                                if (today.getMonth() < birthday.getMonth()) {
+                                                                    age;
+                                                                }
+                                                                if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
+                                                                    age;
+                                                                }
+                                                            %>
+
                                                     <tr class="clickable">
                                                        
                                                             <td></td>
                                                             <td><%= patient.patientId %></td>
                                                             <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
-                                                            <td><%= patient.age %></td>
+                                                            <td><%= age %></td>
                                                             <td><%= patient.address %></td>
-                                                            <td>+234<%= patient.phone %></td>
+                                                            <td>+234<%= patient.phonenumber %></td>
                                                             <td><%= patient.email %></td>
                                                             <% if(patient.account.paid){ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>

@@ -348,6 +348,7 @@
                                                     <th>Patient Name</th>
                                                     <th>Patient Type</th>
                                                     <th>Drugs</th>
+                                                    <th>Unit Price</th>
                                                     <th>Total Amount</th>
                                                     <th>Status</th>
                                                     <th>Mode of Payment</th>
@@ -368,12 +369,13 @@
                                                         <% }else{ %>  
                                                             <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
                                                         <% } %>  
+
                                                         <%
                                                             function getSum(total, num) {
                                                                 return total + num;
                                                             }
                                                             const totalDrugPrice = consultation.drugsObject.map(price =>{
-                                                                const rPrice = price.drugs.sellprice
+                                                                const rPrice = price.paid.price
                                                                 return rPrice;
                                                                                
                                                             })
@@ -385,12 +387,36 @@
                                                             }
                                                             
                                                         %>
+                                                        <%
+                                                            function getSum(total, num) {
+                                                                return total + num;
+                                                            }
+                                                            const DrugPrice = consultation.drugsObject.map(price =>{
+                                                                if(price.checked){
+                                                                    const rPrice = price.paid.price
+                                                                    return rPrice;
+                                                                }
+                                                            })
+                                                            var drugPrice;
+                                                            if(DrugPrice === undefined || DrugPrice.length == 0){
+                                                                drugPrice = 0
+                                                            }else{
+                                                                drugPrice = DrugPrice.reduce(getSum)
+                                                            }
+                                                            
+                                                        %>
+
                                                         <td>
                                                             <% consultation.drugsObject.forEach((drug)=>{ %>
-                                                                <p style="font-weight: 500"><%= drug.drugs.name %>
-                                                                <span style="font-weight: 900; color: darkorange">(&#8358;<%= drug.drugs.sellprice %>)</span></p>
+                                                                <p style="font-weight: 500">
+                                                                    <input class="border-checkbox checkbox1"  type="checkbox" value="<%= drug.paid._id %>">
+                                                                    <label><%= drug.drugs.name %></label>
+                                                                    <span style="font-weight: 900; color: darkorange">     
+                                                                        (&#8358;<%= drug.drugs.sellprice %>)</span>
+                                                                </p>
                                                             <% }) %>
                                                         </td>
+                                                        <td class="unitamount"></td>
                                                         <td style="font-weight: 900; font-size: 1rem">&#8358;<%= totalPrice %></td>
                                                         <% if(consultation.pharmacypaid === false){ %>
                                                         <td><label class="label label-md bg-warning">pending</label></td>

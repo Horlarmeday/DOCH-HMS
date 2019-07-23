@@ -77,13 +77,13 @@
                                             </thead>
                                             <tbody>
                                                 <% theaters.forEach((theater)=>{ %>
-                                                <tr>
+                                                <tr style="cursor: pointer" onclick="window.location='/theater-prescription/<%= theater._id %>'">
                                                     <td></td>
                                                     <td><%= theater.patient.firstname %> <%= theater.patient.lastname %></td>
                                                     <td><%= theater.surgery %></td>
                                                     <td><%= theater.anaesthesia %></td>
                                                     <td><%= theater.anesthetist.firstname %> <%= theater.anesthetist.lastname %></td>
-                                                    <td><%= theater.indication %></td>
+                                                    <td><%= theater.indications %></td>
                                                     <td><%= theater.surgeon.firstname %> <%= theater.surgeon.lastname %></td>
                                                     <td><%= theater.findings %></td>
                                                     <td><%= theater.procedure %></td>

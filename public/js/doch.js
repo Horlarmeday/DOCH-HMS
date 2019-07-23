@@ -9,6 +9,32 @@ $(document).ready(function() {
 		}
     })
 
+    $('.checkbox1').click(function(){
+        if($(this).prop("checked") == true){
+            let drugword = $(this).attr('value')
+            // let checkId = $(this).attr('id')
+            // let consultId = $(this).attr('name')
+            console.log(drugword)
+            $.ajax({
+                type: 'POST',
+                url: '/get-drug-price',
+                data: {
+                    drugword: drugword,
+                    // checkId: checkId,
+                    // consultId: consultId
+                },
+                success:function (data) {
+                    
+                    $('.unitamount').html(data)
+                }
+            })
+        }
+        else if($(this).prop("checked") == false){
+            alert("Checkbox is unchecked.");
+        }
+    });
+
+
     //SENDING APPOINTMENT ID
     $('.btn-app').click(function (event) {
         let app_id = $(this).attr('id')
