@@ -4180,7 +4180,9 @@ router.route('/create-ante-natal-patient/:id')
 //ANTENATAL
 router.route('/ante-natal/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
-        User.findOne({_id: req.params.id}, (err, user)=>{
+        User.findOne({_id: req.params.id})
+        .populate('ancs')
+        .exec((err, user)=>{
             if(err) return next (err)
             Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
                 if (err) return next (err)
@@ -4191,7 +4193,11 @@ router.route('/ante-natal/:id')
                            req.flash('error', "Error taking the appointment")
                            return res.redirect('back')
                        }
-                       res.render('app/add/add_anc', {user})
+                       ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
+                          // console.log(anc)
+                           if(err) return next (err)
+                           res.render('app/add/add_anc', {user, anc})
+                       })
                    })
                 
             })
@@ -4199,8 +4205,10 @@ router.route('/ante-natal/:id')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        User.findOne({_id: req.params.id}, (err, user)=>{
-            ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+        User.findOne({_id: req.params.id})
+        .populate('ancs')
+        .exec((err, user)=>{
+            ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
                 if(err) {
                     req.flash('error', 'Patient ANC record cannot be found')
                     return res.redirect('back')
@@ -4220,13 +4228,14 @@ router.route('/ante-natal/:id')
                     tcadate: req.body.tcadate,
                     initial: req.body.initial
                 })
+                anc.save((err)=>{
+                    if(err) return next (err)
+                    req.flash('success', 'Details saved successfully')
+                    res.redirect('back')
+                })
             })
         })
-        anc.save((err)=>{
-            if(err) return next (err)
-            req.flash('success', 'Details saved successfully')
-            res.redirect('back')
-        })
+        
     })
 
 router.post('/clinical-notes/:id', middleware.isLoggedIn, (req, res, next)=>{
@@ -4234,7 +4243,7 @@ router.post('/clinical-notes/:id', middleware.isLoggedIn, (req, res, next)=>{
     .populate('ancs')
     .exec((err, user)=>{
         if(err) return next (err)
-        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+        ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
             if(err) {
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
@@ -4257,7 +4266,7 @@ router.post('/antenatal-lab-tests/:id', middleware.isLoggedIn, (req, res, next)=
     .populate('ancs')
     .exec((err, user)=>{
         if(err) return next (err)
-        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+        ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
             if(err) {
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
