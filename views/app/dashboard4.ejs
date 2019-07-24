@@ -187,7 +187,12 @@
                                                    
                                                         <td></td>
                                                         <td><%= patient.patientId %></td>
-                                                        <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                        <td> 
+                                                            <a href="/patient/<%= patient.id %>" class="mr-2"><%= patient.firstname %> <%= patient.lastname %></a>
+                                                            <% if(patient.retainershipname){ %>
+                                                                <label class="label label-md bg-success"><%= patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
                                                         <td><%= age %></td>
                                                         <td><%= patient.address %></td>
                                                         <td>+234<%= patient.phonenumber %></td>
@@ -271,7 +276,12 @@
                                                        
                                                             <td></td>
                                                             <td><%= patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td> 
+                                                                <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a>
+                                                                <% if(patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= patient.retainershipname.hmoname %></label>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= age %></td>
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phonenumber %></td>
@@ -357,7 +367,12 @@
                                                        
                                                             <td></td>
                                                             <td><%= patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td> <a href="/patient/<%= patient.id %>" class="mr-2">
+                                                                <%= patient.firstname %> <%= patient.lastname %></a>
+                                                                <% if(patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= patient.retainershipname.hmoname %></label>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= age %></td>
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phonenumber %></td>
@@ -430,7 +445,12 @@
                                                        
                                                             <td></td>
                                                             <td><%= patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td> 
+                                                                <a href="/patient/<%= patient.id %>"  class="mr-2"><%= patient.firstname %> <%= patient.lastname %></a>
+                                                                <% if(patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= patient.retainershipname.hmoname %></label>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= patient.age %></td>
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phone %></td>

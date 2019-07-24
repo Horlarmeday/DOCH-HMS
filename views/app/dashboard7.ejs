@@ -157,7 +157,12 @@
                                                    
                                                         <td></td>
                                                         <td><%= patient.patientId %></td>
-                                                        <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                        <td> 
+                                                            <a href="/patient/<%= patient.id %>" class="mr-2"><%= patient.firstname %> <%= patient.lastname %></a>
+                                                            <% if(patient.retainershipname){ %>
+                                                                <label class="label label-md bg-success"><%= patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
                                                         <td><%= age %></td>
                                                         
                                                             <% if(patient.createdby == 1){ %>
@@ -201,7 +206,6 @@
                                                         </td>
                                                         <td>
                                                             <% if(!patient.account.paid){ %>
-            
                                                                <button value="<%= total %>" name="<%= patient._id %>" type="button" class="btn btn-success pay">Paid?</button>
                                                             <% } %>
                                                             <% if(patient.account.paid){ %>
@@ -257,7 +261,12 @@
                                                      
                                                         <td></td>
                                                         <td><%= consultation.patient.patientId %></td>
-                                                        <td> <a href="/patient/<%= consultation.patient._id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
+                                                        <td>
+                                                             <a href="/patient/<%= consultation.patient._id %>" class="mr-2"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a>
+                                                             <% if(consultation.patient.retainershipname){ %>
+                                                                <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
                                                         
                                                                 <% if(consultation.patient.createdby == 1){ %>
                                                                     <td><label class="label label-bg bg-success">Normal Patient</label></td>
@@ -289,10 +298,12 @@
                                                             <% }) %>
                                                         </td>
                                                         <td style="font-weight: 900; font-size: 1rem">&#8358;<%= totalAmount %></td>
-                                                        <% if(consultation.labpaid === false){ %>
-                                                        <td><label class="label label-md bg-warning">pending</label></td>
-                                                        <% }else{ %>
-                                                        <td><label class="label label-md bg-success">paid</label></td>
+                                                        <% if(consultation.labpaid && consultation.patient.retainership === "Yes"){ %>
+                                                            <td><label class="label label-md bg-success">Cleared by NHIS</label></td>
+                                                        <% }else if(consultation.labpaid){ %>
+                                                            <td><label class="label label-md bg-success">Paid</label></td>
+                                                        <% }else if(!consultation.labpaid){ %>    
+                                                                <td><label class="label label-md bg-warning">pending</label></td>
                                                         <% } %>
                                                         <td>
                                                             <% if(!consultation.labpaid){ %>
@@ -363,7 +374,12 @@
                                                     
                                                         <td></td>
                                                         <td><%= consultation.patient.patientId %></td>
-                                                        <td> <a href="/patient/<%= consultation.patient.id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
+                                                        <td> 
+                                                            <a href="/patient/<%= consultation.patient.id %>" class="mr-2"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a>
+                                                            <% if(consultation.patient.retainershipname){ %>
+                                                                <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
                                                         <% if(consultation.patient.createdby == 1){ %>
                                                             <td><label class="label label-bg bg-success">Normal Patient</label></td>
                                                         <% }else{ %>  
@@ -411,13 +427,22 @@
                                                                 <p style="font-weight: 500">
                                                                     <input class="border-checkbox checkbox1"  type="checkbox" value="<%= drug.paid._id %>">
                                                                     <label><%= drug.drugs.name %></label>
-                                                                    <span style="font-weight: 900; color: darkorange">     
-                                                                        (&#8358;<%= drug.drugs.sellprice %>)</span>
+                                                                   
+                                                                        <span style="font-weight: 900; color: darkorange">     
+                                                                                (&#8358;<%= drug.drugs.sellprice %>)</span>
+                                                                    
                                                                 </p>
                                                             <% }) %>
                                                         </td>
                                                         <td class="unitamount"></td>
-                                                        <td style="font-weight: 900; font-size: 1rem">&#8358;<%= totalPrice %></td>
+                                                        <% if(consultation.patient.retainership === "Yes"){ %>
+                                                            <td style="font-weight: 900; font-size: 1rem"> 
+                                                                <span style="text-decoration-line: line-through; text-decoration-color: red">&#8358;<%= totalPrice %></span>
+                                                                 (&#8358;<%= totalPrice * 0.1 %>)</td>
+                                                        <% }else{ %>
+
+                                                            <td style="font-weight: 900; font-size: 1rem">&#8358;<%= totalPrice %></td>
+                                                        <% } %>
                                                         <% if(consultation.pharmacypaid === false){ %>
                                                         <td><label class="label label-md bg-warning">pending</label></td>
                                                         <% }else{ %>
@@ -438,7 +463,11 @@
                                                         </td>
                                                         <td>
                                                             <% if(!consultation.pharmacypaid){ %>
-                                                            <button value="<%= totalPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"><i class="ti-money"></i> Paid?</button>
+                                                                <% if(consultation.patient.retainership === "Yes"){ %>
+                                                                    <button value="<%= totalPrice * 0.1 %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                             <% }else{ %>
+                                                                <button value="<%= totalPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                             <% } %>
                                                             <% } %>
                                                             <% if(consultation.pharmacypaid){ %>
                                                             <a href="/pharmacy-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
@@ -491,7 +520,12 @@
                                                         
                                                             <td></td>
                                                             <td><%= consultation.patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= consultation.patient.id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
+                                                            <td>
+                                                                 <a href="/patient/<%= consultation.patient.id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a>
+                                                                 <% if(consultation.patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
+                                                                 <% } %>
+                                                            </td>
                                                             <% if(consultation.patient.createdby == 1){ %>
                                                                 <td><label class="label label-bg bg-success">Normal Patient</label></td>
                                                             <% }else{ %>  
@@ -520,7 +554,15 @@
                                                                     <span style="font-weight: 900; color: darkorange">(&#8358;<%= image.price %>)</span></p>
                                                                 <% }) %>
                                                             </td>
+                                                            <% if(consultation.patient.retainership === "Yes"){ %>
+                                                                <td style="font-weight: 900; font-size: 1rem">
+                                                                        <span style="text-decoration-line: line-through; text-decoration-color: red">&#8358;<%= imagingPrice %></span>
+                                                                        (&#8358;<%= imagingPrice * 0.1 %>)</td>
+                                                            <% }else{ %>
                                                             <td style="font-weight: 900; font-size: 1rem">&#8358;<%= imagingPrice %></td>
+                                                                
+                                                            <% } %>
+
                                                             <% if(consultation.imagingpaid === false){ %>
                                                             <td><label class="label label-md bg-warning">pending</label></td>
                                                             <% }else{ %>
@@ -540,10 +582,15 @@
                                                                     <% } %>
                                                             </td>
                                                             <td>
-                                                                
+                                                                <% if(!consultation.imagingpaid){ %>
+                                                                    <% if(consultation.patient.retainership === "Yes"){ %>
+                                                                       <button name="<%= consultation._id %>" value="<%= imagingPrice * 0.1 %>" class="btn btn-success imagingpay">Pay </button>
+                                                                    <% }else{ %>
+                                                                        <button name="<%= consultation._id %>" value="<%= imagingPrice %>" class="btn btn-success imagingpay">Pay </button>
+                                                                    <% } %>
+                                                                <% } %>
                                                                 <% if(consultation.imagingpaid){ %>
-                                                                
-                                                                <button href="/imaging-invoice/<%= consultation._id %>" class="btn btn-primary imaging"><i class="ti-receipt"></i> Invoice </button>
+                                                                  <a href="/imaging-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
                                                                 <% } %>
                                                     </tr>
                                                     

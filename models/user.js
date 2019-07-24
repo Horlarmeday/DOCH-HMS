@@ -64,7 +64,7 @@ const UserSchema = new mongoose.Schema({
     addmitted: {type: Boolean, default: false},
     discharge: {type: Boolean, default: false},
     retainership: String,
-    retainershipname: String,
+    
     patientcode: String,
     hmoname: String,
     role: Number,

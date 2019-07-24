@@ -109,7 +109,7 @@
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>NHIS Patients</h5>
+                                    <h5>HMO Patients</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -134,20 +134,39 @@
                                             </thead>
                                             <tbody>
                                                 <% users.forEach((patient) => { %>
-                                                    <% if(patient.retainership){ %>
+                                                    <% if(patient.retainership === "Yes"){ %>
+                                                        <%
+                                                                var birthday = new Date(patient.birthday);
+                                                                var today = new Date();
+                                                                var age = today.getFullYear() - birthday.getFullYear();
+                                                                if (today.getMonth() < birthday.getMonth()) {
+                                                                    age;
+                                                                }
+                                                                if (today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()) {
+                                                                    age;
+                                                                }
+                                                            %>
                                                 <tr>
                                                         <td></td>
                                                         <td><%= patient.patientId %></td>
-                                                        <td> <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
-                                                        <td><%= patient.age %></td>
+                                                        <td> 
+                                                            <a href="/patient/<%= patient.id %>"><%= patient.firstname %> <%= patient.lastname %></a>
+                                                            <% if(patient.retainershipname){ %>
+                                                                <label class="label label-md bg-success"><%= patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
+                                                        <td><%= age %></td>
                                                         <td><%= patient.address %></td>
-                                                        <td>+234<%= patient.phone %></td>
+                                                        <td>+234<%= patient.phonenumber %></td>
                                                         <td><%= patient.email %></td>
-                                                        <% if(patient.addmitted === false){ %>
-                                                        <td><label class="label label-md bg-success">Not Admitted</label></td>
-                                                        <% }else{ %>
-                                                        <td><label class="label label-md bg-warning">Admitted</label></td>
+                                                        <% if(patient.addmitted && patient.discharge){ %>
+                                                        <td><label class="label label-md bg-success">Discharged</label></td>
+                                                        <% }else if(!patient.addmitted && !patient.discharge){ %>
+                                                        <td><label class="label label-md bg-inverse">Not Admitted</label></td>
+                                                        <% }else if(patient.addmitted && !patient.discharge){ %>
+                                                        <td><label class="label label-md bg-danger">Admitted</label></td>
                                                         <% } %>
+                                                        <td></td>
                                                 </tr>
                                                 <% } %>
                                                 <% }) %>
@@ -157,6 +176,97 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>HMO Lab Requests</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="order-table" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Patient Name</th>
+                                                        <th>Visit Reason</th>
+                                                        <th>Lab Tests</th>
+                                                        <th>RequestedBy</th>
+                                                        <th>Payment Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                        <% consultations.forEach((consultation)=>{ %>
+                                                            <%
+                                                            function getSum(total, num) {
+                                                                return total + num;
+                                                            }
+                                                            const totalLabPrice = consultation.labtestObject.map(price =>{
+                                                                const rPrice = price.price
+                                                                return rPrice;
+                                                                               
+                                                            })
+                                                            var totalAmount;
+                                                            if(totalLabPrice === undefined || totalLabPrice.length == 0){
+                                                                totalAmount = 0
+                                                            }else{
+                                                                totalAmount = totalLabPrice.reduce(getSum)
+                                                            }
+                                                            
+                                                        %>
+                                                            <% if(consultation.labstatus === true && consultation.labtestfinish === false && consultation.patient.retainership === "Yes"){ %>
+                                                        <tr >
+                                                            <td></td>
+                                                            <td><%= consultation.patient.patientId %></td>
+                                                            <td> 
+                                                                <a href="/patient/<%= consultation.patient._id %>" class="mr-2"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a>
+                                                                <% if(consultation.patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
+                                                                <% } %>
+                                                            </td>
+                                                            <td> <%= consultation.visit %></td>
+                                                           
+                                                            <td>
+                                                                    <% consultation.labtestObject.forEach((test)=>{ %>
+                                                                        <p style="font-weight: 700"><%= test.name %>
+                                                                        <span style="color: sandybrown">(&#8358;<%= test.price %>)</span>
+                                                                        </p>
+                                                                   <% }) %>
+                                                               
+                                                            </td>
+                                                            <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
+                                                            <% if(!consultation.labpaid){ %>
+                                                            <td><label class="label label-md bg-warning">Not paid</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-success">Cleared</label></td>
+                                                            <% } %>
+                                                           
+                                                            <td>
+                                                            <% if(!consultation.labpaid){ %>
+                                                                <button value="<%= totalAmount %>" id="pnotify-success" name="<%= consultation._id %>" type="button" class="btn btn-success labpay">Clear?</button>
+                                                                <% } %>   
+                                                                <% if(consultation.labpaid){ %>
+                                                                <a href="#" class="btn btn-default"><i class="ti-receipt"></i> Cleared </a>
+                                                                <% } %>  
+                                                            </td>
+                                                            <!-- <td><a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter3">Add Result</a></td> -->
+                                                        </tr>
+                                                        
+                                                        <% } %>
+                                                        <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                     </div>
                 </div>

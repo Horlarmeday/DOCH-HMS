@@ -222,6 +222,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         User.find({})
         .sort('-createdAt')
         .populate('registeredby')
+        .populate('retainershipname')
         .exec((err, users)=>{
             if(err) return next (err)
             var allUsers = []
@@ -240,6 +241,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                         }
                     })
                     .sort('-createdAt')
+                    .populate('retainershipname')
                     .populate('registeredby')
                     .exec((err, usersToday) => {
                         if(err) return next(err)
@@ -252,6 +254,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                         })
                         .sort('-createdAt')
                         .populate('registeredby')
+                        .populate('retainershipname')
                         .exec((err, userThisWeek)=>{
                             if(err) return next(err)
                             //Patients registered last 30 days
@@ -263,6 +266,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                             })
                             .sort('-createdAt')
                             .populate('registeredby')
+                            .populate('retainershipname')
                             .exec((err, usersLast30Days)=>{
             
                                 users.forEach((user) => {
@@ -278,6 +282,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                                     if (user.role == 8) {
                                         //All registered users
                                         allUsers.push({
+                                            'retainershipname': user.retainershipname,
                                             'registeredby': user.registeredby,
                                             'id': user._id,
                                             'patientId': user.patientId,
@@ -311,7 +316,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .populate('doctor')
             .populate('patient')
             .populate('labtestObject')
-            .deepPopulate('labtestObject.lab')
+            .deepPopulate(['labtestObject.lab', 'patient.retainershipname'])
             .exec((err, consultations)=>{
                 if(err) return next (err)
                 Appointment.find({}, (err, appointments)=>{
@@ -333,7 +338,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 .populate('patient')
                 .populate('doctor')
                 // .populate('drugsObject')
-                .deepPopulate('drugsObject.drugs')
+                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname'])
                 .exec((err, consultations)=>{
                     if(err) return next (err)
                     res.render('app/dashboard6', { appointments, users, consultations })
@@ -343,13 +348,16 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         })
     }else if(req.user.role === 6){
         //ACCOUNTS
-        User.find({}, (err, users)=>{
+        User.find({})
+        .sort('-createdAt')
+        .populate('retainershipname')
+        .exec((err, users)=>{
             if(err) return next (err)
             Consultation.find({})
             .sort('-created')
-            .deepPopulate(['drugsObject.drugs', 'drugsObject.paid'])
-            .populate('labtestObject')
             .populate('patient')
+            .deepPopulate(['drugsObject.drugs', 'drugsObject.paid', 'patient.retainershipname'])
+            .populate('labtestObject')
             .populate('imaging')
             .exec((err, consultations)=>{
                 if(err) return next (err)
@@ -358,7 +366,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     res.render('app/dashboard7', { users, consultations, appointments })
                 })
             })
-        }).sort('-createdAt')
+        })
     }else if(req.user.role === 10){
         //EMERGENCY
         User.find({})
@@ -426,13 +434,24 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         })
     }else if(req.user.role === 12){
         //NHIS
-        User.find({}, (err, users)=>{
+        User.find({})
+        .populate('retainershipname')
+        .exec((err, users)=>{
             if(err) return next (err)
             Appointment.find({})
             .populate('patient')
             .exec((err, appointments)=>{
                 if(err) return next (err)
-                res.render('app/dashboard10', { users, appointments })
+                Consultation.find({})
+                .sort('-created')
+                .populate('patient')
+                .populate('doctor')
+                .deepPopulate(['drugsObject.drugs', 'drugsObject.paid', 'patient.retainershipname'])
+                .populate('labtestObject')
+                .populate('imaging')
+                .exec((err, consultations)=>{
+                    res.render('app/dashboard10', { users, appointments, consultations })
+                })
             })
         })
     }else if(req.user.role === 13){
@@ -2711,6 +2730,7 @@ router.get('/laboratories', middleware.isLoggedIn, (req, res, next)=>{
 router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
     User.find({})
     .sort('-createdAt')
+    .populate('retainershipname')
     .populate('registeredby')
     .exec((err, users)=>{
         if(err) return next (err)
@@ -2727,6 +2747,7 @@ router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
             }
             if(user.role == 8){
                 allPatients.push({
+                    'retainershipname': user.retainershipname,
                     'registeredby': user.registeredby,
                     'gender': user.gender,
                     'createdby': user.createdby,

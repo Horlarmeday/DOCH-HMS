@@ -140,7 +140,12 @@
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
-                                                    <td> <a href="/patient/<%= consultation.patient._id %>"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
+                                                    <td>
+                                                         <a href="/patient/<%= consultation.patient._id %>" class="mr-2"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a>
+                                                         <% if(consultation.patient.retainershipname){ %>
+                                                            <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
+                                                        <% } %>
+                                                    </td>
                                                     <td> <%= consultation.visit %></td>
                                                     <td>
                                                         <% consultation.drugsObject.forEach((drug)=>{ %>

@@ -59,7 +59,7 @@ $(document).ready(function() {
         let modeofpayment = $('#modeofpayment1').val()
         console.log(modeofpayment)
         event.preventDefault()
-        var accept = window.confirm("Are you sure patient has paid?");
+        var accept = window.confirm(`Are you sure patient has paid N${regamount}?`);
         if(accept){
             $.ajax({
                 type: 'POST',
@@ -85,7 +85,7 @@ $(document).ready(function() {
         let labamount = $(this).attr('value')
         let modeofpayment = $('#modeofpayment2').val()
         event.preventDefault()
-        var confirm = window.confirm("Are you sure patient has paid?");
+        var confirm = window.confirm(`Are you sure patient has paid N${labamount}?`);
         if(confirm){
             $.ajax({
                 type: 'POST',
@@ -111,7 +111,7 @@ $(document).ready(function() {
         let imagingAmount = $(this).attr('value')
         let modeofpayment = $('#modeofpayment4').val()
         event.preventDefault()
-        var accepted = window.confirm("Are you sure patient has paid?");
+        var accepted = window.confirm(`Are you sure patient has paid N${imagingAmount}?`);
         if(accepted){
             $.ajax({
                 type: 'POST',
@@ -137,7 +137,7 @@ $(document).ready(function() {
         let amount = $(this).attr('value')
         let modeofpayment = $('#modeofpayment3').val()
         event.preventDefault()
-        var result = window.confirm("Are you sure patient has paid?");
+        var result = window.confirm(`Are you sure patient has paid N${amount}?`);
         if(result){
             $.ajax({
                 type: 'POST',
