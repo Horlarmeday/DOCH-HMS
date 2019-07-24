@@ -169,7 +169,12 @@
                                                    
                                                         <td></td>
                                                         <td><%= payment.patient.patientId %></td>
-                                                        <td> <a href="/patient/<%= patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                        <td>
+                                                             <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a>
+                                                             <% if(payment.patient.retainershipname){ %>
+                                                                <label class="label label-md bg-success"><%= payment.patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
                                                         <td><%= payment.amount %></td>
                                                         <td>
                                                             <% if(payment.services.length < 1){ %>
@@ -241,7 +246,12 @@
                                                        
                                                             <td></td>
                                                             <td><%= payment.patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                            <td>
+                                                                 <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a>
+                                                                 <% if(payment.patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= payment.patient.retainershipname.hmoname %></label>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= payment.amount %></td>
                                                             <td>
                                                                 <% if(payment.services.length < 1){ %>
@@ -313,7 +323,12 @@
                                                        
                                                             <td></td>
                                                             <td><%= payment.patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                            <td> 
+                                                                <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a>
+                                                                <% if(payment.patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= payment.patient.retainershipname.hmoname %></label>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= payment.amount %></td>
                                                             <td>
                                                                 <% if(payment.services.length < 1){ %>
@@ -385,7 +400,12 @@
                                                        
                                                             <td></td>
                                                             <td><%= payment.patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a></td>
+                                                            <td> 
+                                                                <a href="/patient/<%= payment.patient._id %>"><%= payment.patient.firstname %> <%= payment.patient.lastname %></a>
+                                                                <% if(payment.patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= payment.patient.retainershipname.hmoname %></label>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= payment.amount %></td>
                                                             <td>
                                                                 <% if(payment.services.length < 1){ %>

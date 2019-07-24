@@ -1,0 +1,152 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <!-- <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6>0</h6>
+                                                <p class="text-muted f-18 m-0"></p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                       
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-warning btn-icon"><i class="icofont icofont-notepad"></i></button>
+                                            <div class="card-contain">
+                                                <h6>0</h6>
+                                                <p class="text-muted f-18 m-0">Receipts</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="sale-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= supplies.length %></h6>
+                                                <p class="text-muted f-18 m-0">Supplies</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="resource-barchart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Visitor Chart End-->
+
+                        <!-- Product table Start -->
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-block">
+                                    <h5>Item Supplies History</h5>
+                                </div>
+                                <div class="card-block product-table">
+                                    <div class="table-responsive">
+                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr class="text-uppercase">
+                                                    <th>S/N</th>
+                                                    <th>Item</th>
+                                                    <th>Quantity</th>
+                                                    <!-- <th>Unit</th> -->
+                                                    <th>Unit Price</th>
+                                                    <th>Cost</th>
+                                                    <th>Serial Number</th>
+                                                    <th>Expiration</th>
+                                                    <th>Supply Date</th>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody>
+                                                <% supplies.forEach((supply)=>{ %>
+                                                   
+                                                <tr>
+                                                    <td></td>
+                                                    <td><%= supply.item %></td>
+                                                    <td><%= supply.quantity %> <%= supply.unit %></td>
+                                                 
+                                                    <td><%= supply.price %></td>
+                                                    <td><%= supply.cost %></td>
+                                                    <td><%= supply.serialnum %></td>
+                                                    <td><%= supply.expiration.toDateString() %></td>
+                                                    <td><%= supply.created.toDateString() %></td>
+                                                </tr>
+                                               
+                                                <% }) %>
+                                            </tbody>
+                                            
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Product table End -->
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../partials/footerCopy %>

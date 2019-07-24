@@ -10,7 +10,7 @@ const NurseReport = require('../models/nurseReport')
 const Theater = require('../models/theater')
 const Service = require('../models/service')
 const Paid = require('../models/paid')
-const Vendor = require('../models/vendor')
+const Supply = require('../models/supply')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
 const Discharge = require('../models/discharge')
@@ -509,8 +509,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 })
             })
         })
-    }
-    else if(req.user.role === 16){
+    }else if(req.user.role === 16){
         //ANC
         Consultation.find({})
         .sort('-created')
@@ -528,6 +527,27 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 User.find({}, (err, users)=>{
                     if(err) return next (err)
                     res.render('app/dashboard14', { consultations, appointments, users, appointmentIsEmpty })
+                })
+            })
+        })
+    }else if(req.user.role === 17){
+        //VENDOR
+        Supply.find({creator: req.user._id})
+        .sort('-created')
+        .exec((err, supplies)=>{
+            if(err) return next (err)
+            Appointment.find({})
+            .sort('created')
+            .populate('patient')
+            .exec((err, appointments)=>{
+                if(err) return next (err)
+                var supplyIsEmpty = true;
+                if (supplies.length > 0) {
+                    supplyIsEmpty = false;
+                }
+                User.find({}, (err, users)=>{
+                    if(err) return next (err)
+                    res.render('app/dashboard16', { supplies, appointments, users, supplyIsEmpty })
                 })
             })
         })
@@ -688,16 +708,33 @@ router.route('/add-vendor-supply')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        const vendor = new Vendor({
+        const supply = new Supply({
             name: req.body.name,
-            location: req.body.location
+            creator: req.user._id,
+            description: req.body.description,
+            price: req.body.price,
+            unit: req.body.unit,
+            quantity: req.body.quantity,
+            cost: req.body.cost,
+            expiration: req.body.expiration,
+            serialnum: req.body.snum,
         })
-        vendor.save((err)=>{
+        supply.save((err)=>{
             if(err) return next (err)
-            req.flash('success', 'Vendor was added successfully')
-            res.redirect('/add-vendor')
+            req.flash('success', 'Item was added successfully')
+            res.redirect('back')
         })
     })
+
+//VIEW SUPPLIES
+router.get('/vendor-supplies', middleware.isLoggedIn, (req, res, next)=>{
+    Supply.find({})
+        .populate('creator')
+        .exec((err, supplies)=>{
+            if(err) return next (err)
+            res.render('app/view/supplies', {supplies})
+        })
+})
 
 //ADD IMAGING INVESTIGATION
 router.route('/add-imaging-investigation')
@@ -2807,7 +2844,7 @@ router.get('/employees', middleware.isLoggedIn, (req, res, next)=>{
     User.find({}, (err, users)=>{
         if(err) return next (err)
         res.render('app/view/employees', {users})
-    })
+    }).sort('-createdAt')
 })
 
 //VIEW ALL DOCTORS
@@ -3222,9 +3259,9 @@ router.post('/decline-request', middleware.isLoggedIn, (req, res, next)=>{
 //ADD LAB ITEMS
 router.route('/add-lab-items')
    .get(middleware.isLoggedIn, (req, res, next)=>{
-       Vendor.find({}, (err, vendors)=>{
+       User.find({}, (err, users)=>{
         if(err) return next (err)
-        res.render('app/add/add_lab_item', {vendors})
+        res.render('app/add/add_lab_item', {users})
        })
    }) 
    .post(middleware.isLoggedIn, (req, res, next)=>{
@@ -3455,9 +3492,9 @@ router.route('/add-pharmacy-items')
    .get(middleware.isLoggedIn, (req, res, next)=>{
     Drug.find({}, (err, drugs)=>{
         if(err) return next (err)
-        Vendor.find({}, (err, vendors)=>{
+        User.find({}, (err, users)=>{
             if(err) return next (err)
-            res.render('app/add/add_pharmacy_item', {drugs, vendors})
+            res.render('app/add/add_pharmacy_item', {drugs, users})
         })
     })
    }) 

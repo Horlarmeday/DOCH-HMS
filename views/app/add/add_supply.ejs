@@ -57,25 +57,18 @@
                                     <div class="card-block">
                                         <div class="row">
                                             <div class="col-sm-12 mobile-inputs">
-                                                <form action="/add-pharmacy-items" method="POST">
+                                                <form method="POST">
                                                     <!-- <div class="form-group">
                                                         <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
                                                     </div> -->
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
-                                                            <label for="">Name of Vendor</label>
-                                                            <select name="name" class="form-control js-example-basic-single" required>
-                                                                <option selected disabled>Select</option>
-                                                                <% users.forEach((user)=>{  %>
-                                                                    <% if(user.role == 17){ %>
-                                                                    <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
-                                                                    <% } %>
-                                                                <% }) %>
-                                                            </select>
+                                                            <label for="">Item</label>
+                                                            <input type="text" name=" name" class="form-control" placeholder="Item Name" required>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <label for="">Item</label>
-                                                            <input type="text" name="item" class="form-control" placeholder="Item Name" required>
+                                                            <label for="">Description</label>
+                                                            <input type="text" name="description" class="form-control" placeholder="Optional" >
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">

@@ -110,6 +110,9 @@ const UserSchema = new mongoose.Schema({
     iocharts:[{
         type: mongoose.Schema.Types.ObjectId, ref: "Iochart"
     }],
+    supplies:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "Supply"
+    }],
     registeredby:{
         type: mongoose.Schema.Types.ObjectId, ref: "User"
     },

@@ -711,6 +711,44 @@
                                             </li>
                 
                                     <% } %>
+                                    <% if(currentUser.role == 1 || currentUser.role == 17 || currentUser.role == 11){ %>
+                                        <li class="pcoded-hasmenu">
+                                            <a href="javascript:void(0)">
+                                                <span class="pcoded-micon"><i class="fa fa-inbox"></i></span>
+                                                <span class="pcoded-mtext">Supplies</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                            <ul class="pcoded-submenu">
+                                                <% if(currentUser.role == 1 || currentUser.role == 11){ %>
+                                                <li class=" ">
+                                                    <a href="/vendor-supplies" data-i18n="nav.basic-components.alert">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Supplies</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                                <%  } %>
+                                                <% if(currentUser.role == 17){ %>
+                                                <li class=" ">
+                                                    <a href="/add-vendor-supply" data-i18n="nav.basic-components.breadcrumbs">
+                                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                        <span class="pcoded-mtext">Add Supply</span>
+                                                        <span class="pcoded-mcaret"></span>
+                                                    </a>
+                                                </li>
+                                                <%  } %>
+                                                <% if(currentUser.role == 17){ %>
+                                                <!-- <li class=" ">
+                                                        <a href="/upload-receipt" data-i18n="nav.basic-components.breadcrumbs">
+                                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                            <span class="pcoded-mtext">Upload Receipt</span>
+                                                            <span class="pcoded-mcaret"></span>
+                                                        </a>
+                                                    </li> -->
+                                                <%  } %>
+                                            </ul>
+                                        </li>
+                                    <%  } %>
                     <% if(currentUser.role == 6){ %>
                     <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.navigate.main">
@@ -893,31 +931,7 @@
                                     </li>
                                 </ul>
                             </li>
-                            <% if(currentUser.role == 1 || currentUser.role == 17){ %>
-                                <li class="pcoded-hasmenu">
-                                    <a href="javascript:void(0)">
-                                        <span class="pcoded-micon"><i class="fa fa-inbox"></i></span>
-                                        <span class="pcoded-mtext">Vendor Supply</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                    <ul class="pcoded-submenu">
-                                        <li class=" ">
-                                            <a href="/vendor-supply" data-i18n="nav.basic-components.alert">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Supplies</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                        <li class=" ">
-                                            <a href="/add-vendor-supply" data-i18n="nav.basic-components.breadcrumbs">
-                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                                <span class="pcoded-mtext">Add Supply</span>
-                                                <span class="pcoded-mcaret"></span>
-                                            </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            <%  } %>
+                            
 
                         <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.advance-components.main">

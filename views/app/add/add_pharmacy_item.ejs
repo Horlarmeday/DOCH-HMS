@@ -145,8 +145,10 @@
                                                             <label>Vendor</label>
                                                             <select name="vendor" class="form-control js-example-basic-single" required>
                                                                     <option selected disabled>Select</option>
-                                                                    <% vendors.forEach((vendor)=>{  %>
-                                                                        <option value="<%= vendor.name %>"><%= vendor.name %></option>
+                                                                    <% users.forEach((user)=>{  %>
+                                                                        <% if(user.role == 17){ %>
+                                                                        <option value="<%= user._id %>"><%= user.company %></option>
+                                                                    <% } %>
                                                                     <% }) %>
                                                             </select>
                                                             <!-- <input type="text" name="vendor" class="form-control" placeholder="Vendor" required> -->

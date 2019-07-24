@@ -74,7 +74,7 @@
                                             </thead>
                                             <tbody>
                                                 <% users.forEach((user)=>{ %>
-                                                    <% if(user.role !== 1 && user.role !==8){ %>
+                                                    <% if(user.role !== 1 && user.role !==8 && user.role !== 17){ %>
                                                 <tr>
                                                     <td></td>
                                                     <td><%= user.firstname %> <%= user.lastname %></td>
