@@ -2894,9 +2894,11 @@ router.get('/nurse-report-triage/:id', middleware.isLoggedIn, (req, res, next)=>
 //IMMUNIZATION
 router.route('/add-immunization/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
-        User.find({_id: req.params.id}, (err, user)=>{
+        User.findOne({_id: req.params.id})
+        .populate('appointments')
+        .exec((err, user)=>{
             if(err) return next(err)
-            Appointment.find({_id: user.appointments[user.appointments.length -1]._id}, (err, appointment)=>{
+            Appointment.findOne({_id: user.appointments[ user.appointments.length -1]._id}, (err, appointment)=>{
                 appointment.taken = true;
                 appointment.save((err)=>{
                     if(err) return next(err)
