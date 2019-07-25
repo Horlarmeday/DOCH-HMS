@@ -81,10 +81,14 @@ const ancSchema = new mongoose.Schema({
         oedema: String,
         comments: String,
         tcadate: {type: Date},
-        initial: String
+        initial: String,
+        datetaken: {type: Date, default: Date.now}
     }],
     clinicalnotes: [
-        String
+        {
+            clinicalnotes: String,
+            datetaken: {type: Date, default: Date.now}
+       }
     ],
     labtests:[{
         hb: String,
@@ -99,6 +103,7 @@ const ancSchema = new mongoose.Schema({
         serologydate: {type: Date},
         urinalysis: String,
         urinalysisdate: {type: Date},
+        datetaken: {type: Date, default: Date.now}
     }],
     treatment: [{
         tt1: {type: Date},
@@ -114,11 +119,13 @@ const ancSchema = new mongoose.Schema({
         malariaipt1: {type: Date},
         malariaipt1next: {type: Date},
         malariaipt2: {type: Date},
-        malariaipt2next: {type: Date}
+        malariaipt2next: {type: Date},
+        datetaken: {type: Date, default: Date.now}
     }],
     datesgiven:[{
         ironfolate: {type: Date},
-        multivitamin: {type: Date}
+        multivitamin: {type: Date},
+        datetaken: {type: Date, default: Date.now}
     }],
     taken: {type: Boolean, default: false},
     status: {type: Boolean, default: true},

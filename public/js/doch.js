@@ -428,6 +428,24 @@ $(document).ready(function() {
         $('.form-block3').show()
     });
 
+    //DISPLAYING EDD
+    $('#lmp').on('change', function () {
+        let lmp = $('#lmp').val()
+        let date = new Date(lmp)
+        let day = date.getDate() + 7
+        let month = date.getMonth()
+        if(month < 3){
+            month += 9
+        }else{
+            month -= 3
+        }
+        // var year = date.getFullYear()
+        date.setDate(day)
+        date.setMonth(month)
+        let newdate = date.toDateString()
+        $('#edd').val(newdate)
+    })
+
     ///////////////////////////////////////
     // FILTERING ON MEDICAL RECORDS PAE
     $('#btn-week').click(function () {

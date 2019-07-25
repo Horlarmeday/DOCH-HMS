@@ -4329,7 +4329,9 @@ router.post('/clinical-notes/:id', middleware.isLoggedIn, (req, res, next)=>{
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
             }
-            anc.clinicalnotes.push(req.body.clinicalnotes)
+            anc.clinicalnotes.push({
+                clinicalnotes: req.body.clinicalnotes
+            })
             
             anc.save((err)=>{
                 if(err) return next (err)
@@ -4382,7 +4384,7 @@ router.post('/treatment-and-immunization/:id', middleware.isLoggedIn, (req, res,
     .populate('ancs')
     .exec((err, user)=>{
         if(err) return next (err)
-        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+        ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
             if(err) {
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
@@ -4427,7 +4429,7 @@ router.post('/dates-given/:id', middleware.isLoggedIn, (req, res, next)=>{
     .populate('ancs')
     .exec((err, user)=>{
         if(err) return next (err)
-        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+        ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
             if(err) {
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
@@ -4550,6 +4552,27 @@ router.route('/post-natal-examination/:id')
             }) 
         }) 
     })
+
+//VIEW ANTENATAL RESULTS
+router.get('/antenatal-results/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+        .populate('ancs')
+        .sort('-created')
+        .exec((err, user)=>{
+            if(err) return next(err)
+            if(user.ancs.length < 1){
+                req.flash('error', 'Patient does not have previous ANC examinations')
+                return res.redirect('back')
+            }else{
+                ANC.findOne({patient: user._id})
+                    .exec((err, ancs)=>{
+                        
+                    if(err) return next(err)
+                    res.render('app/view/antenatal_results', {ancs, user})
+                })
+            }
+        })
+})
 
 //EMAIL USERS
 router.route('/email-users')
