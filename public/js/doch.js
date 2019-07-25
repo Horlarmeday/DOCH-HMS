@@ -508,6 +508,18 @@ $(document).ready(function() {
     })
 ////////////////////////////////////
 
+$('#quantityused').change(function () {
+    const quantityused = $('#quantityused').val()
+    const extra = $('#extra').val()
+    const price = $('#pharmPrice').val()
+    if(extra === undefined || extra === null)
+        {
+            extra = 0
+        }
+    const finalAmount = quantityused + extra
+    $('#totalPharm').val(price * finalAmount)
+})
+
 })
 
 function openPatientId() {
@@ -579,8 +591,10 @@ function getDrugInfo() {
     const drugId = $('#itemId').val()
     $.post('/get-drug-info', { drugId: drugId })
     .done(function(data) {
-        console.log(data)
+        //console.log(data)
         $('#drugAmount').val(data.price)
+        
+
         if(('rquantity' in data && data[1] === undefined)){
             $('#drugRemainder').val(data.rquantity)
         }else{
@@ -623,6 +637,19 @@ function dosageCalc(){
     let dosage = duration * frequency * time
     $('.quantity').val(dosage)
 }
+
+//egettin drugg price
+function getDrugPrice() {
+    const itemCode = $('#itemCode').val()
+    $.post('/get-pharmacy-price', { itemCode: itemCode })
+    .done(function(data) {
+        //console.log(data)
+        $('#pharmPrice').val(data)
+       
+    })
+}
+
+
 
 // function appointmentType() {
 //     let appointmenttype = $('#appointmenttype').val()

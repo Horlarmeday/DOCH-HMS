@@ -4244,18 +4244,18 @@ router.route('/create-ante-natal-patient/:id')
             })
         anc.save((err)=>{
             if(err) return next (err)
+            User.update(
+                {
+                    _id: anc.patient
+                },
+                {
+                    $push:{ ancs: anc._id}
+                },function(err, count){
+                    req.flash('success', 'Patient account was created successfully')
+                    res.redirect('/ante-natal/' + req.params.id)
+                }
+            )
         })
-        User.update(
-            {
-                _id: anc.patient
-            },
-            {
-                $push:{ ancs: anc._id}
-            },function(err, count){
-                req.flash('success', 'Patient account was created successfully')
-                res.redirect('/ante-natal/' + req.params.id)
-            }
-        )
     })
 
 //ANTENATAL
@@ -4267,7 +4267,6 @@ router.route('/ante-natal/:id')
             if(err) return next (err)
             Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
                 if (err) return next (err)
-                
                    appointment.taken = true;
                    appointment.save((err)=>{
                        if(err){
@@ -4416,12 +4415,35 @@ router.post('/treatment-and-immunization/:id', middleware.isLoggedIn, (req, res,
 })
 
 //THEATER ITEMS
-router.route('/theater-items')
+router.route('/theater-items/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
-
+        PharmacyItem.find({}, (err, drugs)=>{
+            Theater.findOne({_id: req.params.id})
+                .populate('patient')
+                .populate('theaterItems.drugs')
+                .exec((err, theater)=>{
+                    res.render('app/add/theater_items', {drugs, theater})
+                })
+        })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-
+        Theater.findOne({_id: req.params.id})
+            .populate('patient')
+            .exec((err, theater)=>{
+            theater.theaterItems.push({
+                drugs: req.body.drug,
+                approvedqty: req.body.approvedqty,
+                consumed: req.body.consumed,
+                price: req.body.price,
+                extraconsumed: req.body.extraconsumed,
+                totalamount: req.body.totalamount
+            })
+            theater.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Theater items used for patient was saved successfully')
+                res.redirect('back')
+            })
+        })
     })
 //DATES GIVEN
 router.post('/dates-given/:id', middleware.isLoggedIn, (req, res, next)=>{
@@ -4566,7 +4588,6 @@ router.get('/antenatal-results/:id', middleware.isLoggedIn, (req, res, next)=>{
             }else{
                 ANC.findOne({patient: user._id})
                     .exec((err, ancs)=>{
-                        
                     if(err) return next(err)
                     res.render('app/view/antenatal_results', {ancs, user})
                 })

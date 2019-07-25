@@ -148,4 +148,13 @@ router.post('/get-drug-price', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+router.post('/get-pharmacy-price', middleware.isLoggedIn, (req, res, next)=>{
+    const drugCode = req.body.itemCode
+    PharmacyItem.findOne({_id: drugCode})
+    .exec((err, drug)=>{
+        if(err) return next (err)
+        res.json(drug.sellprice)
+    })
+})
+
 module.exports = router

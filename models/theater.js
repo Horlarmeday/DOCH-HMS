@@ -18,6 +18,17 @@ const theaterSchema = new mongoose.Schema({
         duration: String,
         dateprescribed: Date
     }],
+    theaterItems:[
+        {
+            drugs: {type: mongoose.Schema.Types.ObjectId, ref: "PharmacyItem"},
+            approvedqty: Number,
+            consumed: Number,
+            price: Number,
+            extraconsumed: Number,
+            totalamount: Number,
+            created: {type: Date, default: Date.now}
+        }
+    ],
     surgery: String,
     indications: String,
     anaesthesia: String,

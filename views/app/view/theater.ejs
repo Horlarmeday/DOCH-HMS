@@ -73,6 +73,7 @@
                                                     <th>Findings</th>
                                                     <th>Procedure</th>
                                                     <th>Post-Operation Order</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -88,6 +89,7 @@
                                                     <td><%= theater.findings %></td>
                                                     <td><%= theater.procedure %></td>
                                                     <td><%= theater.order %></td>
+                                                    <td> <a class="btn btn-inverse" href="/theater-items/<%= theater._id %>">Add Theater Items</a></td>
                                                 </tr>
                                                 <% })  %>
                                             </tbody>

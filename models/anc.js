@@ -57,12 +57,12 @@ const ancSchema = new mongoose.Schema({
     },
     previouspregnancy:[
         {
-            year: Number,
+            year: String,
             deliveryplace: String,
             maturity: String,
             duration: String,
             delivery: String,
-            weight: Number,
+            weight: String,
             sex: String,
             fate: String,
             puerperium: String,
