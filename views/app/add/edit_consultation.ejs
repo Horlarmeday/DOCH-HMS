@@ -440,7 +440,7 @@
                                                             <th>Duration</th>
                                                             <th>Total to Dispense</th>
                                                             <th>Price</th>
-                                                            <th>Pharmacy</th>
+                                                            <th>PrescribedBy</th>
                                                             <th>Notes</th>
                                                             
                                                         </tr>
@@ -460,10 +460,10 @@
                                                             <td> <%= drug.duration %></td>
                                                             <td> <%= drug.quantity %></td>
                                                             <td> <%= drug.price %></td>
-                                                            <% if(drug.pharmacyfinish){ %>
-                                                                <td><label class="label label-md bg-success">Drugs Prescribed</label></td>
-                                                            <% }else{ %>
-                                                                <td><label class="label label-md bg-warning">Not Yet</label></td>
+                                                            <% if(drug.prescribedBy){ %>
+                                                                <td><%= drug.prescribedBy.firstname %> <%= drug.prescribedBy.lastname %></td>
+                                                            <%}else{ %>
+                                                               <td></td>
                                                             <% } %>
 
                                                             <td><%= drug.notes %></td>

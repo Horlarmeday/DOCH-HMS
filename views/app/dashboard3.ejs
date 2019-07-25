@@ -134,6 +134,7 @@
                                             </thead>
                                             <tbody>
                                                 <% allPatients.forEach((patient) => { %>
+                                                    <% if(patient.triages > 0){ %>
                                                 <tr style="cursor: pointer" onclick="window.location='/patient/<%= patient.id %>'">
                                                     <a href="/patient/<%= patient.id %>">
                                                         <td></td>
@@ -161,6 +162,7 @@
                                                     </a>
                                                 </tr>
                                                 
+                                                <% } %>
                                                 <% }) %>
                                             </tbody>
                                         </table>

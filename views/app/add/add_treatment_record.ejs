@@ -133,6 +133,7 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                    <% if(treatments.length > 0){ %>
                                                     <% treatments.forEach((treatment)=>{ %>
                                                     <tr>
                                                         <td></td>
@@ -146,6 +147,7 @@
                                                         
                                                     </tr>
                                                     <% }) %>
+                                                    <% } %>
                                                 </tbody>
                                             </table>
                                         </div>

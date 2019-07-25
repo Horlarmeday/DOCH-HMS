@@ -185,7 +185,9 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         })
     }else if(req.user.role === 7){
         //RECEPTIONIST
-        User.find({}, (err, users)=>{
+        User.find({})
+        .populate('triages')
+        .exec((err, users)=>{
             if(err) return next (err)
             var allPatients = []
             users.forEach((user)=>{
@@ -200,6 +202,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 if(user.role == 8){
                     allPatients.push({
+                        'triages': user.triages.length,
                         'id': user._id,
                         'patientId': user.patientId,
                         'firstname': user.firstname,
@@ -338,10 +341,13 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 .populate('patient')
                 .populate('doctor')
                 // .populate('drugsObject')
-                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname'])
+                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname', 'drugsObject.prescribedBy'])
                 .exec((err, consultations)=>{
                     if(err) return next (err)
-                    res.render('app/dashboard6', { appointments, users, consultations })
+                    PharmacyItem.find({})
+                        .exec((err, drugs)=>{
+                            res.render('app/dashboard6', { appointments, users, consultations, drugs })
+                        })
                 })
                 
             })
@@ -2532,10 +2538,11 @@ router.route('/consultation/:id')
 router.route('/edit-consultation/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         Consultation.findOne({ _id: req.params.id })
+        .sort('drugsObject')
         .populate('patient')
         .populate('labtestObject')
         .populate('imaging')
-        .deepPopulate(['drugsObject.drugs', 'labtestObject.lab'])
+        .deepPopulate(['drugsObject.drugs', 'labtestObject.lab', 'drugsObject.prescribedBy'])
         .exec((err, consultation)=>{
             PharmacyItem.find({}, (err, drugs)=>{
                 Lab.find({})
@@ -2557,7 +2564,7 @@ router.route('/edit-consultation/:id')
                         
                         
                         .exec((err, user)=>{
-                            console.log(user)
+                            //console.log(user)
                             res.render('app/add/edit_consultation', {consultation, drugs, labs, imaging, alltests, user})
                         })
                     })
@@ -2618,6 +2625,8 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
         })
 })
 
+
+
 //ADD PATIENT PRESCRIPTION
 router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
     User.findOne({ _id: req.params.id })
@@ -2650,7 +2659,8 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                             notes: req.body.notes,
                             direction: req.body.direction,
                             duration: req.body.duration,
-                            price: req.body.price
+                            price: req.body.price,
+                            prescribedBy: req.user._id,
                         })
                         theconsultation.prescriptionDate = Date.now()
                         theconsultation.pharmacystatus = true;
@@ -2694,6 +2704,17 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
             })
         })
 })
+
+//Add Pharmacy Prescription
+router.get('/pharmacy-prescription/:id', middleware.isLoggedIn, (req, res, next)=>[
+    User.findOne({_id: req.params.id})
+        .exec((err, user)=>{
+            PharmacyItem.find({})
+                .exec((err, drugs)=>{
+                    res.render('app/add/pharmacy_prescription', {drugs, user})
+                })
+        })
+])
 
 
 //DRUGS PRESCRIBED BY PHARMACY
@@ -4447,37 +4468,41 @@ router.route('/patient-delivery-information/:id')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
-            if(err) {
-                req.flash('error', 'Patient ANC record cannot be found')
-                return res.redirect('back')
-            }
-            anc.delivery = {
-                modeofdelivery: req.body.modeofdelivery,
-                dateofdelivery: req.body.dateofdelivery,
-                duration: req.body.duration,
-                conditionofmother: req.body.conditionofmother,
-                onemin: req.body.onemin,
-                tenmin: req.body.tenmin,
-                fivemin: req.body.fivemin,
-                birthweight: req.body.birthweight,
-                sex: req.body.sex,
-                conditionofbaby: req.body.conditionofbaby,
-                placeofdelivery: req.body.placeofdelivery,
-                conducted: req.body.conducted,
-                vitaminAmother: req.body.vitaminAmother,
-                vitaminAbaby: req.body.vitaminAbaby,
-                immunizationdate: req.body.immunizationdate,
-                bcg: req.body.bcg,
-                opvo: req.body.opvo,
-                notifieddate: req.body.notifieddate
-            }
-            anc.save((err)=>{
-                if(err) return next (err)
-                req.flash('success', 'Patient Delivery Info was saved successfully')
-                res.redirect('/all-antenatal')
+        User.findOne({_id: req.params.id})
+            .populate('ancs')
+            .exec((err, user)=>{
+                ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
+                    if(err) {
+                        req.flash('error', 'Patient ANC record cannot be found')
+                        return res.redirect('back')
+                    }
+                    anc.delivery = {
+                        modeofdelivery: req.body.modeofdelivery,
+                        dateofdelivery: req.body.dateofdelivery,
+                        duration: req.body.duration,
+                        conditionofmother: req.body.conditionofmother,
+                        onemin: req.body.onemin,
+                        tenmin: req.body.tenmin,
+                        fivemin: req.body.fivemin,
+                        birthweight: req.body.birthweight,
+                        sex: req.body.sex,
+                        conditionofbaby: req.body.conditionofbaby,
+                        placeofdelivery: req.body.placeofdelivery,
+                        conducted: req.body.conducted,
+                        vitaminAmother: req.body.vitaminAmother,
+                        vitaminAbaby: req.body.vitaminAbaby,
+                        immunizationdate: req.body.immunizationdate,
+                        bcg: req.body.bcg,
+                        opvo: req.body.opvo,
+                        notifieddate: req.body.notifieddate
+                    }
+                    anc.save((err)=>{
+                        if(err) return next (err)
+                        req.flash('success', 'Patient Delivery Info was saved successfully')
+                        res.redirect('/all-antenatal')
+                    })
+                }) 
             })
-        }) 
     })
 
 //POST NATAL EXAMINATION
@@ -4489,36 +4514,40 @@ router.route('/post-natal-examination/:id')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
-            if(err) {
-                req.flash('error', 'Patient ANC record cannot be found')
-                return res.redirect('back')
-            }
-            anc.postnatal = {
-                bp: req.body.bp,
-                temp: req.body.temp,
-                pulse: req.body.pulse,
-                respiration: req.body.respiration,
-                generalcondition: req.body.generalcondition,
-                involutionofuterus: req.body.involutionofuterus,
-                lochia: req.body.lochia,
-                episotomy: req.body.episotomy,
-                pelvicexam: req.body.pelvicexam,
-                smeardate: req.body.smeardate,
-                result: req.body.result,
-                hb: req.body.hb,
-                babycondition: req.body.babycondition,
-                wt: req.body.wt,
-                reflexes: req.body.reflexes,
-                feeding: req.body.feeding,
-                umbilicalcord: req.body.umbilicalcord,
-            }
-            anc.status = false;
-            anc.save((err)=>{
-                if(err) return next (err)
-                req.flash('success', 'Patient Delivery Info was saved successfully')
-                res.redirect('/all-antenatal')
-            })
+        User.findOne({_id: req.params.id})
+            .populate('ancs')
+            .exec((err, user)=>{
+            ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
+                if(err) {
+                    req.flash('error', 'Patient ANC record cannot be found')
+                    return res.redirect('back')
+                }
+                anc.postnatal = {
+                    bp: req.body.bp,
+                    temp: req.body.temp,
+                    pulse: req.body.pulse,
+                    respiration: req.body.respiration,
+                    generalcondition: req.body.generalcondition,
+                    involutionofuterus: req.body.involutionofuterus,
+                    lochia: req.body.lochia,
+                    episotomy: req.body.episotomy,
+                    pelvicexam: req.body.pelvicexam,
+                    smeardate: req.body.smeardate,
+                    result: req.body.result,
+                    hb: req.body.hb,
+                    babycondition: req.body.babycondition,
+                    wt: req.body.wt,
+                    reflexes: req.body.reflexes,
+                    feeding: req.body.feeding,
+                    umbilicalcord: req.body.umbilicalcord,
+                }
+                anc.status = false;
+                anc.save((err)=>{
+                    if(err) return next (err)
+                    req.flash('success', 'Patient Delivery Info was saved successfully')
+                    res.redirect('/all-antenatal')
+                })
+            }) 
         }) 
     })
 
