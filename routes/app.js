@@ -2000,7 +2000,8 @@ router.route('/ward-inventory')
             item: req.body.item,
             quantity: req.body.quantity,
             consumed: req.body.consumed,
-            price: req.body.price,
+            // price: req.body.price,
+            comments: req.body.comments,
             status: true
         })
         wardinventory.save((err)=>{
@@ -2893,8 +2894,10 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     .populate('patient')
     .populate('imaging')
     .populate('labtestObject')
+   
+
     // .populate('drugsObject')
-    .deepPopulate('drugsObject.drugs')
+    .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy'])
     .exec((err, consultations)=>{
         if(err) return next (err)
         res.render('app/view/consultations', { consultations })

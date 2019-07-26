@@ -62,18 +62,28 @@
                                         <table id="simpletable" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>S/N</th>
-                                                    <th>Patient ID</th>
-                                                    <th>Name</th>
-                                                    <th>Visit Reason</th>
-                                                    <th>Diagnosis</th>
-                                                    <th>Drugs Prescribed</th>
-                                                    
-                                                    <th>Lab Tests</th>
-                                                    <th>Lab Result</th>
-                                                    <th>Imaging</th>
+                                                    <th rowspan="2">S/N</th>
+                                                    <th rowspan="2">Patient ID</th>
+                                                    <th rowspan="2">Name</th>
+                                                    <th rowspan="2">Visit Reason</th>
+                                                    <th rowspan="2">Diagnosis</th>
+                                                    <th rowspan="2">Lab Tests</th>
+                                                    <th rowspan="2">Lab Result</th>
+                                                    <th rowspan="2">Imaging</th>
                                                     <!-- <th>Status</th> -->
-                                                    <th>Action</th>
+                                                    <th rowspan="2">Action</th>
+                                                    <th colspan="9">Drugs Prescribed</th>
+                                                    <tr>
+                                                        <th>Drugs</th>
+                                                        <th>Starting Date</th>
+                                                        <th  >Unit Dose</th>
+                                                        <th  >Frequency</th>
+                                                        <th  >Duration</th>
+                                                        <th  >Total to Dispense</th>
+                                                        <th  >Unit Price</th>
+                                                        <th>PrescribedBy</th>
+                                                        <th  >Notes</th>
+                                                    </tr>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -84,28 +94,9 @@
                                                     <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
                                                     <td> <%= consultation.visit %></td>
                                                     <td> <%= consultation.diagnosis %></td>
-                                                    <% if(consultation.pharmacystatus){ %>
-                                                    <td>  
-                                                        <% consultation.drugsObject.forEach((drug)=>{ %>
-                                                            <p style="font-weight: 700"><%= drug.drugs.name %>   
-                                                            </p>
-                                                            <p> 
-                                                                <small> <a class="drugger"  href="#" > 
-                                                                Starting Date: <%= drug.startingdate.toLocaleDateString() %></a></small><br>
-                                                                <small> <a class="drugger"  href="#" > 
-                                                                Quantity: <%= drug.quantity %></a></small><br>
-                                                                <small> <a class="drugger"  href="#" > 
-                                                                Dosage: <%= drug.direction %> <%= drug.dose %> in <%= drug.time %></a></small><br>
-                                                                <small> <a class="drugger"  href="#" > 
-                                                                Unit: <%= drug.medicineunit %> <%= drug.unit %></a></small><br>
-                                                                <small> <a class="drugger"  href="#" > 
-                                                                Notes: <%= drug.medicineunit %> <%= drug.notes %></a></small>
-                                                            </p>
-                                                        <% }) %>
-                                                    </td>
-                                                    <% }else{ %>
-                                                        <td> <i style="color: red" class="ti-alert"></i> No Prescribed Drugs yet</td>
-                                                    <% } %>
+                                                    
+                                                    
+                                                   
                                                     
                                                     <% if(consultation.labstatus){ %>
                                                     <td> 
@@ -116,21 +107,74 @@
                                                     <% }else{ %>
                                                         <td> <i style="color: red" class="ti-alert"></i> No Lab test required yet</td>
                                                     <% } %>
+
                                                     <% if(consultation.labtestfinish){ %>
                                                         <td> <a href="/lab-result/<%= consultation._id %>">View Result</a></td>
                                                     <% }else{  %>
                                                        <td> <i style="color: red" class="ti-alert"></i> No Result Yet</td>
                                                     <% } %>
+
                                                     <% if(consultation.imagingstatus){ %>
                                                         <td>
-                                                                <% consultation.imaging.forEach((image)=>{ %>
-                                                                    <p style="font-weight: 700"><%= image.name %></p>
-                                                               <% }) %>
+                                                            <% consultation.imaging.forEach((image)=>{ %>
+                                                                <p style="font-weight: 700"><%= image.name %></p>
+                                                            <% }) %>
                                                         </td>
                                                     <% }else{ %>
                                                         <td> <i style="color: red" class="ti-alert"></i> No Imaging test required yet</td>
                                                     <% } %>
+
                                                     <td><a href="/edit-consultation/<%= consultation._id %>" class="btn btn-info">Consult</a></td>
+                                                    <% if(consultation.pharmacystatus){ %>
+                                                    <td colspan="7">
+                                                        <% consultation.drugsObject.forEach((drug)=>{ %>
+                                                    <tr>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                                <th></th>
+                                                          
+                                                               
+                                                                <td style="font-weight: 700; color: green"><%= drug.drugs.name %>   
+                                                                </td> 
+                                                                <td>
+                                                                    <%= drug.startingdate.toLocaleDateString() %>
+                                                                </td>
+                                                                <td>
+                                                                    <%= drug.time %>
+                                                                </td>
+                                                             
+                                                                <td>
+                                                                        <%= drug.direction %>
+                                                                </td>
+                                                                <td>
+                                                                        <%= drug.duration %>
+                                                                </td>
+                                                                <td>
+                                                                        <%= drug.quantity %>
+                                                                </td>
+                                                                <td>
+                                                                        <%= drug.price %>
+                                                                </td>
+                                                                <% if(drug.prescribedBy){ %>
+
+                                                                    <td><%= drug.prescribedBy.firstname %> <%= drug.prescribedBy.lastname %></td>
+                                                                <%}else{ %>
+                                                                   <td></td>
+                                                                <% } %>
+                                                                <td><%= drug.notes %></td>
+                                                   
+                                                    </tr>
+                                                    <% }) %>
+                                                </td> 
+                                                <% }else{ %>
+                                                    <td> <i style="color: red" class="ti-alert"></i> No Prescribed Drugs yet</td>
+                                                <% } %> 
                              
                                                 </tr>
                                                 <% }) %>
