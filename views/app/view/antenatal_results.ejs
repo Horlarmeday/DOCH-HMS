@@ -193,18 +193,49 @@
                                                     <tr>
                                                            
                                                         <td></td>
+
                                                         <td><%= anc.hb %></td>
+                                                        <% if(anc.hbdate){ %>
                                                         <td><%= anc.hbdate.toDateString() %></td>
+                                                        <% }else{ %>
+                                                        <td></td>
+                                                        <% } %>
+
                                                         <td><%= anc.bloodgroup %></td>
+                                                        <% if(anc.bloodgroupdate){ %>
                                                         <td><%= anc.bloodgroupdate.toDateString() %></td>
+                                                        <% }else{ %>
+                                                        <td></td>
+                                                        <% } %>
+
                                                         <td><%= anc.mps %></td>
+                                                        <% if(anc.mpsdate){ %>
                                                         <td><%= anc.mpsdate.toDateString() %></td>
+                                                        <% }else{ %>
+                                                        <td></td>
+                                                        <% } %>
+
                                                         <td><%= anc.vdrl %></td>
+                                                        <% if(anc.vdrldate){ %>
                                                         <td><%= anc.vdrldate.toDateString() %></td>
+                                                        <% }else{ %>
+                                                        <td></td>
+                                                        <% } %>
+
                                                         <td><%= anc.serology %></td>
+                                                        <% if(anc.serologydate){ %>
                                                         <td><%= anc.serologydate.toDateString() %></td>
+                                                        <% }else{ %>
+                                                        <td></td>
+                                                        <% } %>
+
                                                         <td><%= anc.urinalysis %></td>
+                                                        <% if(anc.urinalysisdate){ %>
                                                         <td><%= anc.urinalysisdate.toDateString() %></td>
+                                                        <% }else{ %>
+                                                        <td></td>
+                                                        <% } %>
+
                                                         <% if(anc.datetaken){ %>
                                                         <td><%= anc.datetaken.toLocaleDateString('en-us') %></td>
                                                         <% }else{ %>
@@ -260,20 +291,91 @@
                                                             
                                                         <tr>
                                                             <td></td>
+
+                                                            <% if(anc.tt1){ %>
                                                             <td><%= anc.tt1.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt1next){ %>
                                                             <td><%= anc.tt1next.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt2){ %>
                                                             <td><%= anc.tt2.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt2next){ %>
                                                             <td><%= anc.tt2next.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt3){ %>
                                                             <td><%= anc.tt3.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt3next){ %>
                                                             <td><%= anc.tt3next.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt4){ %>
                                                             <td><%= anc.tt4.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt4next){ %>
                                                             <td><%= anc.tt4next.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt5){ %>
                                                             <td><%= anc.tt5.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.tt5next){ %>
                                                             <td><%= anc.tt5next.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.malariaipt1){ %>
                                                             <td><%= anc.malariaipt1.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.malariaipt1next){ %>
                                                             <td><%= anc.malariaipt1next.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.malariaipt2){ %>
                                                             <td><%= anc.malariaipt2.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
+                                                            <% if(anc.malariaipt2next){ %>
                                                             <td><%= anc.malariaipt2next.toDateString() %></td>
+                                                            <% }else{ %>
+                                                            <td></td>
+                                                            <% } %>
+
                                                             <% if(anc.datetaken){ %>
                                                             <td><%= anc.datetaken.toLocaleDateString('en-us') %></td>
                                                             <% }else{ %>
@@ -317,8 +419,19 @@
                                                             <tr>
                                                                    
                                                                 <td></td>
+
+                                                                <% if(anc.ironfolate){ %>
                                                                 <td><%= anc.ironfolate.toDateString() %></td>
+                                                                <% }else{ %>
+                                                                <td></td>
+                                                                <% } %>
+
+                                                                <% if(anc.ironfolate){ %>
                                                                 <td><%= anc.multivitamin.toDateString() %></td>
+                                                                <% }else{ %>
+                                                                <td></td>
+                                                                <% } %>
+
                                                                 <% if(anc.datetaken){ %>
                                                                 <td><%= anc.datetaken.toLocaleDateString('en-us') %></td>
                                                                 <% }else{ %>
