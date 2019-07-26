@@ -189,22 +189,22 @@
                                                 </thead>
                                                 <tbody>
                                                     <% if(ancs.labtests.length > 0){ %>
-                                                    <% ancs.presentpregnancy.forEach((anc)=>{ %>
+                                                    <% ancs.labtests.forEach((anc)=>{ %>
                                                     <tr>
                                                            
                                                         <td></td>
                                                         <td><%= anc.hb %></td>
-                                                        <td><%= anc.hb.toDateString() %></td>
+                                                        <td><%= anc.hbdate.toDateString() %></td>
                                                         <td><%= anc.bloodgroup %></td>
-                                                        <td><%= anc.bloodgroup.toDateString() %></td>
+                                                        <td><%= anc.bloodgroupdate.toDateString() %></td>
                                                         <td><%= anc.mps %></td>
-                                                        <td><%= anc.mps.toDateString() %></td>
+                                                        <td><%= anc.mpsdate.toDateString() %></td>
                                                         <td><%= anc.vdrl %></td>
-                                                        <td><%= anc.vdrl.toDateString() %></td>
+                                                        <td><%= anc.vdrldate.toDateString() %></td>
                                                         <td><%= anc.serology %></td>
-                                                        <td><%= anc.serology.toDateString() %></td>
+                                                        <td><%= anc.serologydate.toDateString() %></td>
                                                         <td><%= anc.urinalysis %></td>
-                                                        <td><%= anc.urinalysis.toDateString() %></td>
+                                                        <td><%= anc.urinalysisdate.toDateString() %></td>
                                                         <% if(anc.datetaken){ %>
                                                         <td><%= anc.datetaken.toLocaleDateString('en-us') %></td>
                                                         <% }else{ %>

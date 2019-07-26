@@ -4591,6 +4591,7 @@ router.get('/antenatal-results/:id', middleware.isLoggedIn, (req, res, next)=>{
             }else{
                 ANC.findOne({patient: user._id})
                     .exec((err, ancs)=>{
+                        console.log(ancs)
                     if(err) return next(err)
                     res.render('app/view/antenatal_results', {ancs, user})
                 })
