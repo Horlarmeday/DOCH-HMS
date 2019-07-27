@@ -162,10 +162,12 @@
                                                     <th>Age</th>
                                                     <th>Address</th>
                                                     <th>Phone</th>
-                                                    <th>Email</th>
+                                                   
+                                                    <th>Payment Status</th>
                                                     <th>Status</th>
                                                     <th>Created</th>
                                                     <th>Registred By</th>
+                                                    <th>Action</th>
                                                     <th>Issue Card</th>
                                                 </tr>
                                             </thead>
@@ -196,12 +198,19 @@
                                                         <td><%= age %></td>
                                                         <td><%= patient.address %></td>
                                                         <td>+234<%= patient.phonenumber %></td>
-                                                        <td><%= patient.email %></td>
+                                                       
                                                         <% if(patient.account.paid){ %>
                                                         <td><label class="label label-md bg-success">Paid</label></td>
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-warning">Not Paid</label></td>
                                                         <% } %>
+                                                        <% if(patient.addmitted && patient.discharge){ %>
+                                                            <td><label class="label label-md bg-success">Discharged</label></td>
+                                                            <% }else if(!patient.addmitted && !patient.discharge){ %>
+                                                            <td><label class="label label-md bg-inverse">Not Admitted</label></td>
+                                                            <% }else if(patient.addmitted && !patient.discharge){ %>
+                                                            <td><label class="label label-md bg-danger">Admitted</label></td>
+                                                            <% } %>
                                                         <td><%= patient.createdAt.toLocaleString() %></td>
                                                         <% if(patient.registeredby){ %>
 
@@ -209,6 +218,11 @@
                                                         <% }else{ %>
                                                             <td></td>
                                                         <% }  %>
+
+                                                        <td><a class="btn btn-success" href="/visit/<%= patient.id %>"><i class="ti-shift-right"></i> Check In</a>
+                                                            <a class="btn btn-info" href="/add-appointment/<%= patient.id %>"><i class="ti-shift-right"></i> Add Appointment</a>
+                                                        </td>
+
                                                         <% if(patient.account.paid){ %>
                                                         <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                         <% }else{ %>
@@ -251,10 +265,11 @@
                                                         <th>Age</th>
                                                         <th>Address</th>
                                                         <th>Phone</th>
-                                                        <th>Email</th>
+                                                        <th>Payment Status</th>
                                                         <th>Status</th>
                                                         <th>Created</th>
                                                         <th>Registred By</th>
+                                                        <th>Action</th>
                                                         <th>Issue Card</th>
                                                     </tr>
                                                 </thead>
@@ -285,12 +300,21 @@
                                                             <td><%= age %></td>
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phonenumber %></td>
-                                                            <td><%= patient.email %></td>
+                                                           
                                                             <% if(patient.account.paid){ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>
                                                             <% }else{ %>
                                                             <td><label class="label label-md bg-warning">Not Paid</label></td>
                                                             <% } %>
+
+                                                            <% if(patient.addmitted && patient.discharge){ %>
+                                                            <td><label class="label label-md bg-success">Discharged</label></td>
+                                                            <% }else if(!patient.addmitted && !patient.discharge){ %>
+                                                            <td><label class="label label-md bg-inverse">Not Admitted</label></td>
+                                                            <% }else if(patient.addmitted && !patient.discharge){ %>
+                                                            <td><label class="label label-md bg-danger">Admitted</label></td>
+                                                            <% } %>
+
                                                             <td><%= patient.createdAt.toLocaleString() %></td>
                                                             <% if(patient.registeredby){ %>
     
@@ -298,6 +322,9 @@
                                                             <% }else{ %>
                                                                 <td></td>
                                                             <% }  %>
+                                                            <td><a class="btn btn-success" href="/visit/<%= patient.id %>"><i class="ti-shift-right"></i> Check In</a>
+                                                                <a class="btn btn-info" href="/add-appointment/<%= patient.id %>"><i class="ti-shift-right"></i> Add Appointment</a>
+                                                            </td>
                                                             <% if(patient.account.paid){ %>
                                                             <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                             <% }else{ %>
@@ -340,10 +367,12 @@
                                                         <th>Age</th>
                                                         <th>Address</th>
                                                         <th>Phone</th>
-                                                        <th>Email</th>
+                                                    
+                                                        <th>Payment Status</th>
                                                         <th>Status</th>
                                                         <th>Created</th>
                                                         <th>Registred By</th>
+                                                        <th>Action</th>
                                                         <th>Issue Card</th>
                                                     </tr>
                                                 </thead>
@@ -376,12 +405,19 @@
                                                             <td><%= age %></td>
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phonenumber %></td>
-                                                            <td><%= patient.email %></td>
+                                                           
                                                             <% if(patient.account.paid){ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>
                                                             <% }else{ %>
                                                             <td><label class="label label-md bg-warning">Not Paid</label></td>
                                                             <% } %>
+                                                            <% if(patient.addmitted && patient.discharge){ %>
+                                                                <td><label class="label label-md bg-success">Discharged</label></td>
+                                                                <% }else if(!patient.addmitted && !patient.discharge){ %>
+                                                                <td><label class="label label-md bg-inverse">Not Admitted</label></td>
+                                                                <% }else if(patient.addmitted && !patient.discharge){ %>
+                                                                <td><label class="label label-md bg-danger">Admitted</label></td>
+                                                                <% } %>
                                                             <td><%= patient.createdAt.toLocaleString() %></td>
                                                             <% if(patient.registeredby){ %>
     
@@ -389,6 +425,9 @@
                                                             <% }else{ %>
                                                                 <td></td>
                                                             <% }  %>
+                                                            <td><a class="btn btn-success" href="/visit/<%= patient.id %>"><i class="ti-shift-right"></i> Check In</a>
+                                                                <a class="btn btn-info" href="/add-appointment/<%= patient.id %>"><i class="ti-shift-right"></i> Add Appointment</a>
+                                                            </td>
                                                             <% if(patient.account.paid){ %>
                                                             <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                             <% }else{ %>
@@ -431,10 +470,12 @@
                                                         <th>Age</th>
                                                         <th>Address</th>
                                                         <th>Phone</th>
-                                                        <th>Email</th>
+                                                       
+                                                        <th>Payment Status</th>
                                                         <th>Status</th>
                                                         <th>Created</th>
                                                         <th>Registred By</th>
+                                                        <th>Action</th>
                                                         <th>Issue Card</th>
                                                     </tr>
                                                 </thead>
@@ -454,12 +495,19 @@
                                                             <td><%= patient.age %></td>
                                                             <td><%= patient.address %></td>
                                                             <td>+234<%= patient.phone %></td>
-                                                            <td><%= patient.email %></td>
+                                                           
                                                             <% if(patient.paid){ %>
                                                             <td><label class="label label-md bg-success">Paid</label></td>
                                                             <% }else{ %>
                                                             <td><label class="label label-md bg-warning">Not Paid</label></td>
                                                             <% } %>
+                                                            <% if(patient.addmitted && patient.discharge){ %>
+                                                                <td><label class="label label-md bg-success">Discharged</label></td>
+                                                                <% }else if(!patient.addmitted && !patient.discharge){ %>
+                                                                <td><label class="label label-md bg-inverse">Not Admitted</label></td>
+                                                                <% }else if(patient.addmitted && !patient.discharge){ %>
+                                                                <td><label class="label label-md bg-danger">Admitted</label></td>
+                                                                <% } %>
                                                             <td><%= patient.created %></td>
                                                             <% if(patient.registeredby){ %>
     
@@ -467,6 +515,9 @@
                                                             <% }else{ %>
                                                                 <td></td>
                                                             <% }  %>
+                                                            <td><a class="btn btn-success" href="/visit/<%= patient.id %>"><i class="ti-shift-right"></i> Check In</a>
+                                                                <a class="btn btn-info" href="/add-appointment/<%= patient.id %>"><i class="ti-shift-right"></i> Add Appointment</a>
+                                                            </td>
                                                             <% if(patient.paid){ %>
                                                             <td><a target="_blank" class="btn btn-success" href="/issue-card/<%= patient.id %>">Issue</a> </td>
                                                             <% }else{ %>

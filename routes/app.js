@@ -189,36 +189,43 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         .populate('triages')
         .exec((err, users)=>{
             if(err) return next (err)
-            var allPatients = []
-            users.forEach((user)=>{
-                var birthday = new Date(user.birthday)
-                var today = new Date()
-                var age = today.getFullYear() - birthday.getFullYear()
-                if(today.getMonth() < birthday.getMonth()){
-                    age
-                }
-                if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
-                    age
-                }
-                if(user.role == 8){
-                    allPatients.push({
-                        'triages': user.triages.length,
-                        'id': user._id,
-                        'patientId': user.patientId,
-                        'firstname': user.firstname,
-                        'paid': user.account.paid,
-                        'lastname': user.lastname,
-                        'address': user.address,
-                        'phone': user.phonenumber,
-                        'email': user.email,
-                        'addmitted': user.addmitted,
-                        'discharge': user.discharge,
-                        'status': user.status,
-                        'age': age
+            Appointment.find({})
+                .sort('-created')
+                .populate('patient')
+                .populate('doctor')
+                .exec((err, appointments)=>{
+                    if(err) return next (err)
+                    var allPatients = []
+                    users.forEach((user)=>{
+                        var birthday = new Date(user.birthday)
+                        var today = new Date()
+                        var age = today.getFullYear() - birthday.getFullYear()
+                        if(today.getMonth() < birthday.getMonth()){
+                            age
+                        }
+                        if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                            age
+                        }
+                        if(user.role == 8){
+                            allPatients.push({
+                                'triages': user.triages.length,
+                                'id': user._id,
+                                'patientId': user.patientId,
+                                'firstname': user.firstname,
+                                'paid': user.account.paid,
+                                'lastname': user.lastname,
+                                'address': user.address,
+                                'phone': user.phonenumber,
+                                'email': user.email,
+                                'addmitted': user.addmitted,
+                                'discharge': user.discharge,
+                                'status': user.status,
+                                'age': age
+                            })
+                        }
                     })
-                }
-            })
-            res.render('app/dashboard3', { allPatients })
+                    res.render('app/dashboard3', { allPatients, appointments })
+                })
         })
     }else if(req.user.role === 9){
         //MEDICAL RECORDS
@@ -4481,6 +4488,11 @@ router.get('/all-antenatal', middleware.isLoggedIn, (req, res, next)=>{
             if(err) return next (err)
             res.render('app/view/antenatals', {ancs})
         })
+})
+
+//
+router.get('/new-invoice', middleware.isLoggedIn, (req, res, next)=>{
+    res.render('app/view/newinvoice')
 })
 
 //DELIVERY
