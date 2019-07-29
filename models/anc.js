@@ -1,5 +1,5 @@
 const mongoose =  require('mongoose');
-
+const deepPopulate = require('mongoose-deep-populate')(mongoose)
 
 const ancSchema = new mongoose.Schema({
     doctor: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
@@ -16,6 +16,8 @@ const ancSchema = new mongoose.Schema({
     surgicalhistory: String,
     bloodtransfusion: String,
     familyhistory: String,
+    labtest: [{type: mongoose.Schema.Types.ObjectId, ref: "Test"}],
+    labtype: String,
     delivery: {
         modeofdelivery: String,
         dateofdelivery: Date,
@@ -90,21 +92,7 @@ const ancSchema = new mongoose.Schema({
             datetaken: {type: Date, default: Date.now}
        }
     ],
-    labtests:[{
-        hb: String,
-        hbdate: {type: Date},
-        bloodgroup: String,
-        bloodgroupdate:  {type: Date},
-        mps: String,
-        mpsdate: {type: Date},
-        vdrl: String,
-        vdrldate: {type: Date},
-        serology: String,
-        serologydate: {type: Date},
-        urinalysis: String,
-        urinalysisdate: {type: Date},
-        datetaken: {type: Date, default: Date.now}
-    }],
+    
     treatment: [{
         tt1: {type: Date},
         tt1next: {type: Date},
@@ -128,8 +116,11 @@ const ancSchema = new mongoose.Schema({
         datetaken: {type: Date, default: Date.now}
     }],
     taken: {type: Boolean, default: false},
+    ancpaid: {type: Boolean, default: false},
     status: {type: Boolean, default: true},
     created: {type: Date, default: Date.now}
 });
 
+//Populates schema to any level
+ancSchema.plugin(deepPopulate)
 module.exports = mongoose.model('ANC', ancSchema);

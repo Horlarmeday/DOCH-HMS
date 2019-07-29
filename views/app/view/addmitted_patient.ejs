@@ -71,6 +71,7 @@
                                                     <th>Ward</th>
                                                     <th>Status</th>
                                                     <th>Add Observation</th>
+                                                    <th>Ward Round</th>
                                                     <th>IO Chart</th>
                                                     <th>Action</th>
                                                 </tr>
@@ -92,6 +93,7 @@
                                                     <td><label class="label label-md bg-danger">Admitted</label></td>
                                                     <% } %>
                                                     <td><a  class="btn btn-inverse" href="/add-daily-report/<%= user._id %>">Observation</a></td>
+                                                    <td><a  class="btn btn-primary" href="/ward-round/<%= user._id %>">Ward Round</a></td>
                                                     <td><a style="background-color: rgb(47, 113, 255); color: honeydew" class="btn" href="/intake-output-chart/<%= user._id %>">IO Chart</a></td>
                                                     <td><a class="btn btn-success" href="/patient-discharge/<%= user._id %>">Discharge/Transfer</a>
                                                     <a class="btn btn-warning" href="/nurse-assessment/<%= user._id %>"><i class="fa fa-stethoscope"></i>  Assess Patient</a></td>

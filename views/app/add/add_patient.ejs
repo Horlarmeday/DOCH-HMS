@@ -100,7 +100,7 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Date of Birth<span class="text-danger">*</span></label>
-                                                            <input type="date" name="birthday" class="form-control" placeholder="Date of Birth" required>
+                                                            <input type="date" name="birthday" class="form-control userbirtday" placeholder="Date of Birth" required>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Phone Number<span class="text-danger">*</span></label>
@@ -110,20 +110,29 @@
                                                     <div class="form-group row">
                                                             <div class="col-sm-6">
                                                                 <label for="">Country<span class="text-danger">*</span></label>
-                                                                <select name="country" id="nationality" class="form-control select" required>
+                                                                <select name="country" id="nationality" class="form-control select country" required>
                                                                     <option selected disabled>Select</option>
                                                                     <option value="nig" data-available-with="">Nigeria</option>
+                                                                    <option value="Foreigner">Foreigner</option>
                                                                 </select>
                                                             </div>
                                                             <div class="col-sm-6">
-                                                                <label for="">State<span class="text-danger">*</span></label>
-                                                                <% include ../../partials/state2 %>
+                                                                <div class="foreign">
+                                                                    <label for="">Country</label>
+                                                                    <input type="text" class="form-control" name="state">
+                                                                </div>
+                                                                <div class="nigeria">
+                                                                    <label for="">State<span class="text-danger">*</span></label>
+                                                                    <% include ../../partials/state2 %>
+                                                                </div>
                                                             </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
-                                                            <label for="">Local Government<span class="text-danger">*</span></label>
-                                                            <% include ../../partials/lga2 %>
+                                                            <div>
+                                                                <label for="">Local Government<span class="text-danger">*</span></label>
+                                                                <% include ../../partials/lga2 %>
+                                                            </div>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Home Address<span class="text-danger">*</span></label>
@@ -303,13 +312,13 @@
                                                     <h5 style="color:dodgerblue" class="page-title">Payments</h5><br><br>
                                                     <h6>Registration Fee</h6>
                                                     <div class="form-radio">
-                                                            <div class="radio radiofill radio-inline">
+                                                            <div class="radio radiofill radio-inline regadult">
                                                                 <label>
                                                                     <input id="registration1" type="radio" name="registration" value="1500">
                                                                     <i class="helper"></i> Adult (&#8358;<span id="regis1">1500</span>)
                                                                 </label>
                                                             </div>
-                                                            <div class="radio radiofill radio-inline">
+                                                            <div class="radio radiofill radio-inline regchildren">
                                                                 <label>
                                                                     <input id="registration2" type="radio" name="registration" value="1000">
                                                                     <i class="helper"></i> Children (&#8358;<span id="regis2">1000</span>)
@@ -340,13 +349,13 @@
                                                         <!-- </div>
                                                     </div> -->
                                                     <div class="form-radio">
-                                                        <div class="radio radiofill radio-inline">
+                                                        <div class="radio radiofill radio-inline consultadult">
                                                             <label>
                                                                 <input id="consultation1" type="radio" name="consultation" value="2000">
                                                                 <i class="helper"></i> Adult (&#8358;<span id="consult1">2000</span>)
                                                             </label>
                                                         </div>
-                                                        <div class="radio radiofill radio-inline">
+                                                        <div class="radio radiofill radio-inline consultchildren">
                                                             <label>
                                                                 <input id="consultation2" type="radio" name="consultation" value="1500">
                                                                 <i class="helper"></i> Children (&#8358;<span id="consult2">2000</span>)

@@ -17,6 +17,7 @@ const Discharge = require('../models/discharge')
 const ANC = require('../models/anc')
 const NurseNote = require('../models/nursenote')
 const Request = require('../models/request')
+const WardRound = require('../models/wardRound')
 const Careplan = require('../models/careplan')
 const Treatment = require('../models/treatment')
 const Consentform = require('../models/consentform')
@@ -331,7 +332,13 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 if(err) return next (err)
                 Appointment.find({}, (err, appointments)=>{
                     if(err) return next (err)
-                    res.render('app/dashboard5', { consultations, users, appointments })
+                    ANC.find({})
+                        .populate('labtest')
+                        .populate('creator')
+                        .exec((err, ancs)=>{
+                            if(err) return next (err)
+                         res.render('app/dashboard5', { consultations, users, appointments, ancs })
+                    })
                 })
             })
         })
@@ -353,7 +360,12 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     if(err) return next (err)
                     PharmacyItem.find({})
                         .exec((err, drugs)=>{
-                            res.render('app/dashboard6', { appointments, users, consultations, drugs })
+                            ANC.find({})
+                                .populate('labtest')
+                                .populate('creator')
+                                .exec((err, ancs)=>{
+                                    res.render('app/dashboard6', { appointments, users, consultations, drugs, ancs })
+                                })
                         })
                 })
                 
@@ -1343,7 +1355,7 @@ router.route('/add-triage')
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
         
-        const triage = new Triage()
+            const triage = new Triage()
             triage.creator = req.user._id;
             triage.patient = req.body.patient;
             triage.weight = req.body.weight;
@@ -1368,7 +1380,8 @@ router.route('/add-triage')
                 _id: triage.patient
             },
             {
-                $push: { triages: triage._id }
+                $push: { triages: triage._id },
+               
             }, function (err, count) {
                 if (err) { return next(err) }
                 req.flash('success', ' Patient triage was created successfully')
@@ -1679,18 +1692,14 @@ router.route('/add-daily-report')
         nurseReport.muac = req.body.muac;
         nurseReport.fheartrate = req.body.fheartrate;
         nurseReport.spo2 = req.body.spo2;
-        // nurseReport.t = req.body.t;
-        // nurseReport.p = req.body.p;
-        // nurseReport.r = req.body.r;
-        // nurseReport.bp = req.body.bp;
         nurseReport.ward = req.body.ward;
         // nurseReport.input = req.body.input;
         // nurseReport.output = req.body.output;
         // nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.body.patient;
-        nurseReport.doctor = req.body.doctor;
-        nurseReport.wardround = req.body.wardround;
+        //nurseReport.doctor = req.body.doctor;
+       // nurseReport.wardround = req.body.wardround;
         nurseReport.status = true;
         nurseReport.save((err) => {
             if (err) { return next(err) }
@@ -1704,6 +1713,40 @@ router.route('/add-daily-report')
                 res.redirect('/add-daily-report');
             }
         )
+    })
+
+//WARD ROUND
+router.route('/ward-round/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({_id: req.params.id})
+            .exec((err, user)=>{
+                if(err) return next (err)
+                User.find({}, (err, users)=>{
+                    res.render('app/add/ward_round', {user, users})
+                })
+            })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const wardround = new WardRound({
+            creator: req.user._id,
+            patient: req.body.patient,
+            doctor: req.body.doctor,
+            wardround: req.body.wardround
+        })
+        wardround.save((err)=>{
+            if(err) return next (err)
+            User.updateOne(
+                {
+                    _id: req.params.id
+                },
+                {
+                    $push: {wardrounds: wardround._id}
+                },function(err, count){
+                    req.flash('success', 'Ward round details saved successfully!')
+                    res.redirect('back')
+                }
+            )
+        })
     })
 
 //DAILY NURSE REPORT
@@ -1745,8 +1788,8 @@ router.route('/add-daily-report/:id')
         // nurseReport.initial = req.body.initial;
         nurseReport.creator = req.user._id;
         nurseReport.patient = req.params.id;
-        nurseReport.doctor = req.body.doctor;
-        nurseReport.wardround = req.body.wardround;
+        //nurseReport.doctor = req.body.doctor;
+        //nurseReport.wardround = req.body.wardround;
         nurseReport.status = true;
         nurseReport.save((err) => {
             if (err) { return next(err) }
@@ -3135,6 +3178,7 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('visits')
         .populate('reports')
         .populate('ancs')
+        .populate('wardrounds')
         .populate('immunizations')
         .populate('retainershipname')
        
@@ -3146,7 +3190,9 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
             'consultations.drugsObject.drugs',
             'payments.services',
             'reports.doctor',
-            'reports.creator'
+            'reports.creator',
+            'wardrounds.doctor',
+            'wardrounds.creator'
         ])
         .exec((err, patient)=>{
         if(err) {return next (err)}
@@ -4283,10 +4329,18 @@ router.route('/ante-natal/:id')
                            req.flash('error', "Error taking the appointment")
                            return res.redirect('back')
                        }
-                       ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
-                          // console.log(anc)
+                       ANC.findOne({_id: user.ancs[user.ancs.length -1]._id})
+                       .populate('labtest')
+                       .deepPopulate('labtest.lab')
+                       .exec((err, anc)=>{
                            if(err) return next (err)
-                           res.render('app/add/add_anc', {user, anc})
+                           Lab.find({}, (err, labs)=>{
+                            if(err) return next (err)
+                                Test.find({}, (err, alltests)=>{
+                                    if(err) return next (err)
+                                    res.render('app/add/add_anc', {user, anc, labs, alltests})
+                                })
+                           })
                        })
                    })
                 
@@ -4363,20 +4417,10 @@ router.post('/antenatal-lab-tests/:id', middleware.isLoggedIn, (req, res, next)=
                 req.flash('error', 'Patient ANC record cannot be found')
                 return res.redirect('back')
             }
-            anc.labtests.push({
-                hb: req.body.hb,
-                hbdate: req.body.hbdate,
-                bloodgroup: req.body.bloodgroup,
-                bloodgroupdate:  req.body.bloodgroupdate,
-                mps: req.body.mps,
-                mpsdate: req.body.mpsdate,
-                vdrl: req.body.vdrl,
-                vdrldate: req.body.vdrldate,
-                serology: req.body.serology,
-                serologydate: req.body.serologydate,
-                urinalysis: req.body.urinalysis,
-                urinalysisdate: req.body.urinalysisdate,
-            })
+            anc.labtype = req.body.labtype
+            anc.labtest.push(
+                req.body.labtest
+            )
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Lab test was saved successfully')

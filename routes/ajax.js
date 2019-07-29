@@ -157,4 +157,29 @@ router.post('/get-pharmacy-price', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+router.post('/emergency-patient', middleware.isLoggedIn, (req, res, next)=>{
+    const patientIdentity = req.body.patientIdentity
+    User.findOne({_id: patientIdentity})
+    .exec((err, user)=>{
+        user.emergency = true;
+        user.save((err)=>{
+            if(err) return next (err)
+            res.json(user)
+        })
+    })
+})
+
+router.post('/make-patient-emergency', middleware.isLoggedIn, (req, res, next)=>{
+    const Identity = req.body.Identity
+    User.findOne({_id: Identity})
+    .exec((err, user)=>{
+        user.emergency = true;
+        user.save((err)=>{
+            if(err) return next (err)
+            res.json(user)
+        })
+    })
+})
+
+
 module.exports = router

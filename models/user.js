@@ -63,6 +63,7 @@ const UserSchema = new mongoose.Schema({
     status: {type: Boolean, default: true},
     addmitted: {type: Boolean, default: false},
     discharge: {type: Boolean, default: false},
+    emergency: {type: Boolean, default: false},
     retainership: String,
     
     patientcode: String,
@@ -112,6 +113,9 @@ const UserSchema = new mongoose.Schema({
     }],
     supplies:[{
         type: mongoose.Schema.Types.ObjectId, ref: "Supply"
+    }],
+    wardrounds:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "WardRound"
     }],
     registeredby:{
         type: mongoose.Schema.Types.ObjectId, ref: "User"

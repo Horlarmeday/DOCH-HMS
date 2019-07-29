@@ -25,7 +25,7 @@
                     <!-- Page header start -->
                     <div class="page-header">
                         <div class="page-header-title">
-                            <h4>Appointment</h4>
+                            <h4>Ward Round</h4>
                             
                         </div>
                         <div class="page-header-breadcrumb">
@@ -35,9 +35,9 @@
                                         <i class="icofont icofont-home"></i>
                                     </a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="/appointments">Appointments</a>
+                                <li class="breadcrumb-item"><a href="/addmitted-patients">Addmitted Patients</a>
                                 </li>
-                                <li class="breadcrumb-item"><a href="#!">Create Appointment</a>
+                                <li class="breadcrumb-item"><a href="#!"> </a>
                                 </li>
                             </ul>
                         </div>
@@ -50,7 +50,7 @@
                                 <!-- Basic Form Inputs card start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Create Appointment</h5>
+                                        <h5> <%= user.firstname %> Ward Round</h5>
                                     </div>
                                     <div class="card-block">
                                         <div class="row">
@@ -59,59 +59,30 @@
                                                     <div class="form-group">
                                                         <div class="col-sm-12">
                                                             <label for="">Patient Name</label>
-                                                            <select name="patient" class="form-control js-example-basic-single" required>
-                                                                <option selected disabled>Select</option>
-                                                                <% users.forEach((user)=>{ %>
-                                                                    <% if(user.role == 8){ %>
-                                                                        <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
-                                                                    <% } %>
-                                                                <% }) %>
-                                                            </select>
+                                                            
+                                                            <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" disabled>
+                                                            <input type="hidden" name="patient" class="form-control" value="<%= user._id %>">
                                                         </div><br>   
+                                                                                                         
                                                         <div class="col-sm-12">
-                                                                <label for="">Appointment Type</label>
-                                                                <select id="appointmenttype" name="type" class="form-control" onchange="appointmentType()" required>
-                                                                    <option selected disabled>Select</option>
-                                                                    <option value="Immunization">Immunization</option>
-                                                                    <option value="Ante-Natal">Ante Natal</option>
-                                                                    <option value="Consultation">Consultation</option>
-                                                                </select>
-                                                            </div><br>                                                     
-                                                        <div id="doc" class="col-sm-12">
-                                                            <label for="">Doctor</label>
+                                                            <label for="">Lead Doctor</label>
                                                             <select name="doctor" class="form-control js-example-basic-single" required>
                                                                 <option selected disabled>Select</option>
                                                                 <% users.forEach((user)=>{ %>
                                                                     <% if(user.role == 2){ %>
+                                                                        
                                                                     <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
                                                                     <% } %>
                                                                 <% }) %>
                                                             </select>
                                                         </div><br>
+                                                       
                                                         <div class="col-sm-12">
-                                                            <label for="">Department</label>
-                                                            <select name="department" class="form-control">
-                                                                <option selected disabled>Select</option>
-                                                                <% departments.forEach((department)=>{ %>
-                                                                    <option><%= department.name %></option>
-                                                                <% }) %>
-                                                            </select>
-                                                        </div><br>
-                                                        
-                                                        <div class="col-sm-12">
-                                                            <label>Date <span class="text-danger">*</span></label>
-                                                            <input name="appointment" class="form-control" type="date" required>     
-                                                        </div><br>
-                                                        <div class="col-sm-12">
-                                                                <label>Time of Appointment <span class="text-danger">*</span></label>
-                                                                <input name="time" class="form-control" type="text" id='datetimepicker8' required>     
-                                                        </div><br>
-                                                        <div class="col-sm-12">
-                                                            <label>Problem <span class="text-danger">*</span></label>
-                                                            <textarea class="form-control" name="problem" cols="30" rows="10"></textarea>   
+                                                            <label>Ward Round <span class="text-danger">*</span></label>
+                                                            <textarea class="form-control" name="wardround" cols="30" rows="10"></textarea>   
                                                         </div>
                                                     </div>
-                                                    <button type="submit" class="btn btn-info float-right">Create Appointment</button>
+                                                    <button type="submit" class="btn btn-info float-right">Submit</button>
                                                 </form>
                                             </div>
                                         </div>

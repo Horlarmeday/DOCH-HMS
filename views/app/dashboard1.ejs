@@ -150,7 +150,7 @@
                                                             <td> <a href="/patient/<%= patient._id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
                                                             <td><%= age %></td>
                                                          
-                                                            <% if(patient.createdby == 1){ %>
+                                                            <% if(!patient.emergency){ %>
                                                                 <td><label class="label label-bg bg-success">Normal Patient</label></td>
                                                             <% }else{ %>  
                                                                 <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
@@ -175,6 +175,7 @@
                                                                 <% } %>
                                                             <% } %>
                                                             <a class="btn btn-success" href="/triage/<%= patient._id %>"><i class="ti-shift-right"></i> Add Triage</a>
+                                                            <a class="btn btn-info" href="/visit/<%= patient._id %>"><i class="ti-shift-right"></i> Check In</a>
                                                             </td>
                                                        
                                                     </tr>

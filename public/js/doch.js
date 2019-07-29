@@ -34,6 +34,46 @@ $(document).ready(function() {
         }
     });
 
+    //making patient an emergency
+    $('.emerg').click(function(){
+        if($(this).prop("checked") == true){
+            let patientIdentity = $(this).attr('name')
+           
+            $.ajax({
+                type: 'POST',
+                url: '/emergency-patient',
+                data: {
+                    patientIdentity : patientIdentity
+                },
+                success:function (data) {
+                   $('.emerencypatient').html('Patient is an emergency patient')
+                }
+            })
+        }
+        
+    })
+
+    ///Making patient an emerency
+    $('.emergy').click(function(){
+        if($(this).prop("checked") == true){
+            let Identity = $('#patienttriage').val()
+           
+            $.ajax({
+                type: 'POST',
+                url: '/make-patient-emergency',
+                data: {
+                    Identity : Identity
+                },
+                success:function (data) {
+                   $('.emerencypatient').html('Patient is an emergency patient')
+                }
+            })
+        }
+        
+    })
+
+    
+
 
     //SENDING APPOINTMENT ID
     $('.btn-app').click(function (event) {
@@ -508,6 +548,7 @@ $(document).ready(function() {
     })
 ////////////////////////////////////
 
+//
 $('#quantityused').change(function () {
     const quantityused = $('#quantityused').val()
     const extra = $('#extra').val()
@@ -519,6 +560,68 @@ $('#quantityused').change(function () {
     const finalAmount = quantityused + extra
     $('#totalPharm').val(price * finalAmount)
 })
+
+$('.country').change(function () {
+    const country = $('.country').val()
+   
+    if(country === 'Foreigner')
+        {
+           $('.foreign').show()
+           $('.nigeria').hide()
+           $('.localgovt').prop('disabled', true)
+        }else{
+            $('.foreign').hide()
+           $('.nigeria').show()
+           $('.localgovt').prop('disabled', false)
+        }
+   
+})
+
+//Checking patient temp
+$('.temperature').change(function () {
+    const temp = $('.temperature').val()
+    console.log(temp)
+    if(temp >= 40)
+        {
+           $('.emergency').show()
+         
+        }else{
+            $('.emergency').hide()
+        }
+   
+})
+
+
+
+//
+$('.userbirtday').change(function () {
+    const birtday = $('.userbirtday').val()
+    var birthday = new Date(birtday)
+    var today = new Date()
+    var age = today.getFullYear() - birthday.getFullYear()
+    if(today.getMonth() < birthday.getMonth()){
+        age
+    }
+    if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+        age
+    }
+     
+    if(age < 18){
+        $('.regadult').hide()
+        $('.regchildren').show()
+        $('.consultadult').hide()
+        $('.consultchildren').show()
+    }else{
+        $('.regadult').show()
+        $('.regchildren').hide()
+        $('.consultadult').show()
+        $('.consultchildren').hide()
+    }
+   
+})
+
+
+
 
 })
 

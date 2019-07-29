@@ -20,15 +20,7 @@ const reportSchema = new mongoose.Schema({
     fheartrate: String,
     spo2: String,
     muac: String,
-    // t: String,
-    // p: String,
-    // r: String,
-    // bp: String,
-    // initial: String,
     ward: String,
-    wardround: String,
-    // input: String,
-    // output: String,
     status: {type: Boolean, default: false},
     created: {type: Date, default: Date.now}
 });

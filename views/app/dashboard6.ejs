@@ -171,11 +171,16 @@
                                                     <% }else{ %>
                                                     <td><label class="label label-md bg-success">Paid</label></td>
                                                     <% } %>
-                                                    <% if(!consultation.pharmacyfinish){ %>
-                                                    <td><button id="<%= consultation._id %>" class="btn btn-success paid">Prescribed?</button>
-                                                    <a target="_blank" class="btn btn-inverse" href="/pharmacy-prescription/<%= consultation.patient._id %>">Pharmacy</a></td>
-                                                    <% }else{ %>
-                                                    <td><button class="btn btn-success" disabled>Prescribed</button></td>
+
+                                                    <% if(consultation.pharmacypaid && !consultation.pharmacyfinish){ %>
+                                                    <td>
+                                                        <button id="<%= consultation._id %>" class="btn btn-success paid">Dispensed?</button>
+                                                        <a target="_blank" class="btn btn-inverse" href="/pharmacy-prescription/<%= consultation.patient._id %>">Pharmacy</a>
+                                                    </td>
+                                                    <% }else if(!consultation.pharmacypaid && !consultation.pharmacyfinish){ %>
+                                                    <td><a href="#"  class="btn btn-default ">Dispensed?</a>
+                                                    <% }else if(consultation.pharmacypaid && consultation.pharmacyfinish){ %>
+                                                   <td><button class="btn btn-success" disabled>Prescribed</button></td>
                                                     <% } %> 
                                                 
                                                     <td>

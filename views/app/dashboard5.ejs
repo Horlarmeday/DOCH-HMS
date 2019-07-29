@@ -125,7 +125,7 @@
                                                     <th>Patient ID</th>
                                                     <th>Patient Name</th>
                                                     <th>Visit Reason</th>
-                                                    <!-- <th>Department</th> -->
+
                                                     <th>Lab Tests</th>
                                                     <th>RequestedBy</th>
                                                     <th>Payment Status</th>
@@ -184,6 +184,85 @@
                                 </div>
                             </div>
                         </div>
+
+                        <div class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>ANC Lab Requests</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient ID</th>
+                                                        <th>Patient Name</th>
+                                                       
+                                                        <th>Lab Tests</th>
+                                                        <th>RequestedBy</th>
+                                                        <th>Payment Status</th>
+                                                        <th>Add Result</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% ancs.forEach((anc)=>{ %>
+                                                       
+                                                    <tr >
+                                                        <td></td>
+                                                        <td><%= anc.patient.patientId %></td>
+                                                        <td> 
+                                                            <a href="/patient/<%= anc.patient._id %>" class="mr-2"> <%= anc.patient.firstname %> <%= anc.patient.lastname %></a>
+                                                            <% if(anc.patient.retainershipname){ %>
+                                                                <label class="label label-md bg-success"><%= anc.patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
+                                                       
+                                                       
+                                                        <td>
+                                                                <% anc.labtest.forEach((test)=>{ %>
+                                                                    <p style="font-weight: 700"><%= test.name %>
+                                                                    <span style="color: sandybrown">(<%= test.lab.name %>)</span>
+                                                                    </p>
+                                                               <% }) %>
+                                                           
+                                                        </td>
+                                                        <td><%= anc.creator.firstname %> <%= anc.creator.lastname %></td>
+                                                        <% if(!anc.ancpaid){ %>
+                                                        <td><label class="label label-md bg-warning">Not paid</label></td>
+                                                        <% }else{ %>
+                                                        <td><label class="label label-md bg-success">paid</label></td>
+                                                        <% } %>
+                                                        <td>
+                                                            <a class="btn btn-info btn-sm" href="/microbiology-result/<%= anc.patient._id %>">Add Result</a> M<br><br>
+                                                            <a class="btn btn-info btn-sm" href="/haematology-result/<%= anc.patient._id %>">Add Result</a> HS<br><br>
+                                                            <a class="btn btn-info btn-sm" href="/chemical-pathology-result/<%= anc.patient._id %>">Add Result</a> CP
+                                                        </td>
+                                                        <td>
+                                                            <% if(!anc.labpaid){ %>
+                                                                <button class="btn btn-default ">Not Paid</button>
+                                                            <% }else{ %>
+                                                                    <button id="<%= anc._id %>" class="btn btn-success finish">Send Result?</button>
+                                                            <% } %>
+                                                        </td>
+                                                        <!-- <td><a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter3">Add Result</a></td> -->
+                                                    </tr>
+                                                    
+                                                   
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
                     </div>
                 </div>

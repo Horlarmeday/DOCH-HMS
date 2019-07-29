@@ -32,12 +32,7 @@ const consultationSchema = new mongoose.Schema({
     },
     drugbrand: [],
     drugname: String,
-    // prescription:{
-    //     dose: String,
-    //     duration: String,
-    //     frequency: String,
-    //     direction: String
-    // },
+    
     labpaid: {type: Boolean, default: false},
     pharmacypaid: {type: Boolean, default: false},
     imagingpaid: {type: Boolean, default: false},
