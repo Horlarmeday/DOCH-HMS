@@ -23,6 +23,7 @@ const Treatment = require('../models/treatment')
 const Consentform = require('../models/consentform')
 const Assessment = require('../models/assessment')
 const Immunization = require('../models/immunization')
+const ManagerRequest = require('../models/managerRequest')
 const Iochart = require('../models/iochart')
 const WardInventory = require('../models/wardinventory')
 // const Counter = require('../models/counters')
@@ -577,6 +578,27 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 User.find({}, (err, users)=>{
                     if(err) return next (err)
                     res.render('app/dashboard16', { supplies, appointments, users, supplyIsEmpty })
+                })
+            })
+        })
+    }else if(req.user.role === 18){
+        //MANAGER
+        PharmacyItem.find({})
+        .sort('-created')
+        .exec((err, items)=>{
+            if(err) return next (err)
+            Appointment.find({})
+            .sort('created')
+            .populate('patient')
+            .exec((err, appointments)=>{
+                if(err) return next (err)
+                User.find({}, (err, users)=>{
+                    if(err) return next (err)
+                    ManagerRequest.find({})
+                    .populate('requestedby')
+                    .exec((err, managerrequests)=>{
+                        res.render('app/dashboard17', { items, appointments, users, managerrequests })
+                    })
                 })
             })
         })
@@ -3300,7 +3322,7 @@ router.route('/make-request')
             quantity: req.body.quantity,
             department: req.body.department,
             requestedby: req.user._id,
-
+            comment: req.body.comment,
         })
         request.save((err)=>{
             if(err) return next (err)
@@ -3308,6 +3330,73 @@ router.route('/make-request')
             res.redirect('back')
         })
     })
+
+//MAKING REQUEST TO MANAGER 
+router.route('/make-manager-request')
+    .get(middleware.isLoggedIn, (req, res, next) => {
+        PharmacyItem.find({})
+            .exec((err, pharmitems)=>{
+            if(err) {return next (err)}
+            labItem.find({}, (err, labitems)=> {
+                if(err) {return next (err)}
+                Department.find({}, (err, departments)=>{
+                    if(err) {return next (err)}
+                    ManagerRequest.find({requestedby: req.user._id})
+                    .populate('requestedby')
+                    .exec((err, managerrequests)=>{
+                        res.render('app/add/make_manager_request', { pharmitems, labitems, departments, managerrequests })
+                    })
+                })
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const managerrequest = new ManagerRequest({
+            item: req.body.item,
+            unit: req.body.unit,
+            quantity: req.body.quantity,
+            department: req.body.department,
+            requestedby: req.user._id,
+            comment: req.body.comment,
+        })
+        managerrequest.save((err)=>{
+            if(err) return next (err)
+            req.flash('success', 'Request was sent successfully')
+            res.redirect('back')
+        })
+    })
+
+//APPROVING MANAGER REQUEST
+router.post('/manager-approve-request', middleware.isLoggedIn, (req, res, next)=>{
+    const approval = req.body.approval
+
+    ManagerRequest.findOne({ _id: approval}, (err, request)=>{
+        if(err) return next (err)
+        request.granted = true;
+        request.save((err)=>{
+            if(err) {
+                req.flash('error', 'Error granting request')
+                res.redirect('back')
+            }
+            req.flash('success', 'Request was granted successfully')
+            res.redirect('back')
+        })
+    })
+})
+
+//DECLINING MANAGER REQUEST
+router.post('/manager-decline-request', middleware.isLoggedIn, (req, res, next)=>{
+    const denial = req.body.denial
+    ManagerRequest.findOne({_id: denial}, (err, request)=>{
+        if(err) return next (err)
+        request.declined = true;
+        request.save((err)=>{
+            if(err) return next (err)
+            req.flash('success', 'Request was declined successfully')
+            res.redirect('/dashboard')
+        })
+    })
+})
 
 //APPROVING REQUEST
 router.post('/approve-request', middleware.isLoggedIn, (req, res, next)=>{

@@ -61,7 +61,7 @@
                                                     <div class="form-group">
                                                         <div class="col-sm-12">
                                                             <label for="">Patients</label>
-                                                            <select id="patienttriage" name="patient" class="form-control js-example-basic-single" onchange="getUserAge()">
+                                                            <select id="patienttriage" name="patient" class="form-control js-example-basic-single" onchange="getUserAge()" required>
                                                                 <option selected disabled>Select</option>
                                                                 <% users.forEach((user)=>{ %>
                                                                     <% if(user.role == 8){ %>

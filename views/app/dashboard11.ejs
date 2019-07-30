@@ -159,11 +159,13 @@
                                                             <td><%= request.createdAt.toDateString() %></td>
                                                             <td><%= request.createdAt.toLocaleTimeString()  %></td>
                                                             <td>
-                                                                <% if(request.granted && !request.declined){ %>
-                                                                    <label class="label label-md bg-success">Granted</label> 
-                                                                <% }else if(!request.granted && request.declined){ %>
-                                                                    <label class="label label-md bg-danger">Declined</label> 
-                                                                <% } %>
+                                                                    <% if(request.granted && !request.declined){ %>
+                                                                        <label class="label label-md bg-success">Granted</label> 
+                                                                    <% }else if(!request.granted && request.declined){ %>
+                                                                        <label class="label label-md bg-danger">Declined</label> 
+                                                                    <% }else if(!request.granted && !request.declined){ %>
+                                                                        <label class="label label-md bg-warning">Pending</label>
+                                                                    <% } %>
                                                                 
                                                             </td>
                                                             <% if(!request.granted && !request.declined){ %>

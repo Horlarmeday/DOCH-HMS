@@ -51,6 +51,11 @@
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Make Request</h5>
+                                        <div class="card-header-right">
+                                                <i class="icofont icofont-rounded-down"></i>
+                                                <i class="icofont icofont-refresh"></i>
+                                                <i class="icofont icofont-close-circled"></i>
+                                            </div>
                                     </div>
                                     <div class="card-block">
                                         <div class="row">
@@ -103,6 +108,70 @@
                                     </div>
                                 </div>
                                 <!-- Basic Form Inputs card end -->
+                            </div>
+
+                            <div class="col-sm-12">
+                                    <!-- Zero config.table start -->
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Requests</h5>
+                                            <div class="card-header-right">
+                                                <i class="icofont icofont-rounded-down"></i>
+                                                <i class="icofont icofont-refresh"></i>
+                                                <i class="icofont icofont-close-circled"></i>
+                                            </div>
+                                        </div>
+                                        <div class="card-block">
+                                            <div class="dt-responsive table-responsive">
+                                                <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>S/N</th>
+                                                            <th>Item(s) Requested</th>
+                                                            <th>Quantity</th>
+                                                            <th>Unit</th>
+                                                            <th>Department</th>
+                                                            <th>RequestedBy</th>
+                                                            <th>Date Requested</th>
+                                                            <th>Time</th>
+                                                            <th>Comment</th>
+                                                            <th>Status</th>
+                                                            
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <% managerrequests.forEach((request) => { %>
+                                                           
+                                                            <tr>
+                                                                <td></td>
+                                                                <td><%= request.item %></td>
+                                                                <td><%= request.quantity %></td>
+                                                                <td><%= request.unit %></td>
+                                                                <td><%= request.department %></td>
+                                                                <td><%= request.requestedby.firstname %> <%= request.requestedby.lastname %></td>
+                                                                <td><%= request.createdAt.toLocaleDateString() %></td>
+                                                                <td><%= request.createdAt.toLocaleTimeString()  %></td>
+                                                                <td><%= request.comment  %></td>
+
+                                                                <td>
+                                                                    <% if(request.granted && !request.declined){ %>
+                                                                        <label class="label label-md bg-success">Granted</label> 
+                                                                    <% }else if(!request.granted && request.declined){ %>
+                                                                        <label class="label label-md bg-danger">Declined</label> 
+                                                                    <% }else if(!request.granted && !request.declined){ %>
+                                                                        <label class="label label-md bg-warning">Pending</label>
+                                                                    <% } %>
+                                                                    
+                                                                </td>
+                                                                
+                                                            </tr>
+                                                           
+                                                        <% }) %>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
                             </div>
                         </div>
                     </div>

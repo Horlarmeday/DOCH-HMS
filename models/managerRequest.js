@@ -1,6 +1,6 @@
 const mongoose =  require('mongoose');
 
-const requestSchema = new mongoose.Schema({
+const managerRequestSchema = new mongoose.Schema({
     pharmitem: {type: mongoose.Schema.Types.ObjectId, ref: "PharmacyItem"},
     labitem: {type: mongoose.Schema.Types.ObjectId, ref: "labItem"},
     
@@ -14,4 +14,4 @@ const requestSchema = new mongoose.Schema({
     declined: {type: Boolean, default: false},
 }, { timestamps: true });
 
-module.exports = mongoose.model('Request', requestSchema);
+module.exports = mongoose.model('ManagerRequest',  managerRequestSchema);

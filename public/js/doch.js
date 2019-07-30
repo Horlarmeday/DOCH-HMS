@@ -241,7 +241,7 @@ $(document).ready(function() {
         }
     })
 
-    //CLICKING PRESCRIBED BUTTON
+    //SENDING PATIENT TO DOCTOR
     $('.seedoctor').click(function (event) {
         let seen = $(this).attr('name')
         console.log(seen)
@@ -268,16 +268,21 @@ $(document).ready(function() {
     $('.finish').click(function (event) {
         let test = $(this).attr('id')
         event.preventDefault()
-        $.ajax({
-            type: 'POST',
-            url: '/labtest-finish',
-            data: {
-                test: test
-            },
-            success:function (data) {
-                location.reload()
-            }
-        })
+        let testfinish = window.confirm('Are you sure?')
+        if(testfinish){
+            $.ajax({
+                type: 'POST',
+                url: '/labtest-finish',
+                data: {
+                    test: test
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
     })
 
     //CLICKING APPROVED BUTTON
@@ -303,6 +308,28 @@ $(document).ready(function() {
         
     })
 
+    //MANAGER REQUEST APPROVAL 
+    $('.approval').click(function (event) {
+        let approval = $(this).attr('value')
+        event.preventDefault()
+        let reqanswer = window.confirm("Are you sure you want to approve this request?");
+        if(reqanswer){
+            $.ajax({
+                type: 'POST',
+                url: '/manager-approve-request',
+                data: {
+                    approval: approval
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
+        
+    })
+
     $('#example-1').multifield();
     $('#form-show').multifield();
 
@@ -310,18 +337,43 @@ $(document).ready(function() {
      //CLICKING DECLINED BUTTON
      $('.decline').click(function (event) {
         let decline = $(this).attr('value')
-        
         event.preventDefault()
-        $.ajax({
-            type: 'POST',
-            url: '/decline-request',
-            data: {
-                decline: decline
-            },
-            success:function (data) {
-                location.reload()
-            }
-        })
+        let declineit = window.confirm('Are you sure you want to deny this request?')
+        if(declineit) {
+            $.ajax({
+                type: 'POST',
+                url: '/decline-request',
+                data: {
+                    decline: decline
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
+    })
+
+    //MANAGER REQUEST DENIAL
+    $('.denial').click(function (event) {
+        let denial = $(this).attr('value')
+        event.preventDefault()
+        let requestDeny = window.confirm("Are you sure you want to deny this request?")
+        if(requestDeny){
+            $.ajax({
+                type: 'POST',
+                url: '/manager-decline-request',
+                data: {
+                    denial: denial
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
     })
 
     //APPROVING BILLING PAYMENT
