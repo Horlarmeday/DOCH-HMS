@@ -201,32 +201,44 @@ $(document).ready(function() {
     $('.paid').click(function (event) {
         let prescribe = $(this).attr('id')
         event.preventDefault()
-        $.ajax({
-            type: 'POST',
-            url: '/prescribed',
-            data: {
-                prescribe: prescribe
-            },
-            success:function (data) {
-                location.reload()
-            }
-        })
+        let done = window.confirm('Are you sure?')
+        if(done){
+            $.ajax({
+                type: 'POST',
+                url: '/prescribed',
+                data: {
+                    prescribe: prescribe
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
     })
 
      //CLICKING DONE BUTTON
      $('.done').click(function (event) {
         let imaging = $(this).attr('id')
+        let comment = $('.imagingcomment').val()
         event.preventDefault()
-        $.ajax({
-            type: 'POST',
-            url: '/imaging-done',
-            data: {
-                imaging: imaging
-            },
-            success:function (data) {
-                location.reload()
-            }
-        })
+        let acceptance = window.confirm('Are you sure?')
+        if(acceptance){
+            $.ajax({
+                type: 'POST',
+                url: '/imaging-done',
+                data: {
+                    imaging: imaging,
+                    comment: comment
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
     })
 
     //CLICKING PRESCRIBED BUTTON
@@ -580,8 +592,8 @@ $('.country').change(function () {
 //Checking patient temp
 $('.temperature').change(function () {
     const temp = $('.temperature').val()
-    console.log(temp)
-    if(temp >= 40)
+  
+    if(temp >= 38)
         {
            $('.emergency').show()
          

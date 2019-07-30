@@ -128,12 +128,14 @@
                                                     <th>Investigation</th>
                                                     <th>Status</th>
                                                     <th>Payment Status</th>
+                                                    <th>Comment</th>
+                                                  
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% consultations.forEach((consultation)=>{ %>
-                                                    <% if(consultation.imagingstatus === true ){ %>
+                                                    <% if(consultation.imagingstatus === true && consultation.imagingfinish === false){ %>
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
@@ -154,6 +156,15 @@
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">Paid</label></td>
                                                         <% } %>
+                                                   
+                                                    <td>
+                                                        
+
+                                                            <textarea style="width: 100%" name="" class="imagingcomment" cols="30" rows="10"></textarea>
+                                                       
+                                                        <!-- <input type="text" class="form-control imagingcomment"> -->
+                                                    </td>
+                                                   
                                                     <% if(consultation.imagingfinish === false){ %>
                                                         <td><button id="<%= consultation._id %>" class="btn btn-success done">Done?</button></td>
                                                         <% }else{ %>

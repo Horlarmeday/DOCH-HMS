@@ -19297,6 +19297,11 @@ input[type=number] {
   color: #fff
 }
 
+.no-style{
+  text-decoration: none;
+  color: #fff
+}
+
 
 
 /*# sourceMappingURL=style.css.map */

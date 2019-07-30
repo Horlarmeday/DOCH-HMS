@@ -18,6 +18,37 @@ const ancSchema = new mongoose.Schema({
     familyhistory: String,
     labtest: [{type: mongoose.Schema.Types.ObjectId, ref: "Test"}],
     labtype: String,
+    labresult: {
+        urinalysis:{
+            appearance: String,
+            leukocytes: String,
+            protein: String,
+            glucose: String,
+            blood: String,
+            ph: String,
+            ascorbicacid: String,
+            urobilinogen: String,
+            ketones: String,
+            sgravity: String,
+            bilirubin: String,
+            nitrite: String,
+        },
+        serologytests:{
+            pylori: String,
+            rf: String,
+            chlamydia: String,
+            pgt: String,
+            hbsag: String,
+            hcv: String,
+            vdrl: String,
+        },
+        tests:{
+            mp: String,
+            pcv: String,
+            bloodgroup: String,
+            genotype: String
+        }
+    },
     delivery: {
         modeofdelivery: String,
         dateofdelivery: Date,

@@ -6,7 +6,7 @@ const Department = require('../models/department')
 const Appointment = require('../models/appointment')
 const Consultation = require('../models/consultation')
 const SMS = require('../models/sms')
-const NurseReport = require('../models/nurseReport')
+const ANC = require('../models/anc')
 const Theater = require('../models/theater')
 const Vendor = require('../models/vendor')
 const Imaging = require('../models/imaging')
@@ -614,4 +614,97 @@ router.post('/ogtt-test/:id', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//**************** *******/
+// ANC TEST RESLUTS
+//**************** ********/
+//ANC LAB TESTS
+router.get('/anc-result/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('ancs')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        ANC.findOne({_id: user.ancs[user.ancs.length -1]._id}, (err, anc)=>{
+            // console.log(consultation)
+            res.render('app/add/add_anc_lab_result', {user, anc})
+        }) 
+    })
+})
+
+
+//URINALYSIS ANC TEST
+router.post('/anc-urinalysis-test/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('ancs')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+            anc.labresult.urinalysis = {
+                appearance: req.body.appearance,
+                leukocytes: req.body.leukocytes,
+                protein: req.body.protein,
+                glucose: req.body.glucose,
+                blood: req.body.blood,
+                ph: req.body.ph,
+                ascorbicacid: req.body.ascorbicacid,
+                urobilinogen: req.body.urobilinogen,
+                ketones: req.body.ketones,
+                sgravity: req.body.sgravity,
+                bilirubin: req.body.bilirubin,
+                nitrite: req.body.nitrite,
+            }
+            anc.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Urinalysis test result submitted successfully!')
+                res.redirect('/anc-result/' + req.params.id)
+            })
+        }) 
+    })
+})
+
+//TESTS
+router.post('/anc-tests/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('ancs')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+            anc.labresult.tests = {
+                pcv: req.body.pcv,
+                genotype: req.body.genotype,
+                bloodgroup: req.body.bloodgroup,
+                mp: req.body.mp,
+            }
+            anc.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Tests result submitted successfully!')
+                res.redirect('/anc-result/' + req.params.id)
+            })
+        }) 
+    })
+})
+
+//ANC SEROLOGY TEST
+router.post('/anc-serology-test/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('ancs')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
+            anc.labresult.serologytests = {
+                pylori: req.body.pylori,
+                rf: req.body.rf,
+                chlamydia: req.body.chlamydia,
+                pgt: req.body.pgt,
+                hbsag: req.body.hbsag,
+                hcv: req.body.hcv,
+                vdrl: req.body.vdrl,
+            }
+            anc.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Serology tests result submitted successfully!')
+                res.redirect('/anc-result/' + req.params.id)
+            })
+        }) 
+    })
+})
 module.exports = router

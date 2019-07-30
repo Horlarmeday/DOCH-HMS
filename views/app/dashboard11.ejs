@@ -171,6 +171,10 @@
                                                                 
                                                                     <button type="button" value="<%= request._id %>" class="btn btn-danger decline">Decline</button>
                                                                 </td>
+                                                            <% }else if (request.granted){ %>
+                                                                <td><button  type="button" class="btn btn-default " disabled>Granted</button></td>
+                                                            <% }else if(request.declined){ %>
+                                                                <td><button  type="button" class="btn btn-default " disabled>Declined</button></td>
                                                             <% } %>
                                                         </tr>
                                                         <% }  %>
@@ -180,7 +184,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                        </div>
 
 
                         <div class="col-sm-12">
@@ -210,22 +214,29 @@
                                                         <th>Expected Income(₦)</th>
                                                         <th>Date Received</th>
                                                         <th>Expiration</th>
+                                                        <th>History</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% items.forEach((item) => { %>
-                                                    <tr style="cursor: pointer" onclick="window.location='/lab-dispense-history/<%= item._id %>';">
+                                                    <tr style="cursor: pointer" onclick="window.location='/pharmacy-dispense/<%= item._id %>';">
                                                         <td></td>
                                                         <td><%= item.name %></td>
-                                                        <td>LAB/ITEM/000<%= item.itemDigit %></td>
+                                                        <td>DRUG/ITEM/000<%= item.itemDigit %></td>
                                                         <td><%= item.quantity %></td>
-                                                        <td style="color: rgb(210, 30, 150)"><strong><%= item.rquantity %></strong></td>
+                                                        <% if(item.dispensehistory < 1){ %>
+                                                            <td style="color: darkviolet"><strong><%= item.quantity %></strong></td>
+                                                            <% }else{ %>
+                                                            <td style="color: darkviolet"><strong> <%= item.rquantity %></strong></td>
+                                                        <% } %>
+                                                       
                                                         <td><%= item.unit %></td>
                                                         <td><%= item.price %></td>
                                                         <td><%= item.cost %></td>
                                                         <td><%= item.income %></td>
                                                         <td><%= item.received.toDateString() %></td>
                                                         <td><%= item.expiration.toDateString() %></td>
+                                                        <td><a href="/dispense-history/<%= item._id %>" class="btn btn-success">History</a></td>
                                                     </tr>
                                                 <% }) %>
                                             </tbody>

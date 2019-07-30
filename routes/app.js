@@ -335,6 +335,8 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     ANC.find({})
                         .populate('labtest')
                         .populate('creator')
+                        .populate('patient')
+                        .deepPopulate('labtest.lab')
                         .exec((err, ancs)=>{
                             if(err) return next (err)
                          res.render('app/dashboard5', { consultations, users, appointments, ancs })
@@ -364,7 +366,9 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                                 .populate('labtest')
                                 .populate('creator')
                                 .exec((err, ancs)=>{
-                                    res.render('app/dashboard6', { appointments, users, consultations, drugs, ancs })
+                                    Request.find({requestedby: req.user._id}, (err, requests)=>{
+                                        res.render('app/dashboard6', { appointments, users, consultations, drugs, ancs, requests })
+                                    })
                                 })
                         })
                 })
@@ -2784,9 +2788,11 @@ router.post('/prescribed', middleware.isLoggedIn, (req, res, next)=>{
 //DRUGS PRESCRIBED BY PHARMACY
 router.post('/imaging-done', middleware.isLoggedIn, (req, res, next)=>{
     let imaging = req.body.imaging
+    let comment = req.body.comment
     Consultation.findOne({_id: imaging}, (err, consultation)=>{
         if(err) return next (err)
         consultation.imagingfinish = true;
+        consultation.imagingresult = comment;
         consultation.save((err)=>{
             if(err) return next (err)
             res.redirect('back')
@@ -3521,7 +3527,7 @@ router.route('/pharmacy-dispense/:id')
                 function (err, count) {
                     if(err) {return next (err)}
                     req.flash('success', 'Item was dispensed!')
-                    res.redirect('/pharmacy-items')
+                    res.redirect('back')
                 }
             )
         }
@@ -4089,6 +4095,7 @@ router.get('/lab-items', middleware.isLoggedIn, (req, res, next) => {
 router.get('/pharmacy-items', middleware.isLoggedIn, (req, res, next) => {
     PharmacyItem.find({})
     .sort('-created')
+    
     .populate('dispensehistory')
     .exec( (err, items) => {
         if (err) { return next(err) }
