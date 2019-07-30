@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Nursing Notes</h4>
+                        <h4>Addmitted Patients</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,9 +35,9 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="/nursing-notes">Nursing Notes</a>
+                            <li class="breadcrumb-item"><a href="#!">Addmitted Patients</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="/add-nurse-note">Add Nursing Note</a>
+                            <li class="breadcrumb-item"><a href="#!">Patients</a>
                             </li>
                         </ul>
                     </div>
@@ -50,7 +50,7 @@
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Nursing Notes</h5>
+                                    <h5>Addmitted Patients</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -63,25 +63,32 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Title of Note</th>
-                                                    <th>Patient Name</th>
-                                                    <th>Note</th>
-                                                    <th>Date Created</th>
-                                                    <th>CreatedBy</th>
-                                                   
+                                                    <th>Patient ID</th>
+                                                    <th>Name</th>
+                                                    <th>Sex</th>
+                                                    <th>Date of Birth</th>
+                                                    <th>City</th>
+                                                    <th>Ward</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% nursenotes.forEach((nursenote)=>{ %>
+                                                <% users.forEach((user)=>{ %>
+                                                    <% if(user.role == 8 && user.addmitted && user.discharge){ %>
                                                 <tr>
                                                     <td></td>
-                                                    <td><%= nursenote.name %></td>
-                                                    <td> <%= nursenote.patient.firstname %> <%= nursenote.patient.lastname %></td>
-                                                    <td> <%= nursenote.note %></td>
-                                                    <td> <%= nursenote.created.toDateString() %></td>
-                                                    <td> <%= nursenote.creator.firstname %> <%= nursenote.creator.lastname %></td>
+                                                    <td><%= user.patientId %></td>
+                                                    <td> <a href="/patient/<%= user._id %>"><%= user.firstname %> <%= user.lastname %></a></td>
+                                                    <td><%= user.gender %></td>
+                                                    <td><%= user.birthday.toDateString() %></td>
+                                                    <td><%= user.address %></td>
+                                                    <td><%= user.ward %></td>
+                                                    <td><label class="label label-md bg-success">Discharged</label></td>
+                                                    <td><a class="btn btn-success" href="/sms-patient/<%= user._id %>">Send SMS</a>
                                                 </tr>
-                                                <% }) %>
+                                                <% } %> 
+                                                <% }) %> 
                                             </tbody>
                                         </table>
                                     </div>

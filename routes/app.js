@@ -1608,6 +1608,60 @@ router.route('/send-sms')
         ])
     })
 
+
+//SEND SMS TO SPECIFIC USER
+router.route('/sms-patient/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            if(err) return next(err)
+            res.render('app/add/sms_patient', { user })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        async.waterfall([
+            function (done) {
+                User.findOne({ _id: req.user._id }, function (err, user) {
+                    const sms =  new SMS()
+                    sms.owner = req.user._id;
+                    // sms.recepient = user._id,
+                    sms.phone.push(req.body.patient),
+                    sms.message = req.body.message;
+                    sms.status = true;
+                    sms.save(function (err) {
+                        done(err, sms)
+                    })
+                    unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                    .header({'Accept' : 'application/json'})
+                    .send({
+                        'username': process.env.SMSSMARTUSERNAME,
+                        'password': process.env.SMSSMARTPASSWORD,
+                        'sender': process.env.SMSSMARTSENDERID,
+                        'recipient' : `234${req.body.patient}`,
+                        'message' : req.body.message,
+                        'routing': 4,
+                    })
+                    .end(function (response) {
+                        console.log(response.body);
+                    });
+                })
+            },
+            function (sms, user, done) {
+                User.update(
+                    {
+                        _id: user._id
+                    },
+                    {
+                        $push: { sms: sms._id }
+                    }, function (err, count) {
+                        if (err) { return next(err) }
+                        req.flash('success', 'Your sms was sent successfully')
+                        res.redirect('back')
+                    }
+                );
+            } 
+        ])
+    })
+
 //ALL SENT SMS
 router.get('/sent-sms', (req, res, next)=>{
     SMS.find({})
@@ -2018,6 +2072,7 @@ router.route('/add-nurse-note')
 router.get('/nursing-notes', middleware.isLoggedIn, (req, res, next)=>{
     NurseNote.find({})
     .populate('patient')
+    .populate('creator')
     .exec((err, nursenotes)=>{
         if(err) return next (err)
         res.render('app/view/nursing_note', { nursenotes })
@@ -3147,6 +3202,14 @@ router.get('/addmitted-patients', middleware.isLoggedIn, (req, res, next)=>{
         if(err) {return next (err)}
         
         res.render('app/view/addmitted_patient', { users })
+    }).sort('-updatedAt')
+})
+
+//DISCHARGED PATIENTS
+router.get('/discharged-patients', middleware.isLoggedIn, (req, res, next)=>{
+    User.find({}, (err, users)=>{
+        if(err) {return next (err)}
+        res.render('app/view/discharged_patient', { users })
     }).sort('-updatedAt')
 })
 

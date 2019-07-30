@@ -78,7 +78,7 @@
                                             </thead>
                                             <tbody>
                                                 <% users.forEach((user)=>{ %>
-                                                    <% if(user.role == 8 && user.addmitted === true){ %>
+                                                    <% if(user.role == 8 && user.addmitted === true && !user.discharge){ %>
                                                 <tr>
                                                     <td></td>
                                                     <td><%= user.patientId %></td>
