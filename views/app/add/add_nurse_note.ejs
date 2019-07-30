@@ -61,7 +61,7 @@
                                                 </div> -->
                                                 <div class="form-group">
                                                         <label for="">Patient Name</label>
-                                                        <select name="patient" class="form-control js-example-basic-single">
+                                                        <select name="patient" class="form-control js-example-basic-single" required>
                                                             <option selected disabled>Select</option>
                                                             <% users.forEach((user)=>{ %>
                                                                 <% if(user.role == 8){ %>
@@ -71,11 +71,11 @@
                                                         </select><br><br>
                                                     <!-- <div class="col-sm-12"> -->
                                                         <label for="">Title of Note</label>
-                                                        <input type="text" name="name" class="form-control" placeholder="Title of Note"><br>
+                                                        <input type="text" name="name" class="form-control" placeholder="Title of Note" required><br>
                                                     <!-- </div> -->
                                                     <!-- <div class="col-sm-12"> -->
                                                         <label for="">Note </label>
-                                                        <textarea name="note" class="form-control" cols="30" rows="10"></textarea>
+                                                        <textarea name="note" class="form-control" cols="30" rows="10" required></textarea>
                                                         
                                                     <!-- </div> -->
                                                         <!-- <label for="">Brand Name</label>

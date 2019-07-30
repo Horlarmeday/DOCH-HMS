@@ -2942,6 +2942,8 @@ router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
                     'retainershipname': user.retainershipname,
                     'registeredby': user.registeredby,
                     'gender': user.gender,
+                    'religion': user.religion,
+                    'birthday': user.birthday,
                     'createdby': user.createdby,
                     'patientId': user.patientId,
                     'id': user._id,
