@@ -62,7 +62,7 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Item</label>
-                                                            <input type="text" name="name" class="form-control" placeholder="Item Name">
+                                                            <input type="text" name="name" class="form-control" placeholder="Item Name" required>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Item Description</label>
@@ -72,11 +72,11 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Product Code</label>
-                                                            <input type="text" name="productcode" class="form-control" placeholder=" Product Code">
+                                                            <input type="text" name="productcode" class="form-control" placeholder=" Product Code" required>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Shelf No</label>
-                                                            <select  name="shelf" class="form-control select">
+                                                            <select  name="shelf" class="form-control select" required>
                                                                 <option selected disabled>Select</option>
                                                                 <option>A</option>
                                                                 <option>B</option>
@@ -116,22 +116,22 @@
                                                     <div class="form-group row">
                                                                 <div class="col-sm-6">
                                                                     <label for="">Batch No</label>
-                                                                    <input type="text" name="batch" class="form-control" placeholder="Batch No">
+                                                                    <input type="text" name="batch" class="form-control" placeholder="Batch No" required>
                                                                 </div>
                                                                 <div class="col-sm-6">
                                                                         <label>Expiration Date</label>
-                                                                        <input type="date" name="expiration" class="form-control" placeholder="Expiration Date">
+                                                                        <input type="date" name="expiration" class="form-control" placeholder="Expiration Date" required>
                                                                 </div>
                                                     </div>
                                                     <h5 style="color:dodgerblue" class="page-title">Quantity</h5><br><br>
                                                     <div class="form-group row">
                                                             <div class="col-sm-6">
                                                                     <label for="">Quantity Received</label>
-                                                                    <input type="number" max="300" min="50" name="quantity" id="quantity" class="form-control" placeholder="Quantity Received">
+                                                                    <input type="number" max="300" min="50" name="quantity" id="quantity" class="form-control" placeholder="Quantity Received" required>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                     <label for="">Unit of Measure</label>
-                                                                    <select id="unit" name="unit" class="form-control select">
+                                                                    <select id="unit" name="unit" class="form-control select" required>
                                                                         <option selected disabled>Select</option>
                                                                         <option value="Ampoule">Ampoule</option>
                                                                         <option value="Bag">Bag</option>
@@ -151,7 +151,7 @@
                                                             </div>
                                                             <div class="col-sm-6">
                                                                     <label for="">Cost Price per Unit (₦)</label>
-                                                                    <input type="number" name="price" id="sale_price" class="form-control" placeholder="Price">
+                                                                    <input type="number" name="price" id="sale_price" class="form-control" placeholder="Price" required>
                                                             </div>
                                                             
                                                     </div>
@@ -162,7 +162,7 @@
                                                         </div>
                                                         <div class="col-sm-6">
                                                                 <label for="">Date Received</label>
-                                                               <input type="date" name="received" class="form-control" placeholder="Quantity">
+                                                               <input type="date" name="received" class="form-control" placeholder="Quantity" required>
                                                         </div>
                                                     </div>
                                                     

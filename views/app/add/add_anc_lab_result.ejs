@@ -45,12 +45,10 @@
                 </div>
                 <!-- Page header end -->
                 <!-- Page body start -->
-                <%
-                  let result = Object.keys(anc.labresult);
-               %>
+               
                 <div class="page-body">
                     
-                            <% if(result[0] !== undefined){ %>
+                            <% if(anc.labresult.length > 0){ %>
                                 <div class="row">
                                     <div class="col-sm-6">
                                             <!-- Zero config.table start -->
@@ -72,7 +70,7 @@
                                                                             <tr>
                                                                                     <th></th>
                                                                                     <td style="font-weight: 900">Appearance</td>
-                                                                                    <td><textarea placeholder="<%= anc.labresult.urinalysis.appearance %>" name="appearance" class="form-control" cols="30" rows="10"></textarea></td>
+                                                                                    <td><textarea placeholder="<%= anc.labresult[0].urinalysis.appearance %>" name="appearance" class="form-control" cols="30" rows="10"></textarea></td>
                                                                             </tr>
                 
                                                                     </thead>
@@ -92,64 +90,64 @@
                                                                 <tr>
                                                                   <td></td>  
                                                                   <td>Leukocytes</td>  
-                                                                  <td><input type="text" name="leukocytes"  placeholder="<%= anc.labresult.urinalysis.leukocytes %>" class="form-control"></td>  
+                                                                  <td><input type="text" name="leukocytes"  placeholder="<%= anc.labresult[0].urinalysis.leukocytes %>" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Protein</td>  
-                                                                    <td><input type="text" name="protein" placeholder="<%= anc.labresult.urinalysis.protein %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="protein" placeholder="<%= anc.labresult[0].urinalysis.protein %>" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Glucose</td>  
-                                                                    <td><input type="text" name="glucose" placeholder="<%= anc.labresult.urinalysis.glucose %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="glucose" placeholder="<%= anc.labresult[0].urinalysis.glucose %>" class="form-control"></td>  
                                                             
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Blood</td>  
-                                                                    <td><input type="text" name="blood" placeholder="<%= anc.labresult.urinalysis.blood %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="blood" placeholder="<%= anc.labresult[0].urinalysis.blood %>" class="form-control"></td>  
                                                                    
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>PH</td>  
-                                                                    <td><input type="text" name="ph" placeholder="<%= anc.labresult.urinalysis.ph %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="ph" placeholder="<%= anc.labresult[0].urinalysis.ph %>" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Ascorbic Acid</td>  
-                                                                    <td><input type="text" name="ascorbicacid" placeholder="<%= anc.labresult.urinalysis.ascorbicacid %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="ascorbicacid" placeholder="<%= anc.labresult[0].urinalysis.ascorbicacid %>" class="form-control"></td>  
                                                                    
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Urobilinogen</td>  
-                                                                    <td><input type="text" name="urobilinogen" placeholder="<%= anc.labresult.urinalysis.urobilinogen %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="urobilinogen" placeholder="<%= anc.labresult[0].urinalysis.urobilinogen %>" class="form-control"></td>  
                                                                    
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Ketones</td>  
-                                                                    <td><input type="text" name="ketones" placeholder="<%= anc.labresult.urinalysis.ketones %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="ketones" placeholder="<%= anc.labresult[0].urinalysis.ketones %>" class="form-control"></td>  
                                                                    
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>S.gravity</td>  
-                                                                    <td><input type="text" name="sgravity" placeholder="<%= anc.labresult.urinalysis.sgravity %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="sgravity" placeholder="<%= anc.labresult[0].urinalysis.sgravity %>" class="form-control"></td>  
                                                                   
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Bilirubin</td>  
-                                                                    <td><input type="text" name="bilirubin" placeholder="<%= anc.labresult.urinalysis.bilirubin %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="bilirubin" placeholder="<%= anc.labresult[0].urinalysis.bilirubin %>" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Nitrite</td>  
-                                                                    <td><input type="text" name="nitrite" placeholder="<%= anc.labresult.urinalysis.nitrite %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="nitrite" placeholder="<%= anc.labresult[0].urinalysis.nitrite %>" class="form-control"></td>  
                                                                       
                                                                 </tr>
                                                                 <tr>
@@ -188,7 +186,7 @@
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>PCV</td>  
-                                                                    <td><input type="text" name="pcv" placeholder="<%= anc.labresult.tests.pcv %>"  class="form-control"></td>  
+                                                                    <td><input type="text" name="pcv" placeholder="<%= anc.labresult[0].tests.pcv %>"  class="form-control"></td>  
                                                                 </tr>
                                                                 
                                                                 
@@ -196,20 +194,20 @@
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Genotype</td>  
-                                                                    <td><input type="text" name="genotype"  placeholder="<%= anc.labresult.tests.genotype %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="genotype"  placeholder="<%= anc.labresult[0].tests.genotype %>" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                         <td></td>  
                                                                         <td>Blood Group</td>  
-                                                                        <td><input type="text" name="bloodgroup"  placeholder="<%= anc.labresult.tests.bloodgroup %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="bloodgroup"  placeholder="<%= anc.labresult[0].tests.bloodgroup %>" class="form-control"></td>  
                                                                         
                                                                 </tr>
                                                                
                                                                 <tr>
                                                                         <td></td>  
                                                                         <td>MP</td>  
-                                                                        <td><input type="text" name="mp"  placeholder="<%= anc.labresult.tests.mp %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="mp"  placeholder="<%= anc.labresult[0].tests.mp %>" class="form-control"></td>  
                                                                         
                                                                 </tr>
                                                                 <tr>
@@ -248,43 +246,43 @@
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>H.Pylori</td>  
-                                                                    <td><input type="text" name="pylori" placeholder="<%= anc.labresult.serologytests.pylori %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="pylori" placeholder="<%= anc.labresult[0].serologytests.pylori %>" class="form-control"></td>  
                                                                 
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>RF</td>  
-                                                                    <td><input type="text" name="rf" placeholder="<%= anc.labresult.serologytests.rf %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="rf" placeholder="<%= anc.labresult[0].serologytests.rf %>" class="form-control"></td>  
                                                                         
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Chlamydia Test</td>  
-                                                                    <td><input type="text" name="chlamydia" placeholder="<%= anc.labresult.serologytests.chlamydia %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="chlamydia" placeholder="<%= anc.labresult[0].serologytests.chlamydia %>" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>PGT</td>  
-                                                                    <td><input type="text" name="pgt" placeholder="<%= anc.labresult.serologytests.pgt %>" class="form-control"></td>  
+                                                                    <td><input type="text" name="pgt" placeholder="<%= anc.labresult[0].serologytests.pgt %>" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                         <td></td>  
                                                                         <td>HBsAg</td>  
-                                                                        <td><input type="text" name="hbsag" placeholder="<%= anc.labresult.serologytests.hbsag %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="hbsag" placeholder="<%= anc.labresult[0].serologytests.hbsag %>" class="form-control"></td>  
                                                                         
                                                                     </tr>
                                                                 <tr>
                                                                         <td></td>  
                                                                         <td>HCV</td>  
-                                                                        <td><input type="text" name="hcv" placeholder="<%= anc.labresult.serologytests.hcv %>" class="form-control"></td>  
+                                                                        <td><input type="text" name="hcv" placeholder="<%= anc.labresult[0].serologytests.hcv %>" class="form-control"></td>  
                                                                         
                                                                     </tr>
                                                                     <tr>
                                                                             <td></td>  
                                                                             <td>VDRL</td>  
-                                                                            <td><input type="text" name="vdrl" placeholder="<%= anc.labresult.serologytests.vdrl %>" class="form-control"></td>  
+                                                                            <td><input type="text" name="vdrl" placeholder="<%= anc.labresult[0].serologytests.vdrl %>" class="form-control"></td>  
                                                                             
                                                                         </tr>
                                                                 

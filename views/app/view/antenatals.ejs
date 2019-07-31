@@ -74,6 +74,7 @@
                                                     <th rowspan="2">Status</th>
                                                     <th rowspan="2">Action</th>
                                                     <th rowspan="2">Results</th>
+                                                    <th rowspan="2">Lab Results</th>
                                                     <th colspan="7">History</th>
                                                     <tr>
                                                         <th>Medical</th>
@@ -114,6 +115,9 @@
                                                    <% }else{ %>
                                                     <td>Not Active</td>
                                                     <% } %>
+                                                    <td>
+                                                        <a href="/antenatal-lab-results/<%= anc.patient._id %>">Lab Results</a>
+                                                    </td>
                                                     <td>
                                                         <a href="/antenatal-results/<%= anc.patient._id %>">View Results</a>
                                                     </td>

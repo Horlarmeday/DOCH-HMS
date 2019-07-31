@@ -235,7 +235,7 @@
                                                            
                                                         </td>
                                                         <td><%= anc.creator.firstname %> <%= anc.creator.lastname %></td>
-                                                        <% if(!anc.ancpaid){ %>
+                                                        <% if(!anc.anclabpaid){ %>
                                                         <td><label class="label label-md bg-warning">Not paid</label></td>
                                                         <% }else{ %>
                                                         <td><label class="label label-md bg-success">paid</label></td>
@@ -245,7 +245,7 @@
                                                             
                                                         </td>
                                                         <td>
-                                                            <% if(!anc.labpaid){ %>
+                                                            <% if(!anc.anclabpaid){ %>
                                                                 <button class="btn btn-default ">Not Paid</button>
                                                             <% }else{ %>
                                                                     <button id="<%= anc._id %>" class="btn btn-success finish">Send Result?</button>
@@ -254,7 +254,6 @@
                                                         <!-- <td><a href="#" class="btn btn-info" data-toggle="modal" data-target="#exampleModalCenter3">Add Result</a></td> -->
                                                     </tr>
                                                     
-                                                   
                                                     <% }) %>
                                                 </tbody>
                                             </table>

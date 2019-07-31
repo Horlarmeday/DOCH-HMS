@@ -3314,6 +3314,17 @@ router.get('/lab-result/:id', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+//VIEW ANTENATAL LAB RESULT
+router.get('/antenatal-lab-result/:id', middleware.isLoggedIn, (req, res, next)=>{
+    ANC.findOne({_id: req.params.id})
+    .populate('patient')
+    .populate('labtest')
+    .exec((err, ancs)=>{
+        if(err) return next (err)
+        res.render('app/view/antenatal_lab_result', { ancs })
+    })
+})
+
 //VISITS
 router.route('/visit/:id')
     .get(middleware.isLoggedIn, (req, res, next) => {

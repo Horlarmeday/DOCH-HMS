@@ -18,7 +18,7 @@ const ancSchema = new mongoose.Schema({
     familyhistory: String,
     labtest: [{type: mongoose.Schema.Types.ObjectId, ref: "Test"}],
     labtype: String,
-    labresult: {
+    labresult: [{
         urinalysis:{
             appearance: String,
             leukocytes: String,
@@ -32,6 +32,7 @@ const ancSchema = new mongoose.Schema({
             sgravity: String,
             bilirubin: String,
             nitrite: String,
+            datetaken: {type: Date, default: Date.now}
         },
         serologytests:{
             pylori: String,
@@ -41,14 +42,16 @@ const ancSchema = new mongoose.Schema({
             hbsag: String,
             hcv: String,
             vdrl: String,
+            datetaken: {type: Date, default: Date.now}
         },
         tests:{
             mp: String,
             pcv: String,
             bloodgroup: String,
-            genotype: String
+            genotype: String,
+            datetaken: {type: Date, default: Date.now}
         }
-    },
+    }],
     delivery: {
         modeofdelivery: String,
         dateofdelivery: Date,
@@ -123,7 +126,6 @@ const ancSchema = new mongoose.Schema({
             datetaken: {type: Date, default: Date.now}
        }
     ],
-    
     treatment: [{
         tt1: {type: Date},
         tt1next: {type: Date},
@@ -148,6 +150,8 @@ const ancSchema = new mongoose.Schema({
     }],
     taken: {type: Boolean, default: false},
     ancpaid: {type: Boolean, default: false},
+    anclabpaid: {type: Boolean, default: false},
+    anclabfinish: {type: Boolean, default: false},
     status: {type: Boolean, default: true},
     created: {type: Date, default: Date.now}
 });

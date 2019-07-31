@@ -638,7 +638,7 @@ router.post('/anc-urinalysis-test/:id', middleware.isLoggedIn, (req, res, next)=
     .exec((err, user)=>{
         if(err) return next (err)
         ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
-            anc.labresult.urinalysis = {
+            anc.labresult.urinalysis.push({
                 appearance: req.body.appearance,
                 leukocytes: req.body.leukocytes,
                 protein: req.body.protein,
@@ -651,7 +651,7 @@ router.post('/anc-urinalysis-test/:id', middleware.isLoggedIn, (req, res, next)=
                 sgravity: req.body.sgravity,
                 bilirubin: req.body.bilirubin,
                 nitrite: req.body.nitrite,
-            }
+            })
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Urinalysis test result submitted successfully!')
@@ -668,12 +668,12 @@ router.post('/anc-tests/:id', middleware.isLoggedIn, (req, res, next)=>{
     .exec((err, user)=>{
         if(err) return next (err)
         ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
-            anc.labresult.tests = {
+            anc.labresult.tests.push({
                 pcv: req.body.pcv,
                 genotype: req.body.genotype,
                 bloodgroup: req.body.bloodgroup,
                 mp: req.body.mp,
-            }
+            })
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Tests result submitted successfully!')
@@ -690,7 +690,7 @@ router.post('/anc-serology-test/:id', middleware.isLoggedIn, (req, res, next)=>{
     .exec((err, user)=>{
         if(err) return next (err)
         ANC.findOne({_id: user.ancs[0]._id}, (err, anc)=>{
-            anc.labresult.serologytests = {
+            anc.labresult.serologytests.push({
                 pylori: req.body.pylori,
                 rf: req.body.rf,
                 chlamydia: req.body.chlamydia,
@@ -698,7 +698,7 @@ router.post('/anc-serology-test/:id', middleware.isLoggedIn, (req, res, next)=>{
                 hbsag: req.body.hbsag,
                 hcv: req.body.hcv,
                 vdrl: req.body.vdrl,
-            }
+            })
             anc.save((err)=>{
                 if(err) return next (err)
                 req.flash('success', 'Serology tests result submitted successfully!')

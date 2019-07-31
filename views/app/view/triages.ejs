@@ -89,13 +89,13 @@
                                                     <td><%= triage.bmi %> <span style="color: darkorange">(kg/m^2)</span></td>
                                                     <td><%= triage.rvs %> <span style="color: darkorange"> (rvs)</span></td>
                                                     <td><%= triage.pulse %> <span style="color: darkorange">(min)</span></td>
-                                                    <td><%= triage.respiration %> <span style="color: darkorange">(B/min)</span></td>
+                                                    <td><%= triage.respiration %> <span style="color: darkorange">(c/min)</span></td>
                                                     <td><%= triage.temperature %> <span style="color: darkorange">(°C)</span></td>
                                                     <td><%= triage.heartrate %> <span style="color: darkorange">(/min)</span></td>
                                                     <td><%= triage.systolic %> <span style="color: darkorange">(mmHg)</span></td>
                                                     <td><%= triage.dystolic %> <span style="color: darkorange">(mmHg)</span></td>
-                                                    <td><%= triage.fheartrate %> <span style="color: darkorange">(mmHg)</span></td>
-                                                    <td><%= triage.spo2 %> <span style="color: darkorange">(mmHg)</span></td>
+                                                    <td><%= triage.fheartrate %> <span style="color: darkorange">(b/min)</span></td>
+                                                    <td><%= triage.spo2 %> <span style="color: darkorange">(%)</span></td>
                                                     <% if(triage.muac === 'Green'){ %>
                                                     <td><label class="label bg-success label-lg"><%= triage.muac %> </label> </td>
                                                     <% }else if(triage.muac === 'Red'){ %>

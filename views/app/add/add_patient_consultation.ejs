@@ -114,7 +114,7 @@
                                                             <dt style="font-size:1em" class="col-sm-3">BMI</dt>
                                                             <dd class="col-sm-9"><%= user.triages[user.triages.length -1].bmi %> <span style="color: darkorange">(kg/m^2)</dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Heart Rate</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].heartrate %> <span style="color: darkorange">(/min)</dd>
+                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].heartrate %> <span style="color: darkorange">(b/min)</dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Date Created</dt>
                                                             <dd class="col-sm-9"><%= user.triages[user.triages.length -1].created.toLocaleString() %></dd>
                                                         </dl>
@@ -136,7 +136,7 @@
                                                                     <dt style="font-size:1em" class="col-sm-3">Temperature</dt>
                                                                     <dd class="col-sm-9"><%= user.triages[user.triages.length -1].temperature %> <span style="color: darkorange">(°C)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Respiration</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].respiration %> <span style="color: darkorange">(B/min)</dd>
+                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].respiration %> <span style="color: darkorange">(c/min)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Blood Pressure</dt>
                                                                     <% if(user.triages[user.triages.length -1].dystolic){ %>
                                                                         <dd class="col-sm-9"><%= user.triages[user.triages.length -1].dystolic %>/<%= user.triages[user.triages.length -1].systolic %> <span style="color: darkorange">(mmHg)</dd>
