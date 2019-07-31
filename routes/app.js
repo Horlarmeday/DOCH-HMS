@@ -3516,12 +3516,16 @@ router.route('/add-lab-items')
        item.unit = req.body.unit;
        item.quantity = req.body.quantity;
        item.cost = req.body.cost;
-       item.income = req.body.income;
-       item.sellprice = req.body.sell_price;
+       item.productcode = req.body.productcode;
+       item.shelf = req.body.shelf;
+       item.voucher = req.body.voucher;
+       item.batch = req.body.batch;
+       item.loss = req.body.loss;
+       item.batch = req.body.batch;
+       item.balance = req.body.balance;
+       item.remarks = req.body.remarks;
        item.expiration = req.body.expiration;
        item.vendor = req.body.vendor;
-       item.serialnum = req.body.snum;
-       item.location = req.body.location;
        item.received = req.body.received;
        item.save((err)=>{
            if(err){
@@ -3530,7 +3534,7 @@ router.route('/add-lab-items')
             return res.redirect('/add-lab-items')
            }
            req.flash('success', 'Item was added!')
-           res.redirect('/lab-items')
+           res.redirect('back')
        })
     })
    })
@@ -3693,7 +3697,7 @@ router.route('/pharmacy-dispense/:id')
 router.get('/dispense-history/:id', middleware.isLoggedIn, (req, res, next)=>{
     PharmacyItem.findOne({_id: req.params.id})
     .populate('dispensehistory')
-    .deepPopulate('dispensehistory.receivedBy')
+    .deepPopulate(['dispensehistory.receivedBy', 'dispensehistory.creator', 'dispensehistory.dispenseTo'])
     .exec((err, history)=>{
         console.log(history)
         if(err) return next(err)
@@ -3718,8 +3722,8 @@ router.get('/pharmacy-requests', middleware.isLoggedIn, (req, res, next)=>{
 router.get('/lab-dispense-history/:id', middleware.isLoggedIn, (req, res, next)=>{
     labItem.findOne({_id: req.params.id})
     .populate('dispensehistory')
-    .deepPopulate('dispensehistory.receivedBy')
-    .exec((err, history)=>{
+    .deepPopulate(['dispensehistory.receivedBy', 'dispensehistory.creator', 'dispensehistory.dispenseTo'])
+        .exec((err, history)=>{
         console.log(history)
         if(err) return next(err)
         res.render('app/view/lab_history', { history })
@@ -4239,7 +4243,11 @@ router.get('/operation-notes', middleware.isLoggedIn, (req, res, next)=>{
 
 //LAB ITEMS
 router.get('/lab-items', middleware.isLoggedIn, (req, res, next) => {
-    labItem.find({}, (err, items) => {
+    labItem.find({})
+    .populate('creator')
+    .populate('vendor')
+    .populate('dispensehistory')
+    .exec((err, items) => {
         if (err) { return next(err) }
         res.render('app/view/lab_items', { items })
     })

@@ -58,73 +58,50 @@
                                         <div class="row">
                                             <div class="col-sm-12 mobile-inputs">
                                                 <form method="POST">
-                                                    <!-- <div class="form-group">
-                                                        <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
-                                                    </div> -->
+                                                    
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
-                                                            <label for="">Name</label>
-                                                            <input type="text" name="name" class="form-control" placeholder=" Name">
+                                                            <label for="">Item</label>
+                                                            <input type="text" name="name" class="form-control" placeholder="Item Name">
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <label for="">Description</label>
-                                                            <input type="text" name="description" class="form-control" placeholder="Description">
+                                                            <label for="">Item Description</label>
+                                                            <input type="text" name="description" class="form-control" placeholder="Item Description">
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
-                                                            <label for="">Quantity</label>
-                                                            <input type="number" name="quantity" id="quantity" class="form-control" placeholder="Quantity">
+                                                            <label for="">Product Code</label>
+                                                            <input type="text" name="productcode" class="form-control" placeholder=" Product Code">
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <label for="">Unit</label>
-                                                            <select id="unit" name="unit" class="form-control select">
+                                                            <label for="">Shelf No</label>
+                                                            <select  name="shelf" class="form-control select">
                                                                 <option selected disabled>Select</option>
-                                                                <option value="Ampoule">Ampoule</option>
-                                                                <option value="Bag">Bag</option>
-                                                                <option value="Bottle">Bottle</option>
-                                                                <option value="Box">Box</option>
-                                                                <option value="Bundle">Bundle</option>
-                                                                <option value="Carton">Carton</option>
-                                                                <option value="Container">Container</option>
+                                                                <option>A</option>
+                                                                <option>B</option>
+                                                                <option>C</option>
+                                                                <option>D</option>
+                                                                <option>E</option>
+                                                                <option>F</option>
+                                                                <option>G</option>
+                                                                <option>H</option>
+                                                                <option>I</option>
+                                                                <option>J</option>
+                                                                <option>K</option>
+                                                                <option>L</option>
+                                                                <option>M</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        <div class="col-sm-6">
-                                                            <label for="">Cost Price per Unit (₦)</label>
-                                                            <input type="number" name="price" id="sale_price" class="form-control" placeholder="Price">
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                                <label for="">Purchase Cost(₦)</label>
-                                                                <input type="number" name="cost" class="form-control" id="cost" placeholder="" readonly>
-                                                        </div>
                                                         
-                                                    </div>
-                                                    <div class="form-group row">
                                                         <div class="col-sm-6">
-                                                            <label for="">Selling Price (₦)</label>
-                                                            <input type="number" name="sell_price" id="sell_price" class="form-control" placeholder="Selling Price">
+                                                            <label for="">Voucher/Ref No</label>
+                                                            <input type="text" name="voucher" class="form-control" placeholder="Voucher/Ref No" required>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                                <label for="">Expected Income(₦)</label>
-                                                                <input type="number" name="income" class="form-control" id="income" readonly>
-                                                        </div>
-                                                    </div>
-                                                    
-                                                    <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                    <label for="">Date Received</label>
-                                                                   <input type="date" name="received" class="form-control" placeholder="Quantity">
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                    <label>Expiration Date</label>
-                                                                    <input type="date" name="expiration" class="form-control" placeholder="Expiration">
-                                                            </div>
-                                                    </div>
-                                                    <div class="form-group row">
-                                                        <div class="col-sm-6">
-                                                            <label>Vendor</label>
+                                                            <label>Received From</label>
                                                             <select name="vendor" class="form-control js-example-basic-single" required>
                                                                     <option selected disabled>Select</option>
                                                                     <% users.forEach((user)=>{  %>
@@ -134,16 +111,70 @@
                                                                     <% }) %>
                                                             </select>
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                            <label>Location</label>
-                                                            <input type="text" name="location" class="form-control" placeholder="Location">
-                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Batch No</label>
+                                                                    <input type="text" name="batch" class="form-control" placeholder="Batch No">
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Expiration Date</label>
+                                                                        <input type="date" name="expiration" class="form-control" placeholder="Expiration Date">
+                                                                </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Quantity</h5><br><br>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Quantity Received</label>
+                                                                    <input type="number" max="300" min="50" name="quantity" id="quantity" class="form-control" placeholder="Quantity Received">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Unit of Measure</label>
+                                                                    <select id="unit" name="unit" class="form-control select">
+                                                                        <option selected disabled>Select</option>
+                                                                        <option value="Ampoule">Ampoule</option>
+                                                                        <option value="Bag">Bag</option>
+                                                                        <option value="Bottle">Bottle</option>
+                                                                        <option value="Box">Box</option>
+                                                                        <option value="Bundle">Bundle</option>
+                                                                        <option value="Carton">Carton</option>
+                                                                        <option value="Container">Container</option>
+                                                                        <option value="Pack">Pack</option>
+                                                                    </select>
+                                                            </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Loss & Adjustments</label>
+                                                                    <input type="number" name="loss" class="form-control" placeholder="Loss & Adjustments">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Cost Price per Unit (₦)</label>
+                                                                    <input type="number" name="price" id="sale_price" class="form-control" placeholder="Price">
+                                                            </div>
+                                                            
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
-                                                            <label>Serial Number</label>
-                                                            <input type="number" name="snum" class="form-control" placeholder="Serial Number">
+                                                                <label for="">Purchase Cost(₦)</label>
+                                                                <input type="number" name="cost" class="form-control" id="cost" placeholder="" readonly>
                                                         </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Date Received</label>
+                                                               <input type="date" name="received" class="form-control" placeholder="Quantity">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Balance</label>
+                                                                    <input type="number" name="balance" class="form-control" id="cost" placeholder="Balance" >
+                                                            </div> 
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Remarks</label>
+                                                                    <input type="text" name="remarks" class="form-control" id="cost" placeholder="Remarks" >
+                                                            </div>
                                                     </div>
                                                     <button type="submit" class="btn btn-info float-right">Add</button>
                                                     

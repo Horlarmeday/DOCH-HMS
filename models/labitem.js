@@ -8,8 +8,13 @@ const labItemSchema = new mongoose.Schema({
     }],
     itemDigit: Number,
     name: String,
-    income: Number,
-    sellprice: Number,
+    productcode: String,
+    shelf: String,
+    voucher: String,
+    batch: String,
+    loss: String,
+    balance: Number,
+    remarks: String,
     received: {type: Date},
     description: String,
     price: Number,
@@ -18,9 +23,7 @@ const labItemSchema = new mongoose.Schema({
     rquantity: {type:Number, default: 0},
     cost: Number,
     expiration: {type: Date},
-    vendor: String,
-    serialnum: Number,
-    location: String,
+    vendor: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'},
     created: {type: Date, default: Date.now}
 });
  

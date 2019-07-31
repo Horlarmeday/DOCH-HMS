@@ -63,17 +63,22 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
+                                                    <th>Product Code</th>
                                                     <th>Item Name</th>
-                                                    <th>Item Code</th>
                                                     <th>Quantity</th>
                                                     <th>Leftover</th>
+                                                    <th>Loss</th>
+                                                    <th>Shelf</th>
                                                     <th>Unit</th>
                                                     <th>Unit Price(₦)</th>
                                                     <th>Purchase Cost(₦)</th>
-                                                    <th>Expected Income(₦)</th>
+                                                    <th>Voucher/Ref No</th>
                                                     <th>Date Received</th>
                                                     <th>Vendor</th>
                                                     <th>Expiration </th>
+                                                    <th>Balance </th>
+                                                    <th>Remarks </th>
+                                                    <th>CreatedBy</th>
                                                     <th>Dispense </th>
                                                 </tr>
                                             </thead>
@@ -81,18 +86,28 @@
                                                 <% items.forEach((item) => { %>
                                                 <tr style="cursor: pointer" onclick="window.location='/lab-dispense-history/<%= item._id %>';">
                                                     <td></td>
+                                                    <td><%= item.productcode %></td>
                                                     <td><%= item.name %></td>
-                                                    <td>LAB/ITEM/000<%= item.itemDigit %></td>
                                                     <td><%= item.quantity %></td>
-                                                    <td style="color: rgb(210, 30, 150)"><strong><%= item.rquantity %></strong></td>
+                                                    <% if(item.dispensehistory < 1){ %>
+                                                        <td style="color: darkviolet"><strong><%= item.quantity %></strong></td>
+                                                        <% }else{ %>
+                                                        <td style="color: darkviolet"><strong> <%= item.dispensehistory[item.dispensehistory.length -1].rquantity %></strong></td>
+                                                    <% } %>
+                                                    <td><%= item.loss %></td>
+                                                    <td><%= item.shelf %></td>
                                                     <td><%= item.unit %></td>
                                                     <td><%= item.price %></td>
                                                     <td><%= item.cost %></td>
-                                                    <td><%= item.income %></td>
-                                                    <td><%= item.received.toDateString() %></td>
-                                                    <td><%= item.vendor %></td>
-                                                    <td><%= item.expiration.toDateString() %></td>
-                                                    <td> <a class="btn btn-success btn-md" href="/lab-dispense/<%= item._id %>">Dispense</a></td>
+                                                    <td><%= item.voucher %></td>
+                                            
+                                                    <td><%= item.received.toLocaleDateString() %></td>
+                                                    <td><%= item.vendor.company %></td>
+                                                    <td><%= item.expiration.toLocaleDateString() %></td>
+                                                    <td><%= item.balance %></td>
+                                                    <td><%= item.remarks %></td>
+                                                    <td><%= item.creator.firstname %> <%= item.creator.lastname %></td>
+                                                    <td> <a class="btn btn-success btn-sm" href="/lab-dispense/<%= item._id %>">Dispense</a></td>
                                                 </tr>
                                                 
                                                 <% }) %>

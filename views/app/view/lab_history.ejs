@@ -68,6 +68,7 @@
                                                     <th>LeftOver</th>
                                                     <th>Expiration Date</th>
                                                     <th>Dispensed To</th>
+                                                    <th>Dispensed By</th>
                                                     <th>Received By</th>
                                                     <th>Date Dispensed</th>
                                                 </tr>
@@ -80,7 +81,8 @@
                                                     <td><%= item.quantity %> <%= item.unit %></td>
                                                     <td><%= item.rquantity %></td>
                                                     <td><%= item.expiry.toDateString() %></td>
-                                                    <td><%= item.expiry.toDateString() %></td>
+                                                    <td><%= item.dispenseTo.name %></td>
+                                                    <td><%= item.creator.firstname %> <%= item.creator.lastname %></td>
                                                     <td><%= item.receivedBy.firstname %> <%= item.receivedBy.lastname %></td>
                                                     <td><%= item.dateDispensed.toDateString() %></td>
                                                 </tr>
