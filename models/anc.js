@@ -53,6 +53,7 @@ const ancSchema = new mongoose.Schema({
         }
     }],
     delivery: {
+        hbv: String,
         modeofdelivery: String,
         dateofdelivery: Date,
         duration: String,
@@ -107,7 +108,8 @@ const ancSchema = new mongoose.Schema({
     presentpregnancy:[{
         thedate: {type: Date},
         weight: Number,
-        urinalysis: String,
+        urinalysisProtein: String,
+        urinalysisGlucose: String,
         bp: String,
         pallor: String,
         maturity: String,

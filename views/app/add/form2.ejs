@@ -67,12 +67,15 @@
                                         <table class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>S/N</th>
-                                                    <th>S/E/U/CR</th>
-                                                    <th>Result</th>
-                                                    <th>REF RANGE/UNIT</th>
+                                                    <th rowspan="2">S/N</th>
+                                                    <th rowspan="2">S/E/U/CR</th>
+                                                    <th rowspan="2">Result</th>
+                                                    <th colspan="2">REF RANGE/UNIT</th>
                                                     
-                                                    <!-- <th></th> -->
+                                                </tr>
+                                                <tr>
+                                                    <th>Adult</th>
+                                                    <th>Child</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -80,12 +83,14 @@
                                                   <td></td>  
                                                   <td>Na+</td>  
                                                   <td><input type="text" name="Na" placeholder="<%= consultation.labresult.seucranalysis.Na %>" class="form-control"></td>  
+                                                  <td><input type="text" placeholder="135 - 145 Mmol/L" class="form-control" readonly></td>  
                                                   <td><input type="text" placeholder="128 - 160 Mmol/L" class="form-control" readonly></td>  
                                                 </tr>
                                                 <tr>
                                                     <td></td>  
                                                     <td>K+</td>  
                                                     <td><input type="text" name="K" placeholder="<%= consultation.labresult.seucranalysis.K %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="3.5 - 5.5 Mmol/L" class="form-control" readonly></td>  
                                                     <td><input type="text" placeholder="3.5 - 5.5 Mmol/L" class="form-control" readonly></td>  
                                                   
                                                 </tr>
@@ -94,12 +99,14 @@
                                                     <td>Cl</td>  
                                                     <td><input type="text" name="Cl" placeholder="<%= consultation.labresult.seucranalysis.Cl %>" class="form-control"></td>  
                                                     <td><input type="text" placeholder="97 - 108 Mmol/L" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="97 - 108 Mmol/L" class="form-control" readonly></td>  
                                                    
                                                 </tr>
                                                 <tr>
                                                     <td></td>  
                                                     <td>HCO₃</td>  
                                                     <td><input type="text" name="hco" placeholder="<%= consultation.labresult.seucranalysis.hco %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="24 - 32 Mmol/L" class="form-control" readonly></td>  
                                                     <td><input type="text" placeholder="24 - 32 Mmol/L" class="form-control" readonly></td>  
                                                  
                                                 </tr>
@@ -109,12 +116,14 @@
                                                     <td>Urea</td>  
                                                     <td><input type="text" name="urea" placeholder="<%= consultation.labresult.seucranalysis.urea %>" class="form-control"></td>  
                                                     <td><input type="text" placeholder="10 - 55 mg/dl" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="10 - 36 mg/dl" class="form-control" readonly></td>  
                                                  
                                                 </tr>
                                                 <tr>
                                                     <td></td>  
                                                     <td>Cr</td>  
                                                     <td><input type="text" name="Cr" placeholder="<%= consultation.labresult.seucranalysis.Cr %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="0.7 - 1.4 mg/dl" class="form-control" readonly></td>  
                                                     <td><input type="text" placeholder="0.7 - 1.4 mg/dl" class="form-control" readonly></td>  
                                                 
                                                 </tr>
@@ -147,7 +156,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th>Lipid Profile</th>
                                                         <th>Results</th>
                                                         <th>REF RANGE/UNIT</th>
                                                         <!-- <th>Adult Normal Values</th> -->
@@ -393,7 +402,7 @@
                                                                       <td></td>  
                                                                       <td>Urine Protein</td>  
                                                                       <td><input type="text" name="urineprotein" placeholder="<%= consultation.labresult.analyte.urineprotein %>" class="form-control"></td>  
-                                                                      <td><input type="text" placeholder="0 - 20 Mmol/L" class="form-control" readonly></td> 
+                                                                      <td><input type="text" placeholder="0 - 20 Mg/dL" class="form-control" readonly></td> 
                                                                     </tr>
                                                                     <tr>
                                                                         <td></td>  
@@ -409,28 +418,18 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td></td>  
-                                                                        <td>Ascitic Fluid</td>  
+                                                                        <td>Ascitic Fluid Glucose</td>  
                                                                         <td><input type="text" name="asciticfluid" placeholder="<%= consultation.labresult.analyte.asciticfluid %>" class="form-control"></td>  
                                                                         <td><input type="text" placeholder="2.2 - 3.3 Mmol/L" class="form-control" readonly></td> 
                                                                     </tr>
+                                                                    
                                                                     <tr>
                                                                             <td></td>  
-                                                                            <td>Glucose</td>  
-                                                                            <td><input type="text" name="glucose" placeholder="<%= consultation.labresult.analyte.glucose %>" class="form-control"></td>  
-                                                                            <td><input type="text" placeholder="" class="form-control" readonly></td> 
-                                                                        </tr>
-                                                                    <tr>
-                                                                            <td></td>  
-                                                                            <td>Ascitic Fluid Total</td>  
+                                                                            <td>Ascitic Fluid Total Protein</td>  
                                                                             <td><input type="text" name="asciticfluidtotal" placeholder="<%= consultation.labresult.analyte.asciticfluidtotal %>" class="form-control"></td>  
                                                                             <td><input type="text" placeholder="2.5 - 3.0 g/dL" class="form-control" readonly></td> 
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td></td>  
-                                                                            <td>Protein</td>  
-                                                                            <td><input type="text" name="proteinfirst" placeholder="<%= consultation.labresult.analyte.proteinfirst %>" class="form-control"></td>  
-                                                                            <td><input type="text" placeholder="" class="form-control" readonly></td> 
-                                                                        </tr>
+                                                                        
                                                                         
                                                                         <tr>
                                                                             <td></td>  
@@ -440,16 +439,11 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>  
-                                                                            <td>24 hour Urine</td>  
+                                                                            <td>24 hour Urine Protein</td>  
                                                                             <td><input type="text" name="thoururine" placeholder="<%= consultation.labresult.analyte.thoururine %>" class="form-control"></td>  
                                                                             <td><input type="text" placeholder="20 - 150 mg/24hrs" class="form-control" readonly></td> 
                                                                         </tr>
-                                                                        <tr>
-                                                                            <td></td>  
-                                                                            <td>Protein</td>  
-                                                                            <td><input type="text" name="proteinsecond" placeholder="<%= consultation.labresult.analyte.proteinsecond %>" class="form-control"></td>  
-                                                                            <td><input type="text" placeholder="" class="form-control" readonly></td> 
-                                                                         </tr>
+                                                                        
                                                                     
                                                                     <tr>
                                                                         <button type="submit" class="btn btn-success float-right mb-3">Save</button>
@@ -489,19 +483,19 @@
                                                                               <td></td>  
                                                                               <td>Fasting Glu.</td>  
                                                                               <td><input type="text" name="fastingglu" placeholder="<%= consultation.labresult.glucose.fastingglu %>" class="form-control"></td>  
-                                                                              <td><input type="text" placeholder="3.9 - 5.8 Mmol/L" class="form-control" readonly></td> 
+                                                                              <td><input type="text" placeholder="3.9 - 5.9 Mmol/L" class="form-control" readonly></td> 
                                                                             </tr>
                                                                             <tr>
                                                                                 <td></td>  
                                                                                 <td>Random Glu.</td>  
                                                                                 <td><input type="text" name="randomglu" placeholder="<%= consultation.labresult.glucose.randomglu %>" class="form-control"></td>  
-                                                                                <td><input type="text" placeholder="3.9 - 6.7 Mmol/L" class="form-control" readonly></td> 
+                                                                                <td><input type="text" placeholder="3.9 -7.0 Mmol/L" class="form-control" readonly></td> 
                                                                             </tr>
                                                                             <tr>
                                                                                 <td></td>  
                                                                                 <td>2hr pp</td>  
                                                                                 <td><input type="text" name="hrpp" placeholder="<%= consultation.labresult.glucose.hrpp %>" class="form-control"></td>  
-                                                                                <td><input type="text" placeholder="3.9 - 6.7 Mmol/L" class="form-control" readonly></td> 
+                                                                                <td><input type="text" placeholder="3.9 - 7.0 Mmol/L" class="form-control" readonly></td> 
                                                                             </tr>
                                                                             
                                                                             
@@ -549,13 +543,13 @@
                                                                                     <td></td>  
                                                                                     <td>60min</td>  
                                                                                     <td><input type="text" name="sixtymin" placeholder="<%= consultation.labresult.ogtt.sixtymin %>" class="form-control"></td>  
-                                                                                    <td colspan="4"><input type="text" placeholder="3.9 - 7.0 Mmol/L" class="form-control" readonly></td> 
+                                                                                    <td colspan="4"><input type="text" placeholder="3.9 - 10.0 Mmol/L" class="form-control" readonly></td> 
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>  
                                                                                     <td>120min</td>  
                                                                                     <td><input type="text" name="onetwentymin" placeholder="<%= consultation.labresult.ogtt.onetwentymin %>" class="form-control"></td>  
-                                                                                    <td colspan="4"><input type="text" placeholder="3.9 - 6.7 Mmol/L" class="form-control" readonly></td> 
+                                                                                    <td colspan="4"><input type="text" placeholder="3.9 -7.7 Mmol/L" class="form-control" readonly></td> 
                                                                                 </tr>
                                                                                 
                                                                                 <tr>
@@ -571,32 +565,32 @@
                                                                                     <th>Time</th>
                                                                                     <td>Degree</td>
                                                                                     <td>Degree</td>
-                                                                                    <td>Degree</td>
-                                                                                    <td>Degree</td>
+                                                                                    <td colspan="2">Degree</td>
+                                                                                   
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td><input type="text" placeholder="Fasting" class="form-control" readonly></td>
                                                                                     <td><input type="text" name="fasting"  placeholder="<%= consultation.labresult.ogtt.fasting %>"  class="form-control"></td>
                                                                                     <td><input type="text" name="fastingdegree1"  placeholder="<%= consultation.labresult.ogtt.fastingdegree1 %>"  class="form-control"></td>
-                                                                                    <td><input type="text" name="fastingdegree2"  placeholder="<%= consultation.labresult.ogtt.fastingdegree2 %>"  class="form-control" ></td>
-                                                                                    <td><input type="text" name="fastingdegree3"  placeholder="<%= consultation.labresult.ogtt.fastingdegree3 %>"  class="form-control" ></td>
+                                                                                    <td colspan="2"><input type="text" name="fastingdegree2"  placeholder="<%= consultation.labresult.ogtt.fastingdegree2 %>"  class="form-control" ></td>
+                                                                                  
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td><input type="text" placeholder="60 Mins" class="form-control" readonly></td>
                                                                                     <td><input type="text" name="sixtymins"  placeholder="<%= consultation.labresult.ogtt.sixtymins %>"  class="form-control"></td>
                                                                                     <td><input type="text" name="sixtyminsdegree1"  placeholder="<%= consultation.labresult.ogtt.sixtymins %>"  class="form-control"></td>
-                                                                                    <td><input type="text" name="sixtyminsdegree2"  placeholder="<%= consultation.labresult.ogtt.sixtyminsdegree2 %>"  class="form-control" ></td>
-                                                                                    <td><input type="text" name="sixtyminsdegree3"  placeholder="<%= consultation.labresult.ogtt.sixtyminsdegree3 %>"  class="form-control" ></td>
+                                                                                    <td colspan="2"><input type="text" name="sixtyminsdegree2"  placeholder="<%= consultation.labresult.ogtt.sixtyminsdegree2 %>"  class="form-control" ></td>
+                                                                                   
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>
                                                                                     <td><input type="text" placeholder="120 Mins" class="form-control" readonly></td>
                                                                                     <td><input type="text" name="onetwentymins"  placeholder="<%= consultation.labresult.ogtt.onetwentymins %>"  class="form-control"></td>
                                                                                     <td><input type="text" name="onetwentyminsdegree1"  placeholder="<%= consultation.labresult.ogtt.onetwentyminsdegree1 %>"  class="form-control"></td>
-                                                                                    <td><input type="text" name="onetwentyminsdegree2"  placeholder="<%= consultation.labresult.ogtt.onetwentyminsdegree2 %>"  class="form-control" ></td>
-                                                                                    <td><input type="text" name="onetwentyminsdegree3"  placeholder="<%= consultation.labresult.ogtt.onetwentyminsdegree3 %>"  class="form-control" ></td>
+                                                                                    <td colspan="2"><input type="text" name="onetwentyminsdegree2"  placeholder="<%= consultation.labresult.ogtt.onetwentyminsdegree2 %>"  class="form-control" ></td>
+                                                                                   
                                                                                 </tr>
                                                                                 <tr>
                                                                                         <th>S/N</th>
@@ -608,12 +602,9 @@
                                                                                         
                                                                                     </tr>
                                                                                     <tr>
-                                                                                        <td></td>
-                                                                                        <td><input type="text" placeholder="Age in Days" class="form-control" readonly></td>
-                                                                                        <td><input type="text" name="ageindaystotal" placeholder="<%= consultation.labresult.ogtt.ageindaystotal %>" class="form-control"></td>
-                                                                                        <td><input type="text" name="ageindaysdirect" placeholder="<%= consultation.labresult.ogtt.ageindaysdirect %>" class="form-control"></td>
-                                                                                        <td><input type="text" name="ageindaystotalrange" placeholder="<%= consultation.labresult.ogtt.ageindaystotalrange %>" class="form-control" ></td>
-                                                                                        <td><input type="text" name="ageindaysdirectrange" placeholder="<%= consultation.labresult.ogtt.ageindaysdirectrange %>" class="form-control" ></td>
+                                                                                        <th></th>
+                                                                                        <th colspan="7">Age in Days</th>
+                                                                                       
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td></td>
@@ -677,25 +668,30 @@
                                         <table class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th>S/N</th>
-                                                    <th>S/E/U/CR</th>
-                                                    <th>Result</th>
-                                                    <th>REF RANGE/UNIT</th>
-                                                    
-                                                    <!-- <th></th> -->
+                                                    <th rowspan="2">S/N</th>
+                                                    <th rowspan="2">S/E/U/CR</th>
+                                                    <th rowspan="2">Result</th>
+                                                    <th rowspan="2">REF RANGE/UNIT</th>
+                                                   
                                                 </tr>
+                                                <tr>
+                                                        <th>Adult</th>
+                                                        <th>Child</th>
+                                                    </tr>
                                             </thead>
                                             <tbody>
                                                 <tr>
                                                     <td></td>  
                                                     <td>Na+</td>  
                                                     <td><input type="text" name="Na" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="135 - 145 Mmol/L" class="form-control" readonly></td>  
                                                     <td><input type="text" placeholder="128 - 160 Mmol/L" class="form-control" readonly></td>  
                                                 </tr>
                                                 <tr>
                                                     <td></td>  
                                                     <td>K+</td>  
                                                     <td><input type="text" name="K" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="3.5 - 5.5 Mmol/L" class="form-control" readonly></td>  
                                                     <td><input type="text" placeholder="3.5 - 5.5 Mmol/L" class="form-control" readonly></td>  
                                                     
                                                 </tr>
@@ -704,12 +700,14 @@
                                                     <td>Cl</td>  
                                                     <td><input type="text" name="Cl" class="form-control"></td>  
                                                     <td><input type="text" placeholder="97 - 108 Mmol/L" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="97 - 108 Mmol/L" class="form-control" readonly></td>  
                                                     
                                                 </tr>
                                                 <tr>
                                                     <td></td>  
                                                     <td>HCO₃</td>  
                                                     <td><input type="text" name="hco" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="24 - 32 Mmol/L" class="form-control" readonly></td>  
                                                     <td><input type="text" placeholder="24 - 32 Mmol/L" class="form-control" readonly></td>  
                                                     
                                                 </tr>
@@ -719,6 +717,7 @@
                                                     <td>Urea</td>  
                                                     <td><input type="text" name="urea" class="form-control"></td>  
                                                     <td><input type="text" placeholder="10 - 55 mg/dl" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="10 - 36 mg/dl" class="form-control" readonly></td>  
                                                     
                                                 </tr>
                                                 <tr>
@@ -1003,7 +1002,7 @@
                                                                             <td></td>  
                                                                             <td>Urine Protein</td>  
                                                                             <td><input type="text" name="urineprotein" class="form-control"></td>  
-                                                                            <td><input type="text" placeholder="0 - 20 Mmol/L" class="form-control" readonly></td> 
+                                                                            <td><input type="text" placeholder="0 - 20 Mg/dL" class="form-control" readonly></td> 
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>  
@@ -1019,28 +1018,18 @@
                                                                         </tr>
                                                                         <tr>
                                                                             <td></td>  
-                                                                            <td>Ascitic Fluid</td>  
+                                                                            <td>Ascitic Fluid Glucose</td>  
                                                                             <td><input type="text" name="asciticfluid" class="form-control"></td>  
                                                                             <td><input type="text" placeholder="2.2 - 3.3 Mmol/L" class="form-control" readonly></td> 
                                                                         </tr>
+                                                                        
                                                                         <tr>
                                                                                 <td></td>  
-                                                                                <td>Glucose</td>  
-                                                                                <td><input type="text" name="glucose" class="form-control"></td>  
-                                                                                <td><input type="text" placeholder="" class="form-control" readonly></td> 
-                                                                            </tr>
-                                                                        <tr>
-                                                                                <td></td>  
-                                                                                <td>Ascitic Fluid Total</td>  
+                                                                                <td>Ascitic Fluid Total Protein</td>  
                                                                                 <td><input type="text" name="asciticfluidtotal" class="form-control"></td>  
                                                                                 <td><input type="text" placeholder="2.5 - 3.0 g/dL" class="form-control" readonly></td> 
                                                                             </tr>
-                                                                            <tr>
-                                                                                <td></td>  
-                                                                                <td>Protein</td>  
-                                                                                <td><input type="text" name="proteinfirst" class="form-control"></td>  
-                                                                                <td><input type="text" placeholder="" class="form-control" readonly></td> 
-                                                                            </tr>
+                                                                            
                                                                             
                                                                             <tr>
                                                                                 <td></td>  
@@ -1050,16 +1039,11 @@
                                                                             </tr>
                                                                             <tr>
                                                                                 <td></td>  
-                                                                                <td>24 hour Urine</td>  
+                                                                                <td>24 hour Urine Protein</td>  
                                                                                 <td><input type="text" name="thoururine" class="form-control"></td>  
                                                                                 <td><input type="text" placeholder="20 - 150 mg/24hrs" class="form-control" readonly></td> 
                                                                             </tr>
-                                                                            <tr>
-                                                                                <td></td>  
-                                                                                <td>Protein</td>  
-                                                                                <td><input type="text" name="proteinsecond" class="form-control"></td>  
-                                                                                <td><input type="text" placeholder="" class="form-control" readonly></td> 
-                                                                                </tr>
+                                                                            
                                                                         
                                                                         <tr>
                                                                             <button type="submit" class="btn btn-success float-right mb-3">Save</button>
@@ -1099,19 +1083,19 @@
                                                                                     <td></td>  
                                                                                     <td>Fasting Glu.</td>  
                                                                                     <td><input type="text" name="fastingglu" class="form-control"></td>  
-                                                                                    <td><input type="text" placeholder="3.9 - 5.8 Mmol/L" class="form-control" readonly></td> 
+                                                                                    <td><input type="text" placeholder="3.9 - 5.9 Mmol/L" class="form-control" readonly></td> 
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>  
                                                                                     <td>Random Glu.</td>  
                                                                                     <td><input type="text" name="randomglu" class="form-control"></td>  
-                                                                                    <td><input type="text" placeholder="3.9 - 6.7 Mmol/L" class="form-control" readonly></td> 
+                                                                                    <td><input type="text" placeholder="3.9 - 7.0 Mmol/L" class="form-control" readonly></td> 
                                                                                 </tr>
                                                                                 <tr>
                                                                                     <td></td>  
                                                                                     <td>2hr pp</td>  
                                                                                     <td><input type="text" name="hrpp" class="form-control"></td>  
-                                                                                    <td><input type="text" placeholder="3.9 - 6.7 Mmol/L" class="form-control" readonly></td> 
+                                                                                    <td><input type="text" placeholder="3.9 - 7.0 Mmol/L" class="form-control" readonly></td> 
                                                                                 </tr>
                                                                                 
                                                                                 
@@ -1159,13 +1143,13 @@
                                                                                         <td></td>  
                                                                                         <td>60min</td>  
                                                                                         <td><input type="text" name="sixtymin" class="form-control"></td>  
-                                                                                        <td colspan="4"><input type="text" placeholder="3.9 - 7.0 Mmol/L" class="form-control" readonly></td> 
+                                                                                        <td colspan="4"><input type="text" placeholder="3.9 - 10.0 Mmol/L" class="form-control" readonly></td> 
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td></td>  
                                                                                         <td>120min</td>  
                                                                                         <td><input type="text" name="onetwentymin" class="form-control"></td>  
-                                                                                        <td colspan="4"><input type="text" placeholder="3.9 - 6.7 Mmol/L" class="form-control" readonly></td> 
+                                                                                        <td colspan="4"><input type="text" placeholder="3.9 - 7.7 Mmol/L" class="form-control" readonly></td> 
                                                                                     </tr>
                                                                                     
                                                                                     <tr>
@@ -1181,32 +1165,32 @@
                                                                                         <th>Time</th>
                                                                                         <td>Degree</td>
                                                                                         <td>Degree</td>
-                                                                                        <td>Degree</td>
-                                                                                        <td>Degree</td>
+                                                                                        <td colspan="2">Degree</td>
+                                                                                        
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td></td>
                                                                                         <td><input type="text" placeholder="Fasting" class="form-control" readonly></td>
                                                                                         <td><input type="text" name="fasting" class="form-control"></td>
                                                                                         <td><input type="text" name="fastingdegree1" class="form-control"></td>
-                                                                                        <td><input type="text" name="fastingdegree2" class="form-control" ></td>
-                                                                                        <td><input type="text" name="fastingdegree3" class="form-control" ></td>
+                                                                                        <td colspan="2"><input type="text" name="fastingdegree2" class="form-control" ></td>
+                                                                                        
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td></td>
                                                                                         <td><input type="text" placeholder="60 Mins" class="form-control" readonly></td>
                                                                                         <td><input type="text" name="sixtymins" class="form-control"></td>
                                                                                         <td><input type="text" name="sixtyminsdegree1" class="form-control"></td>
-                                                                                        <td><input type="text" name="sixtyminsdegree2" class="form-control" ></td>
-                                                                                        <td><input type="text" name="sixtyminsdegree3" class="form-control" ></td>
+                                                                                        <td colspan="2"><input type="text" name="sixtyminsdegree2" class="form-control" ></td>
+                                                                                       
                                                                                     </tr>
                                                                                     <tr>
                                                                                         <td></td>
                                                                                         <td><input type="text" placeholder="120 Mins" class="form-control" readonly></td>
                                                                                         <td><input type="text" name="onetwentymins" class="form-control"></td>
                                                                                         <td><input type="text" name="onetwentyminsdegree1" class="form-control"></td>
-                                                                                        <td><input type="text" name="onetwentyminsdegree2" class="form-control" ></td>
-                                                                                        <td><input type="text" name="onetwentyminsdegree3" class="form-control" ></td>
+                                                                                        <td colspan="2"><input type="text" name="onetwentyminsdegree2" class="form-control" ></td>
+                                                                                       
                                                                                     </tr>
                                                                                     <tr>
                                                                                             <th>S/N</th>
@@ -1218,12 +1202,8 @@
                                                                                             
                                                                                         </tr>
                                                                                         <tr>
-                                                                                            <td></td>
-                                                                                            <td><input type="text" placeholder="Age in Days" class="form-control" readonly></td>
-                                                                                            <td><input type="text" name="ageindaystotal" class="form-control"></td>
-                                                                                            <td><input type="text" name="ageindaysdirect" class="form-control"></td>
-                                                                                            <td><input type="text" name="ageindaystotalrange" class="form-control" ></td>
-                                                                                            <td><input type="text" name="ageindaysdirectrange" class="form-control" ></td>
+                                                                                            <th></th>
+                                                                                            <th colspan="7">Age in Days</th>
                                                                                         </tr>
                                                                                         <tr>
                                                                                             <td></td>

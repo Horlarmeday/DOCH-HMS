@@ -83,6 +83,19 @@
                                                                     <option value="<%= drug._id %>"><%= drug.generic %> </option>
                                                             <% }) %>
                                                         </select><br><br>
+                                                        <label for="">Route</label>
+                                                        <select name="route" class="form-control js-example-basic-single">
+                                                            <option selected disabled>Select</option>
+                                                                    <option>Oral</option>
+                                                                    <option>IV</option>
+                                                                    <option>IM</option>
+                                                                    <option>SC</option>
+                                                                    <option>SL.ID</option>
+                                                                    <option>PR</option>
+                                                                    <option>OCC</option>
+                                                                    <option>GUTT</option>
+                                                                    <option>TOPICAL</option>
+                                                        </select><br><br>
                                                         <label for="">Dosage</label>
                                                         <input type="text" name="dosage" class="form-control" placeholder="Dosage"><br>
                                                     <!-- </div> -->
@@ -125,6 +138,7 @@
                                                         <th>S/N</th>
                                                         <th>Patient</th>
                                                         <th>Drug</th>
+                                                        <th>Route</th>
                                                         <th>Dosage</th>
                                                         <th>Comments</th>
                                                         <th>Nurse</th>
@@ -139,6 +153,7 @@
                                                         <td></td>
                                                         <td> <%= treatment.patient.firstname %> <%= treatment.patient.lastname %></td>
                                                         <td><%= treatment.drugs.generic %></td>
+                                                        <td><%= treatment.route %></td>
                                                         <td><%= treatment.dosage %></td>
                                                         <td><%= treatment.description %></td>
                                                        <td><%= treatment.creator.firstname %> <%= treatment.creator.lastname %></td>

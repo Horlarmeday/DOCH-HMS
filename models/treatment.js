@@ -4,6 +4,7 @@ const treatmentSchema = new mongoose.Schema({
     treatmenttype: String,
     description: String,
     dosage: String,
+    route: String,
     drugs: {type: mongoose.Schema.Types.ObjectId, ref: "Drug"},
     creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},

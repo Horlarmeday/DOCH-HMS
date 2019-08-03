@@ -37,7 +37,7 @@ router.get('/microbiology-result/:id', middleware.isLoggedIn, (req, res, next)=>
         if(err) return next (err)
         Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
             let result = Object.keys(consultation.labresult);
-            console.log(result)
+           
             // console.log(consultation)
             res.render('app/add/form', {user, consultation})
         }) 
@@ -148,6 +148,11 @@ router.post('/culture/:id', middleware.isLoggedIn, (req, res, next)=>{
             consultation.labresult.culture = {
                 sputum: req.body.sputum,
                 appearance: req.body.appearance,
+                rbc: req.body.rbc,
+                puscells: req.body.puscells,
+                spermatozoan: req.body.spermatozoan,
+                epithelialcells: req.body.epithelialcells,
+                celluladebris: req.body.celluladebris,
                 culture: req.body.culture,
             }
             consultation.save((err)=>{
@@ -218,6 +223,7 @@ router.post('/semen-test/:id', middleware.isLoggedIn, (req, res, next)=>{
                 tproduced: req.body.tproduced,
                 treceived: req.body.treceived,
                 tofanalysis: req.body.tofanalysis,
+                method: req.body.method,
                 pabstinence: req.body.pabstinence,
                 colour: req.body.colour,
                 viscosity: req.body.viscosity,
@@ -274,6 +280,11 @@ router.post('/fbcone-test/:id', middleware.isLoggedIn, (req, res, next)=>{
         Consultation.findOne({_id: user.consultations[0]._id}, (err, consultation)=>{
             consultation.labresult.fbc1 = {
                 wbc: req.body.wbc,
+                neu: req.body.neu,
+                mon: req.body.mon,
+                eo: req.body.eo,
+                lym: req.body.lym,
+                bas: req.body.bas,
                 rbc: req.body.rbc,
                 hgb: req.body.hgb,
                 hct: req.body.hct,
@@ -338,6 +349,7 @@ router.post('/tests-test/:id', middleware.isLoggedIn, (req, res, next)=>{
                 genotype: req.body.genotype,
                 bloodgroup: req.body.bloodgroup,
                 prothrombintime: req.body.prothrombintime,
+                inr: req.body.inr,
                 rvs: req.body.rvs,
                 mp: req.body.mp,
             }
@@ -532,12 +544,10 @@ router.post('/analyte-test/:id', middleware.isLoggedIn, (req, res, next)=>{
                 csfglucose: req.body.csfglucose,
                 csfprotein: req.body.csfprotein,
                 asciticfluid: req.body.asciticfluid,
-                glucose: req.body.glucose,
                 asciticfluidtotal: req.body.asciticfluidtotal,
-                proteinfirst: req.body.proteinfirst,
                 csfchloride: req.body.csfchloride,
                 thoururine: req.body.thoururine,
-                proteinsecond: req.body.proteinsecond,
+                
             }
             consultation.save((err)=>{
                 if(err) return next (err)
@@ -583,7 +593,6 @@ router.post('/ogtt-test/:id', middleware.isLoggedIn, (req, res, next)=>{
                 fasting: req.body.fasting,
                 fastingdegree1: req.body.fastingdegree1,
                 fastingdegree2: req.body.fastingdegree2,
-                fastingdegree3: req.body.fastingdegree3,
                 sixtymins: req.body.sixtymins,
                 sixtyminsdegree1: req.body.sixtyminsdegree1,
                 sixtyminsdegree2: req.body.sixtyminsdegree2,
@@ -592,10 +601,6 @@ router.post('/ogtt-test/:id', middleware.isLoggedIn, (req, res, next)=>{
                 onetwentyminsdegree1: req.body.onetwentyminsdegree1,
                 onetwentyminsdegree2: req.body.onetwentyminsdegree2,
                 onetwentyminsdegree3: req.body.onetwentyminsdegree3,
-                ageindaystotal: req.body.ageindaystotal,
-                ageindaysdirect: req.body.ageindaysdirect,
-                ageindaystotalrange: req.body.ageindaystotalrange,
-                ageindaysdirectrange: req.body.ageindaysdirectrange,
                 zeroto1daytotal: req.body.zeroto1daytotal,
                 zeroto1daydirect: req.body.zeroto1daydirect,
                 twoto3daystotal: req.body.twoto3daystotal,

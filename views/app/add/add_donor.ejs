@@ -1,0 +1,181 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Blood Donor</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/blood-donors">Blood Donors</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Add Blood Donor</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <div class="form-group">
+                                                        <div class="col-sm-12">
+                                                            <label for="">Blood Recepient</label>
+                                                            <select name="patient" class="form-control js-example-basic-single">
+                                                                <option selected disabled>Select</option>
+                                                                <% users.forEach((user)=>{ %>
+                                                                    <% if(user.role == 8){ %>
+                                                                     <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            </select><br><br>
+                                                        </div>
+                                                    
+                                                        
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Donor Details</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label>Donor ID <span class="text-danger"> (*)</label>
+                                                                <input style="font-weight: 900" class="form-control " type="text" placeholder="DONOR/00<%= donorNumber %>" readonly>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label>Name <span class="text-danger"> (*)</label>
+                                                                <input name="name" class="form-control " type="text" required>
+                                                        </div>
+                                                        
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Age <span class="text-danger"> (*)</span></label>
+                                                                    <input name="age" class="form-control" type="number" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label>Sex <span class="text-danger"> (*)</span></label>
+                                                                <select name="sex" class="form-control">
+                                                                    <option>Select</option>
+                                                                    <option>Male</option>
+                                                                    <option>Female</option>
+                                                                </select>
+                                                            </div>
+                                           
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Phone Number </label>
+                                                                    <input name="phone" class="form-control" type="number" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>History of previous donation </label>
+                                                                    <input name="history"class="form-control" type="text" placeholder="Optional">
+                                                            </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Blood Test Details</h5><br><br>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Blood Type <span class="text-danger"> (*)</label>
+                                                                    <select name="bloodtype" class="form-control">
+                                                                            <option> Select</option>
+                                                                            <option> O negative</option>
+                                                                            <option> O positive</option>
+                                                                            <option> A negative</option>
+                                                                            <option> A positive</option>
+                                                                            <option> B negative</option>
+                                                                            <option> B positive</option>
+                                                                            <option> AB negative</option>
+                                                                            <option> AB positive</option>
+                                                                    </select>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label> HIV Test<span class="text-danger"> (*)</span></label>
+                                                                    <input name="hivtest" class="form-control" type="text" required>
+                                                                    
+                                                            </div>
+                                                            
+                                                        
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>HCV Test <span class="text-danger"> (*)</label>
+                                                                    <input name="hcvtest" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>HBSAG Test<span class="text-danger"> (*)</span></label>
+                                                                    <input name="hbsagtest" class="form-control" type="text" required>
+                                                            </div>
+                                                            
+                                                            
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>VDRL <span class="text-danger"> (*)</label>
+                                                                    <input name="vdrltest" class="form-control" type="text" required>
+                                                            </div>
+                                                           
+
+                                                    </div>
+                                                   
+                                                    <button type="submit" class="btn btn-info float-right">Save</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

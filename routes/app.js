@@ -14,6 +14,7 @@ const Supply = require('../models/supply')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
 const Discharge = require('../models/discharge')
+const Donor = require('../models/donor')
 const ANC = require('../models/anc')
 const NurseNote = require('../models/nursenote')
 const Request = require('../models/request')
@@ -540,10 +541,11 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             })
         })
     }else if(req.user.role === 16){
-        //ANC
-        Consultation.find({})
+        //MIDWIFE
+        ANC.find({})
         .sort('-created')
-        .exec((err, consultations)=>{
+        .populate('patient')
+        .exec((err, ancs)=>{
             if(err) return next (err)
             Appointment.find({})
             .sort('created')
@@ -556,7 +558,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 User.find({}, (err, users)=>{
                     if(err) return next (err)
-                    res.render('app/dashboard14', { consultations, appointments, users, appointmentIsEmpty })
+                    res.render('app/dashboard14', { ancs, appointments, users, appointmentIsEmpty })
                 })
             })
         })
@@ -602,8 +604,32 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 })
             })
         })
+        
+    }else if(req.user.role === 19){
+        //THEATER
+        Theater.find({})
+        .sort('-created')
+        .populate('patient')
+        .exec((err, theaters)=>{
+            if(err) return next (err)
+            Appointment.find({})
+            .sort('created')
+            .populate('patient')
+            .exec((err, appointments)=>{
+                if(err) return next (err)
+                User.find({}, (err, users)=>{
+                    if(err) return next (err)
+                    ManagerRequest.find({})
+                    .populate('requestedby')
+                    .exec((err, managerrequests)=>{
+                        res.render('app/dashboard18', { theaters, appointments, users, managerrequests })
+                    })
+                })
+            })
+        })
     }
 })
+
 
 //Create ID Card
 router.get('/issue-card/:id', middleware.isLoggedIn, (req, res, next)=>{
@@ -776,6 +802,54 @@ router.route('/add-vendor-supply')
             res.redirect('back')
         })
     })
+
+//ADD BLOOD DONORS
+router.route('/add-donor')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        Donor.countDocuments({}, (err, donors)=>{
+            if(err) return next (err)
+            User.find({}, (err, users)=>{
+                let donorNumber = donors + 1
+                res.render('app/add/add_donor', { donorNumber, users })
+            })
+        })
+        
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        Donor.countDocuments({}, (err, donors)=>{
+            const donor = new Donor({
+                donornumber: `DONOR/00${donors + 1}`,
+                name: req.body.name,
+                age: req.body.age,
+                patient: req.body.patient,
+                creator: req.user._id,
+                sex: req.body.sex,
+                history: req.body.history,
+                phone: req.body.phone,
+                bloodtype: req.body.bloodtype,
+                hivtest: req.body.hivtest,
+                hcvtest: req.body.hcvtest,
+                hbsagtest: req.body.hbsagtest,
+                vdrltest: req.body.vdrltest,
+            })
+            donor.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Donor was added successfully')
+                res.redirect('back')
+            })
+        })
+    })
+
+//VIEW DONORS
+router.get('/blood-donors', middleware.isLoggedIn, (req, res, next)=>{
+    Donor.find({})
+        .populate('creator')
+        .populate('patient')
+        .exec((err, donors)=>{
+            if(err) return next (err)
+            res.render('app/view/donors', {donors})
+        })
+})
 
 //VIEW SUPPLIES
 router.get('/vendor-supplies', middleware.isLoggedIn, (req, res, next)=>{
@@ -4540,7 +4614,8 @@ router.route('/ante-natal/:id')
                 anc.presentpregnancy.push({
                     thedate: req.body.thedate,
                     weight:  req.body.weight,
-                    urinalysis: req.body.urinalysis,
+                    urinalysisGlucose: req.body.urinalysisGlucose,
+                    urinalysisProtein: req.body.urinalysisProtein,
                     bp: req.body.bp,
                     pallor: req.body.pallor,
                     maturity: req.body.maturity,
@@ -4756,6 +4831,7 @@ router.route('/patient-delivery-information/:id')
                         vitaminAbaby: req.body.vitaminAbaby,
                         immunizationdate: req.body.immunizationdate,
                         bcg: req.body.bcg,
+                        hbv: req.body.hbv,
                         opvo: req.body.opvo,
                         notifieddate: req.body.notifieddate
                     }

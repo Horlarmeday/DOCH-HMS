@@ -73,76 +73,93 @@
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Date</td>  
-                                                                    <td><input type="date" placeholder="<%= anc.presentpregnancy[0].thedate %>" name="thedate" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="date" placeholder="<%= anc.presentpregnancy[0].thedate %>" name="thedate" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Weight</td>  
-                                                                    <td><input type="number" step="any" placeholder="<%= anc.presentpregnancy[0].weight %>" name="weight" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="number" step="any" placeholder="<%= anc.presentpregnancy[0].weight %>" name="weight" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
-                                                                    <td></td>  
-                                                                    <td>Urinalysis</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].urinalysis %>" name="urinalysis" class="form-control"></td>  
-                                                            
-                                                                </tr>
+                                                                        <th></th>  
+                                                                        <th>Urinalysis</th>  
+                                                                         
+                                                                        <td>
+                                                                            <label for="">P</label>
+                                                                            <select name="urinalysisProtein" class="form-control">
+                                                                                <option value="Nil" <%= anc.presemtpregnancy[0].urinalysisProtein ? 'selected' : '' %>>Nil</option>
+                                                                                <option value="+ve" <%= anc.presemtpregnancy[0].urinalysisProtein ? 'selected' : '' %>>+ve</option>
+                                                                                <option value="-ve" <%= anc.presemtpregnancy[0].urinalysisProtein ? 'selected' : '' %>>-ve</option>
+                                                                                
+                                                                            </select>
+                                                                        </td>  
+                                                                        <td>
+                                                                            <label for="">G</label>
+                                                                            <select name="urinalysisGlucose" class="form-control">
+                                                                                <option value="Nil" <%= anc.presemtpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>Nil</option>
+                                                                                <option value="+ve" <%= anc.presemtpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>+ve</option>
+                                                                                <option value="-ve" <%= anc.presemtpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>-ve</option>
+                                                                            </select>
+                                                                        </td>  
+                                                                
+                                                                    </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>B.P</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].bp %>" name="bp" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].bp %>" name="bp" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Pallor</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].pallor %>" name="pallor" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].pallor %>" name="pallor" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>G.A</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].maturity %>" name="maturity" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].maturity %>" name="maturity" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Fundal Height</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].fundalheight %>" name="fundalheight" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].fundalheight %>" name="fundalheight" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Presentation</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].presentation %>" name="presentation" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].presentation %>" name="presentation" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Fetal Heart Rate</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].fetalheartrate %>" name="fetalheartrate" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].fetalheartrate %>" name="fetalheartrate" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Oedema</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].oedema %>" name="oedema" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].oedema %>" name="oedema" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Comments</td>  
-                                                                    <td><input type="text" placeholder="<%= anc.presentpregnancy[0].comments %>" name="comments" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].comments %>" name="comments" class="form-control"></td>  
                                                                         
                                                                 </tr>
                                                                 <tr>
                                                                         <td></td>  
                                                                         <td>TCA Date</td>  
-                                                                        <td><input type="date" placeholder="<%= anc.presentpregnancy[0].tcadate %>" name="tcadate" class="form-control"></td>  
+                                                                        <td colspan="5"><input type="date" placeholder="<%= anc.presentpregnancy[0].tcadate %>" name="tcadate" class="form-control"></td>  
                                                                             
                                                                     </tr>
                                                                     <tr>
                                                                             <td></td>  
                                                                             <td>Initial</td>  
-                                                                            <td><input type="text" placeholder="<%= anc.presentpregnancy[0].initial %>" name="initial" class="form-control"></td>  
+                                                                            <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].initial %>" name="initial" class="form-control"></td>  
                                                                                 
                                                                         </tr>
                                                                 <tr>
@@ -182,76 +199,92 @@
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Date</td>  
-                                                                    <td><input type="date" name="thedate" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="date" name="thedate" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Weight</td>  
-                                                                    <td><input type="number" step="any" name="weight" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="number" step="any" name="weight" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
-                                                                    <td></td>  
-                                                                    <td>Urinalysis</td>  
-                                                                    <td><input type="text" name="urinalysis" class="form-control"></td>  
+                                                                    <th></th>  
+                                                                    <th>Urinalysis</th>  
+                                                                     
+                                                                    <td>
+                                                                        <label for="">P</label>
+                                                                        <select name="urinalysisProtein" class="form-control">
+                                                                            <option>Nil</option>
+                                                                            <option>+ve</option>
+                                                                            <option>-ve</option>
+                                                                        </select>
+                                                                    </td>  
+                                                                    <td>
+                                                                        <label for="">G</label>
+                                                                        <select name="urinalysisGlucose" class="form-control">
+                                                                            <option>Nil</option>
+                                                                            <option>+ve</option>
+                                                                            <option>-ve</option>
+                                                                        </select>
+                                                                    </td>  
                                                             
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>B.P</td>  
-                                                                    <td><input type="text" name="bp" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="bp" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Pallor</td>  
-                                                                    <td><input type="text" name="pallor" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="pallor" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>G.A</td>  
-                                                                    <td><input type="text" name="maturity" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="maturity" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Fundal Height</td>  
-                                                                    <td><input type="text" name="fundalheight" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="fundalheight" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Presentation</td>  
-                                                                    <td><input type="text" name="presentation" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="presentation" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Fetal Heart Rate</td>  
-                                                                    <td><input type="text" name="fetalheartrate" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="fetalheartrate" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Oedema</td>  
-                                                                    <td><input type="text" name="oedema" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="oedema" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Comments</td>  
-                                                                    <td><input type="text" name="comments" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" name="comments" class="form-control"></td>  
                                                                         
                                                                 </tr>
                                                                 <tr>
                                                                         <td></td>  
                                                                         <td>TCA Date</td>  
-                                                                        <td><input type="date" name="tcadate" class="form-control"></td>  
+                                                                        <td colspan="5"><input type="date" name="tcadate" class="form-control"></td>  
                                                                             
                                                                     </tr>
                                                                     <tr>
                                                                             <td></td>  
                                                                             <td>Initial</td>  
-                                                                            <td><input type="text" name="initial" class="form-control"></td>  
+                                                                            <td colspan="5"><input type="text" name="initial" class="form-control"></td>  
                                                                                 
                                                                         </tr>
                                                                 <tr>

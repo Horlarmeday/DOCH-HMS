@@ -25,7 +25,8 @@ const sessionMiddleware = session({
   resave: true,
   saveUninitialized: true,
   secret: 'process.env.SECRET',
-  store: sessionStore
+  store: sessionStore,
+  cookie: { maxAge: 60000 }, 
 })
 
 //Connection to the DB

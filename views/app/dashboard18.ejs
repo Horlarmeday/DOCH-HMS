@@ -105,63 +105,61 @@
                         </div>
                         <!-- Visitor Chart End-->
 
-                        <!-- Product table Start -->
+                        <!-- Scroll - Vertical table start -->
+                        
                         <div class="col-sm-12">
-                            <div class="card">
-                                <div class="card-block">
-                                    <h5>ANC Delivery</h5>
-                                </div>
-                                <div class="card-block product-table">
-                                    <div class="table-responsive">
-                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
-                                            <thead>
-                                                <tr class="text-uppercase">
-                                                    <th>S/N</th>
-                                                    <th>ANC ID</th>
-                                                    <th>Patient Name</th>
-                                                    <th>Age</th>
-                                                    <th>Occupation</th>
-                                                    <th>Created</th>
-                                                    <th>Status</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                           
-                                            <tbody>
-                                                <% ancs.forEach((anc)=>{ %>
-                                                    <% if(anc.taken === false){ %>
-                                                <tr>
-                                                    <td></td>
-                                                    <td> <%= anc.ancId %></td>
-                                                    <td> <a href="/patient/<%= anc.patient._id %>"><%= anc.patient.firstname %>  <%= anc.patient.lastname %></a> </td>
-                                                    <td> <%= anc.age %></td>
-                                                    <td><%= anc.occupation %></td>
-                                                    <td> <%= anc.created.toDateString() %></td>
-                                                    <% if(anc.status){ %>
-                                                    <td><label class="label label-md bg-success">Active</label></td>
-                                                    <% }else{ %>
-                                                    <td><label class="label label-md bg-warning">Inactive</label></td>
-                                                    <% } %>
-                                                    <% if(anc.status){ %>
-                                                    <td>
-                                                        <a class="btn btn-success" href="/patient-delivery-information/<%= anc.patient._id %>">Delivery Info</a>
-                                                        <a class="btn btn-danger" href="/post-natal-examination/<%= anc.patient._id %>">Post Natal </a>
-                                                    </td>
-                                                    <% }else{ %>
-                                                    <td>Not Active</td>
-                                                    <% } %>
-                                                    
-                                                </tr>
-                                                <% } %>
-                                                <% }) %>
-                                            </tbody>
-                                            
-                                        </table>
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Theater Items</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Patient</th>
+                                                        <th>Surgery</th>
+                                                        <th>Anaesthesia</th>
+                                                        <th>Anaesthetist</th>
+                                                        <th>Indication</th>
+                                                        <th>Surgeon</th>
+                                                        <th>Findings</th>
+                                                        <th>Procedure</th>
+                                                        <th>Post-Operation Order</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% theaters.forEach((theater)=>{ %>
+                                                    <tr style="cursor: pointer" onclick="window.location='/theater-prescription/<%= theater._id %>'">
+                                                        <td></td>
+                                                        <td><%= theater.patient.firstname %> <%= theater.patient.lastname %></td>
+                                                        <td><%= theater.surgery %></td>
+                                                        <td><%= theater.anaesthesia %></td>
+                                                        <td><%= theater.anesthetist.firstname %> <%= theater.anesthetist.lastname %></td>
+                                                        <td><%= theater.indications %></td>
+                                                        <td><%= theater.surgeon.firstname %> <%= theater.surgeon.lastname %></td>
+                                                        <td><%= theater.findings %></td>
+                                                        <td><%= theater.procedure %></td>
+                                                        <td><%= theater.order %></td>
+                                                        <td> <a class="btn btn-inverse" href="/theater-items/<%= theater._id %>">Add Theater Items</a></td>
+                                                    </tr>
+                                                    <% })  %>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <!-- Product table End -->
+
+                        
 
                     </div>
                 </div>

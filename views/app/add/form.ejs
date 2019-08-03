@@ -68,10 +68,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Test</th>
-                                                    <th>Result</th>
+                                                    <th>Test(Result)</th>
+                                                    <th>HVS</th>
                                                     <th>
-                                                       HVS/Urine
+                                                       Urine
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -328,7 +328,7 @@
                                         <!-- Zero config.table start -->
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5>CULTURE SENSITIVITY REPORT</h5>
+                                                <h5>CULTURE/SENSITIVITY REPORT</h5>
                                                 <div class="card-header-right">
                                                     <i class="icofont icofont-rounded-down"></i>
                                                     <i class="icofont icofont-refresh"></i>
@@ -342,16 +342,47 @@
                                                         <thead>
                                                             <tr>
                                                                 <th></th>
-                                                                <th>Sputum</th>
-                                                                <th>Appearance</th>
+                                                                <th><label for="">Select</label>
+                                                                    <select id="testselect" class="form-control" onchange="testSelect()">
+                                                                        <option >Select</option>
+                                                                        <option >Sputum</option>
+                                                                        <option >Skin</option>
+                                                                        <option >Blood</option>
+                                                                        <option >Semen</option>
+                                                                        <option >Throat</option>
+                                                                        <option >Nasal</option>
+                                                                        <option >Eye</option>
+                                                                    </select>
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            <tr>
-                                                              <th></th>  
-                                                              <td><textarea name="sputum" class="form-control" placeholder="<%= consultation.labresult.culture.sputum %>" cols="30" rows="10"></textarea></td>  
+                                                            <tr style="display: none" class="appea">
+                                                              <th>Appearance</th> 
                                                               <td><textarea name="appearance" class="form-control" placeholder="<%= consultation.labresult.culture.appearance %>" cols="30" rows="10"></textarea></td>  
                                                             </tr>
+                                                            
+                                                                <tr style="display: none" class="semen">
+                                                                    <th>Pus Cells</th>
+                                                                    <td><input type="text" name="puscells" placeholder="<%= consultation.labresult.culture.puscells %>" class="form-control"></td>
+                                                                </tr>
+                                                                <tr style="display: none" class="semen">
+                                                                    <th>RBC</th>
+                                                                    <td><input type="text" name="rbc" placeholder="<%= consultation.labresult.culture.rbc %>" class="form-control"></td>
+                                                                </tr>
+                                                                <tr style="display: none" class="semen">
+                                                                    <th>Cellular Debris</th>
+                                                                    <td><input type="text" name="cellulardebris" placeholder="<%= consultation.labresult.culture.celluladebris %>" class="form-control"></td>
+                                                                </tr>
+                                                                <tr style="display: none" class="semen">
+                                                                    <th>Spermatozoan</th>
+                                                                    <td><input type="text" name="spermatozoan" placeholder="<%= consultation.labresult.culture.spermatozoan %>" class="form-control"></td>
+                                                                </tr>
+                                                                <tr style="display: none" class="semen">
+                                                                    <th>Epithelial Cells</th>
+                                                                    <td><input type="text" name="epithelialcells" placeholder="<%= consultation.labresult.culture.epithelialcells %>" class="form-control"></td>
+                                                                </tr>
+                                                          
                                                             <tr>
                                                                 <th colspan="7">Culture</th>
                                                             </tr>
@@ -418,7 +449,8 @@
                                                     <% } %>
                                                     <tr>
                                                             <th></th>
-                                                            <th colspan="7">METHOD OF PRODUCTION</th>
+                                                            <th >METHOD OF PRODUCTION</th>
+                                                            <td colspan="5"><input type="text" class="form-control" name="method" placeholder="<%= consultation.labresult.semenanalysis.method %>"></td>
                                                             <!-- <th>Glucose Value</th>
                                                             <th colspan="4">REF RANGE/UNIT</th> -->
                                                     </tr>
@@ -719,10 +751,10 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Test</th>
                                                     <th>Result</th>
+                                                    <th> HVS</th>
                                                     <th>
-                                                        HVS/Urine
+                                                       Urine
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -817,7 +849,7 @@
                                                         </thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th></th>
                                                         <th>Appearance</th>
                                                     </tr>
                                                     
@@ -975,7 +1007,7 @@
                                 <!-- Zero config.table start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>CULTURE SENSITIVITY REPORT</h5>
+                                        <h5>CULTURE/SENSITIVITY REPORT</h5>
                                         <div class="card-header-right">
                                             <i class="icofont icofont-rounded-down"></i>
                                             <i class="icofont icofont-refresh"></i>
@@ -989,16 +1021,47 @@
                                                 <thead>
                                                     <tr>
                                                         <th></th>
-                                                        <th>Sputum</th>
+                                                        <th><label for="">Select</label>
+                                                            <select id="testselect" class="form-control" onchange="testSelect()">
+                                                                <option >Select</option>
+                                                                <option >Sputum</option>
+                                                                <option >Skin</option>
+                                                                <option >Blood</option>
+                                                                <option >Semen</option>
+                                                                <option >Throat</option>
+                                                                <option >Nasal</option>
+                                                                <option >Eye</option>
+                                                            </select>
+                                                        </th>
                                                         <th>Appearance</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        <th></th>  
-                                                        <td><textarea name="sputum" class="form-control" cols="30" rows="10"></textarea></td>  
-                                                        <td><textarea name="appearance" class="form-control" cols="30" rows="10"></textarea></td>  
-                                                    </tr>
+                                                        <tr style="display: none" class="appea">
+                                                                <th>Appearance</th> 
+                                                                <td><textarea name="appearance" class="form-control"  cols="30" rows="10"></textarea></td>  
+                                                        </tr>
+                                                              
+                                                        <tr style="display: none" class="semen">
+                                                            <th>Pus Cells</th>
+                                                            <td><input type="text" name="puscells"  class="form-control"></td>
+                                                        </tr>
+                                                        <tr style="display: none" class="semen">
+                                                            <th>RBC</th>
+                                                            <td><input type="text" name="rbc"  class="form-control"></td>
+                                                        </tr>
+                                                        <tr style="display: none" class="semen">
+                                                            <th>Cellular Debris</th>
+                                                            <td><input type="text" name="cellulardebris" class="form-control"></td>
+                                                        </tr>
+                                                        <tr style="display: none" class="semen">
+                                                            <th>Spermatozoan</th>
+                                                            <td><input type="text" name="spermatozoan"  class="form-control"></td>
+                                                        </tr>
+                                                        <tr style="display: none" class="semen">
+                                                            <th>Epithelial Cells</th>
+                                                            <td><input type="text" name="epithelialcells"  class="form-control"></td>
+                                                        </tr>
                                                     <tr>
                                                         <th colspan="7">Culture</th>
                                                     </tr>
@@ -1057,7 +1120,8 @@
                                                     
                                                     <tr>
                                                             <th></th>
-                                                            <th colspan="7">METHOD OF PRODUCTION</th>
+                                                            <th>METHOD OF PRODUCTION</th>
+                                                            <td colspan="5"><input type="text" class="form-control" name="method"></td>
                                                             <!-- <th>Glucose Value</th>
                                                             <th colspan="4">REF RANGE/UNIT</th> -->
                                                     </tr>

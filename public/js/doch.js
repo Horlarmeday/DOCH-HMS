@@ -816,6 +816,21 @@ function getDrugPrice() {
     })
 }
 
+//Lab tests
+function testSelect () {
+    const testselected = $('#testselect').val()
+    if(testselected === 'Sputum'){
+        $('.appea').show()
+        $('.semen').hide()
+    }else if (testselected === 'Semen'){
+        $('.appea').hide()
+        $('.semen').show()
+    }else{
+        $('.appea').hide()
+        $('.semen').hide()
+    }
+}
+
 
 
 // function appointmentType() {

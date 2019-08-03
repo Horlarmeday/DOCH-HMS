@@ -67,8 +67,8 @@
                                         <table id="complex-dt" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th rowspan="2">Test</th>
                                                     <th rowspan="2">S/N</th>
+                                                    <th rowspan="2">FBC</th>
                                                     <th rowspan="2">Result</th>
                                                     <th rowspan="2">Normal Range for Child</th>
                                                     <th colspan="3">Adult Normal Values</th>
@@ -90,6 +90,51 @@
                                                   <td><input type="text" placeholder="3.4 - 9.8" class="form-control" readonly></td>  
                                                   <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
                                                 </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>NEU</td>  
+                                                    <td><input type="text" name="neu" placeholder="<%= consultation.labresult.fbc1.neu %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="1.30 - 4.00" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="2.00 - 7.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="2.00 - 7.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>MON</td>  
+                                                    <td><input type="text" name="mon" placeholder="<%= consultation.labresult.fbc1.mon %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="0.15 - 0.70" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.15 - 0.70" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.15 - 0.70" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>EO</td>  
+                                                    <td><input type="text" name="eo" placeholder="<%= consultation.labresult.fbc1.eo %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.50" class="form-control" readonly></td>    
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>LYM</td>  
+                                                    <td><input type="text" name="lym" placeholder="<%= consultation.labresult.fbc1.lym %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="2.00 - 7.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="1.30 - 4.00" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="1.30 - 4.00" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>BAS</td>  
+                                                    <td><input type="text" name="bas" placeholder="<%= consultation.labresult.fbc1.bas %>" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.15" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.15" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.15" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
                                                 <tr>
                                                     <td></td>  
                                                     <td>RBC</td>  
@@ -258,43 +303,44 @@
                                                     <tr>
                                                         <th></th>
                                                         <th>RBC Morphology</th>
-                                                        <th colspan="5">Normal Morphology</th>
+                                                        <th></th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td></td>
-                                                        <td><input type="text" name="text1" placeholder="<%= consultation.labresult.fbc2.text1 %>" class="form-control"></td> 
-                                                        <td colspan="5">Anisocytosis</td>
+                                                        <td >Anisocytosis</td>
+                                                        <td colspan="5"><input type="text" name="text1" placeholder="<%= consultation.labresult.fbc2.text1 %>" class="form-control"></td> 
                                                     </tr>
                                                     <tr>
                                                         <td></td>
-                                                        <td><input type="text" name="text2" placeholder="<%= consultation.labresult.fbc2.text2 %>" class="form-control"></td> 
-                                                        <td colspan="5">Microcytosis</td>
+                                                        <td>Microcytosis</td>
+                                                        <td colspan="5"><input type="text" name="text2" placeholder="<%= consultation.labresult.fbc2.text2 %>" class="form-control"></td> 
                                                     </tr>
                                                     <tr>
                                                         <td></td>
-                                                        <td><input type="text" name="text3" placeholder="<%= consultation.labresult.fbc2.text3 %>" class="form-control"></td> 
-                                                        <td colspan="5">Macrocytosis</td>
+                                                        <td>Macrocytosis</td>
+                                                        <td colspan="5"><input type="text" name="text3" placeholder="<%= consultation.labresult.fbc2.text3 %>" class="form-control"></td> 
                                                     </tr>
                                                     <tr>
                                                         <td></td>
-                                                        <td><input type="text" name="text4" placeholder="<%= consultation.labresult.fbc2.text4 %>" class="form-control"></td> 
-                                                        <td colspan="5">Hypochromia</td>
+                                                        <td>Hypochromia</td>
+                                                        <td colspan="5"><input type="text" name="text4" placeholder="<%= consultation.labresult.fbc2.text4 %>" class="form-control"></td> 
                                                     </tr>
                                                     <tr>
                                                         <td></td>
-                                                        <td><input type="text" name="text5" placeholder="<%= consultation.labresult.fbc2.text5 %>" class="form-control"></td> 
-                                                        <td colspan="5">Poikliocytosis</td>
+                                                        <td>Poikliocytosis</td>
+                                                        <td colspan="5"><input type="text" name="text5" placeholder="<%= consultation.labresult.fbc2.text5 %>" class="form-control"></td> 
                                                     </tr>
                                                     <tr>
                                                         <th colspan="7">Morphology terms</th>
                                                         
                                                     </tr>
                                                     <tr>
-                                                        <td colspan="2">1 = Slight</td>
-                                                        <td colspan="2">2 = Moderate</td>
-                                                        <td colspan="2">3 = Marked</td>
+                                                       
+                                                        <th colspan="2">Slight = +</th>
+                                                        <th colspan="2">Moderate = ++</th>
+                                                        <th colspan="2">Marked = +++</th>
                                                     </tr>
                                                 </tbody>
                                             </table>
@@ -324,21 +370,17 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th>#</th>
                                                         <th>Result</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td></td>  
-                                                        <td>PCV</td>  
+                                                        <td>PCV (30 - 52%)</td>  
                                                         <td><input type="text" name="pcv" placeholder="<%= consultation.labresult.tests.pcv %>"  class="form-control"></td>  
                                                     </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>ESR</td>  
-                                                        <td><input type="text" name="esr"  placeholder="<%= consultation.labresult.tests.esr %>" class="form-control"></td>  
-                                                    </tr>
+                                                   
                                                     <tr>
                                                         <td></td>  
                                                         <td>X-Matching</td>  
@@ -347,13 +389,13 @@
                                                     </tr>
                                                     <tr>
                                                         <td></td>  
-                                                        <td>Bleeding Time</td>  
+                                                        <td>Bleeding Time (3 - 10 min)</td>  
                                                         <td><input type="text" name="bleedingtime"  placeholder="<%= consultation.labresult.tests.bleedingtime %>" class="form-control"></td>  
                                                         
                                                     </tr>
                                                     <tr>
                                                         <td></td>  
-                                                        <td>Clotting Time</td>  
+                                                        <td>Clotting Time (3 - 10 min)</td>  
                                                         <td><input type="text" name="clottingtime"  placeholder="<%= consultation.labresult.tests.Neutrophils %>" class="form-control"></td>  
                                                     </tr>
                                                     <tr>
@@ -370,8 +412,14 @@
                                                     </tr>
                                                     <tr>
                                                             <td></td>  
-                                                            <td>Prothrombin Time</td>  
+                                                            <td>Prothrombin Time (11 - 14 sec)</td>  
                                                             <td><input type="text" name="prothrombintime"  placeholder="<%= consultation.labresult.tests.prothrombintime %>" class="form-control"></td>  
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>INR (0.8 - 1.1)</td>  
+                                                            <td><input type="text" name="inr"  placeholder="<%= consultation.labresult.tests.inr %>" class="form-control"></td>  
                                                             
                                                         </tr>
                                                         <tr>
@@ -383,7 +431,7 @@
                                                             <tr>
                                                                     <td></td>  
                                                                     <td>MP</td>  
-                                                                    <td><input type="text" name="mp"  placeholder="<%= consultation.labresult.tests.mp %>" class="form-control"></td>  
+                                                                    <td><textarea name="mp" placeholder="<%= consultation.labresult.tests.mp %>" class="form-control" cols="30" rows="10"></textarea></td>
                                                                     
                                                                 </tr>
                                                     <tr>
@@ -414,7 +462,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th>Widal Reaction</th>
                                                         <th>O</th>
                                                         <th>H</th>
                                                     </tr>
@@ -448,7 +496,7 @@
                                                     <tr>
                                                             <td></td>  
                                                             <td>Significant Titre</td>  
-                                                            <td colspan="3"><input type="text" name="signtitre" placeholder="<%= consultation.labresult.widalreaction.signtitre %>" class="form-control"></td>  
+                                                            <td colspan="3"><input type="text" placeholder=">= 1/80" class="form-control" readonly></td>  
                                                             <!-- <td><input type="text" name="Ofloxacin2" class="form-control"></td>   -->
                                                     </tr>
                                                     <tr>
@@ -479,7 +527,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th>Seroloy Test</th>
                                                         <th>Result</th>
                                                     </tr>
                                                 </thead>
@@ -496,12 +544,7 @@
                                                         <td><input type="text" name="rf" placeholder="<%= consultation.labresult.serologytests.rf %>" class="form-control"></td>  
                                                             
                                                     </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Chlamydia Test</td>  
-                                                        <td><input type="text" name="chlamydia" placeholder="<%= consultation.labresult.serologytests.chlamydia %>" class="form-control"></td>  
-                                                        
-                                                    </tr>
+                                                   
                                                     <tr>
                                                         <td></td>  
                                                         <td>PGT</td>  
@@ -557,7 +600,7 @@
                                         <table id="complex-dt" class="table table-striped table-bordered nowrap">
                                             <thead>
                                                 <tr>
-                                                    <th rowspan="2">Test</th>
+                                                    <th rowspan="2">FBC</th>
                                                     <th rowspan="2">S/N</th>
                                                     <th rowspan="2">Result</th>
                                                     <th rowspan="2">Normal Range for Child</th>
@@ -580,6 +623,51 @@
                                                     <td><input type="text" placeholder="3.4 - 9.8" class="form-control" readonly></td>  
                                                     <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
                                                 </tr>
+                                                <tr>
+                                                    <td></td>  
+                                                    <td>NEU</td>  
+                                                    <td><input type="text" name="neu"  class="form-control"></td>  
+                                                    <td><input type="text" placeholder="1.30 - 4.00" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="2.00 - 7.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="2.00 - 7.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>MON</td>  
+                                                    <td><input type="text" name="mon" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="0.15 - 0.70" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.15 - 0.70" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.15 - 0.70" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>EO</td>  
+                                                    <td><input type="text" name="eo" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.50" class="form-control" readonly></td>    
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>LYM</td>  
+                                                    <td><input type="text" name="lym" class="form-control"></td>  
+                                                    <td><input type="text" placeholder="2.00 - 7.50" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="1.30 - 4.00" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="1.30 - 4.00" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
+                                                  <tr>
+                                                    <td></td>  
+                                                    <td>BAS</td>  
+                                                    <td><input type="text" name="bas"class="form-control"></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.15" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.15" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="0.00 - 0.15" class="form-control" readonly></td>  
+                                                    <td><input type="text" placeholder="x10^3/ul" class="form-control" readonly></td>  
+                                                  </tr>
                                                 <tr>
                                                     <td></td>  
                                                     <td>RBC</td>  
@@ -747,47 +835,48 @@
                                                     </tr>
                                                 </tbody>
                                                 <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>RBC Morphology</th>
-                                                        <th colspan="5">Normal Morphology</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input type="text" name="text1" class="form-control"></td> 
-                                                        <td colspan="5">Anisocytosis</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input type="text" name="text2" class="form-control"></td> 
-                                                        <td colspan="5">Microcytosis</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input type="text" name="text3" class="form-control"></td> 
-                                                        <td colspan="5">Macrocytosis</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input type="text" name="text4" class="form-control"></td> 
-                                                        <td colspan="5">Hypochromia</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td></td>
-                                                        <td><input type="text" name="text5" class="form-control"></td> 
-                                                        <td colspan="5">Poikliocytosis</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th colspan="7">Morphology terms</th>
-                                                        
-                                                    </tr>
-                                                    <tr>
-                                                        <td colspan="2">1 = Slight</td>
-                                                        <td colspan="2">2 = Moderate</td>
-                                                        <td colspan="2">3 = Marked</td>
-                                                    </tr>
+                                                        <tr>
+                                                            <th></th>
+                                                            <th>RBC Morphology</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td >Anisocytosis</td>
+                                                            <td colspan="5"><input type="text" name="text1" class="form-control"></td> 
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Microcytosis</td>
+                                                            <td colspan="5"><input type="text" name="text2" class="form-control"></td> 
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Macrocytosis</td>
+                                                            <td colspan="5"><input type="text" name="text3" class="form-control"></td> 
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Hypochromia</td>
+                                                            <td colspan="5"><input type="text" name="text4"  class="form-control"></td> 
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>Poikliocytosis</td>
+                                                            <td colspan="5"><input type="text" name="text5"  class="form-control"></td> 
+                                                        </tr>
+                                                        <tr>
+                                                            <th colspan="7">Morphology terms</th>
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                           
+                                                            <th colspan="2">Slight = +</th>
+                                                            <th colspan="2">Moderate = ++</th>
+                                                            <th colspan="2">Marked = +++</th>
+                                                        </tr>
                                                 </tbody>
                                             </table>
                                             </form>
@@ -813,21 +902,17 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th>#</th>
                                                         <th>Result</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     <tr>
                                                         <td></td>  
-                                                        <td>PCV</td>  
+                                                        <td>PCV (30 - 52%)</td>  
                                                         <td><input type="text" name="pcv" class="form-control"></td>  
                                                     </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>ESR</td>  
-                                                        <td><input type="text" name="esr" class="form-control"></td>  
-                                                    </tr>
+                                                    
                                                     <tr>
                                                         <td></td>  
                                                         <td>X-Matching</td>  
@@ -836,13 +921,13 @@
                                                     </tr>
                                                     <tr>
                                                         <td></td>  
-                                                        <td>Bleeding Time</td>  
+                                                        <td>Bleeding Time (3 - 10 min)</td>  
                                                         <td><input type="text" name="bleedingtime" class="form-control" placeholder="(3 - 10) Min."></td>  
                                                         
                                                     </tr>
                                                     <tr>
                                                         <td></td>  
-                                                        <td>Clotting Time</td>  
+                                                        <td>Clotting Time (3 - 10 min)</td>  
                                                         <td><input type="text" name="clottingtime" class="form-control" placeholder="(3 - 10) Min."></td>  
                                                     </tr>
                                                     <tr>
@@ -859,8 +944,14 @@
                                                     </tr>
                                                     <tr>
                                                             <td></td>  
-                                                            <td>Prothrombin Time</td>  
+                                                            <td>Prothrombin Time (11 - 14 sec)</td>  
                                                             <td><input type="text" name="prothrombintime" class="form-control"></td>  
+                                                            
+                                                        </tr>
+                                                        <tr>
+                                                            <td></td>  
+                                                            <td>INR (0.8 - 1.1)</td>  
+                                                            <td><input type="text" name="inr" placeholder="0.8 - 1.1" class="form-control"></td>  
                                                             
                                                         </tr>
                                                         <tr>
@@ -872,7 +963,7 @@
                                                             <tr>
                                                                     <td></td>  
                                                                     <td>MP</td>  
-                                                                    <td><input type="text" name="mp" class="form-control"></td>  
+                                                                    <td><textarea name="mp" class="form-control" cols="30" rows="10"></textarea></td>
                                                                     
                                                                 </tr>
                                                     <tr>
@@ -903,7 +994,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th>Widal Reaction</th>
                                                         <th>O</th>
                                                         <th>H</th>
                                                     </tr>
@@ -937,7 +1028,7 @@
                                                     <tr>
                                                             <td></td>  
                                                             <td>Significant Titre</td>  
-                                                            <td colspan="3"><input type="text" name="signtitre" class="form-control"></td>  
+                                                            <td colspan="3"><input type="text" placeholder=">= 1/80" class="form-control" readonly></td>  
                                                             <!-- <td><input type="text" name="Ofloxacin2" class="form-control"></td>   -->
                                                     </tr>
                                                     <tr>
@@ -968,7 +1059,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>S/N</th>
-                                                        <th>Test</th>
+                                                        <th>Serology Tests</th>
                                                         <th>Result</th>
                                                     </tr>
                                                 </thead>
@@ -985,12 +1076,7 @@
                                                         <td><input type="text" name="rf" class="form-control"></td>  
                                                             
                                                     </tr>
-                                                    <tr>
-                                                        <td></td>  
-                                                        <td>Chlamydia Test</td>  
-                                                        <td><input type="text" name="chlamydia" class="form-control"></td>  
-                                                        
-                                                    </tr>
+                                                    
                                                     <tr>
                                                         <td></td>  
                                                         <td>PGT</td>  

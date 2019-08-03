@@ -451,6 +451,33 @@
                                 </ul>
                         </li>
                         <% } %>
+                        <% if(currentUser.role == 5){ %>
+                            <li class="pcoded-hasmenu">
+                                    <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                        <span class="pcoded-micon"><i class="fa fa-book"></i></span>
+                                        <span class="pcoded-mtext">Local Inventory</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                    <ul class="pcoded-submenu">
+                                       
+                                        <li class=" ">
+                                            <a href="/add-to-inventory" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Add to Inventory</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        <li class=" ">
+                                            <a href="/inventory-list" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Inventory List</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                        </li>
+                                        
+                                    </ul>
+                            </li>
+                            <% } %>
                         <% if(currentUser.role == 1 || currentUser.role == 14 || currentUser.role === 18){ %>
                         <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.navigate.main">
@@ -489,16 +516,43 @@
                                             <span class="pcoded-mcaret"></span>
                                         </a>
                                 </li>
-                                <!-- <li class=" ">
-                                    <a href="/lab-issue-out" data-i18n="nav.navigate.navbar-inverse">
-                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                        <span class="pcoded-mtext">Dispense</span>
-                                        <span class="pcoded-mcaret"></span>
-                                    </a>
-                                </li> -->
+                                
                             </ul>
                         </li>
                         <% } %>
+                        <% if(currentUser.role == 1 || currentUser.role == 14 || currentUser.role === 18){ %>
+                            <li class="pcoded-hasmenu">
+                                <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                    <span class="pcoded-micon"><i class="fa fa-heartbeat"></i></span>
+                                    <span class="pcoded-mtext">Blood Donor</span>
+                                    <span class="pcoded-mcaret"></span>
+                                </a>
+                                <ul class="pcoded-submenu">
+                                    <li class=" ">
+                                        <a href="/add-donor" data-i18n="nav.navigate.navbar">
+                                            <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                            <span class="pcoded-mtext">Add Donor</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                    </li>
+                                    <li class=" ">
+                                            <a href="/blood-donors" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Blood Donors</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                    </li>
+                                    <!-- <li class=" ">
+                                            <a href="/blood-donors" data-i18n="nav.navigate.navbar-inverse">
+                                                <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                <span class="pcoded-mtext">Blood Bank</span>
+                                                <span class="pcoded-mcaret"></span>
+                                            </a>
+                                    </li> -->
+                                    
+                                </ul>
+                            </li>
+                            <% } %>
                         <% if(currentUser.role == 1 || currentUser.role == 13 || currentUser.role === 18){ %>
                         <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.navigate.main">
@@ -562,7 +616,7 @@
                             </ul>
                         </li>
                         <% } %>
-                        <% if(currentUser.role == 1 || currentUser.role == 2){ %>
+                        <% if(currentUser.role == 1 || currentUser.role == 2 || currentUser.role == 19){ %>
                     <li class="pcoded-hasmenu">
                         <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                             <span class="pcoded-micon"><i class="ti-cut"></i></span>
@@ -570,6 +624,7 @@
                             <span class="pcoded-mcaret"></span>
                         </a>
                         <ul class="pcoded-submenu">
+                            <% if(currentUser.role == 1 || currentUser.role == 2){ %>
                             <li class=" ">
                                     <a href="/patient-consent-form" data-i18n="nav.navigate.navbar">
                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -577,13 +632,16 @@
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                 </li>
-                            <li class=" ">
-                                <a href="/operation-notes" data-i18n="nav.navigate.navbar">
-                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
-                                    <span class="pcoded-mtext">Operation Notes</span>
-                                    <span class="pcoded-mcaret"></span>
-                                </a>
-                            </li>
+                                <% } %>
+                                <li class=" ">
+                                    <a href="/operation-notes" data-i18n="nav.navigate.navbar">
+                                        <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                        <span class="pcoded-mtext">Operation Notes</span>
+                                        <span class="pcoded-mcaret"></span>
+                                    </a>
+                                </li>
+                           
+                            <% if(currentUser.role == 1 || currentUser.role == 2){ %>
                             <li class=" ">
                                 <a href="/add-operation-note" data-i18n="nav.navigate.navbar-inverse">
                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -591,6 +649,7 @@
                                     <span class="pcoded-mcaret"></span>
                                 </a>
                             </li>
+                            <% } %>
                             <!-- <li class=" ">
                                     <a href="/theater-items" data-i18n="nav.navigate.navbar-inverse">
                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -667,7 +726,7 @@
                                 </li>
     
                         <% } %>
-                        <% if(currentUser.role == 1 || currentUser.role === 3){ %>
+                        <% if(currentUser.role == 1 || currentUser.role === 3 || currentUser.role === 16){ %>
                             <li class="pcoded-hasmenu">
                                         <a href="javascript:void(0)">
                                             <span class="pcoded-micon"><i class="fa fa-female"></i></span>
@@ -695,13 +754,13 @@
                                                 <span class="pcoded-mcaret"></span>
                                             </a>
                                             <ul class="pcoded-submenu">
-                                                <li class=" ">
+                                                <!-- <li class=" ">
                                                     <a href="/add-immunization" data-i18n="nav.basic-components.alert">
                                                         <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
                                                         <span class="pcoded-mtext">Add Immunization </span>
                                                         <span class="pcoded-mcaret"></span>
                                                     </a>
-                                                </li>
+                                                </li> -->
                                                 <li class=" ">
                                                         <a href="/immunizations" data-i18n="nav.basic-components.alert">
                                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
