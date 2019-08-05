@@ -75,8 +75,8 @@
                                                         <label for="">Quantity Consumed</label>
                                                         <input type="number" name="consumed" class="form-control"><br>
                                                     <!-- </div> -->
-                                                        <!-- <label for="">Price</label>
-                                                        <input type="number" name="price" class="form-control"><br> -->
+                                                        <label for="">Balance/Left Over</label>
+                                                        <input type="number" name="balance" class="form-control"><br>
                                                     <!-- <div class="col-sm-12"> -->
                                                         <label for="">Comments </label>
                                                         <textarea name="comments" class="form-control" cols="30" rows="10"></textarea>
@@ -117,6 +117,7 @@
                                                         <th>Item</th>
                                                         <th>Approved Quantity</th>
                                                         <th>Quantity Consumed</th>
+                                                        <th>Balance/Left Over</th>
                                                        
                                                         <th>Comments</th>
                                                         <th>CreatedBy</th>
@@ -131,6 +132,7 @@
                                                         <td> <%= ward.item %> </td>
                                                         <td><%= ward.quantity %></td>
                                                         <td><%= ward.consumed %></td>
+                                                        <td><%= ward.balance %></td>
                                                         
                                                        <td><%= ward.comments %> </td>
                                                       <td><%= ward.creator.firstname %> <%= ward.creator.lastname %> </td>

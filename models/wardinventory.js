@@ -5,7 +5,7 @@ const wardinventorySchema = new mongoose.Schema({
     item: String,
     quantity: Number,
     consumed: Number,
-    price: Number,
+    balance: Number,
     comments: String,
     status: {type: Boolean, default: true},
     created: {type: Date, default: Date.now}

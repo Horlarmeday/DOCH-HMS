@@ -647,7 +647,7 @@
                                                                 <h5>Allergies</h5>
                                                                 <p><%= patient.allergies %></p> <br><br>
                                                                 <% if(patient.gender === 'Female'){ %>
-                                                                    <h5>ANC</h5>
+                                                                    <h5>Ante Natal</h5>
                                                                     <div class="dt-responsive table-responsive">
                                                                             <table  class="table table-striped table-bordered nowrap">
                                                                                 <thead>
@@ -678,6 +678,141 @@
                                                                                         <td><a href="/antenatal-results/<%= patient._id %>">View</a></td> 
                                                                                         <td><%= anc.created.toDateString() %></td> 
                                                                                         
+                                                                                    </tr>
+                                                                                
+                                                                                    <% })  %>
+                                                                                    <% }  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                    </div> <br><br>
+
+                                                                    <h5>Delivery Info</h5>
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table id="order-table" class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>Mode of Delivery</th>
+                                                                                        <th>Date of Delivery</th>
+                                                                                        <th>Time of Delivery</th>
+                                                                                        <th>Blood Loss</th>
+                                                                                        <th>Duration</th>
+                                                                                        <th>Condition of Mother</th>
+                                                                                        <th>Apgar Score at 1min</th>
+                                                                                        <th>Apgar Score at 5min</th>
+                                                                                        <th>Apgar Score at 10min</th>
+                                                                                        <th>Birth Weight(kg)</th>
+                                                                                        <th>Sex</th>
+                                                                                        <th>Baby's Condition</th>
+                                                                                        <th>Place of Delivery</th>
+                                                                                        <th>Vitamin A: 200,000 IU to Mother</th>
+                                                                                        <th>Nevirapine to Baby</th>
+                                                                                        <th>Immunization Date</th>
+                                                                                        <th>BCG</th>
+                                                                                        <th>OPVO</th>
+                                                                                        <th>HBV</th>
+                                                                                        <th>Birth Notified Date</th>
+                                                                                        <th>Liquor</th>
+                                                                                        <th>Comment</th>
+                                                                                        <th>CreatedBy</th>
+                                                                                    
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% if(patient.ancs.length > 0){ %>
+                                                                                    <% patient.ancs[0].delivery.forEach((anc)=>{ %>
+                                                                                
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td>
+                                                                                                <%= anc.modeofdelivery %>
+                                                                                        </td>
+                                                                                        <td><%= anc.dateofdelivery.toDateString() %></td>
+                                                                                        <td><%= anc.timeofdelivery.toLocaleTimeString() %></td>
+                                                                                        <td><%= anc.bloodloss %></td>
+                                                                                        <td><%= anc.duration %></td>
+                                                                                        <td><%= anc.conditionofmother %></td>
+                                                                                        <td><%= anc.onemin %></td>
+                                                                                        <td><%= anc.fivemin %></td>
+                                                                                        <td><%= anc.tenmin %></td>
+                                                                                        <td><%= anc.birthweight %></td>
+                                                                                        <td><%= anc.sex %></td>
+                                                                                        <td><%= anc.conditionofbaby %></td>
+                                                                                        <td><%= anc.placeofdelivery %></td>
+                                                                                        <td><%= anc.vitaminAmother %></td>
+                                                                                        <td><%= anc.vitaminAbaby %></td>
+                                                                                        <td><%= anc.immunizationdate.toDateString() %></td>
+                                                                                        <td><%= anc.bcg %></td>
+                                                                                        <td><%= anc.opvo %></td>
+                                                                                        <td><%= anc.hbv %></td>
+                                                                                        <td><%= anc.notifieddate.toDateString() %></td>
+                                                                                        <td><%= anc.liquor %></td>
+                                                                                        <td><%= anc.comment %></td>
+                                                                                        <td><%= anc.midwife.firstname %> <%= anc.midwife.lastname %></td>
+                                                                                     
+                                                                                    </tr>
+                                                                                
+                                                                                    <% })  %>
+                                                                                    <% }  %>
+                                                                                </tbody>
+                                                                            </table>
+                                                                    </div> <br><br>
+
+                                                                    <h5>Post Natal</h5>
+                                                                    <div class="dt-responsive table-responsive">
+                                                                            <table id="order-table" class="table table-striped table-bordered nowrap">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>S/N</th>
+                                                                                        <th>B/P (mmHg)</th>
+                                                                                        <th>Temperature (°C)</th>
+                                                                                        <th>Pulse (b/min)</th>
+                                                                                        <th>Respiration (c/min)</th>
+                                                                                        <th>General Condition</th>
+                                                                                        <th>Condition of Mother</th>
+                                                                                        <th>Involution of Uterus</th>
+                                                                                        <th>Lochia</th>
+                                                                                        <th>Episotomy</th>
+                                                                                        <th>Pelvic Examination</th>
+                                                                                        <th>Pap Smear Date</th>
+                                                                                        <th>Result</th>
+                                                                                        <th>PCV</th>
+                                                                                        <th>Baby's Condition</th>
+                                                                                        <th>Wt(kg)</th>
+                                                                                        <th>Reflexes</th>
+                                                                                        <th>Feeding</th>
+                                                                                        <th>Umbilical Cord</th>
+                                                                                        <th>CreatedBy</th>
+                                                                                    
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    <% if(patient.ancs.length > 0){ %>
+                                                                                    <% patient.ancs[0].postnatal.forEach((anc)=>{ %>
+                                                                                
+                                                                                    <tr>
+                                                                                        <td></td>
+                                                                                        <td>
+                                                                                                <%= anc.bp %>
+                                                                                        </td>
+                                                                                        <td><%= anc.temp %></td>
+                                                                                        <td><%= anc.pulse %></td>
+                                                                                        <td><%= anc.respiration %></td>
+                                                                                        <td><%= anc.generalcondition %></td>
+                                                                                        <td><%= anc.involutionofuterus %></td>
+                                                                                        <td><%= anc.lochia %></td>
+                                                                                        <td><%= anc.episotomy %></td>
+                                                                                        <td><%= anc.pelvicexam %></td>
+                                                                                        <td><%= anc.smeardate.toDateString() %></td>
+                                                                                        <td><%= anc.result %></td>
+                                                                                        <td><%= anc.hb %></td>
+                                                                                        <td><%= anc.babycondition %></td>
+                                                                                        <td><%= anc.wt %></td>
+                                                                                        <td><%= anc.reflexes %></td>
+                                                                                        <td><%= anc.feeding %></td>
+                                                                                        <td><%= anc.umbilicalcord %></td>
+                                                                                        <td><%= anc.nurse.firstname %> <%= anc.nurse.lastname %></td>
+                                                                                     
                                                                                     </tr>
                                                                                 
                                                                                     <% })  %>

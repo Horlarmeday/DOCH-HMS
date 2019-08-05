@@ -1,3 +1,5 @@
+
+
 $(document).ready(function() {
      //HIDING AND SHOWING DEPARTMeNT WHEN CHOOSING DOCTOR
 	$('#role').change(function () {
@@ -8,6 +10,9 @@ $(document).ready(function() {
 			$('#department').hide()
 		}
     })
+
+   
+
 
     $('.checkbox1').click(function(){
         if($(this).prop("checked") == true){
@@ -831,6 +836,16 @@ function testSelect () {
     }
 }
 
+//HIDE TIME OF SURGERY
+function timeOfSurgery() {
+    let modeofsurger = $('#modeofsurgery').val()
+		if(modeofsurger === 'CS'){
+			$('.cs').show()
+		}else{
+			$('.cs').hide()
+		}
+    
+}
 
 
 // function appointmentType() {

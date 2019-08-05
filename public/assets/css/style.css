@@ -19273,7 +19273,7 @@ body.menu-bottom .navbar-wrapper {
   display: none;
 }
 
-#labit, #pharm, #thisweek, #total, #thismonth,  .paymentThisWeek, .paymentLast30Days, .allpayments, .foreign, .emergency  {
+#labit, #pharm, #thisweek, #total, #thismonth,  .paymentThisWeek, .paymentLast30Days, .allpayments, .foreign, .emergency, .cs {
   display: none
 }
 /* 

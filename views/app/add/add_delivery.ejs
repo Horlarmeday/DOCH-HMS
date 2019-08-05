@@ -64,17 +64,40 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Mode of Delivery <span class="text-danger">*</span> </label>
-                                                            <select name="modeofdelivery" class="form-control">
+                                                            <select id="modeofsurgery" name="modeofdelivery" class="form-control" onchange="timeOfSurgery()" required >
                                                                     <option>Select</option>
                                                                     <option>CS</option>
                                                                     <option>SVD</option>
-                                                                </select>
+                                                            </select>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Date of Delivery<span class="text-danger">*</span></label>
                                                             <input style="font-weight: 900" name="dateofdelivery" type="text" class="form-control" placeholder="<%= new Date().toLocaleDateString() %>" required readonly>
                                                         </div>
                                                     </div>
+                                                    <!-- CS start -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6 cs">
+                                                            <label for="">Time of Surgery </label>
+                                                            <input type="text" name="timeofsurgery" class="form-control" id="datetimepicker6">
+                                                        </div>
+                                                        <div class="col-sm-6 cs">
+                                                            <label for="">Time Patient Left Theater<span class="text-danger">*</span></label>
+                                                            <input name="timepatientleft" type="text" class="form-control" id="datetimepicker5">
+                                                        </div>
+                                                    </div>
+                                                    <!-- CS ends -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Time of Delivery</label>
+                                                            <input type="text" name="timeofdelivery" class="form-control" id="datetimepicker8" required>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Quantity of Blood Loss</label>
+                                                            <input type="text" name="bloodloss" class="form-control" required>
+                                                        </div>
+                                                    </div>
+                                                    
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Duration</label>
@@ -189,7 +212,22 @@
                                                                             <label for="">Birth Notified Date</label>
                                                                             <input type="date" class="form-control" name="notifieddate">
                                                                      </div>
+                                                                     <div class="col-sm-6">
+                                                                        <label for="">Nature of Liquor</label>
+                                                                        <select name="liquor" class="form-control">
+                                                                            <option>Select</option>
+                                                                            <option>Meconium stained</option>
+                                                                            <option>Clear</option>
+                                                                        </select>
+                                                                    </div>
                                                             </div>
+                                                            <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label for="">Comment/Remark</label>
+                                                                        <textarea name="comment" class="form-control" cols="30" rows="10"></textarea>
+                                                                 </div>
+                                                                 
+                                                        </div>
                                                     <button type="submit" class="btn btn-info float-right">Add Delivery Info</button>
                                                 </form>
                                             </div>

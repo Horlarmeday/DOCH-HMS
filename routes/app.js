@@ -40,7 +40,7 @@ const Visit = require('../models/visit')
 const Lab = require('../models/lab')
 const sgMail = require('@sendgrid/mail');
 const multer = require('multer');
-const fs = require('fs');
+const cron = require('node-cron');
 const middleware = require("../middleware");
 const Triage = require('../models/triage');
 const upload = require('./upload');
@@ -48,6 +48,7 @@ const bcrypt = require('bcrypt-nodejs')
 const Notification = require('../models/notifications')
 const uuidv1 = require('uuid/v4');
 var unirest = require('unirest')
+const session = require('express-session');
 const { check, validationResult } = require('express-validator');
 
 const patient = 8
@@ -65,6 +66,26 @@ const patient = 8
 //     })
 //     return sequencedoc.sequence_value;
 // }
+
+
+
+// function loggout() {
+//     router.get('*', (req, res, next)=>{
+//         if(req.user){
+//             req.session.destroy()
+//             res.redirect('/login')
+//         }else{
+
+//         }
+//     })
+// }
+
+// const job = cron.schedule('*/2 * * * *', () => {
+//     loggout()
+//     console.log('User logged Out!')
+// });
+// job.stop()
+
 
 //DASHBOARD ROUTE
 router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
@@ -2205,7 +2226,7 @@ router.route('/ward-inventory')
             item: req.body.item,
             quantity: req.body.quantity,
             consumed: req.body.consumed,
-            // price: req.body.price,
+            balance: req.body.balance,
             comments: req.body.comments,
             status: true
         })
@@ -3356,6 +3377,8 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
             'consultations.labtestObject',
             'consultations.drugsObject.drugs',
             'payments.services',
+            'ancs.delivery.midwife',
+            'ancs.postnatal.nurse',
             'reports.doctor',
             'reports.creator',
             'wardrounds.doctor',
@@ -4814,9 +4837,15 @@ router.route('/patient-delivery-information/:id')
                         req.flash('error', 'Patient ANC record cannot be found')
                         return res.redirect('back')
                     }
-                    anc.delivery = {
+                    anc.delivery.push({
                         modeofdelivery: req.body.modeofdelivery,
                         dateofdelivery: req.body.dateofdelivery,
+                        timeofdelivery: req.body.timeofdelivery,
+                        timeofsurgery: req.body.timeofsurgery,
+                        timepatientleft: req.body.timepatientleft,
+                        bloodloss: req.body.bloodloss,
+                        liquor: req.body.liquor,
+                        comment: req.body.comment,
                         duration: req.body.duration,
                         conditionofmother: req.body.conditionofmother,
                         onemin: req.body.onemin,
@@ -4834,7 +4863,7 @@ router.route('/patient-delivery-information/:id')
                         hbv: req.body.hbv,
                         opvo: req.body.opvo,
                         notifieddate: req.body.notifieddate
-                    }
+                    })
                     anc.save((err)=>{
                         if(err) return next (err)
                         req.flash('success', 'Patient Delivery Info was saved successfully')
@@ -4861,7 +4890,7 @@ router.route('/post-natal-examination/:id')
                     req.flash('error', 'Patient ANC record cannot be found')
                     return res.redirect('back')
                 }
-                anc.postnatal = {
+                anc.postnatal.push({
                     bp: req.body.bp,
                     temp: req.body.temp,
                     pulse: req.body.pulse,
@@ -4879,7 +4908,7 @@ router.route('/post-natal-examination/:id')
                     reflexes: req.body.reflexes,
                     feeding: req.body.feeding,
                     umbilicalcord: req.body.umbilicalcord,
-                }
+                })
                 anc.status = false;
                 anc.save((err)=>{
                     if(err) return next (err)

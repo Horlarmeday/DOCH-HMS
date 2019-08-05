@@ -52,13 +52,19 @@ const ancSchema = new mongoose.Schema({
             datetaken: {type: Date, default: Date.now}
         }
     }],
-    delivery: {
+    delivery: [{
         hbv: String,
         modeofdelivery: String,
         dateofdelivery: Date,
+        timeofdelivery: Date,
+        timepatientleft: Date,
+        timeofsurgery: Date,
         duration: String,
         conditionofmother: String,
         onemin: String,
+        bloodloss: String,
+        liquor: String,
+        comment: String,
         tenmin: String,
         fivemin: String,
         birthweight: Number,
@@ -71,9 +77,10 @@ const ancSchema = new mongoose.Schema({
         immunizationdate: Date,
         bcg: String,
         opvo: String,
-        notifieddate: Date
-    },
-    postnatal: {
+        notifieddate: Date,
+        midwife: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    }],
+    postnatal: [{
         bp: String,
         temp: String,
         pulse: String,
@@ -91,7 +98,8 @@ const ancSchema = new mongoose.Schema({
         reflexes: String,
         feeding: String,
         umbilicalcord: String,
-    },
+        nurse: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    }],
     previouspregnancy:[
         {
             year: String,

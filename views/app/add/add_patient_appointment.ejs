@@ -73,11 +73,11 @@
                                                                 </select>
                                                             </div><br>                                                     
                                                         <div class="col-sm-12">
-                                                            <label for="">Doctor</label>
+                                                            <label for="">Doctor/Nurse</label>
                                                             <select name="doctor" class="form-control js-example-basic-single" required>
                                                                 <option selected disabled>Select</option>
                                                                 <% users.forEach((user)=>{ %>
-                                                                    <% if(user.role == 2){ %>
+                                                                    <% if(user.role == 2 || user.role == 3){ %>
                                                                         
                                                                     <option value="<%= user._id %>"><%= user.firstname %> <%= user.lastname %></option>
                                                                     <% } %>
