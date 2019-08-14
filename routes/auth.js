@@ -93,7 +93,7 @@ router.route('/login')
     if (req.user){
       return res.redirect('/dashboard');
     }
-    res.render('web/login', { 'error': req.flash('loginMessage') });
+    res.render('web/login', { 'error': req.flash('loginMessage')});
 
   })
   .post(passport.authenticate('local-login', {

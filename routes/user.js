@@ -175,7 +175,7 @@ router.post('/forgot', (req, res, next) => {
     },
 
     function (token, user, done) {
-      sgMail.setApiKey(process.env.SENDGRID_MAIL);
+      sgMail.setApiKey(process.env.SENDGRID_MAIL)
       const msg = {
         to: user.email,
         from: 'BoroMe <noreply@borome.ng>',

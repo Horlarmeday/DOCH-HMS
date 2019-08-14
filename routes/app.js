@@ -1345,7 +1345,6 @@ router.route('/add-appointment')
                             .populate('patient')
                             .deepPopulate('doctor')
                             .exec((err, appointment)=>{
-                                console.log(appointment)
                                 unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
                                 .header({'Accept' : 'application/json'})
                                 .send({
