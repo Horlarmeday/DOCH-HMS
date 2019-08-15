@@ -1,4 +1,6 @@
 const express = require('express')
+// const fs = require('fs')
+// const https = require('https')
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -103,4 +105,12 @@ http.listen(config.port, (err) => {
   if (err) console.log(err);
   console.log(`Running on port ${config.port}`);
 });
+
+// https.createServer({
+//   key: fs.readFileSync('server.key'),
+//   cert: fs.readFileSync('server.cert')
+// }, app).listen(config.port, (err) => {
+//   if (err) console.log(err);
+//   console.log(`Running on port ${config.port}`);
+// });
 
