@@ -620,14 +620,14 @@ $(document).ready(function() {
 //
 $('#quantityused').change(function () {
     const quantityused = $('#quantityused').val()
-    const extra = $('#extra').val()
+    // const extra = $('#extra').val()
     const price = $('#pharmPrice').val()
-    if(extra === undefined || extra === null)
-        {
-            extra = 0
-        }
-    const finalAmount = quantityused + extra
-    $('#totalPharm').val(price * finalAmount)
+    // if(extra === undefined || extra === null)
+    //     {
+    //         extra = 0
+    //     }
+    // const finalAmount = quantityused + extra
+    $('#totalPharm').val(price * quantityused)
 })
 
 $('.country').change(function () {

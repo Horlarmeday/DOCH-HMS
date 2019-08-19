@@ -2866,15 +2866,16 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 // // if(req.body.drug_brand) consultation.drug.push(req.body.drug_brand);
                 // if(req.body.drug_name) consultation.drugname = req.body.drug_name;
-                const paid = new Paid({
+                const payment = new Payment({
                     drugs: req.body.drug_brand,
-                    price: req.body.price
+                    price: req.body.price,
+                    patient: req.params.id
                 })
-                paid.save((err)=>{
+                payment.save((err)=>{
                     if(err) return next (err)
                     if(req.body){
                         theconsultation.drugsObject.push({
-                            paid: paid,
+                            
                             drugs: req.body.drug_brand,
                             startingdate: req.body.startingdate,
                             quantity: req.body.quantity,

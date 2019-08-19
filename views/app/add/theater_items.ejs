@@ -67,7 +67,7 @@
                                                 </div> -->
                                                 <div class="form-group">
                                                         <label for="">Patient Name</label>
-                                                        <input type="text" class="form-control" placeholder="<%= theater.patient.firstname %> <%= theater.patient.lastname %>" ><br>
+                                                        <input style="font-weight: 900" type="text" class="form-control" placeholder="<%= theater.patient.firstname %> <%= theater.patient.lastname %>" disabled><br>
                                                     <!-- <div class="col-sm-12"> -->
                                                         <label for="">Items</label>
                                                         <select id="itemCode" name="drug" class="form-control js-example-basic-single" onchange="getDrugPrice()">
@@ -105,7 +105,7 @@
                                 <!-- Zero config.table start -->
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Treatment Records</h5>
+                                        <h5>Theater Items</h5>
                                         <div class="card-header-right">
                                             <i class="icofont icofont-rounded-down"></i>
                                             <i class="icofont icofont-refresh"></i>
@@ -122,7 +122,7 @@
                                                         <th>Quantity Approved</th>
                                                         <th>Quantity Used</th>
                                                         <th>Unit Price</th>
-                                                        <th>Extra Consumed</th>
+                                                        <!-- <th>Extra Consumed</th> -->
                                                         <th>Total Amount</th>
                                                         <th>Created</th>
                                                        
@@ -137,7 +137,7 @@
                                                         <td><%= theater.approvedqty %></td>
                                                         <td><%= theater.consumed %></td>
                                                         <td><%= theater.price %></td>
-                                                        <td><%= theater.extraconsumed %></td>
+                                                        <!-- <td><%= theater.extraconsumed %></td> -->
                                                         <td><%= theater.totalamount %></td>
                                                    
                                                       
