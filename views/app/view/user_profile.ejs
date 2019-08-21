@@ -657,6 +657,9 @@
                                                                                         <th>Surgical History</th>
                                                                                         <th>Family History</th>
                                                                                         <th>ANC Examinations</th>
+                                                                                        <th>LMP</th>
+                                                                                        <th>EDD</th>
+                                                                                        <th>Fetal Age</th>
                                                                                         <th>Date</th>
                                                                                     
                                                                                     </tr>
@@ -676,6 +679,9 @@
                                                                                         
                                                                                         <td><%= anc.familyhistory %></td> 
                                                                                         <td><a href="/antenatal-results/<%= patient._id %>">View</a></td> 
+                                                                                        <td><%= anc.lmp.toLocaleDateString() %></td> 
+                                                                                        <td><%= anc.edd.toLocaleDateString() %></td> 
+                                                                                        <td><%= anc.fetalage %></td> 
                                                                                         <td><%= anc.created.toDateString() %></td> 
                                                                                         
                                                                                     </tr>

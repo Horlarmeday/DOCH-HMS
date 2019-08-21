@@ -1,0 +1,162 @@
+<div class="col-sm-12">
+        <!-- Zero config.table start -->
+        <div class="card">
+            <div class="card-header">
+                <h5>Drugs Fee</h5>
+                <div class="card-header-right">
+                    <i class="icofont icofont-rounded-down"></i>
+                    <i class="icofont icofont-refresh"></i>
+                    <i class="icofont icofont-close-circled"></i>
+                </div>
+            </div>
+            <div class="card-block">
+                <div class="dt-responsive table-responsive">
+                    <table id="alt-pg-dt" class="table table-striped table-bordered nowrap">
+                        <thead>
+                            <tr>
+                                <th>S/N</th>
+                                <th>PatientID</th>
+                                <th>Patient Name</th>
+                                <th>Patient Type</th>
+                                <th>Drugs</th>
+                                <th>Unit Price</th>
+                                <th>Total Amount</th>
+                                <th>Status</th>
+                                <th>Mode of Payment</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                                <% consultations.forEach((consultation) => { %>
+                                   <% if(consultation.drugsObject.length > 0){ %>
+                            <tr>
+                                    <td></td>
+                                    <td><%= consultation.patient.patientId %></td>
+                                    <td> 
+                                        <a href="/patient/<%= consultation.patient.id %>" class="mr-2"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a>
+                                        <% if(consultation.patient.retainershipname){ %>
+                                            <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
+                                        <% } %>
+                                    </td>
+                                    <% if(!consultation.patient.emergency){ %>
+                                        <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                    <% }else{ %>  
+                                        <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                    <% } %>  
+
+                                    <%
+                                        function getSum(total, num) {
+                                            return total + num;
+                                        }
+                                        const totalDrugPrice = consultation.drugsObject.map(price =>{
+                                            const rPrice = price.paid.price
+                                            return rPrice;
+                                                           
+                                        })
+                                        var totalPrice;
+                                        if(totalDrugPrice === undefined || totalDrugPrice.length == 0){
+                                            totalPrice = 0
+                                        }else{
+                                            totalPrice = totalDrugPrice.reduce(getSum)
+                                        }
+                                        
+                                    %>
+                                    <%
+                                        function getSum(total, num) {
+                                            return total + num;
+                                        }
+                                        const DrugPrice = consultation.drugsObject.map(price =>{
+                                            if(price.checked){
+                                                const rPrice = price.paid.price
+                                                return rPrice;
+                                            }
+                                        })
+                                        var drugPrice;
+                                        if(DrugPrice === undefined || DrugPrice.length == 0){
+                                            drugPrice = 0
+                                        }else{
+                                            drugPrice = DrugPrice.reduce(getSum)
+                                        }
+                                        
+                                    %>
+
+                                    <td>
+                                        <% consultation.drugsObject.forEach((drug)=>{ %>
+                                            <p style="font-weight: 500">
+                                                <input class="border-checkbox checkbox1"  type="checkbox" value="<%= drug.paid._id %>">
+                                                <label><%= drug.drugs.name %></label>
+                                               
+                                                    <span style="font-weight: 900; color: darkorange">     
+                                                            (&#8358;<%= drug.drugs.sellprice %>)</span>
+                                                
+                                            </p>
+                                        <% }) %>
+                                    </td>
+                                    <td class="unitamount"></td>
+                                    <% if(consultation.patient.retainership === "Yes"){ %>
+                                        <td style="font-weight: 900; font-size: 1rem"> 
+                                            <span style="text-decoration-line: line-through; text-decoration-color: red">&#8358;<%= totalPrice %></span>
+                                             (&#8358;<%= totalPrice * 0.1 %>)</td>
+                                    <% }else{ %>
+
+                                        <td style="font-weight: 900; font-size: 1rem">&#8358;<%= totalPrice %></td>
+                                    <% } %>
+                                    <% if(consultation.pharmacypaid === false){ %>
+                                    <td><label class="label label-md bg-warning">pending</label></td>
+                                    <% }else{ %>
+                                    <td><label class="label label-md bg-success">paid</label></td>
+                                    <% } %>
+                                    <td>
+                                            <% if(!consultation.pharmacypaid){ %>
+                                                <div class="input-group">
+                                                        <select id="modeofpayment3" name="modeofpayment" class="form-control" >
+                                                            <option>Select</option>
+                                                            <option value="Cash">Cash</option>
+                                                            <option value="POS">POS</option>
+                                                            <option value="Transfer">Transfer</option>
+                                                            <option value="Bank Deposit">Bank Deposit</option>
+                                                        </select>
+                                                </div>
+                                            <% }%>
+                                    </td>
+                                    <td>
+                                        <% if(!consultation.pharmacypaid){ %>
+                                            <% if(consultation.patient.retainership === "Yes"){ %>
+                                                <button value="<%= totalPrice * 0.1 %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                         <% }else{ %>
+                                            <button value="<%= totalPrice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                         <% } %>
+                                        <% } %>
+                                        <% if(consultation.pharmacypaid){ %>
+                                        <a href="/pharmacy-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                        <% } %>
+                            </tr>
+                            
+                           
+                            
+                            <% } %>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%
+                                                                function getSum(total, num) {
+                                                                    return total + num;
+                                                                }
+                                                                const totalImagingPrice = consultation.imaging.map(price =>{
+                                                                    const rPrice = price.price
+                                                                    return rPrice;
+                                                                                   
+                                                                })
+                                                                var imagingPrice;
+                                                                if(totalImagingPrice === undefined || totalImagingPrice.length == 0){
+                                                                    imagingPrice = 0
+                                                                }else{
+                                                                    imagingPrice = totalImagingPrice.reduce(getSum)
+                                                                }
+                                                                
+                                                            %>

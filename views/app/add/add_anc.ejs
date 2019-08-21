@@ -123,19 +123,28 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
-                                                                    <td>Fundal Height</td>  
+                                                                    <td>Fundal Height(cm)</td>  
                                                                     <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].fundalheight %>" name="fundalheight" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Presentation</td>  
-                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].presentation %>" name="presentation" class="form-control"></td>  
+                                                                    <td colspan="5">
+                                                                                    
+                                                                            <select name="presentation" class="form-control">
+                                                                                <option value="Cephalic" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Cephalic</option>
+                                                                                <option value="Transverse" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Transverse</option>
+                                                                                <option value="Oblique" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Oblique</option>
+                                                                                <option value="Breech" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Breech</option>
+                                                                            </select>
+                                                                    </td>
+                                                                    
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
-                                                                    <td>Fetal Heart Rate</td>  
+                                                                    <td>Fetal Heart Rate(b/m)</td>  
                                                                     <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].fetalheartrate %>" name="fetalheartrate" class="form-control"></td>  
                                                                     
                                                                 </tr>
@@ -248,19 +257,28 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
-                                                                    <td>Fundal Height</td>  
+                                                                    <td>Fundal Height(cm)</td>  
                                                                     <td colspan="5"><input type="text" name="fundalheight" class="form-control"></td>  
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
-                                                                    <td>Presentation</td>  
-                                                                    <td colspan="5"><input type="text" name="presentation" class="form-control"></td>  
+                                                                    <td>Presentation</td> 
+                                                                    <td colspan="5">
+                                                                                    
+                                                                            <select name="presentation" class="form-control">
+                                                                                <option value="Cephalic">Cephalic</option>
+                                                                                <option value="Transverse">Transverse</option>
+                                                                                <option value="Oblique">Oblique</option>
+                                                                                <option value="Breech">Breech</option>
+                                                                            </select>
+                                                                    </td> 
+                                            
                                                                     
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
-                                                                    <td>Fetal Heart Rate</td>  
+                                                                    <td>Fetal Heart Rate(b/m)</td>  
                                                                     <td colspan="5"><input type="text" name="fetalheartrate" class="form-control"></td>  
                                                                     
                                                                 </tr>
@@ -287,6 +305,7 @@
                                                                             <td colspan="5"><input type="text" name="initial" class="form-control"></td>  
                                                                                 
                                                                         </tr>
+                                                                    
                                                                 <tr>
                                                                     <button type="submit" class="btn btn-success float-right mb-3">Save</button>
                                                                 </tr>

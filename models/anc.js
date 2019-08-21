@@ -12,6 +12,8 @@ const ancSchema = new mongoose.Schema({
     parity: String,
     lmp: Date,
     edd: Date,
+    ecc: Date,
+    fetalage: String,
     medicalhistory: String,
     surgicalhistory: String,
     bloodtransfusion: String,

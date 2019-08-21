@@ -106,13 +106,23 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">LMP<span class="text-danger">*</span></label>
-                                                            <input type="date" name="lmp" id="lmp" class="form-control" placeholder="LMP" required>
+                                                            <input type="date" name="lmp" id="lmp" class="form-control" placeholder="LMP" onchange="pregnancyCalc()" required>
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">EDD<span class="text-danger">*</span></label>
                                                             <input type="text" name="edd" id="edd" class="form-control" placeholder=""  readonly>
                                                         </div>
                                                     </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Estimated Conception<span class="text-danger">*</span></label>
+                                                                <input type="text" name="ecc" id="ecc" class="form-control"  required readonly>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label for="">Fetal Age<span class="text-danger">*</span></label>
+                                                                <input type="text" name="fetalage" id="fetalage" class="form-control" placeholder=""  readonly>
+                                                            </div>
+                                                        </div>
                                                     <hr>
                                                     <h5 style="color:dodgerblue" class="page-title">Next of Kin Information</h5><br><br>
                                                     <div class="form-group row">
@@ -147,8 +157,8 @@
                                                                     </div>
                                                                     <div class="col-sm-6">
                                                                         <label for="">Family History</label>
-                                                                       <select name="familyhistory" class="form-control">
-                                                                           <option>Select</option>
+                                                                       <select name="familyhistory" class="form-control js-example-basic-multiple" multiple>
+                                                                           <option disabled>Select</option>
                                                                            <option>Twins</option>
                                                                            <option>Tuberculosis</option>
                                                                            <option>Diabetes</option>

@@ -712,8 +712,8 @@
                                                 <div class="form-group row">
                                                     <label class="col-sm-2 col-form-label">Medical Imaging</label>
                                                     <div class="col-sm-6">
-                                                        <select name="image[]" class="form-control js-example-basic-multiple" multiple>
-                                                            <option disabled>Select Investigation</option>
+                                                        <select name="image[]" class="form-control " >
+                                                            <option>Select Investigation</option>
                                                             <% imaging.forEach((image)=>{ %>
                                                                 <option value="<%= image._id %>"><%= image.name %></option>
                                                             <% }) %>

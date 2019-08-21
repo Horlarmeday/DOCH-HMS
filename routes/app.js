@@ -408,14 +408,26 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             Consultation.find({})
             .sort('-created')
             .populate('patient')
-            .deepPopulate(['drugsObject.drugs', 'drugsObject.paid', 'patient.retainershipname'])
+            .populate('payment')
+            .deepPopulate(['drugsObject.drugs', 'drugsObject.paid', 'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging'])
             .populate('labtestObject')
             .populate('imaging')
             .exec((err, consultations)=>{
                 if(err) return next (err)
                 Appointment.find({}, (err, appointments)=>{
                     if(err) return next (err)
-                    res.render('app/dashboard7', { users, consultations, appointments })
+                    Payment.find({})
+                    .populate('patient')
+                    .populate('initiator')
+                    .deepPopulate(['patient.retainershipname'])
+                    .populate('services')
+                    .populate('drugs')
+                    .populate('lab')
+                    .exec((err, payments)=>{
+                        if(err) return next (err)
+                        res.render('app/dashboard7', { users, consultations, appointments, payments })
+                    })
+
                 })
             })
         })
@@ -997,7 +1009,6 @@ router.route('/add-patient')
                     req.flash('error',  'Account with that phone number already exists.');
                     return res.redirect('/add-patient');
                 }else{
-
                     const user = new User()
                     user.patientId = `DOCH/00000${count + 1}`
                     user.registeredby = req.user._id;
@@ -1292,80 +1303,89 @@ router.route('/add-appointment')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        async.waterfall([
-            function (done) {
-                uniq = uuidv1()
-                var stamp = uniq.substr(uniq.length - 7);
-                const appointment = new Appointment()
-                appointment.uniqueid = stamp
-                appointment.creator = req.user._id;
-                appointment.department = req.body.department;
-                appointment.doctor = req.body.doctor;
-                appointment.type = req.body.type;
-                appointment.patient = req.body.patient;
-                appointment.status = true;
-                appointment.problem = req.body.problem;
-                appointment.appointmentdate = req.body.appointment;
-                appointment.appointmenttime = req.body.time;
-                appointment.save((err) => {
-                if (err) { return next(err) }
-                    done(err, appointment)
-                })
-            },
-            function (appointment, done) {
-                User.findById(appointment.doctor)
-                    .exec((err, user) => {
-                    if (err) return next(err);
-                    User.update(
-                        {
-                            _id: user._id
-                        },
-                        {
-                            $push: { appointments: appointment._id }
-                        },
-                        function (err, count) {
-                            if (err) return next(err);
+        User.findOne({_id: req.body.patient}, (err, user)=>{
+            if(err) return next (err)
+            if(user.triages.length < 1){
+                req.flash('error', 'Error creating appointment, Patient doesn\'t have any triage record');
+                return res.redirect('back')
+            }else{
+                async.waterfall([
+                    function (done) {
+                        uniq = uuidv1()
+                        var stamp = uniq.substr(uniq.length - 7);
+                        const appointment = new Appointment()
+                        appointment.uniqueid = stamp
+                        appointment.creator = req.user._id;
+                        appointment.department = req.body.department;
+                        appointment.doctor = req.body.doctor;
+                        appointment.type = req.body.type;
+                        appointment.patient = req.body.patient;
+                        appointment.status = true;
+                        appointment.problem = req.body.problem;
+                        appointment.appointmentdate = req.body.appointment;
+                        appointment.appointmenttime = req.body.time;
+                        appointment.save((err) => {
+                        if (err) { return next(err) }
                             done(err, appointment)
-                        }      
-                    )
-                    
-                })
-            },
-            function (appointment, done) {
-                User.update(
-                    {
-                        _id: appointment.patient
-                    },
-                    {
-                        $push: { appointments: appointment._id }
-                    },
-                    function (err, count) {
-                        if (err) return next(err);
-                        Appointment.findOne(appointment)
-                            .populate('patient')
-                            .deepPopulate('doctor')
-                            .exec((err, appointment)=>{
-                                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                                .header({'Accept' : 'application/json'})
-                                .send({
-                                    'username': process.env.SMSSMARTUSERNAME,
-                                    'password': process.env.SMSSMARTPASSWORD,
-                                    'sender': process.env.SMSSMARTSENDERID,
-                                    'recipient' : `234${appointment.doctor.phonenumber}`,
-                                    'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
-                                    'routing': 4,
-                                    
-                                })
-                                .end(function (response) {
-                                    console.log(response.body);
-                                });
-                            req.flash('success', 'Appointment has been created')
-                            res.redirect('/appointments'); 
                         })
-                    }      
-                )
+                    },
+                    function (appointment, done) {
+                        User.findById(appointment.doctor)
+                            .exec((err, user) => {
+                            if (err) return next(err);
+                            User.update(
+                                {
+                                    _id: user._id
+                                },
+                                {
+                                    $push: { appointments: appointment._id }
+                                },
+                                function (err, count) {
+                                    if (err) return next(err);
+                                    done(err, appointment)
+                                }      
+                            )
+                            
+                        })
+                    },
+                    function (appointment, done) {
+                        User.update(
+                            {
+                                _id: appointment.patient
+                            },
+                            {
+                                $push: { appointments: appointment._id }
+                            },
+                            function (err, count) {
+                                if (err) return next(err);
+                                Appointment.findOne(appointment)
+                                    .populate('patient')
+                                    .deepPopulate('doctor')
+                                    .exec((err, appointment)=>{
+                                        unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                                        .header({'Accept' : 'application/json'})
+                                        .send({
+                                            'username': process.env.SMSSMARTUSERNAME,
+                                            'password': process.env.SMSSMARTPASSWORD,
+                                            'sender': process.env.SMSSMARTSENDERID,
+                                            'recipient' : `234${appointment.doctor.phonenumber}`,
+                                            'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
+                                            'routing': 4,
+                                            
+                                        })
+                                        .end(function (response) {
+                                            console.log(response.body);
+                                        });
+                                    req.flash('success', 'Appointment has been created')
+                                    res.redirect('/appointments'); 
+                                })
+                            }      
+                        )
+                    }
+                ]) 
             }
-        ]) 
+        })
+        
     })
 
    
@@ -1385,83 +1405,92 @@ router.route('/add-appointment/:id')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        async.waterfall([
-            function (done) {
-                uniq = uuidv1()
-                var stamp = uniq.substr(uniq.length - 7);
-                const appointment = new Appointment()
-                appointment.uniqueid = stamp
-                appointment.creator = req.user._id;
-                appointment.department = req.body.department;
-                appointment.doctor = req.body.doctor;
-                appointment.patient = req.body.patient;
-                appointment.status = true;
-                appointment.problem = req.body.problem;
-                appointment.type = req.body.type;
-                appointment.appointmentdate = req.body.appointment;
-                appointment.appointmenttime = req.body.time;
-                appointment.save((err) => {
-                if (err) { return next(err) }
-                    done(err, appointment)
-                    
-                })
-            },
-            function (appointment, done) {
-                User.findById(appointment.doctor)
-                .exec((err, user) => {
-                    if (err) return next(err);
-                    
-                    User.update(
-                        {
-                            _id: user._id
-                        },
-                        {
-                            $push: { appointments: appointment._id }
-                        },
-                        function (err, count) {
-                            if (err) return next(err);
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            if(err) return next (err)
+            if(user.triages.length < 1){
+                req.flash('error', 'Error creating appointment, Patient doesn\'t have any triage record')
+                return res.redirect('back')
+            }else{
+                async.waterfall([
+                    function (done) {
+                        uniq = uuidv1()
+                        var stamp = uniq.substr(uniq.length - 7);
+                        const appointment = new Appointment()
+                        appointment.uniqueid = stamp
+                        appointment.creator = req.user._id;
+                        appointment.department = req.body.department;
+                        appointment.doctor = req.body.doctor;
+                        appointment.patient = req.body.patient;
+                        appointment.status = true;
+                        appointment.problem = req.body.problem;
+                        appointment.type = req.body.type;
+                        appointment.appointmentdate = req.body.appointment;
+                        appointment.appointmenttime = req.body.time;
+                        appointment.save((err) => {
+                        if (err) { return next(err) }
                             done(err, appointment)
-                        }      
-                    )
-                    
-                })
-            },
-            function (appointment, done) {
-                User.update(
-                    {
-                        _id: appointment.patient
-                    },
-                    {
-                        $push: { appointments: appointment._id }
-                    },
-                    function (err, count) {
-                        if (err) return next(err);
-                        Appointment.findOne(appointment)
-                            .populate('patient')
-                            .deepPopulate('doctor')
-                            .exec((err, appointment)=>{
-                                console.log(appointment)
-                                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                                .header({'Accept' : 'application/json'})
-                                .send({
-                                    'username': process.env.SMSSMARTUSERNAME,
-                                    'password': process.env.SMSSMARTPASSWORD,
-                                    'sender': process.env.SMSSMARTSENDERID,
-                                    'recipient' : `234${appointment.doctor.phonenumber}`,
-                                    'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
-                                    'routing': 4,
-                                    
-                                })
-                                .end(function (response) {
-                                    console.log(response.body);
-                                });
-                            req.flash('success', 'Patient Appointment has been created')
-                            res.redirect('/dashboard'); 
+                            
                         })
-                    }      
-                )
+                    },
+                    function (appointment, done) {
+                        User.findById(appointment.doctor)
+                        .exec((err, user) => {
+                            if (err) return next(err);
+                            
+                            User.update(
+                                {
+                                    _id: user._id
+                                },
+                                {
+                                    $push: { appointments: appointment._id }
+                                },
+                                function (err, count) {
+                                    if (err) return next(err);
+                                    done(err, appointment)
+                                }      
+                            )
+                            
+                        })
+                    },
+                    function (appointment, done) {
+                        User.update(
+                            {
+                                _id: appointment.patient
+                            },
+                            {
+                                $push: { appointments: appointment._id }
+                            },
+                            function (err, count) {
+                                if (err) return next(err);
+                                Appointment.findOne(appointment)
+                                    .populate('patient')
+                                    .deepPopulate('doctor')
+                                    .exec((err, appointment)=>{
+                                        console.log(appointment)
+                                        unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                                        .header({'Accept' : 'application/json'})
+                                        .send({
+                                            'username': process.env.SMSSMARTUSERNAME,
+                                            'password': process.env.SMSSMARTPASSWORD,
+                                            'sender': process.env.SMSSMARTSENDERID,
+                                            'recipient' : `234${appointment.doctor.phonenumber}`,
+                                            'message' : `Dear Dr ${appointment.doctor.firstname} ${appointment.doctor.lastname}, you have an appointment with ${appointment.patient.firstname} ${appointment.patient.lastname} on ${appointment.appointmentdate.toDateString()} by ${appointment.appointmenttime.toLocaleTimeString()}. Best regards`,
+                                            'routing': 4,
+                                            
+                                        })
+                                        .end(function (response) {
+                                            console.log(response.body);
+                                        });
+                                    req.flash('success', 'Patient Appointment has been created')
+                                    res.redirect('/dashboard'); 
+                                })
+                            }      
+                        )
+                    }
+                ]) 
             }
-        ]) 
+        })
+       
     })
 
 
@@ -2834,19 +2863,26 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                     req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-                if(req.body.labtype) foundconsultation.labtype = req.body.labtype;
-                foundconsultation.labtestObject.push(req.body.labtest);
+                const payment = new Payment({
+                    lab: req.body.labtest,
+                    patient: req.params.id
+                })
+                payment.save((err)=>{
+                    if(req.body.labtype) foundconsultation.labtype = req.body.labtype;
+                    foundconsultation.labtestObject.push(req.body.labtest);
+                    foundconsultation.labstatus = true;
+                    foundconsultation.payment.push(payment);
+                    foundconsultation.save((err)=>{
+                        if(err) return next (err)
+                        req.flash('success', 'Patient sent for test successfully')
+                        res.redirect('back')
+                    })
+                })
                     // var tests = req.body.labtest
                     // var alltests = tests.map(s => mongoose.Types.ObjectId(s))
                     // consultation.labtestObject.push(req.body.labtest);
            
                 // consultation.labtestObject.push(req.body.labtest)
-                foundconsultation.labstatus = true;
-                foundconsultation.save((err)=>{
-                    if(err) return next (err)
-                    req.flash('success', 'Patient sent for test successfully')
-                    res.redirect('back')
-                })
             })
         })
 })
@@ -2875,7 +2911,6 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                     if(err) return next (err)
                     if(req.body){
                         theconsultation.drugsObject.push({
-                            
                             drugs: req.body.drug_brand,
                             startingdate: req.body.startingdate,
                             quantity: req.body.quantity,
@@ -2893,6 +2928,7 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                         theconsultation.pharmacystatus = true;
                         theconsultation.status = true;
                     }
+                    theconsultation.payment.push(payment);
                     theconsultation.save((err)=>{
                         if(err) return next (err)
                         res.redirect('back')
@@ -2914,19 +2950,26 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                     req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-
-                if (Array.isArray(req.body.image)){
-                    let images = req.body.image;
-                    let allImaging = images.map(v => mongoose.Types.ObjectId(v))
-                    consultation.imaging = allImaging
-                }else{
-                    consultation.imaging = req.body.image
-                }
-                consultation.imagingdate = Date.now()
-                consultation.imagingstatus = true;
-                consultation.save((err)=>{
-                    if(err) return next (err)
-                    res.redirect('back')
+                const payment = new Payment({
+                    imaging: req.body.image,
+                    price: req.body.price,
+                    patient: req.params.id
+                })
+                payment.save((err)=>{
+                    if (Array.isArray(req.body.image)){
+                        let images = req.body.image;
+                        let allImaging = images.map(v => mongoose.Types.ObjectId(v))
+                        consultation.imaging = allImaging
+                    }else{
+                        consultation.imaging = req.body.image
+                    }
+                    consultation.imagingdate = Date.now()
+                    consultation.imagingstatus = true;
+                    consultation.payment.push(payment);
+                    consultation.save((err)=>{
+                        if(err) return next (err)
+                        res.redirect('back')
+                    })
                 })
             })
         })
@@ -4084,93 +4127,83 @@ router.post('/approve-billing', middleware.isLoggedIn, (req, res, next)=>{
 router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
     let consultID = req.body.consultationId
     let labamount = req.body.labamount
-    Consultation.findOne({ _id: consultID })
+    let modeofpayment = req.body.modeofpayment
+    Payment.findOne({ _id: consultID })
     .populate('patient')
-    .exec(function (err, consult) {
+    .exec(function (err, payment) {
         if (err) return next(err)
-        consult.labpaid = true
-        consult.save((err)=>{
+        payment.paid = true;
+        payment.type = 'Lab Test Payment';
+        payment.modeofpayment =  modeofpayment;
+        payment.status = true;
+        payment.amount = labamount;
+        payment.initiator= req.user._id;
+        payment.save((err)=>{
             if (err) return next(err)
-            const payment = new Payment({
-                patient: consult.patient,
-                amount: labamount,
-                type: 'Lab Test Payment',
-                initiator: req.user._id,
-                modeofpayment: req.body.modeofpayment,
-                status: true
+            //Send email
+            sgMail.setApiKey(process.env.SENDGRID_MAIL);
+            const msg = {
+                to: 'admin@doch.com.ng',
+                from: 'DOCH Account<noreply@doch.com.ng>',
+                subject: 'New Payment Made',
+                html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made payment of &#8358;${payment.amount} for his/her Lab tests , Thank You.\n</p>`,
+            };
+            sgMail.send(msg);
+            //Send SMS
+            //Sending SMS
+            unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+            .header({'Accept' : 'application/json'})
+            .send({
+                'username': process.env.SMSSMARTUSERNAME,
+                'password': process.env.SMSSMARTPASSWORD,
+                'sender': process.env.SMSSMARTSENDERID,
+                'recipient' : `234${payment.patient.phonenumber}`,
+                'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+                'routing': 4,
+                
             })
-            payment.save((err)=>{
-                if (err) return next(err)
-                //Send email
-                sgMail.setApiKey(process.env.SENDGRID_MAIL);
-                const msg = {
-                    to: 'admin@doch.com.ng',
-                    from: 'DOCH Account<noreply@doch.com.ng>',
-                    subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made payment of &#8358;${payment.amount} for his/her Lab tests , Thank You.\n</p>`,
-                };
-                sgMail.send(msg);
-                //Send SMS
-                //Sending SMS
-                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                .header({'Accept' : 'application/json'})
-                .send({
-                    'username': process.env.SMSSMARTUSERNAME,
-                    'password': process.env.SMSSMARTPASSWORD,
-                    'sender': process.env.SMSSMARTSENDERID,
-                    'recipient' : `234${consult.patient.phonenumber}`,
-                    'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
-                    'routing': 4,
-                    
-                })
-                .end(function (response) {
-                    console.log(response.body);
-                });
-                User.update(
-                    {
-                        _id: consult.patient
-                    },
-                    {
-                        $push:{payments: payment._id}
-                    },
-                    function (err, count) {
-                        if (err) return next(err)
-                        req.flash('success', 'Payment Made Approved')
-                        res.redirect('/dashboard')
-                    }
-                )
-            })
+            .end(function (response) {
+                console.log(response.body);
+            });
+            User.update(
+                {
+                    _id: payment.patient
+                },
+                {
+                    $push:{payments: payment._id}
+                },
+                function (err, count) {
+                    if (err) return next(err)
+                    req.flash('success', 'Payment Made Approved')
+                    res.redirect('/dashboard')
+                }
+            )
         })
     })
 })
 
-//PHARMACY PAYMENT
 router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
     let pharmId = req.body.pharmId
     let amount = req.body.amount
-    Consultation.findOne({ _id: pharmId })
+    let modeofpayment = req.body.modeofpayment
+    Payment.findOne({ _id: pharmId })
     .populate('patient')
-    .exec(function (err, consult) {
+    .exec(function (err, payment) {
         if (err) return next(err)
-        consult.pharmacypaid = true
-        consult.save((err)=>{
+        payment.paid = true;
+        payment.type = 'Drugs Payment';
+        payment.amount = amount;
+        payment.status = true;
+        payment.initiator = req.user._id;
+        payment.modeofpayment = modeofpayment
+        payment.save((err)=>{
             if (err) return next(err)
-            const payment = new Payment({
-                patient: consult.patient,
-                amount: amount,
-                type: 'Drugs Payment',
-                initiator: req.user._id,
-                modeofpayment: req.body.modeofpayment,
-                status: true
-            })
-            payment.save((err)=>{
-                if (err) return next(err)
                 sgMail.setApiKey(process.env.SENDGRID_MAIL);
                 const msg = {
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
                 //Send SMS
@@ -4181,8 +4214,8 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                     'username': process.env.SMSSMARTUSERNAME,
                     'password': process.env.SMSSMARTPASSWORD,
                     'sender': process.env.SMSSMARTSENDERID,
-                    'recipient' : `234${consult.patient.phonenumber}`,
-                    'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+                    'recipient' : `234${payment.patient.phonenumber}`,
+                    'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
                     'routing': 4,
                     
                 })
@@ -4191,7 +4224,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                 });
                 User.update(
                     {
-                        _id: consult.patient
+                        _id: payment.patient
                     },
                     {
                         $push:{payments: payment._id}
@@ -4202,73 +4235,130 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                         res.redirect('/dashboard')
                     }
                 )
-            })
-            
         })
     })
 })
+
+//PHARMACY PAYMENT
+// router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
+//     let pharmId = req.body.pharmId
+//     let amount = req.body.amount
+//     Consultation.findOne({ _id: pharmId })
+//     .populate('patient')
+//     .exec(function (err, consult) {
+//         if (err) return next(err)
+//         consult.pharmacypaid = true
+//         consult.save((err)=>{
+//             if (err) return next(err)
+//             const payment = new Payment({
+//                 patient: consult.patient,
+//                 amount: amount,
+//                 type: 'Drugs Payment',
+//                 initiator: req.user._id,
+//                 modeofpayment: req.body.modeofpayment,
+//                 status: true
+//             })
+//             payment.save((err)=>{
+//                 if (err) return next(err)
+//                 sgMail.setApiKey(process.env.SENDGRID_MAIL);
+//                 const msg = {
+//                     to: 'admin@doch.com.ng',
+//                     from: 'DOCH Account<noreply@doch.com.ng>',
+//                     subject: 'New Payment Made',
+//                     html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
+//                 };
+//                 sgMail.send(msg);
+//                 //Send SMS
+//                 //Sending SMS
+//                 unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+//                 .header({'Accept' : 'application/json'})
+//                 .send({
+//                     'username': process.env.SMSSMARTUSERNAME,
+//                     'password': process.env.SMSSMARTPASSWORD,
+//                     'sender': process.env.SMSSMARTSENDERID,
+//                     'recipient' : `234${consult.patient.phonenumber}`,
+//                     'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+//                     'routing': 4,
+                    
+//                 })
+//                 .end(function (response) {
+//                     //console.log(response.body);
+//                 });
+//                 User.update(
+//                     {
+//                         _id: consult.patient
+//                     },
+//                     {
+//                         $push:{payments: payment._id}
+//                     },
+//                     function (err, count) {
+//                         if (err) return next(err)
+//                         req.flash('success', 'Payment Made Approved')
+//                         res.redirect('/dashboard')
+//                     }
+//                 )
+//             })
+            
+//         })
+//     })
+// })
 
 //Imaging Payment
 router.post('/imaging-payment', middleware.isLoggedIn, (req, res, next)=>{
     let imagingId = req.body.imagingId
     let imagingAmount = req.body.imagingAmount
-    Consultation.findOne({ _id: imagingId })
+    let modeofpayment = req.body.modeofpayment
+    Payment.findOne({ _id: imagingId })
     .populate('patient')
 
-    .exec(function (err, consult) {
+    .exec(function (err, payment) {
         if (err) return next(err)
-        consult.imagingpaid = true
-        consult.save((err)=>{
+        payment.paid = true;
+        payment.amount = imagingAmount;
+        payment.status = true;
+        payment.modeofpayment = modeofpayment;
+        payment.initiator = req.user._id;
+        payment.type = 'Imaging Payment';
+        payment.save((err)=>{
             if (err) return next(err)
-            const payment = new Payment({
-                patient: consult.patient,
-                amount: imagingAmount,
-                type: 'Imaging Payment',
-                initiator: req.user._id,
-                modeofpayment: req.body.modeofpayment,
-                status: true
-            })
-            payment.save((err)=>{
-                if (err) return next(err)
-                //Sending MAil
-                sgMail.setApiKey(process.env.SENDGRID_MAIL);
-                const msg = {
-                    to: 'admin@doch.com.ng',
-                    from: 'DOCH Account<noreply@doch.com.ng>',
-                    subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her imaging, Thank You.\n</p>`,
-                };
-                sgMail.send(msg);
+            //Sending MAil
+            sgMail.setApiKey(process.env.SENDGRID_MAIL);
+            const msg = {
+                to: 'admin@doch.com.ng',
+                from: 'DOCH Account<noreply@doch.com.ng>',
+                subject: 'New Payment Made',
+                html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her imaging, Thank You.\n</p>`,
+            };
+            sgMail.send(msg);
 
-                //Sending SMS
-                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                .header({'Accept' : 'application/json'})
-                .send({
-                    'username': process.env.SMSSMARTUSERNAME,
-                    'password': process.env.SMSSMARTPASSWORD,
-                    'sender': process.env.SMSSMARTSENDERID,
-                    'recipient' : `234${consult.patient.phonenumber}`,
-                    'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
-                    'routing': 4,
-                    
-                })
-                .end(function (response) {
-                    console.log(response.body);
-                });
-                User.update(
-                    {
-                        _id: consult.patient
-                    },
-                    {
-                        $push:{payments: payment._id}
-                    },
-                    function (err, count) {
-                        if (err) return next(err)
-                        req.flash('success', 'Payment Made Approved')
-                        res.redirect('/dashboard')
-                    }
-                )
+            //Sending SMS
+            unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+            .header({'Accept' : 'application/json'})
+            .send({
+                'username': process.env.SMSSMARTUSERNAME,
+                'password': process.env.SMSSMARTPASSWORD,
+                'sender': process.env.SMSSMARTSENDERID,
+                'recipient' : `234${payment.patient.phonenumber}`,
+                'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+                'routing': 4,
+                
             })
+            .end(function (response) {
+                console.log(response.body);
+            });
+            User.update(
+                {
+                    _id: payment.patient
+                },
+                {
+                    $push:{payments: payment._id}
+                },
+                function (err, count) {
+                    if (err) return next(err)
+                    req.flash('success', 'Payment Made Approved')
+                    res.redirect('/dashboard')
+                }
+            )
             
         })
     })
@@ -4413,7 +4503,9 @@ router.get('/labtest-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
 router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
     .populate('patient')
+    .populate('payment')
     .populate('drugsObject.drugs')
+    .deepPopulate(['payment.drugs'])
     .populate('labtestObject')
     .exec((err, consultation)=>{
         if(err) return next (err)
@@ -4559,6 +4651,8 @@ router.route('/create-ante-natal-patient/:id')
             anc.parity = req.body.parity,
             anc.lmp = req.body.lmp,
             anc.edd = req.body.edd,
+            anc.ecc = req.body.ecc,
+            anc.fetalage = req.body.fetalage,
             anc.medicalhistory = req.body.medicalhistory,
             anc.surgicalhistory = req.body.surgicalhistory,
             anc.bloodtransfusion = req.body.bloodtransfusion,

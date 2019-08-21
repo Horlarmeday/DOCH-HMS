@@ -82,22 +82,26 @@
                                                 </table>
                                             </div>
                                             <%
-                                            function getSum(total, num) {
-                                                return total + num;
-                                            }
-                                            const totalDrugPrice = consultation.drugsObject.map(price =>{
-                                                const rPrice = price.drugs.sellprice
-                                                return rPrice;
-                                                               
-                                            })
-                                            var totalAmount;
-                                            if(totalDrugPrice === undefined || totalDrugPrice.length == 0){
-                                                totalAmount = 0
-                                            }else{
-                                                totalAmount = totalDrugPrice.reduce(getSum)
-                                            }
+                                                function getSum(total, num) {
+                                                    return total + num;
+                                                }
+                                                const totalDrugPrice = consultation.payment.map(price =>{
+                                                   
+                                                        const rPrice = price.amount; 
+                                                        return rPrice;
+                                                    
+                                                   
+                                                })
+                                                
+                                                var totalAmount;
+                                                if(totalDrugPrice === undefined || totalDrugPrice.length == 0){
+                                                    totalAmount = 0
+                                                }else{
+                                                    totalAmount = totalDrugPrice.reduce(getSum)
+                                                }
+                                                console.log(totalAmount)
+                                            %>
                                             
-                                        %>
                                             <div class="col-md-4 col-sm-6">
                                                 <h6 class="m-b-20">Invoice Number   <span>#12398521473</span></h6>
                                                 <h6 class="text-uppercase text-primary">Total:
@@ -118,13 +122,17 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                                <% consultation.drugsObject.forEach((test)=>{ %>
+                                                                <% consultation.payment.forEach((payment)=>{ %>
+                                                                <% payment.drugs.forEach((drug)=>{ %>
+                                                                    <% if(payment.paid) {%>
                                                             <tr>
                                                                 <td></td>
-                                                                <td><%= test.drugs.name %></td>
-                                                                <td><%= test.drugs.sellprice %></td>
-                                                                <td><%= test.drugs.sellprice %></td>
+                                                                <td><%= drug.name %></td>
+                                                                <td><%= payment.amount %></td>
+                                                                <td><%= payment.amount %></td>
                                                             </tr>
+                                                            <% } %>
+                                                            <% }) %>
                                                             <% }) %>
                                                         </tbody>
                                                     </table>
