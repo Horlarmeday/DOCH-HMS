@@ -77,6 +77,7 @@
                                                     <th>Fetal Heartrate</th>
                                                     <th>SPO2</th>
                                                     <th>MUAC</th>
+                                                    <th>CreatedBy</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -102,7 +103,8 @@
                                                     <td><label class="label bg-danger label-lg"><%= triage.muac %> </label> </td>
                                                     <% }else if(triage.muac === 'Yellow'){ %>
                                                         <td><label class="label bg-warning label-lg"><%= triage.muac %> </label> </td>
-                                                    <% } %> %>
+                                                    <% } %> 
+                                                    <td><%= triage.creator.firstname %> <%= triage.creator.lastname %></td>
                                                 </tr>
                                                 <% }) %>
                                             </tbody>

@@ -3154,6 +3154,7 @@ router.get('/doctors', middleware.isLoggedIn, (req, res, next)=>{
 router.get('/triages', middleware.isLoggedIn, (req, res, next)=>{
     Triage.find({})
         .populate('patient')
+        .populate('creator')
         .exec((err, triages)=>{
             if(err) return next (err)
             res.render('app/view/triages', { triages })

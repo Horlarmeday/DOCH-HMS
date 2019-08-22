@@ -71,6 +71,7 @@
                                                     <th>Appointment Time</th>
                                                     <th>Status</th>
                                                     <th>Created</th>
+                                                    <th>CreatedBy</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -93,6 +94,7 @@
                                                     <td><label class="label label-md bg-warning">Pending</label></td>
                                                     <% } %>
                                                     <td> <%= appointment.created.toDateString() %></td>
+                                                    <td> <%= appointment.creator.firstname %> <%= appointment.creator.lastname %></td>
                                                 </tr>
                                                 <% }) %>
                                             </tbody>
