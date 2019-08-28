@@ -87,18 +87,17 @@
                                                                         <td>
                                                                             <label for="">P</label>
                                                                             <select name="urinalysisProtein" class="form-control">
-                                                                                <option value="Nil" <%= anc.presemtpregnancy[0].urinalysisProtein ? 'selected' : '' %>>Nil</option>
-                                                                                <option value="+ve" <%= anc.presemtpregnancy[0].urinalysisProtein ? 'selected' : '' %>>+ve</option>
-                                                                                <option value="-ve" <%= anc.presemtpregnancy[0].urinalysisProtein ? 'selected' : '' %>>-ve</option>
-                                                                                
+                                                                                <option value="Nil" <%= anc.presentpregnancy[0].urinalysisProtein ? 'selected' : '' %>>Nil</option>
+                                                                                <option value="+ve" <%= anc.presentpregnancy[0].urinalysisProtein ? 'selected' : '' %>>+ve</option>
+                                                                                <option value="-ve" <%= anc.presentpregnancy[0].urinalysisProtein ? 'selected' : '' %>>-ve</option>
                                                                             </select>
                                                                         </td>  
                                                                         <td>
                                                                             <label for="">G</label>
                                                                             <select name="urinalysisGlucose" class="form-control">
-                                                                                <option value="Nil" <%= anc.presemtpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>Nil</option>
-                                                                                <option value="+ve" <%= anc.presemtpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>+ve</option>
-                                                                                <option value="-ve" <%= anc.presemtpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>-ve</option>
+                                                                                <option value="Nil" <%= anc.presentpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>Nil</option>
+                                                                                <option value="+ve" <%= anc.presentpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>+ve</option>
+                                                                                <option value="-ve" <%= anc.presentpregnancy[0].urinalysisGlucose ? 'selected' : '' %>>-ve</option>
                                                                             </select>
                                                                         </td>  
                                                                 
@@ -133,10 +132,10 @@
                                                                     <td colspan="5">
                                                                                     
                                                                             <select name="presentation" class="form-control">
-                                                                                <option value="Cephalic" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Cephalic</option>
-                                                                                <option value="Transverse" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Transverse</option>
-                                                                                <option value="Oblique" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Oblique</option>
-                                                                                <option value="Breech" <%= anc.presemtpregnancy[0].presentation ? 'selected' : '' %>>Breech</option>
+                                                                                <option value="Cephalic" <%= anc.presentpregnancy[0].presentation ? 'selected' : '' %>>Cephalic</option>
+                                                                                <option value="Transverse" <%= anc.presentpregnancy[0].presentation ? 'selected' : '' %>>Transverse</option>
+                                                                                <option value="Oblique" <%= anc.presentpregnancy[0].presentation ? 'selected' : '' %>>Oblique</option>
+                                                                                <option value="Breech" <%= anc.presentpregnancy[0].presentation ? 'selected' : '' %>>Breech</option>
                                                                             </select>
                                                                     </td>
                                                                     
