@@ -14,7 +14,6 @@ const localInventorySchema = new mongoose.Schema({
     quantity: Number,
     cost: Number,
     expiration: {type: Date},
-    vendor: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'},
     consumed: String,
     created: {type: Date, default: Date.now}
 });

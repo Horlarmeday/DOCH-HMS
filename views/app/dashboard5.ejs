@@ -125,7 +125,6 @@
                                                     <th>Patient ID</th>
                                                     <th>Patient Name</th>
                                                     <th>Visit Reason</th>
-
                                                     <th>Lab Tests</th>
                                                     <th>RequestedBy</th>
                                                     <th>Payment Status</th>
@@ -149,8 +148,8 @@
                                                    
                                                     <td>
                                                             <% consultation.labtestObject.forEach((test)=>{ %>
-                                                                <p style="font-weight: 700"><%= test.name %>
-                                                                <span style="color: sandybrown">(<%= test.lab.name %>)</span>
+                                                                <p style="font-weight: 700"><%= test.tests.name %>
+                                                                <span style="color: sandybrown">(<%= test.tests.lab.name %>)</span>
                                                                 </p>
                                                            <% }) %>
                                                        

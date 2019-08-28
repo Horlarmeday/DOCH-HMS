@@ -351,7 +351,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .populate('doctor')
             .populate('patient')
             .populate('labtestObject')
-            .deepPopulate(['labtestObject.lab', 'patient.retainershipname'])
+            .deepPopulate(['labtestObject.lab', 'labtestObject.tests', 'patient.retainershipname'])
             .exec((err, consultations)=>{
                 if(err) return next (err)
                 Appointment.find({}, (err, appointments)=>{
@@ -2871,16 +2871,20 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                     patient: req.params.id
                 })
                 paid.save((err)=>{
+                    if(err) return next(err)
                     if(req.body.labtype) foundconsultation.labtype = req.body.labtype;
                     if(req.body){
                         foundconsultation.labtestObject.push({
                             tests: req.body.labtest,
                             paid: paid
                         })
-                        foundconsultation.labstatus = true;
                     }
+                    foundconsultation.labstatus = true;
                     foundconsultation.save((err)=>{
-                        if(err) return next (err)
+                        if(err) {
+                            req.flash('error', err.message)
+                            return res.redirect('back')
+                        }
                         req.flash('success', 'Patient sent for test successfully')
                         res.redirect('back')
                     })
@@ -2937,7 +2941,10 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                         theconsultation.status = true;
                     }
                     theconsultation.save((err)=>{
-                        if(err) return next (err)
+                        if(err) {
+                            req.flash('error', err.message)
+                            return res.redirect('back')
+                        }
                         res.redirect('back')
                     })
                 })
@@ -2958,10 +2965,10 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 const paid = new Paid({
                     imaging: req.body.image,
-                    price: req.body.price,
                     patient: req.params.id
                 })
                 paid.save((err)=>{
+                    if(err) return next(err)
                     if (Array.isArray(req.body.image)){
                         let images = req.body.image;
                         let allImaging = images.map(v => mongoose.Types.ObjectId(v))
