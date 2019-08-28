@@ -13,6 +13,7 @@ const Paid = require('../models/paid')
 const Supply = require('../models/supply')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
+const LocalInventory = require('../models/localinventory')
 const Discharge = require('../models/discharge')
 const Donor = require('../models/donor')
 const ANC = require('../models/anc')
@@ -409,7 +410,10 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .sort('-created')
             .populate('patient')
             .populate('payment')
-            .deepPopulate(['drugsObject.drugs', 'drugsObject.paid', 'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging'])
+            .deepPopulate([
+                'drugsObject.drugs', 'labtestObject.tests', 'labtestObject.paid', 'drugsObject.paid',
+             'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images'
+            ])
             .populate('labtestObject')
             .populate('imaging')
             .exec((err, consultations)=>{
@@ -3691,6 +3695,53 @@ router.route('/add-lab-items')
     })
    })
 
+// ADD DRUGS TO LOCAL INVENTORY
+router.route('/add-to-inventory')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       PharmacyItem.find({}, (err, drugs)=>{
+        if(err) return next (err)
+        res.render('app/add/add_pharmacyitems_local_inventory', {drugs})
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+       const item = new LocalInventory()
+       item.creator = req.user._id;
+       item.name = req.body.name;
+       item.price = req.body.price;
+       item.unit = req.body.unit;
+       item.quantity = req.body.quantity;
+       item.cost = req.body.cost;
+       item.productcode = req.body.productcode;
+       item.shelf = req.body.shelf;
+       item.consumed = req.body.consumed;
+       item.balance = req.body.balance;
+       item.comment = req.body.comment;
+       item.received = req.body.received;
+       item.save((err)=>{
+           if(err){
+               req.flash('error', err.message)
+            return res.redirect('back')
+           }
+           req.flash('success', 'Item was added!')
+           res.redirect('back')
+       })
+    
+   })
+
+// PHARMACY LOCAL INVENTORY LIST
+router.get('/inventory-list', middleware.isLoggedIn, (req, res, next)=>{
+    LocalInventory.find({})
+    .populate('creator')
+    .populate('name')
+    .exec((err, items)=>{
+        if(err){
+            return next(err)
+        }
+        res.render('app/view/inventory_list', { items })
+    })
+})
+
+
 //LAB DISPENSE BY ID
 router.route('/lab-dispense/:id')
    .get(middleware.isLoggedIn, (req, res, next)=>{
@@ -3907,11 +3958,17 @@ router.route('/add-pharmacy-items')
         item.quantity = req.body.quantity;
         item.cost = req.body.cost;
         item.income = req.body.income;
+        item.productcode = req.body.productcode;
+        item.shelf = req.body.shelf;
+        item.voucher = req.body.voucher;
+        item.batch = req.body.batch;
+        item.loss = req.body.loss;
+        item.batch = req.body.batch;
+        item.balance = req.body.balance;
+        item.remarks = req.body.remarks;
         item.expiration = req.body.expiration;
         item.vendor = req.body.vendor;
-        item.serialnum = req.body.snum;
         item.sellprice = req.body.sell_price;
-        item.location = req.body.location;
         item.received = req.body.received;
         item.save((err)=>{
             if(err) return next(err)
@@ -4456,7 +4513,7 @@ router.get('/lab-items', middleware.isLoggedIn, (req, res, next) => {
 router.get('/pharmacy-items', middleware.isLoggedIn, (req, res, next) => {
     PharmacyItem.find({})
     .sort('-created')
-    
+    .populate('vendor')
     .populate('dispensehistory')
     .exec( (err, items) => {
         if (err) { return next(err) }

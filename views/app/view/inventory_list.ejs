@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Pharmacy Items</h4>
+                        <h4>Local Inventory</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -37,7 +37,7 @@
                             </li>
                             <li class="breadcrumb-item"><a href="#!">Items</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="/add-pharmacy-items">Add Item</a>
+                            <li class="breadcrumb-item"><a href="/add-to-inventory">Add Item</a>
                             </li>
                         </ul>
                     </div>
@@ -50,7 +50,7 @@
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Items</h5>
+                                    <h5>Inventory List</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -66,53 +66,43 @@
                                                     <th>Product Code</th>
                                                     <th>Item Name</th>
                                                     <th>Quantity</th>
-                                                    <th>Leftover</th>
-                                                    <th>Loss</th>
+                                                    
                                                     <th>Shelf</th>
                                                     <th>Unit</th>
-                                                    <th>Unit Price(₦)</th>
+                                                    
                                                     <th>Selling Price(₦)</th>
-                                                    <th>Purchase Cost(₦)</th>
-                                                    <th>Voucher/Ref No</th>
-                                                    <th>Expected Income(₦)</th>
+                                                    <th>Consumed</th>
+                                                    
                                                     <th>Date Received</th>
-                                                    <th>Vendor</th>
-                                                    <th>Expiration </th>
                                                     <th>Balance </th>
-                                                    <th>Remarks </th>
-                                                    <th>Dispense </th>
+                                                    <th>Comment </th>
+                                                   <th>Creator</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <% items.forEach((item) => { %>
-                                                    <% if(!item.labitem){ %>
-                                                <tr style="cursor: pointer" onclick="window.location='/dispense-history/<%= item._id %>';">
+                                                    
+                                                <tr>
                                                     <td></td>
                                                     <td><%= item.productcode %></td>
-                                                    <td><%= item.name %></td>
+                                                    <td><%= item.name.name %></td>
                                                     <td><%= item.quantity %></td>
-                                                    <% if(item.dispensehistory < 1){ %>
-                                                        <td style="color: darkviolet"><strong><%= item.quantity %></strong></td>
-                                                        <% }else{ %>
-                                                        <td style="color: darkviolet"><strong> <%= item.dispensehistory[item.dispensehistory.length -1].rquantity %></strong></td>
-                                                    <% } %>
-                                                    <td><%= item.loss %></td>
+                                                   
                                                     <td><%= item.shelf %></td>
                                                     <td><%= item.unit %></td>
                                                     <td><%= item.price %></td>
-                                                    <td><%= item.sellprice %></td>
-                                                    <td><%= item.cost %></td>
-                                                    <td><%= item.voucher %></td>
-                                                    <td><%= item.income %></td>
+                                                    <td><%= item.consumed %></td>
+                                                   
+                                                   
                                                     <td><%= item.received.toDateString() %></td>
-                                                    <td><%= item.vendor.company %></td>
-                                                    <td><%= item.expiration.toDateString() %></td>
+                                                    
                                                     <td><%= item.balance %></td>
-                                                    <td><%= item.remarks %></td>
-                                                    <td> <a class="btn btn-success btn-md" href="/pharmacy-dispense/<%= item._id %>">Dispense</a></td>
+                                                    <td><%= item.comment %></td>
+                                                    <td><%= item.creator.firstname %> <%= item.creator.lastname %></td>
+                                                    
                                                 </tr>
                                                 
-                                                <% } %>
+                                                
                                                 <% }) %>
                                             </tbody>
                                         </table>

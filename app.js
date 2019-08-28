@@ -18,8 +18,8 @@ const ajaxRoutes = require('./routes/ajax');
 const config = require('./config/secret');
 const app = express();
 require('dotenv').config()
-const http = require('http').Server(app);  //Requiring socket.io
-const io = require('socket.io')(http);
+// const http = require('http').Server(app);  //Requiring socket.io
+// const io = require('socket.io')(http);
 
 const sessionStore = new MongoStore({ url: config.database, autoReconnect: true });
 
@@ -66,26 +66,26 @@ app.use(function(req, res, next) {
 
 //Using the socket.io
 //Teaching our io about passport
-io.use(passportSocketIo.authorize({
-  cookieParser: cookieParser,       // the same middleware you registrer in express
-  key:          'connect.sid',       // the name of the cookie where express/connect stores its session_id
-  secret:       config.secret,    // the session_secret to parse the cookie
-  store:        sessionStore,        // we NEED to use a sessionstore. no memorystore please
-  success:      onAuthorizeSuccess,  // *optional* callback on success - read more below
-  fail:         onAuthorizeFail    // *optional* callback on fail/error - read more below
-}));
+// io.use(passportSocketIo.authorize({
+//   cookieParser: cookieParser,       // the same middleware you registrer in express
+//   key:          'connect.sid',       // the name of the cookie where express/connect stores its session_id
+//   secret:       config.secret,    // the session_secret to parse the cookie
+//   store:        sessionStore,        // we NEED to use a sessionstore. no memorystore please
+//   success:      onAuthorizeSuccess,  // *optional* callback on success - read more below
+//   fail:         onAuthorizeFail    // *optional* callback on fail/error - read more below
+// }));
 
 
-function onAuthorizeSuccess(data, accept) {
-  console.log("Successful Connection");
-  accept();
-}
+// function onAuthorizeSuccess(data, accept) {
+//   console.log("Successful Connection");
+//   accept();
+// }
 
-function onAuthorizeFail(data, message, error, accept) {
-  if(error) accept(new Error(message));
-}
+// function onAuthorizeFail(data, message, error, accept) {
+//   if(error) accept(new Error(message));
+// }
 
-require('./realtime/io')(io); //Requiring io
+// require('./realtime/io')(io); //Requiring io
 
 //Using the routes
 app.use(userRoutes);
@@ -101,7 +101,7 @@ app.use(function (req, res, next) {
 
 
 //Server listener
-http.listen(config.port, (err) => {
+app.listen(config.port, (err) => {
   if (err) console.log(err);
   console.log(`Running on port ${config.port}`);
 });

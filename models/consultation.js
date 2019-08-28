@@ -18,9 +18,14 @@ const consultationSchema = new mongoose.Schema({
         direction: String,
         price: Number,
         prescribedBy: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
-        prescribedOn: {type: Date, default: Date.now}
+        prescribedOn: {type: Date, default: Date.now},
+        status: {type: Boolean, default: false},
     }],
-    imaging: [{type: mongoose.Schema.Types.ObjectId, ref: "Imaging"}],
+    imaging: [{
+        images: {type: mongoose.Schema.Types.ObjectId, ref: "Imaging"},
+        paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
+        status: {type: Boolean, default: false},
+    }],
     payment: [{type: mongoose.Schema.Types.ObjectId, ref: "Payment"}],
     imagingresult: String,
     visit: String,
@@ -39,7 +44,11 @@ const consultationSchema = new mongoose.Schema({
     imagingpaid: {type: Boolean, default: false},
     diagnosis: String,
     notes: String,
-    labtestObject: [{type: mongoose.Schema.Types.ObjectId, ref: "Test"}],
+    labtestObject: [{
+        tests: {type: mongoose.Schema.Types.ObjectId, ref: "Test"},
+        paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
+        status: {type: Boolean, default: false},
+    }],
     labresult: {
         //MICROBIOLOGY
         urine: {
