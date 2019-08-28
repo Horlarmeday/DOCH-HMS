@@ -1,4 +1,5 @@
 const mongoose =  require('mongoose');
+const deepPopulate = require('mongoose-deep-populate')(mongoose)
 
 const testSchema = new mongoose.Schema({
     name: String,
@@ -9,4 +10,6 @@ const testSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now}
 });
 
+//Populates schema to any level
+testSchema.plugin(deepPopulate)
 module.exports = mongoose.model('Test', testSchema);

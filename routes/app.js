@@ -351,7 +351,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .populate('doctor')
             .populate('patient')
             .populate('labtestObject')
-            .deepPopulate(['labtestObject.lab', 'labtestObject.tests', 'patient.retainershipname'])
+            .deepPopulate(['labtestObject.lab', 'labtestObject.tests', 'labtestObject.tests.lab', 'patient.retainershipname'])
             .exec((err, consultations)=>{
                 if(err) return next (err)
                 Appointment.find({}, (err, appointments)=>{
@@ -2800,7 +2800,7 @@ router.route('/edit-consultation/:id')
         .populate('patient')
         .populate('labtestObject')
         .populate('imaging')
-        .deepPopulate(['drugsObject.drugs', 'labtestObject.lab', 'drugsObject.prescribedBy'])
+        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'drugsObject.prescribedBy'])
         .exec((err, consultation)=>{
             PharmacyItem.find({}, (err, drugs)=>{
                 Lab.find({})

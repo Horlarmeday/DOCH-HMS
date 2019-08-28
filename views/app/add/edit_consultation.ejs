@@ -677,9 +677,9 @@
                                                             <% consultation.labtestObject.forEach((test)=>{ %>
                                                             <tr>
                                                                 <td></td>
-                                                                <td> <%= test.name %></td>
-                                                                <td> <%= test.lab.name %></td>
-                                                                <td> <%= test.created.toLocaleString() %> </td>
+                                                                <td> <%= test.tests.name %></td>
+                                                                <td> <%= test.tests.lab.name %></td>
+                                                                <td> <%= test.tests.created.toLocaleString() %> </td>
                                                             </tr>
                                                             <% }) %>
                                                         <% } %>
