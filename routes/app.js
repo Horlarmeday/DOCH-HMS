@@ -414,7 +414,6 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 'drugsObject.drugs', 'labtestObject.tests', 'labtestObject.paid', 'drugsObject.paid',
              'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images'
             ])
-            .populate('labtestObject')
             .populate('imaging')
             .exec((err, consultations)=>{
                 if(err) return next (err)
@@ -2867,15 +2866,19 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                     req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-                const payment = new Payment({
+                const paid = new Paid({
                     lab: req.body.labtest,
                     patient: req.params.id
                 })
-                payment.save((err)=>{
+                paid.save((err)=>{
                     if(req.body.labtype) foundconsultation.labtype = req.body.labtype;
-                    foundconsultation.labtestObject.push(req.body.labtest);
-                    foundconsultation.labstatus = true;
-                    foundconsultation.payment.push(payment);
+                    if(req.body){
+                        foundconsultation.labtestObject.push({
+                            tests: req.body.labtest,
+                            paid: paid
+                        })
+                        foundconsultation.labstatus = true;
+                    }
                     foundconsultation.save((err)=>{
                         if(err) return next (err)
                         req.flash('success', 'Patient sent for test successfully')
@@ -2906,15 +2909,16 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 // // if(req.body.drug_brand) consultation.drug.push(req.body.drug_brand);
                 // if(req.body.drug_name) consultation.drugname = req.body.drug_name;
-                const payment = new Payment({
+                const paid = new Paid({
                     drugs: req.body.drug_brand,
                     price: req.body.price,
                     patient: req.params.id
                 })
-                payment.save((err)=>{
+                paid.save((err)=>{
                     if(err) return next (err)
                     if(req.body){
                         theconsultation.drugsObject.push({
+                            paid: paid,
                             drugs: req.body.drug_brand,
                             startingdate: req.body.startingdate,
                             quantity: req.body.quantity,
@@ -2932,11 +2936,9 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                         theconsultation.pharmacystatus = true;
                         theconsultation.status = true;
                     }
-                    theconsultation.payment.push(payment);
                     theconsultation.save((err)=>{
                         if(err) return next (err)
                         res.redirect('back')
-                        
                     })
                 })
             })
@@ -2954,12 +2956,12 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                     req.flash('error', 'Error, please create a consultation first!')
                     return res.redirect('back')
                 }
-                const payment = new Payment({
+                const paid = new Paid({
                     imaging: req.body.image,
                     price: req.body.price,
                     patient: req.params.id
                 })
-                payment.save((err)=>{
+                paid.save((err)=>{
                     if (Array.isArray(req.body.image)){
                         let images = req.body.image;
                         let allImaging = images.map(v => mongoose.Types.ObjectId(v))
@@ -2969,7 +2971,6 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                     }
                     consultation.imagingdate = Date.now()
                     consultation.imagingstatus = true;
-                    consultation.payment.push(payment);
                     consultation.save((err)=>{
                         if(err) return next (err)
                         res.redirect('back')
