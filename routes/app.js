@@ -4181,87 +4181,93 @@ router.post('/approve-billing', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+// //LAB TESTS PAYMENT
+// router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
+//     let consultID = req.body.consultationId
+//     let labamount = req.body.labamount
+//     let modeofpayment = req.body.modeofpayment
+//     Payment.findOne({ _id: consultID })
+//     .populate('patient')
+//     .exec(function (err, payment) {
+//         if (err) return next(err)
+//         payment.paid = true;
+//         payment.type = 'Lab Test Payment';
+//         payment.modeofpayment =  modeofpayment;
+//         payment.status = true;
+//         payment.amount = labamount;
+//         payment.initiator= req.user._id;
+//         payment.save((err)=>{
+//             if (err) return next(err)
+//             //Send email
+//             sgMail.setApiKey(process.env.SENDGRID_MAIL);
+//             const msg = {
+//                 to: 'admin@doch.com.ng',
+//                 from: 'DOCH Account<noreply@doch.com.ng>',
+//                 subject: 'New Payment Made',
+//                 html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made payment of &#8358;${payment.amount} for his/her Lab tests , Thank You.\n</p>`,
+//             };
+//             sgMail.send(msg);
+//             //Send SMS
+//             //Sending SMS
+//             unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+//             .header({'Accept' : 'application/json'})
+//             .send({
+//                 'username': process.env.SMSSMARTUSERNAME,
+//                 'password': process.env.SMSSMARTPASSWORD,
+//                 'sender': process.env.SMSSMARTSENDERID,
+//                 'recipient' : `234${payment.patient.phonenumber}`,
+//                 'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+//                 'routing': 4,
+                
+//             })
+//             .end(function (response) {
+//                 console.log(response.body);
+//             });
+//             User.update(
+//                 {
+//                     _id: payment.patient
+//                 },
+//                 {
+//                     $push:{payments: payment._id}
+//                 },
+//                 function (err, count) {
+//                     if (err) return next(err)
+//                     req.flash('success', 'Payment Made Approved')
+//                     res.redirect('/dashboard')
+//                 }
+//             )
+//         })
+//     })
+// })
+
 //LAB TESTS PAYMENT
 router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
     let consultID = req.body.consultationId
     let labamount = req.body.labamount
     let modeofpayment = req.body.modeofpayment
-    Payment.findOne({ _id: consultID })
+    Consultation.findOne({ _id: consultID })
     .populate('patient')
-    .exec(function (err, payment) {
+    .exec(function (err, consult) {
         if (err) return next(err)
-        payment.paid = true;
-        payment.type = 'Lab Test Payment';
-        payment.modeofpayment =  modeofpayment;
-        payment.status = true;
-        payment.amount = labamount;
-        payment.initiator= req.user._id;
-        payment.save((err)=>{
+        consult.labpaid = true
+        consult.save((err)=>{
             if (err) return next(err)
-            //Send email
-            sgMail.setApiKey(process.env.SENDGRID_MAIL);
-            const msg = {
-                to: 'admin@doch.com.ng',
-                from: 'DOCH Account<noreply@doch.com.ng>',
-                subject: 'New Payment Made',
-                html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made payment of &#8358;${payment.amount} for his/her Lab tests , Thank You.\n</p>`,
-            };
-            sgMail.send(msg);
-            //Send SMS
-            //Sending SMS
-            unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-            .header({'Accept' : 'application/json'})
-            .send({
-                'username': process.env.SMSSMARTUSERNAME,
-                'password': process.env.SMSSMARTPASSWORD,
-                'sender': process.env.SMSSMARTSENDERID,
-                'recipient' : `234${payment.patient.phonenumber}`,
-                'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
-                'routing': 4,
-                
+            const payment = new Payment({
+                patient: consult.patient,
+                amount: labamount,
+                type: 'Lab Test Payment',
+                initiator: req.user._id,
+                modeofpayment: modeofpayment,
+                status: true
             })
-            .end(function (response) {
-                console.log(response.body);
-            });
-            User.update(
-                {
-                    _id: payment.patient
-                },
-                {
-                    $push:{payments: payment._id}
-                },
-                function (err, count) {
-                    if (err) return next(err)
-                    req.flash('success', 'Payment Made Approved')
-                    res.redirect('/dashboard')
-                }
-            )
-        })
-    })
-})
-
-router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
-    let pharmId = req.body.pharmId
-    let amount = req.body.amount
-    let modeofpayment = req.body.modeofpayment
-    Payment.findOne({ _id: pharmId })
-    .populate('patient')
-    .exec(function (err, payment) {
-        if (err) return next(err)
-        payment.paid = true;
-        payment.type = 'Drugs Payment';
-        payment.amount = amount;
-        payment.status = true;
-        payment.initiator = req.user._id;
-        payment.modeofpayment = modeofpayment
-        payment.save((err)=>{
-            if (err) return next(err)
+            payment.save((err)=>{
+                if (err) return next(err)
                 sgMail.setApiKey(process.env.SENDGRID_MAIL);
                 const msg = {
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her lab test, Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
                 //Send SMS
@@ -4272,8 +4278,8 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                     'username': process.env.SMSSMARTUSERNAME,
                     'password': process.env.SMSSMARTPASSWORD,
                     'sender': process.env.SMSSMARTSENDERID,
-                    'recipient' : `234${payment.patient.phonenumber}`,
-                    'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+                    'recipient' : `234${consult.patient.phonenumber}`,
+                    'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
                     'routing': 4,
                     
                 })
@@ -4282,7 +4288,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                 });
                 User.update(
                     {
-                        _id: payment.patient
+                        _id: consult.patient
                     },
                     {
                         $push:{payments: payment._id}
@@ -4293,37 +4299,99 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                         res.redirect('/dashboard')
                     }
                 )
+            })
+            
         })
     })
 })
 
-//PHARMACY PAYMENT
+//IMAGING PAYMENT
+router.post('/imaging-payment', middleware.isLoggedIn, (req, res, next)=>{
+    let imagingId = req.body.imagingId
+    let imagingAmount = req.body.imagingAmount
+    let modeofpayment = req.body.modeofpayment
+    Consultation.findOne({ _id: imagingId })
+    .populate('patient')
+    .exec(function (err, consult) {
+        if (err) return next(err)
+        consult.imagingpaid = true
+        consult.save((err)=>{
+            if (err) return next(err)
+            const payment = new Payment({
+                patient: consult.patient,
+                amount: imagingAmount,
+                type: 'Imaging Payment',
+                initiator: req.user._id,
+                modeofpayment: modeofpayment,
+                status: true
+            })
+            payment.save((err)=>{
+                if (err) return next(err)
+                sgMail.setApiKey(process.env.SENDGRID_MAIL);
+                const msg = {
+                    to: 'admin@doch.com.ng',
+                    from: 'DOCH Account<noreply@doch.com.ng>',
+                    subject: 'New Payment Made',
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her imaging payment, Thank You.\n</p>`,
+                };
+                sgMail.send(msg);
+                //Send SMS
+                //Sending SMS
+                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                .header({'Accept' : 'application/json'})
+                .send({
+                    'username': process.env.SMSSMARTUSERNAME,
+                    'password': process.env.SMSSMARTPASSWORD,
+                    'sender': process.env.SMSSMARTSENDERID,
+                    'recipient' : `234${consult.patient.phonenumber}`,
+                    'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+                    'routing': 4,
+                    
+                })
+                .end(function (response) {
+                    //console.log(response.body);
+                });
+                User.update(
+                    {
+                        _id: consult.patient
+                    },
+                    {
+                        $push:{payments: payment._id}
+                    },
+                    function (err, count) {
+                        if (err) return next(err)
+                        req.flash('success', 'Payment Made Approved')
+                        res.redirect('/dashboard')
+                    }
+                )
+            })
+            
+        })
+    })
+})
+
 // router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
 //     let pharmId = req.body.pharmId
 //     let amount = req.body.amount
-//     Consultation.findOne({ _id: pharmId })
+//     let modeofpayment = req.body.modeofpayment
+//     Payment.findOne({ _id: pharmId })
 //     .populate('patient')
-//     .exec(function (err, consult) {
+//     .exec(function (err, payment) {
 //         if (err) return next(err)
-//         consult.pharmacypaid = true
-//         consult.save((err)=>{
+//         payment.paid = true;
+//         payment.type = 'Drugs Payment';
+//         payment.amount = amount;
+//         payment.status = true;
+//         payment.initiator = req.user._id;
+//         payment.modeofpayment = modeofpayment
+//         payment.save((err)=>{
 //             if (err) return next(err)
-//             const payment = new Payment({
-//                 patient: consult.patient,
-//                 amount: amount,
-//                 type: 'Drugs Payment',
-//                 initiator: req.user._id,
-//                 modeofpayment: req.body.modeofpayment,
-//                 status: true
-//             })
-//             payment.save((err)=>{
-//                 if (err) return next(err)
 //                 sgMail.setApiKey(process.env.SENDGRID_MAIL);
 //                 const msg = {
 //                     to: 'admin@doch.com.ng',
 //                     from: 'DOCH Account<noreply@doch.com.ng>',
 //                     subject: 'New Payment Made',
-//                     html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
+//                     html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
 //                 };
 //                 sgMail.send(msg);
 //                 //Send SMS
@@ -4334,8 +4402,8 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
 //                     'username': process.env.SMSSMARTUSERNAME,
 //                     'password': process.env.SMSSMARTPASSWORD,
 //                     'sender': process.env.SMSSMARTSENDERID,
-//                     'recipient' : `234${consult.patient.phonenumber}`,
-//                     'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+//                     'recipient' : `234${payment.patient.phonenumber}`,
+//                     'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
 //                     'routing': 4,
                     
 //                 })
@@ -4344,7 +4412,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
 //                 });
 //                 User.update(
 //                     {
-//                         _id: consult.patient
+//                         _id: payment.patient
 //                     },
 //                     {
 //                         $push:{payments: payment._id}
@@ -4355,72 +4423,134 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
 //                         res.redirect('/dashboard')
 //                     }
 //                 )
-//             })
-            
 //         })
 //     })
 // })
 
-//Imaging Payment
-router.post('/imaging-payment', middleware.isLoggedIn, (req, res, next)=>{
-    let imagingId = req.body.imagingId
-    let imagingAmount = req.body.imagingAmount
-    let modeofpayment = req.body.modeofpayment
-    Payment.findOne({ _id: imagingId })
+//PHARMACY PAYMENT
+router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
+    let pharmId = req.body.pharmId
+    let amount = req.body.amount
+    Consultation.findOne({ _id: pharmId })
     .populate('patient')
-
-    .exec(function (err, payment) {
+    .exec(function (err, consult) {
         if (err) return next(err)
-        payment.paid = true;
-        payment.amount = imagingAmount;
-        payment.status = true;
-        payment.modeofpayment = modeofpayment;
-        payment.initiator = req.user._id;
-        payment.type = 'Imaging Payment';
-        payment.save((err)=>{
+        consult.pharmacypaid = true
+        consult.save((err)=>{
             if (err) return next(err)
-            //Sending MAil
-            sgMail.setApiKey(process.env.SENDGRID_MAIL);
-            const msg = {
-                to: 'admin@doch.com.ng',
-                from: 'DOCH Account<noreply@doch.com.ng>',
-                subject: 'New Payment Made',
-                html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her imaging, Thank You.\n</p>`,
-            };
-            sgMail.send(msg);
-
-            //Sending SMS
-            unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-            .header({'Accept' : 'application/json'})
-            .send({
-                'username': process.env.SMSSMARTUSERNAME,
-                'password': process.env.SMSSMARTPASSWORD,
-                'sender': process.env.SMSSMARTSENDERID,
-                'recipient' : `234${payment.patient.phonenumber}`,
-                'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
-                'routing': 4,
-                
+            const payment = new Payment({
+                patient: consult.patient,
+                amount: amount,
+                type: 'Drugs Payment',
+                initiator: req.user._id,
+                modeofpayment: req.body.modeofpayment,
+                status: true
             })
-            .end(function (response) {
-                console.log(response.body);
-            });
-            User.update(
-                {
-                    _id: payment.patient
-                },
-                {
-                    $push:{payments: payment._id}
-                },
-                function (err, count) {
-                    if (err) return next(err)
-                    req.flash('success', 'Payment Made Approved')
-                    res.redirect('/dashboard')
-                }
-            )
+            payment.save((err)=>{
+                if (err) return next(err)
+                sgMail.setApiKey(process.env.SENDGRID_MAIL);
+                const msg = {
+                    to: 'admin@doch.com.ng',
+                    from: 'DOCH Account<noreply@doch.com.ng>',
+                    subject: 'New Payment Made',
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
+                };
+                sgMail.send(msg);
+                //Send SMS
+                //Sending SMS
+                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                .header({'Accept' : 'application/json'})
+                .send({
+                    'username': process.env.SMSSMARTUSERNAME,
+                    'password': process.env.SMSSMARTPASSWORD,
+                    'sender': process.env.SMSSMARTSENDERID,
+                    'recipient' : `234${consult.patient.phonenumber}`,
+                    'message' : `Dear ${consult.patient.firstname} ${consult.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+                    'routing': 4,
+                    
+                })
+                .end(function (response) {
+                    //console.log(response.body);
+                });
+                User.update(
+                    {
+                        _id: consult.patient
+                    },
+                    {
+                        $push:{payments: payment._id}
+                    },
+                    function (err, count) {
+                        if (err) return next(err)
+                        req.flash('success', 'Payment Made Approved')
+                        res.redirect('/dashboard')
+                    }
+                )
+            })
             
         })
     })
 })
+
+//Imaging Payment
+// router.post('/imaging-payment', middleware.isLoggedIn, (req, res, next)=>{
+//     let imagingId = req.body.imagingId
+//     let imagingAmount = req.body.imagingAmount
+//     let modeofpayment = req.body.modeofpayment
+//     Payment.findOne({ _id: imagingId })
+//     .populate('patient')
+
+//     .exec(function (err, payment) {
+//         if (err) return next(err)
+//         payment.paid = true;
+//         payment.amount = imagingAmount;
+//         payment.status = true;
+//         payment.modeofpayment = modeofpayment;
+//         payment.initiator = req.user._id;
+//         payment.type = 'Imaging Payment';
+//         payment.save((err)=>{
+//             if (err) return next(err)
+//             //Sending MAil
+//             sgMail.setApiKey(process.env.SENDGRID_MAIL);
+//             const msg = {
+//                 to: 'admin@doch.com.ng',
+//                 from: 'DOCH Account<noreply@doch.com.ng>',
+//                 subject: 'New Payment Made',
+//                 html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her imaging, Thank You.\n</p>`,
+//             };
+//             sgMail.send(msg);
+
+//             //Sending SMS
+//             unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+//             .header({'Accept' : 'application/json'})
+//             .send({
+//                 'username': process.env.SMSSMARTUSERNAME,
+//                 'password': process.env.SMSSMARTPASSWORD,
+//                 'sender': process.env.SMSSMARTSENDERID,
+//                 'recipient' : `234${payment.patient.phonenumber}`,
+//                 'message' : `Dear ${payment.patient.firstname} ${payment.patient.lastname}, your payment of ₦${payment.amount} was received. Thanks for patronizing us. Stay well and get better soon.`,
+//                 'routing': 4,
+                
+//             })
+//             .end(function (response) {
+//                 console.log(response.body);
+//             });
+//             User.update(
+//                 {
+//                     _id: payment.patient
+//                 },
+//                 {
+//                     $push:{payments: payment._id}
+//                 },
+//                 function (err, count) {
+//                     if (err) return next(err)
+//                     req.flash('success', 'Payment Made Approved')
+//                     res.redirect('/dashboard')
+//                 }
+//             )
+            
+//         })
+//     })
+// })
 
 //NURSE ASSESSMENTS
 router.route('/nurse-assessment/:id')
