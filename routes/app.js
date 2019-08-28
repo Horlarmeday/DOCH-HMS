@@ -2800,7 +2800,7 @@ router.route('/edit-consultation/:id')
         .populate('patient')
         .populate('labtestObject')
         .populate('imaging')
-        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'drugsObject.prescribedBy'])
+        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images', 'drugsObject.prescribedBy'])
         .exec((err, consultation)=>{
             PharmacyItem.find({}, (err, drugs)=>{
                 Lab.find({})
@@ -2969,12 +2969,18 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                 })
                 paid.save((err)=>{
                     if(err) return next(err)
-                    if (Array.isArray(req.body.image)){
-                        let images = req.body.image;
-                        let allImaging = images.map(v => mongoose.Types.ObjectId(v))
-                        consultation.imaging = allImaging
-                    }else{
-                        consultation.imaging = req.body.image
+                    // if (Array.isArray(req.body.image)){
+                    //     let images = req.body.image;
+                    //     let allImaging = images.map(v => mongoose.Types.ObjectId(v))
+                    //     consultation.imaging = allImaging
+                    // }else{
+                    //     consultation.imaging = req.body.image
+                    // }
+                    if(req.body){
+                        consultation.imaging.push({
+                            images: req.body.image,
+                            paid: paid
+                        })
                     }
                     consultation.imagingdate = Date.now()
                     consultation.imagingstatus = true;

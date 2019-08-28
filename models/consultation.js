@@ -25,6 +25,7 @@ const consultationSchema = new mongoose.Schema({
         images: {type: mongoose.Schema.Types.ObjectId, ref: "Imaging"},
         paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
         status: {type: Boolean, default: false},
+        created: {type: Date, default: Date.now}
     }],
     payment: [{type: mongoose.Schema.Types.ObjectId, ref: "Payment"}],
     imagingresult: String,
@@ -48,6 +49,7 @@ const consultationSchema = new mongoose.Schema({
         tests: {type: mongoose.Schema.Types.ObjectId, ref: "Test"},
         paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
         status: {type: Boolean, default: false},
+        created: {type: Date, default: Date.now}
     }],
     labresult: {
         //MICROBIOLOGY
@@ -320,6 +322,7 @@ const consultationSchema = new mongoose.Schema({
     labResultDate: {type: Date},
     created: {type: Date, default: Date.now}
 });
+
 //Populates schema to any level
 consultationSchema.plugin(deepPopulate)
 module.exports = mongoose.model('Consultation', consultationSchema);

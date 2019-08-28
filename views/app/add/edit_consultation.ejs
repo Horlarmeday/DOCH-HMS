@@ -679,7 +679,7 @@
                                                                 <td></td>
                                                                 <td> <%= test.tests.name %></td>
                                                                 <td> <%= test.tests.lab.name %></td>
-                                                                <td> <%= test.tests.created.toLocaleString() %> </td>
+                                                                <td> <%= test.created.toLocaleString() %> </td>
                                                             </tr>
                                                             <% }) %>
                                                         <% } %>
@@ -740,16 +740,11 @@
                                                         </thead>
                                                         <tbody>
                                                             <% if(consultation.imaging.length > 0){ %>
-
-                                                            
                                                             <% consultation.imaging.forEach((image)=>{ %>
                                                             <tr>
                                                                 <td></td>
-                                                               
-                                                                <td> <%= image.name %></td>
+                                                                <td> <%= image.images.name %></td>
                                                                 <td> <%= image.created.toDateString() %></td>
-                                                                
-                   
                                                             </tr>
                                                             <% }) %>
                                                             <% } %>
