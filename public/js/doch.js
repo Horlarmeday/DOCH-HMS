@@ -714,13 +714,36 @@ function gethmo() {
     $('#hmoname').show()
     $.post('/get-hmo', { hmoid: hmoid })
     .done(function(data) {
-        console.log(data)
+        $("#mySelect option").remove();
         $.each(data, function(index, value){
             $("#mySelect").append($("<option>",{
                   value: value,
                   text: value
             }))
         })
+    })
+}
+
+// getting the imaging investigations
+function getImaging() {
+    const image = $('#image').val()
+    $.post('/get-imaging', { image: image })
+    .done(function(data) {
+        $("#myImage option").remove();
+        $.each(data, function(index, value){
+            $("#myImage").append($("<option>",{
+                  value: value.id,
+                  text: value.images
+            }))
+        })
+    })
+}
+
+function getInvestigationPrice(){
+    const price = $('#myImage').val()
+    $.post('/get-imaging-price', { price: price })
+    .done(function(data) {
+        $("#imagePrice").val(data)
     })
 }
 

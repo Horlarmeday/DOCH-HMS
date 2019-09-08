@@ -13,6 +13,7 @@ const Theater = require('../models/theater')
 const Vendor = require('../models/vendor')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
+const Investigations = require('../models/investigations')
 const ANC = require('../models/anc')
 const Request = require('../models/request')
 // const Counter = require('../models/counters')
@@ -178,6 +179,32 @@ router.post('/make-patient-emergency', middleware.isLoggedIn, (req, res, next)=>
             if(err) return next (err)
             res.json(user)
         })
+    })
+})
+
+router.post('/get-imaging', middleware.isLoggedIn, (req, res, next)=>{
+    const image = req.body.image
+    Imaging.findOne({_id: image})
+    .populate('investigation')
+    .exec((err, image)=>{
+        if(err) return next(err)
+        var investigations = []
+        image.investigation.forEach((images)=>{
+            investigations.push({
+                id: images._id,
+                images: images.name,
+            })
+        })
+        res.json(investigations)
+    })
+})
+
+router.post('/get-imaging-price', middleware.isLoggedIn, (req, res, next)=>{
+    const price = req.body.price
+    Investigations.findOne({_id: price})
+    .exec((err, investigate)=>{
+        if(err) return next(err)
+        res.json(investigate.price)
     })
 })
 

@@ -26,7 +26,7 @@
                 <!-- Page header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Imaging </h4>
+                        <h4>Imaging Investigations</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,7 +35,7 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#!">Add Investigation</a>
+                            <li class="breadcrumb-item"><a href="#!">Add Investigations</a>
                             </li>
                             <li class="breadcrumb-item"><a href="/investigation-list">Investigation List</a>
                             </li>
@@ -50,7 +50,7 @@
                             <!-- Basic Form Inputs card start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <h5>Add Imaging </h5>
+                                    <h5>Add Imaging Investigations</h5>
                                 </div>
                                 <div class="card-block">
                                     <div class="row">
@@ -60,18 +60,22 @@
                                                     <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
                                                 </div> -->
                                                 <div class="form-group">
-                                                    
+                                                    <label for="">Imaging</label>
+                                                        <select name="imaging" class="form-control">
+                                                            <option selected disabled>Select</option>
+                                                            <% imaging.forEach((imaging)=>{ %>
+                                                            <option value="<%= imaging._id %>"><%=  imaging.name %></option>
+                                                            <% }) %>
+                                                        </select><br>
                                                     <!-- <div class="col-sm-12"> -->
                                                         <label for="">Investigation Name</label>
                                                         <input type="text" name="investigation" class="form-control" placeholder="Investigation Name" required><br>
                                                     <!-- </div> -->
-                                                        <label for="">Description</label>
-                                                        <input type="text" name="description" class="form-control" placeholder="Description" required><br>
 
                                                         <label for="">Price</label>
                                                         <input type="number" name="price" class="form-control" placeholder="Price" required>
                                                 </div>
-                                                <button type="submit" class="btn btn-info float-right">Add Investigation</button>
+                                                <button type="submit" class="btn btn-info float-right">Create</button>
                                             </form>
                                         </div>
                                     </div>

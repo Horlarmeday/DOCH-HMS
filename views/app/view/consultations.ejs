@@ -70,6 +70,7 @@
                                                     <th rowspan="2">Lab Tests</th>
                                                     <th rowspan="2">Lab Result</th>
                                                     <th rowspan="2">Imaging</th>
+                                                    <th rowspan="2">Imaging Result</th>
                                                     <!-- <th>Status</th> -->
                                                     <th rowspan="2">Action</th>
                                                     <th colspan="9">Drugs Prescribed</th>
@@ -117,11 +118,17 @@
                                                     <% if(consultation.imagingstatus){ %>
                                                         <td>
                                                             <% consultation.imaging.forEach((image)=>{ %>
-                                                                <p style="font-weight: 700"><%= image.name %></p>
+                                                                <p style="font-weight: 700"><%= image.investigation.name %></p>
                                                             <% }) %>
                                                         </td>
                                                     <% }else{ %>
                                                         <td> <i style="color: red" class="ti-alert"></i> No Imaging test required yet</td>
+                                                    <% } %>
+
+                                                    <% if(consultation.imagingfinish){ %>
+                                                        <td> <a href="/imaging-result/<%= consultation._id %>">View Result</a></td>
+                                                    <% }else{  %>
+                                                       <td> <i style="color: red" class="ti-alert"></i> No Result Yet</td>
                                                     <% } %>
 
                                                     <td><a href="/edit-consultation/<%= consultation._id %>" class="btn btn-info">Consult</a></td>

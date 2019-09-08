@@ -129,7 +129,7 @@
                                                     <th>Status</th>
                                                     <th>Payment Status</th>
                                                     <th>Comment</th>
-                                                  
+                                                    <th>Add Result</th>
                                                     <th>Action</th>
                                                 </tr>
                                             </thead>
@@ -142,8 +142,10 @@
                                                     <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
                                                     <td> <%= consultation.visit %></td>
                                                     <td>
-                                                        <% consultation.imaging.forEach((investigate)=>{ %>
-                                                            <p><%= investigate.name %></p> <br>
+                                                        <% consultation.imaging.forEach((image)=>{ %>
+                                                            <p>
+                                                                <%= image.investigation.name %>
+                                                            </p> <br>
                                                         <% }) %>
                                                     </td>
                                                     <% if(consultation.imagingfinish === false){ %>
@@ -164,9 +166,13 @@
                                                        
                                                         <!-- <input type="text" class="form-control imagingcomment"> -->
                                                     </td>
-                                                   
+                                                   <td>
+                                                    <a href="/ultrasound-scan-result/<%= consultation.patient._id %>" style="color: aliceblue" class="btn btn-inverse">Result</a> US<br><br>
+                                                    <a href="/x-ray-result/<%= consultation.patient._id %>" style="color: aliceblue" class="btn btn-inverse">Result</a> X-ray<br><br>
+                                                   </td>
                                                     <% if(consultation.imagingfinish === false){ %>
-                                                        <td><button id="<%= consultation._id %>" class="btn btn-success done">Done?</button></td>
+                                                        <td><button id="<%= consultation._id %>" class="btn btn-success done">Done?</button>
+                                                        </td>
                                                         <% }else{ %>
                                                         <td><button class="btn btn-default" disabled>Done</button></td>
                                                         <% } %>   

@@ -712,4 +712,183 @@ router.post('/anc-serology-test/:id', middleware.isLoggedIn, (req, res, next)=>{
         }) 
     })
 })
+
+
+/**
+ * IMAGING RESULTS
+ **/
+// UltrasoundScan
+router.get('/ultrasound-scan-result/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            // console.log(consultation)
+            res.render('app/add/ultrasound', {user, consultation})
+        }) 
+    })
+})
+
+// Abdominopelvic scan
+router.post('/abdominopelvic/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            
+            consultation.imagingScan.abdominopelvic = {
+                liver: req.body.liver,
+                gallbladder: req.body.gallbladder,
+                spleen: req.body.spleen,
+                kidneys: req.body.kidneys,
+                stomach: req.body.stomach,
+                impression: req.body.impression,
+                urinarybladder: req.body.urinarybladder,
+                appendix: req.body.appendix,
+                bloodvessels: req.body.bloodvessels,
+                prostategland: req.body.prostategland,
+                uterus: req.body.uterus,
+                ovaries: req.body.ovaries,
+                adnexa: req.body.adnexa,
+                pod: req.body.pod,
+                cervix: req.body.cervix
+            }
+            consultation.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'AbdominoPelvic scan result submitted successfully!')
+                res.redirect('back')
+            })
+        }) 
+    })
+})
+
+// Transvaginal Scan
+router.post('/transvaginal/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            
+            consultation.imagingScan.transvaginal = {
+                impression: req.body.impression,
+                myometrium: req.body.myometrium,
+                uterus: req.body.uterus,
+                ovaries: req.body.ovaries,
+                adnexae: req.body.adnexae,
+                pod: req.body.pod,
+                cervix: req.body.cervix
+            }
+            consultation.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Transvaginal scan result submitted successfully!')
+                res.redirect('back')
+            })
+        }) 
+    })
+})
+
+// Pelvic Scan
+router.post('/pelvic/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            
+            consultation.imagingScan.pelvic = {
+                impression: req.body.impression,
+                myometrium: req.body.myometrium,
+                uterus: req.body.uterus,
+                ovaries: req.body.ovaries,
+                adnexa: req.body.adnexa,
+                pod: req.body.pod,
+                cervix: req.body.cervix
+            }
+            consultation.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Pelvic scan result submitted successfully!')
+                res.redirect('back')
+            })
+        }) 
+    })
+})
+
+// Obstetric Scan
+router.post('/obstetric/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({ _id: user.consultations[user.consultations.length -1]._id }, (err, consultation)=>{
+            
+            consultation.imagingScan.obstetric = {
+                lie: req.body.lie,
+                presentation: req.body.presentation,
+                gs: req.body.gs,
+                crl: req.body.crl,
+                bpd: req.body.bpd,
+                hc: req.body.hc,
+                ac: req.body.ac,
+                fl: req.body.fl,
+                ga: req.body.ga,
+                edd: req.body.edd,
+                placenta: req.body.placenta,
+                movement: req.body.movement,
+                tone: req.body.tone,
+                breathing: req.body.breathing,
+                afv: req.body.afv,
+                total: req.body.total,
+                amnioticliquor: req.body.amnioticliquor,
+                efbw: req.body.efbw,
+                afi: req.body.afi,
+                gender: req.body.gender,
+                fhr: req.body.fhr,
+                cervix: req.body.cervix,
+                impression: req.body.impression,
+            }
+            consultation.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Obstetric scan result submitted successfully!')
+                res.redirect('back')
+            })
+        }) 
+    })
+})
+
+// X_RAY
+router.get('/x-ray-result/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            // console.log(consultation)
+            res.render('app/add/x_ray', {user, consultation})
+        }) 
+    })
+})
+
+// Lumbosacral spine
+router.post('/lumbosacral/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            
+            consultation.imagingScan.lumbosacral = {
+                conclusion: req.body.conclusion,
+            }
+            consultation.save((err)=>{
+                if(err) return next (err)
+                req.flash('success', 'Lumbosacral spine result submitted successfully!')
+                res.redirect('back')
+            })
+        }) 
+    })
+})
+
 module.exports = router

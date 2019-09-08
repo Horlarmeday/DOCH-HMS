@@ -1,0 +1,621 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <!-- Main-body start -->
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page-header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4><%= consultation.patient.firstname %> <%= consultation.patient.lastname %> Imaging Result</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Lab Result</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#"></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            
+                    <!-- Page-header end -->
+                    <!-- Page-body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <% 
+                              let abdomino = Object.values(consultation.imagingScan.abdominopelvic);
+                              let transvaginal = Object.values(consultation.imagingScan.transvaginal);
+                              let pelvic = Object.values(consultation.imagingScan.pelvic);
+                              let obstetric = Object.values(consultation.imagingScan.obstetric);
+                              let lumbosacral = Object.values(consultation.imagingScan.lumbosacral)
+                            %>
+                            <!-- Microbiology -->
+                            <% if(abdomino[1] !== undefined){ %>
+                                <div class="col-sm-6">
+                                        <!-- Zero config.table start -->
+                                        <% if(consultation.patient.gender === 'Male'){ %>
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>ABDOMINOPELVIC SCAN</h5>
+                                                    <div class="card-header-right">
+                                                        <i class="icofont icofont-rounded-down"></i>
+                                                        <i class="icofont icofont-refresh"></i>
+                                                        <i class="icofont icofont-close-circled"></i>
+                                                    </div>
+                                                </div>
+                                                <div class="card-block">
+                                                    <div class="dt-responsive table-responsive">
+                                                        <form action="#" method="post">
+                                                        <table class="table table-striped table-bordered nowrap">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>S/N</th>
+                                                                    <th>Fields</th>
+                                                                    <th>Result</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Liver</td>  
+                                                                    <td><input type="text" name="liver" placeholder="<%= consultation.imagingScan.abdominopelvic.liver %>" class="form-control"></td>  
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Gall Bladder</td>  
+                                                                    <td><input type="text" name="gallbladder" placeholder="<%= consultation.imagingScan.abdominopelvic.gallbladder %>" class="form-control"></td>  
+                                                            
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Kidneys/Adrenals</td>  
+                                                                    <td><input type="text" name="kidneys" placeholder="<%= consultation.imagingScan.abdominopelvic.kidneys %>" class="form-control"></td>  
+                                                                        
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Spleen</td>  
+                                                                    <td><input type="text" name="spleen" placeholder="<%= consultation.imagingScan.abdominopelvic.spleen %>" class="form-control"></td>  
+                                                                        
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Stomach/Bowels</td>  
+                                                                    <td><input type="text" name="stomach" placeholder="<%= consultation.imagingScan.abdominopelvic.stomach %>" class="form-control"></td>  
+                                                
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Appendix</td>  
+                                                                    <td><input type="text" name="appendix" placeholder="<%= consultation.imagingScan.abdominopelvic.appendix %>" class="form-control"></td>  
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Blood Vessels/Lymph Nodes</td>  
+                                                                    <td><input type="text" name="bloodvessels" placeholder="<%= consultation.imagingScan.abdominopelvic.bloodvessels %>" class="form-control"></td>  
+                                                                        
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Urinary Bladder</td>  
+                                                                    <td><input type="text" name="urinarybladder" placeholder="<%= consultation.imagingScan.abdominopelvic.urinarybladder %> " class="form-control"></td>  
+                                                                        
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Prostate Gland</td>  
+                                                                    <td><input type="text" name="prostategland" placeholder="<%= consultation.imagingScan.abdominopelvic.prostategland %>" class="form-control"></td>  
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Impression</td>  
+                                                                    <td><input type="text" name="impression" placeholder="<%= consultation.imagingScan.abdominopelvic.impression %>" class="form-control"></td>  
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <% }else{ %>
+                                            <div class="card">
+                                                    <div class="card-header">
+                                                        <h5>ABDOMINOPELVIC SCAN</h5>
+                                                        <div class="card-header-right">
+                                                            <i class="icofont icofont-rounded-down"></i>
+                                                            <i class="icofont icofont-refresh"></i>
+                                                            <i class="icofont icofont-close-circled"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-block">
+                                                        <div class="dt-responsive table-responsive">
+                                                            <form action="/abdominopelvic/<%= user._id %>" method="post">
+                                                            <table class="table table-striped table-bordered nowrap">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>S/N</th>
+                                                                        <th>Fields</th>
+                                                                        <th> Result</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Liver</td>  
+                                                                        <td><input type="text" name="liver" placeholder="<%= consultation.imagingScan.abdominopelvic.liver %>" class="form-control"></td>  
+                                                                        
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Gall Bladder</td>  
+                                                                        <td><input type="text" name="gallbladder" placeholder="<%= consultation.imagingScan.abdominopelvic.gallbladder %>" class="form-control"></td>  
+                                                                
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Kidneys/Adrenals</td>  
+                                                                        <td><input type="text" name="kidneys" placeholder="<%= consultation.imagingScan.abdominopelvic.kidneys %>" class="form-control"></td>  
+                                                                            
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Spleen</td>  
+                                                                        <td><input type="text" name="spleen" placeholder="<%= consultation.imagingScan.abdominopelvic.spleen %>" class="form-control"></td>  
+                                                                            
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Stomach/Bowels</td>  
+                                                                        <td><input type="text" name="stomach" placeholder="<%= consultation.imagingScan.abdominopelvic.stomach %>" class="form-control"></td>  
+                                                    
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Uterus</td>  
+                                                                        <td><input type="text" name="uterus" placeholder="<%= consultation.imagingScan.abdominopelvic.uterus %>" class="form-control"></td>  
+                                                                        
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Ovaries</td>  
+                                                                        <td><input type="text" name="ovaries" placeholder="<%= consultation.imagingScan.abdominopelvic.ovaries %>" class="form-control"></td>  
+                                                                            
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Adnexa</td>  
+                                                                        <td><input type="text" name="adnexa" placeholder="<%= consultation.imagingScan.abdominopelvic.adnexa %> " class="form-control"></td>  
+                                                                            
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Urinary Bladder</td>  
+                                                                        <td><input type="text" name="urinarybladder" placeholder="<%= consultation.imagingScan.abdominopelvic.urinarybladder %>" class="form-control"></td>  
+                                                                        
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>POD</td>  
+                                                                        <td><input type="text" name="pod" placeholder="<%= consultation.imagingScan.abdominopelvic.pod %>" class="form-control"></td>  
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Cervix</td>  
+                                                                        <td><input type="text" name="cervix" placeholder="<%= consultation.imagingScan.abdominopelvic.cervix %>" class="form-control"></td>  
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td></td>  
+                                                                        <td>Impression</td>  
+                                                                        <td><input type="text" name="impression" placeholder="<%= consultation.imagingScan.abdominopelvic.impression %>" class="form-control"></td>  
+                                                                    </tr>
+                                                                   
+                                                                </tbody>
+                                                            </table>
+                                                            </form>
+                                                        </div>
+                                                    </div>
+                                            </div>
+                                        <% } %>
+                                </div>
+                            <% } %>
+                               
+                            <% if(transvaginal[1] !== undefined){ %>
+                                <div class="col-sm-6">
+                                        <!-- Zero config.table start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>TRANSVAGINAL SCAN(FOLLICULOMETRY)</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="dt-responsive table-responsive">
+                                                    <form action="#" method="post">
+                                                    <table class="table table-striped table-bordered nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S/N</th>
+                                                                <th>Fields</th>
+                                                                <th>Result</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>  
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Uterus</td>  
+                                                                <td><input type="text" name="uterus" placeholder="<%= consultation.imagingScan.transvaginal.uterus %>" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Myometrium</td>  
+                                                                <td><input type="text" name="myometrium" placeholder="<%= consultation.imagingScan.transvaginal.myometrium %>" class="form-control"></td>  
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Ovaries</td>  
+                                                                <td><input type="text" name="ovaries" placeholder="<%= consultation.imagingScan.transvaginal.ovaries %>" class="form-control"></td>  
+                                                        
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Adnexae</td>  
+                                                                <td><input type="text" name="adnexae" placeholder="<%= consultation.imagingScan.transvaginal.adnexae %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>POD</td>  
+                                                                <td><input type="text" name="pod" placeholder="<%= consultation.imagingScan.transvaginal.pod %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Cervix</td>  
+                                                                <td><input type="text" name="cervix" placeholder="<%= consultation.imagingScan.transvaginal.cervix %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>  
+                                                                <td>Impression</td>  
+                                                                <td><input type="text" name="impression" placeholder="<%= consultation.imagingScan.transvaginal.impression %>" class="form-control"></td>  
+                                                                
+                                                            </tr>
+                                                            
+                                                        </tbody>
+                                                    </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            <% } %>
+                                   
+                            <% if(pelvic[1] !== undefined){ %>
+                                <div class="col-sm-6">
+                                        <!-- Zero config.table start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>PELVIC SCAN</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="dt-responsive table-responsive">
+                                                    <form action="#" method="post">
+                                                    <table class="table table-striped table-bordered nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S/N</th>
+                                                                <th>Fields</th>
+                                                                <th>Result</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>  
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Uterus</td>  
+                                                                    <td><input type="text" name="uterus" placeholder="<%= consultation.imagingScan.pelvic.uterus %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Myometrium</td>  
+                                                                    <td><input type="text" name="myometrium" placeholder="<%= consultation.imagingScan.pelvic.myometrium %>" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Ovaries</td>  
+                                                                    <td><input type="text" name="ovaries" placeholder="<%= consultation.imagingScan.pelvic.ovaries %>" class="form-control"></td>  
+                                                            
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Adnexa</td>  
+                                                                    <td><input type="text" name="adnexa" placeholder="<%= consultation.imagingScan.pelvic.adnexa %>" class="form-control"></td>  
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>POD</td>  
+                                                                    <td><input type="text" name="pod" placeholder="<%= consultation.imagingScan.pelvic.pod %>" class="form-control"></td>  
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Cervix</td>  
+                                                                    <td><input type="text" name="cervix" placeholder="<%= consultation.imagingScan.pelvic.cervix %>" class="form-control"></td>  
+                                                                    
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Impression</td>  
+                                                                    <td><input type="text" name="impression" placeholder="<%= consultation.imagingScan.pelvic.impression %>" class="form-control"></td>  
+                                                                    
+                                                                </tr>
+                                                                
+                                                            </tbody>
+                                                    </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            <% } %>
+
+                            <% if(obstetric[1] !== undefined){ %>
+                                <div class="col-sm-12">
+                                        <!-- Zero config.table start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>OBSTETRIC SCAN</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="dt-responsive table-responsive">
+                                                    <form action="#" method="post">
+                                                    <table class="table table-striped table-bordered nowrap">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>S/N</th>
+                                                                <th>
+                                                                    Fields
+                                                                </th>
+                                                                <th>Result</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                                <tr>
+                                                                        <td></td>
+                                                                        <td>Lie</td>
+                                                                        <td>
+                                                                            <select name="lie" class="form-control">
+                                                                                <option selected disabled>Select</option>
+                                                                                <option value="Longitudinal" <%= consultation.imagingScan.obstetric.lie ? 'selected' : '' %>>Longitudinal</option>
+                                                                                <option value="Transverse" <%= consultation.imagingScan.obstetric.lie ? 'selected' : '' %>>Transverse</option>
+                                                                                <option value="Oblique" <%= consultation.imagingScan.obstetric.lie ? 'selected' : '' %>>Oblique</option>
+                                                                            </select>
+                                                                        </td>  
+                                                                </tr>
+                                                                <tr>
+                                                                        <td></td>
+                                                                        <td>Presentation</td>
+                                                                        <td>
+                                                                            <select name="presentation" class="form-control">
+                                                                                <option selected disabled>Select</option>
+                                                                                <option value="Cephalic" <%= consultation.imagingScan.obstetric.presentation ? 'selected' : '' %>>Cephalic</option>
+                                                                                <option value="Breech" <%= consultation.imagingScan.obstetric.presentation ? 'selected' : '' %>>Breech</option>
+                                                                                <option value="Transverse" <%= consultation.imagingScan.obstetric.presentation ? 'selected' : '' %>>Transverse</option>
+                                                                            </select>
+                                                                        </td>  
+                                                                </tr>
+                                                                        
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td>Measurement</td>
+                                                                    <td>
+                                                                        GS(mm) <input type="text" placeholder="<%= consultation.imagingScan.obstetric.gs %>" name="gs"  class="form-control">
+                                                                        CRL(mm) <input type="text" placeholder="<%= consultation.imagingScan.obstetric.crl %>" name="crl"  class="form-control">
+                                                                        BPD(mm) <input type="text" placeholder="<%= consultation.imagingScan.obstetric.bpd %>" name="bpd"  class="form-control">
+                                                                        HC(mm) <input type="text" placeholder="<%= consultation.imagingScan.obstetric.hc %>" name="hc"  class="form-control">
+                                                                        AC(mm) <input type="text" placeholder="<%= consultation.imagingScan.obstetric.ac %>" name="ac"  class="form-control">
+                                                                        FL(mm) <input type="text" placeholder="<%= consultation.imagingScan.obstetric.fl %>" name="fl"  class="form-control">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td>GA</td>
+                                                                    <td>
+                                                                        <input type="date"  name="ga"  class="form-control">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>
+                                                                    <td>EDD</td>
+                                                                    <td>
+                                                                        <input type="date" name="edd"  class="form-control">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr>
+                                                                        <td></td>
+                                                                        <td>Placenta</td>
+                                                                        <td>
+                                                                            <select name="placenta" class="form-control">
+                                                                                <option selected disabled>Select</option>
+                                                                                <option value="Anteriofundal" <%= consultation.imagingScan.obstetric.placenta ? 'selected' : '' %>>Anteriofundal</option>
+                                                                                <option value="Posteriofundal" <%= consultation.imagingScan.obstetric.placenta ? 'selected' : '' %>>Posteriofundal</option>
+                                                                                <option value="Low lying" <%= consultation.imagingScan.obstetric.placenta ? 'selected' : '' %>>Low lying</option>
+                                                                                
+                                                                            </select>
+                                                                        </td>  
+                                                                </tr>
+                                                                <tr >
+                                                                    <td></td>
+                                                                    <td>BPP Scores</td>
+                                                                    <td>
+                                                                        Movement <input type="text" placeholder="<%= consultation.imagingScan.obstetric.movement %>" name="movement"  class="form-control">
+                                                                        Tone <input type="text" placeholder="<%= consultation.imagingScan.obstetric.tone %>" name="tone"  class="form-control">
+                                                                        Breathing <input type="text" placeholder="<%= consultation.imagingScan.obstetric.breathing %>" name="breathing"  class="form-control">
+                                                                        AFV <input type="text" placeholder="<%= consultation.imagingScan.obstetric.afv %>" name="afv"  class="form-control">
+                                                                        Total <input type="text" placeholder="<%= consultation.imagingScan.obstetric.total %>" name="total"  class="form-control">
+                                                                    </td>
+                                                                </tr>
+                                                                <tr >
+                                                                        <td></td>
+                                                                        <td>Amniotic Liquor</td>
+                                                                        <td>
+                                                                            <select name="amnioticliquor" class="form-control">
+                                                                                <option selected disabled>Select</option>
+                                                                                <option value="Adequate" <%= consultation.imagingScan.obstetric.amnioticliquor ? 'selected' : '' %>>Adequate</option>
+                                                                                <option value="Inadequate" <%= consultation.imagingScan.obstetric.amnioticliquor ? 'selected' : '' %>>Inadequate</option>
+                                                                                
+                                                                            </select>
+                                                                        </td> 
+                                                                </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>AFI</td>
+                                                                <td>
+                                                                    <input type="text" name="afi" placeholder="<%= consultation.imagingScan.obstetric.afi %>" class="form-control">
+                                                                </td> 
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>EFBW</td>
+                                                                <td>
+                                                                    <input type="text" name="efbw" placeholder="<%= consultation.imagingScan.obstetric.efbw %>" class="form-control">
+                                                                </td> 
+                                                            </tr>
+                                                            <tr >
+                                                                <td></td>
+                                                                <td>Gender</td>
+                                                                <td>
+                                                                    <select name="gender" class="form-control">
+                                                                        <option selected disabled>Select</option>
+                                                                        <option value="Male" <%= consultation.imagingScan.obstetric.gender ? 'selected' : '' %>>Male</option>
+                                                                        <option value="Female" <%= consultation.imagingScan.obstetric.gender ? 'selected' : '' %>>Female</option>
+                                                                        
+                                                                    </select>
+                                                                </td> 
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>Foetal Heart Rate(FHR)</td>
+                                                                <td>
+                                                                    <input type="text" name="fhr" placeholder="<%= consultation.imagingScan.obstetric.fhr %>" class="form-control">
+                                                                </td> 
+                                                            </tr>
+                                                            <tr >
+                                                                <td></td>
+                                                                <td>Cervix</td>
+                                                                <td>
+                                                                    <select name="cervix" class="form-control">
+                                                                        <option selected disabled>Select</option>
+                                                                        <option value="Closed" <%= consultation.imagingScan.obstetric.cervix ? 'selected' : '' %>>Closed</option>
+                                                                        <option value="Effaced" <%= consultation.imagingScan.obstetric.cervix ? 'selected' : '' %>>Effaced</option>
+                                                                        
+                                                                    </select>
+                                                                </td> 
+                                                            </tr>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td>Impression</td>
+                                                                <td>
+                                                                    <input type="text" name="impression" placeholder="<%= consultation.imagingScan.obstetric.impression %>" class="form-control">
+                                                                </td> 
+                                                            </tr>
+                                                            
+                                                        </tbody>
+                                                        
+                                                    </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            <% } %>
+
+                            <% if(lumbosacral[1] !== undefined){ %>
+                                <div class="col-sm-6">
+                                        <!-- Zero config.table start -->
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5>LUMBOSACRAL SPINE</h5>
+                                                <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                            </div>
+                                            <div class="card-block">
+                                                <div class="dt-responsive table-responsive">
+                                                    <form action="#" method="post">
+                                                    <table id="complex-dt" class="table table-striped table-bordered nowrap">
+                                                        <thead>
+                                                            
+                                                            <tr>
+                                                                <th>S/N</th>
+                                                                <th>Conclusion</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                              <th></th>  
+                                                              <td>
+                                                                <textarea name="conclusion" class="form-control" placeholder="<%= consultation.imagingScan.lumbosacral.conclusion %>" cols="20" rows="10"></textarea>
+                                                             </td>  
+                                                              
+                                                            </tr>
+                                                           
+                                                        </tbody>
+                                                    </table>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<% include ../../partials/footerCopy %>

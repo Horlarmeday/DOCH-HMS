@@ -3,6 +3,7 @@ const mongoose =  require('mongoose');
 const imagingSchema = new mongoose.Schema({
     doctor: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
+    investigation: [{type: mongoose.Schema.Types.ObjectId, ref: "Investigations"}],
     name: String,
     description: String,
     price: Number,

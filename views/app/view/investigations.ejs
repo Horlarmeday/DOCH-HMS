@@ -63,8 +63,9 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Investigation Name</th>
+                                                    <th>Imaging</th>
                                                     <th>Description</th>
+                                                    <th>Investigations</th>
                                                     <th>Price</th>
                                                     <th>Status</th>
                                                 </tr>
@@ -75,6 +76,11 @@
                                                     <td></td>
                                                     <td><%= image.name %></td>
                                                     <td><%= image.description %></td>
+                                                    <td>
+                                                        <% image.investigation.forEach((invest)=>{ %>
+                                                            <p><%= invest.name %></p>
+                                                        <% }) %>
+                                                    </td>
                                                     <td><%= image.price %></td>
                                                     <% if(image.status === true){ %>
                                                     <td><label class="label label-md bg-success">Active</label></td>

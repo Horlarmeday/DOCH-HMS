@@ -15,6 +15,7 @@ const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
 const LocalInventory = require('../models/localinventory')
 const Discharge = require('../models/discharge')
+const Investigations = require('../models/investigations')
 const Donor = require('../models/donor')
 const ANC = require('../models/anc')
 const NurseNote = require('../models/nursenote')
@@ -563,7 +564,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         //IMAGING
         Consultation.find({})
         .populate('patient')
-        .populate('imaging')
+        .deepPopulate('imaging.investigation')
         .exec((err, consultations)=>{
             if(err) return next (err)
             Appointment.find({})
@@ -916,9 +917,41 @@ router.route('/add-imaging-investigation')
         })
     })
 
+//ADD IMAGING INVESTIGATION
+router.route('/add-investigation')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        Imaging.find({}, (err, imaging)=>{
+            res.render('app/add/add_imaging_investigation', { imaging })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        const investigations = new Investigations({
+            name: req.body.investigation,
+            imaging: req.body.imaging,
+            status: true,
+            price: req.body.price
+        })
+        investigations.save((err)=>{
+            if(err) return next (err)
+            Imaging.updateOne(
+                {
+                    _id: investigations.imaging
+                },
+                {
+                    $push: {investigation: investigations._id}
+                }, function(err, count){
+                    req.flash('success', 'Investion was added successfully')
+                    res.redirect('back')
+                }
+            )
+        })
+    })
+
 //INVESTIGATIONS
 router.get('/investigation-list', middleware.isLoggedIn, (req, res, next)=>{
-    Imaging.find({}, (err, imaging)=>{
+    Imaging.find({})
+    .populate('investigation')
+    .exec((err, imaging) =>{
         if(err) return next(err)
         res.render('app/view/investigations', {imaging})
     })
@@ -2800,7 +2833,7 @@ router.route('/edit-consultation/:id')
         .populate('patient')
         .populate('labtestObject')
         .populate('imaging')
-        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images', 'drugsObject.prescribedBy'])
+        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images', 'drugsObject.prescribedBy', 'imaging.investigation'])
         .exec((err, consultation)=>{
             PharmacyItem.find({}, (err, drugs)=>{
                 Lab.find({})
@@ -2819,8 +2852,6 @@ router.route('/edit-consultation/:id')
                         User.findOne({_id: consultation.patient})
                         .populate('triages')
                         .populate('consultations')
-                        
-                        
                         .exec((err, user)=>{
                             //console.log(user)
                             res.render('app/add/edit_consultation', {consultation, drugs, labs, imaging, alltests, user})
@@ -2979,7 +3010,9 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
                     if(req.body){
                         consultation.imaging.push({
                             images: req.body.image,
-                            paid: paid
+                            paid: paid,
+                            investigation: req.body.investigation,
+                            price: req.body.price
                         })
                     }
                     consultation.imagingdate = Date.now()
@@ -3186,10 +3219,8 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     .populate('patient')
     .populate('imaging')
     .populate('labtestObject')
-   
-
     // .populate('drugsObject')
-    .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy'])
+    .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy', 'imaging.investigation'])
     .exec((err, consultations)=>{
         if(err) return next (err)
         res.render('app/view/consultations', { consultations })
@@ -3467,9 +3498,19 @@ router.get('/lab-result/:id', middleware.isLoggedIn, (req, res, next)=>{
     .populate('patient')
     .populate('labtestObject')
     .exec((err, consultation)=>{
-        
         if(err) return next (err)
         res.render('app/view/lab_result', { consultation })
+    })
+})
+
+// VIEW IMAGING RESULT
+
+router.get('/imaging-result/:id', middleware.isLoggedIn, (req, res, next)=>{
+    Consultation.findOne({_id: req.params.id})
+    .populate('patient')
+    .exec((err, consultation)=>{
+        if(err) return next (err)
+        res.render('app/view/imaging_result', { consultation })
     })
 })
 
@@ -5298,7 +5339,7 @@ router.route('/security')
     })
     .post(middleware.isLoggedIn, (req, res, next) => {
         User.findById({ _id: req.user._id }, (err, user) => {
-            console.log(user)
+
             if (req.body.newPassword !== req.body.confirmNewPassword) {
                 req.flash('error', 'New password does not equal Confirm password')
                 return res.redirect('/settings')
