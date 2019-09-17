@@ -75,6 +75,7 @@
                                                     <th>Patient Type</th>
                                                    
                                                     <th>Registered By</th>
+                                                    <th>Adjust</th>
                                                     <% if(currentUser.role == 9){ %>
                                                     <th>Action</th>
                                                     <% } %>
@@ -112,6 +113,7 @@
                                                         <% }else{ %>
                                                             <td></td>
                                                         <% }  %>
+                                                        <td><a href="/edit-patient/<%= patient.id %>">Edit</a></td>
                                                         <% if(currentUser.role == 9){ %>
                                                         <td>
                                                             <!-- <a class="btn btn-info" href="/invoice/<%= patient.id %>">Invoice</a> -->

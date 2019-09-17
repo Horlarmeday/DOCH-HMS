@@ -1059,6 +1059,7 @@ router.route('/add-patient')
                     user.gender = req.body.gender;
                     user.mstatus = req.body.mstatus;
                     user.phonenumber = req.body.phone;
+                    user.cardtype = req.body.type;
                     user.lga = req.body.lga;
                     user.birthday = req.body.birthday;
                     user.role = patient;
@@ -1118,18 +1119,58 @@ router.route('/add-patient')
                                 console.log(response.body);
                             });
                         req.flash('success', 'Patient has been created')
-                        res.redirect('/dashboard');
+                        res.redirect('back');
                     })
                 }
             })
         })
     })
 
-//ADD EMERENCY PATIENT
-// router.route('/add-emerggency-patient')
-//     .get(middleware.isLoggedIn, (req, res, next)=>{
-//         res.render('app/add/emergency')
-//     })
+// EDIT PATIENT
+
+router.route('/edit-patient/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({_id: req.params.id }, (err, user)=>{
+            HMO.find({}, (err, hmos)=>{
+                if(err) return next (err)
+                User.countDocuments({role: 8})
+                .exec((err, count)=>{
+                    var counter = count + 1
+                    if(err) return next (err)
+                    res.render('app/add/edit_add_patient', { hmos, counter, user})
+                })
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        User.findOne({ _id: req.params.id }, function(err, user){
+            if (user){
+                if (req.body.email) user.email = req.body.email;
+                if (req.body.fname) user.firstname = req.body.fname;
+                if (req.body.lname) user.lastname = req.body.lname;
+                if (req.body.oldpatientID) user.oldpatientId = req.body.oldpatientID;
+                if (req.body.religion) user.religion = req.body.religion;
+                if (req.body.gender) user.gender = req.body.gender;
+                if (req.body.mstatus) user.mstatus = req.body.mstatus;
+                if (req.body.phone) user.phonenumber = req.body.phone;
+                if (req.body.address) user.address = req.body.address;
+                if (req.body.retainership) user.retainership = req.body.retainership;
+                if (req.body.nextofkinname) user.nextofkinname = req.body.nextofkinname;
+                if (req.body.nextofkinphone) user.nextofkinphone = req.body.nextofkinphone;
+                if (req.body.nextofkinaddress) user.nextofkinaddress = req.body.nextofkinaddress;
+                if (req.body.relationship) user.relationship = req.body.relationship;
+                if (req.body.city) user.city = req.body.city;
+                if (req.body.retainershipname) user.retainershipname = req.body.retainershipname;
+                if (req.body.hmoname) user.hmoname = req.body.hmoname;
+                if (req.body.patientcode) user.patientcode = req.body.patientcode;
+                user.save((err) => {
+                    if (err) { return next(err) }
+                    req.flash('success', 'Patient has been created')
+                    res.redirect('/patients');
+                })
+            }
+        })
+    })
 
 //ADD EMERGENCY PATIENT
 router.route('/add-emergency-patient')
@@ -3128,6 +3169,7 @@ router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
             }
             if(user.role == 8){
                 allPatients.push({
+                    'id': user._id,
                     'retainershipname': user.retainershipname,
                     'registeredby': user.registeredby,
                     'gender': user.gender,
@@ -3993,7 +4035,7 @@ router.route('/add-pharmacy-items')
    .get(middleware.isLoggedIn, (req, res, next)=>{
     Drug.find({}, (err, drugs)=>{
         if(err) return next (err)
-        User.find({}, (err, users)=>{
+        User.find({role: 17}, (err, users)=>{
             if(err) return next (err)
             res.render('app/add/add_pharmacy_item', {drugs, users})
         })
@@ -4029,6 +4071,53 @@ router.route('/add-pharmacy-items')
             if(err) return next(err)
             req.flash('success', 'Item was added!')
             res.redirect('/add-pharmacy-items')
+        })
+    })
+   })
+
+// Edit Pharmacy item
+
+router.route('/edit-pharmacy-item/:id')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       PharmacyItem.findOne({_id: req.params.id}, (err, item)=>{
+           Drug.find({}, (err, drugs)=>{
+               if(err) return next (err)
+               User.find({role: 17}, (err, users)=>{
+                   if(err) return next (err)
+                   res.render('app/add/edit_pharm_item', {drugs, users, item})
+               })
+            })
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+        PharmacyItem.findOne({_id: req.params.id})
+        .exec((err, item)=>{
+        if(err) return next (err)
+        if(item) {
+            if (req.body.name) item.name = req.body.name;
+            if (req.body.description) item.description = req.body.description;
+            if (req.body.price) item.price = req.body.price;
+            if (req.body.unit) item.unit = req.body.unit;
+            if (req.body.quantity) item.quantity = req.body.quantity;
+            if (req.body.cost) item.cost = req.body.cost;
+            if (req.body.income) item.income = req.body.income;
+            if (req.body.productcode) item.productcode = req.body.productcode;
+            if (req.body.shelf) item.shelf = req.body.shelf;
+            if (req.body.voucher) item.voucher = req.body.voucher;
+            if (req.body.batch) item.batch = req.body.batch;
+            if (req.body.loss) item.loss = req.body.loss;
+            if (req.body.batch) item.batch = req.body.batch;
+            if (req.body.balance) item.balance = req.body.balance;
+            if (req.body.remarks) item.remarks = req.body.remarks;
+            if (req.body.expiration) item.expiration = req.body.expiration;
+            if (req.body.vendor) item.vendor = req.body.vendor;
+            if (req.body.sell_price) item.sellprice = req.body.sell_price;
+            if (req.body.received) item.received = req.body.received;
+        }
+        item.save((err)=>{
+            if(err) return next(err)
+            req.flash('success', 'Item was updated!')
+            res.redirect('back') 
         })
     })
    })

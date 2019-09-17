@@ -80,6 +80,7 @@
                                                     <th>Expiration </th>
                                                     <th>Balance </th>
                                                     <th>Remarks </th>
+                                                    <th>Action</th>
                                                     <th>Dispense </th>
                                                 </tr>
                                             </thead>
@@ -109,6 +110,7 @@
                                                     <td><%= item.expiration.toDateString() %></td>
                                                     <td><%= item.balance %></td>
                                                     <td><%= item.remarks %></td>
+                                                    <td><a href="/edit-pharmacy-item/<%= item._id %>">Edit</a></td>
                                                     <td> <a class="btn btn-success btn-md" href="/pharmacy-dispense/<%= item._id %>">Dispense</a></td>
                                                 </tr>
                                                 

@@ -1,0 +1,192 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Patient Account</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/patients">Patients</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/add-patient">Create Patient</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Edit Patient</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                    <!-- <div class="form-group">
+                                                        <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                    </div> -->
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">First Name <span class="text-danger">*</span> </label>
+                                                            <input type="text" name="fname" class="form-control" value="<%= user.firstname %>" >
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Last Name<span class="text-danger">*</span></label>
+                                                            <input type="text" name="lname" class="form-control" value="<%= user.lastname %>" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Patient ID<span class="text-danger">*</span></label>
+                                                            <input style="font-weight: 700" type="text" class="form-control" value="DOCH/00000<%= counter %>" readonly>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Old Patient ID</label>
+                                                            <input type="text" name="oldpatientID" class="form-control" value="<%= user.oldpatientId %>">
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Email Address</label>
+                                                            <input type="email" name="email" class="form-control" value="<%= user.email %>">
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Religion<span class="text-danger">*</span></label>
+                                                            <select name="religion" class="form-control" >
+                                                                <option selected disabled>Select</option>
+                                                                <option value="Christianity" <%= user.religion ? 'selected' : '' %>>Christianity</option>
+                                                                <option value="Islam" <%= user.religion ? 'selected' : '' %>>Islam</option>
+                                                                <option value="Traditional" <%= user.religion ? 'selected' : '' %>>Traditional</option>
+                                                                <option value="Other" <%= user.religion ? 'selected' : '' %>>Other</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Date of Birth<span class="text-danger">*</span></label>
+                                                            <input type="text" name="birthday" id="datetimepicker8" class="form-control" value="<%= user.birthday.toDateString() %>" >
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Phone Number<span class="text-danger">*</span></label>
+                                                            <input type="text" name="phone" class="form-control" value="<%= user.phonenumber %>">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Marital Status<span class="text-danger">*</span></label>
+                                                            <select name="mstatus" class="form-control" >
+                                                                <option selected disabled>Select</option>
+                                                                <option value="Married" <%= user.mstatus ? 'selected' : '' %>>Married</option>
+                                                                <option value="Single" <%= user.mstatus ? 'selected' : '' %>>Single</option>
+                                                                <option value="Divorced" <%= user.mstatus ? 'selected' : '' %>>Divorced</option>
+                                                                <option value="Widowed" <%= user.mstatus ? 'selected' : '' %>>Widowed</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Gender<span class="text-danger">*</span></label>
+                                                                <select name="gender" class="form-control" >
+                                                                    <option value="Male" <%= user.gender ? 'selected' : '' %>>Male</option>
+                                                                    <option value="Female" <%= user.gender ? 'selected' : '' %>>Female</option>
+                                                                </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Home Address<span class="text-danger">*</span></label>
+                                                            <input type="text" name="address" class="form-control" value="<%= user.address %>" >
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <h5 style="color:dodgerblue" class="page-title">Next of Kin Information</h5><br><br>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Name<span class="text-danger">*</span></label>
+                                                            <input type="text" name="nextofkinname" class="form-control" value="<%= user.nextofkinname %>" >
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Phone Number<span class="text-danger">*</span></label>
+                                                            <input type="number" name="nextofkinphone" class="form-control" value="<%= user.nextofkinphone %>" >
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Relationship<span class="text-danger">*</span></label>
+                                                            <select name="relationship" class="form-control" >
+                                                                <option selected disabled>Select</option>
+                                                                <option value="Husband" <%= user.relationship ? 'selected' : '' %>>Husband</option>
+                                                                <option value="Wife" <%= user.relationship ? 'selected' : '' %>>Wife</option>
+                                                                <option value="Father" <%= user.relationship ? 'selected' : '' %>>Father</option>
+                                                                <option value="Mother" <%= user.relationship ? 'selected' : '' %>>Mother</option>
+                                                                <option value="Son" <%= user.relationship ? 'selected' : '' %>>Son</option>
+                                                                <option value="Daughter" <%= user.relationship ? 'selected' : '' %>>Daughter</option>
+                                                                <option value="Brother" <%= user.relationship ? 'selected' : '' %>>Brother</option>
+                                                                <option value="Sister" <%= user.relationship ? 'selected' : '' %>>Sister</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Next of Kin Address<span class="text-danger">*</span></label>
+                                                            <input type="text" name="nextofkinaddress" class="form-control" value="<%= user.nextofkinaddress %>">
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    
+                                                   
+                                                    
+                                                    <button type="submit" class="btn btn-info float-right">Update Patient</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

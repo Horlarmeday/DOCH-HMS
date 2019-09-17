@@ -9,6 +9,7 @@ const UserSchema = new mongoose.Schema({
     isVerified: {type: Boolean, default: false},
     createdby: Number,
     firstname: String,
+    cardtype: String,
     lastname: String,
     password: String,
     mstatus: String,
