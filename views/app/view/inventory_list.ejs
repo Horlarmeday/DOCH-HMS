@@ -77,6 +77,7 @@
                                                     <th>Balance </th>
                                                     <th>Comment </th>
                                                    <th>Creator</th>
+                                                   <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -88,7 +89,7 @@
                                                     <td><%= item.name.name %></td>
                                                     <td><%= item.quantity %></td>
                                                    
-                                                    <td><%= item.shelf %></td>
+                                                    <td><%= item.shelf %> <%= item.shelfno %></td>
                                                     <td><%= item.unit %></td>
                                                     <td><%= item.price %></td>
                                                     <td><%= item.consumed %></td>
@@ -99,7 +100,11 @@
                                                     <td><%= item.balance %></td>
                                                     <td><%= item.comment %></td>
                                                     <td><%= item.creator.firstname %> <%= item.creator.lastname %></td>
-                                                    
+                                                    <td>
+                                                        <a class="btn btn-info" href="/edit-inventory/<%= item._id %>">Edit</a>
+                                                        <button id="<%= item._id %>" class="btn btn-danger localItem">Delete</button>
+                                                    </td>
+
                                                 </tr>
                                                 
                                                 

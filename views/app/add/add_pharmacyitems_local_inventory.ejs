@@ -94,13 +94,17 @@
                                                                 <option value="Capsules">Capsules</option>
                                                                 <option value="Caplets">Caplets</option>
                                                                 <option value="Container">Container</option>
-                                                                <option value="Nabules">Nabules</option>
+                                                                <option value="Nebules">Nebules</option>
+                                                                <option value="Packs">Packs</option>
+                                                                <option value="Pieces">Pieces</option>
                                                                 <option value="Tablets">Tablets</option>
                                                                 <option value="Vials">Vials</option>
+                                                                <option value="Rolls">Rolls</option>
+                                                                <option value="Units">Units</option>
                                                             </select>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                                <label for="">Shelf No</label>
+                                                                <label for="">Shelf </label>
                                                                 <select  name="shelf" class="form-control select" required>
                                                                     <option selected disabled>Select</option>
                                                                     <option>A</option>
@@ -134,23 +138,44 @@
                                                     </div>
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
+                                                                <label for="">Shelf No</label>
+                                                                <select  name="shelfno" class="form-control select" required>
+                                                                    <option selected disabled>Select</option>
+                                                                    <option>1</option>
+                                                                    <option>2</option>
+                                                                    <option>3</option>
+                                                                    <option>4</option>
+                                                                    <option>5</option>
+                                                                    <option>6</option>
+                                                                    <option>7</option>
+                                                                    <option>8</option>
+                                                                    <option>9</option>
+                                                                    <option>10</option>
+                                                                    
+                                                                </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
                                                             <label for="">Date Received</label>
                                                            <input type="date" name="received" class="form-control" placeholder="" required>
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                                <label for="">Consumed</label>
-                                                                <input type="number" name="consumed" class="form-control" placeholder="Number Consumed">
-                                                        </div>
+                                                        
                                                     </div>
                                                     <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Consumed</label>
+                                                                    <input type="number" name="consumed" class="form-control" placeholder="Number Consumed">
+                                                            </div>
                                                             <div class="col-sm-6">
                                                                     <label for="">Balance</label>
                                                                     <input type="number" name="balance" class="form-control" placeholder="Balance">
                                                             </div>
-                                                        <div class="col-sm-6">
-                                                            <label for="">Comments</label>
-                                                            <textarea name="comment" placeholder="Optional" class="form-control" cols="30" rows="10"></textarea>
-                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Comments</label>
+                                                                    <textarea name="comment" placeholder="Optional" class="form-control" cols="30" rows="10"></textarea>
+                                                            </div>
                                                     </div>
                                                     <button type="submit" class="btn btn-info float-right">Submit</button>
                                                 </form>

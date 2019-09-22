@@ -1,0 +1,98 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+ <div class="pcoded-content">
+        <div class="pcoded-inner-content">
+    <!-- Main-body start -->
+    <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <!-- Page header start -->
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Add Generic Drug</h4>
+                    </div>
+                    <div class="page-header-breadcrumb">
+                        <ul class="breadcrumb-title">
+                            <li class="breadcrumb-item">
+                                <a href="/dashboard">
+                                    <i class="icofont icofont-home"></i>
+                                </a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="/drugs">Drugs</a>
+                            </li>
+                            <li class="breadcrumb-item"><a href="#!">Create Generic Drug</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <!-- Page header end -->
+                <!-- Page body start -->
+                <div class="page-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <!-- Basic Form Inputs card start -->
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Add Generic Drug</h5>
+                                </div>
+                                <div class="card-block">
+                                    <div class="row">
+                                        <div class="col-sm-12 mobile-inputs">
+                                            <form method="POST">
+                                                <!-- <div class="form-group">
+                                                    <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
+                                                </div> -->
+                                                <div class="form-group">
+                                                    <!-- <div class="col-sm-12"> -->
+                                                        <label for="">Drug Code</label>
+                                                        <input type="number" name="code" class="form-control" value="<%= drug.code %>" disabled><br>
+                                                    <!-- </div> -->
+                                                    <!-- <div class="col-sm-12"> -->
+                                                        <label for="">Generic Name</label>
+                                                        <input type="text" name="generic" class="form-control" value="<%= drug.generic %>"><br>
+                                                    <!-- </div> -->
+                                                        <!-- <label for="">Brand Name</label>
+                                                        <input type="text" name="brand" class="form-control" placeholder="Brand Name"><br>
+                                                        <label for="">Drug Name</label>
+                                                        <input type="text" name="name" class="form-control" placeholder="Drug Name"><br>
+                                                        <label for="">Price</label>
+                                                        <input type="number" name="price" class="form-control" placeholder="Price"> -->
+                                                </div>
+                                                <button type="submit" class="btn btn-info float-right">Update Drug</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Basic Form Inputs card end -->
+                        </div>
+                    </div>
+                </div>
+                <!-- Page body end -->
+            </div>
+        </div>
+        <!-- Main-body end -->
+        <!-- <div id="styleSelector">
+
+        </div> -->
+    </div>
+</div>
+
+<% include ../../partials/footerCopy %>

@@ -2196,6 +2196,27 @@ router.route('/add-brand-name')
         
     })
 
+//EDIT DRUGS BRAND
+router.route('/edit-generic-drug/:id')
+    .get(middleware.isLoggedIn, (req, res, next) => {
+        Drug.findOne({_id: req.params.id}, (err, drug)=>{
+            if(err) return next (err)
+            res.render('app/add/edit_generic_drug', { drug })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next) => {
+        Drug.findOne({ _id: req.params.id }, function(err, drug){
+            if (drug){
+                if(req.body.generic) drug.generic = req.body.generic;
+                drug.save((err)=>{
+                    if(err) return next (err)
+                    req.flash('success', 'Generic name edited successfully')
+                    res.redirect('/drugs')
+                })
+            }
+        })
+        
+    })
 
 
 //VIEW ALL BRAND NAMES
@@ -2224,6 +2245,20 @@ router.get('/drugs', middleware.isLoggedIn, (req, res, next)=>{
     Drug.find({}, (err, drugs)=>{
         if(err) return next (err)
         res.render('app/view/drugs', { drugs })
+    })
+})
+
+//DELETE GENERIC DRUGS
+router.post('/delete-drugs/:id', middleware.isLoggedIn, (req, res, next)=>{
+    const localItem = req.body.localItem
+    LocalInventory.deleteOne({_id: localItem}, (err, drug)=>{
+        if(err) {
+            req.flash('error', err.message)
+            res.redirect('back')
+        }else{
+            req.flash('success', 'Item deleted successfully')
+            res.redirect('back')
+        }
     })
 })
 
@@ -3792,12 +3827,51 @@ router.route('/add-lab-items')
     })
    })
 
-// ADD DRUGS TO LOCAL INVENTORY
-router.route('/add-to-inventory')
+// EDIT DRUGS TO LOCAL INVENTORY
+router.route('/edit-inventory/:id')
    .get(middleware.isLoggedIn, (req, res, next)=>{
        PharmacyItem.find({}, (err, drugs)=>{
         if(err) return next (err)
-        res.render('app/add/add_pharmacyitems_local_inventory', {drugs})
+            LocalInventory.findOne({_id: req.params.id })
+            .populate('name') 
+            .exec((err, item)=>{
+                res.render('app/add/edit_local_inventory', { drugs, item })
+            })
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+    LocalInventory.findOne({_id: req.params.id }, (err, item)=>{
+        if(item){
+            if (req.body.name) item.name = req.body.name;
+            if (req.body.price) item.price = req.body.price;
+            if (req.body.unit) item.unit = req.body.unit;
+            if (req.body.quantity) item.quantity = req.body.quantity;
+            if (req.body.cost) item.cost = req.body.cost;
+            if (req.body.productcode) item.productcode = req.body.productcode;
+            if (req.body.shelf) item.shelf = req.body.shelf;
+            if (req.body.shelfno) item.shelfno = req.body.shelfno;
+            if (req.body.consumed) item.consumed = req.body.consumed;
+            if (req.body.balance) item.balance = req.body.balance;
+            if (req.body.comment) item.comment = req.body.comment;
+            if (req.body.received) item.received = req.body.received;
+            item.save((err)=>{
+                if(err){
+                    req.flash('error', err.message)
+                 return res.redirect('back')
+                }
+                req.flash('success', 'Item was updated!')
+                res.redirect('/inventory-list')
+            })
+        }
+    })
+    
+   })
+
+   router.route('/add-to-inventory')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       PharmacyItem.find({}, (err, drugs)=>{
+        if(err) return next (err)
+        res.render('app/add/add_pharmacyitems_local_inventory', { drugs })
        })
    }) 
    .post(middleware.isLoggedIn, (req, res, next)=>{
@@ -3810,6 +3884,7 @@ router.route('/add-to-inventory')
        item.cost = req.body.cost;
        item.productcode = req.body.productcode;
        item.shelf = req.body.shelf;
+       item.shelfno = req.body.shelfno;
        item.consumed = req.body.consumed;
        item.balance = req.body.balance;
        item.comment = req.body.comment;
@@ -4057,6 +4132,7 @@ router.route('/add-pharmacy-items')
         item.income = req.body.income;
         item.productcode = req.body.productcode;
         item.shelf = req.body.shelf;
+        item.shelfno = req.body.shelfno;
         item.voucher = req.body.voucher;
         item.batch = req.body.batch;
         item.loss = req.body.loss;

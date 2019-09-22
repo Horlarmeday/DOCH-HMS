@@ -6,6 +6,7 @@ const localInventorySchema = new mongoose.Schema({
     name: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'PharmacyItem'},
     productcode: String,
     shelf: String,
+    shelfno: String,
     balance: Number,
     comment: String,
     received: {type: Date},

@@ -556,6 +556,27 @@ $(document).ready(function() {
     //     $('#edd').val(newdate)
     // })
 
+    
+    $('.localItem').click(function (event) {
+        let localItem = $(this).attr('id')
+        event.preventDefault()
+        let itemDelete = window.confirm("Are you sure you want to delete this item?")
+        if(itemDelete){
+            $.ajax({
+                type: 'POST',
+                url: `/delete-drugs/${localItem}`,
+                data: {
+                    localItem: localItem
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
+    })
+
     ///////////////////////////////////////
     // FILTERING ON MEDICAL RECORDS PAE
     $('#btn-week').click(function () {

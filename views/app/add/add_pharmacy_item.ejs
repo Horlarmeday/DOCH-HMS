@@ -82,7 +82,7 @@
                                                             <input type="text" name="productcode" class="form-control" placeholder=" Product Code" required>
                                                         </div>
                                                         <div class="col-sm-6">
-                                                            <label for="">Shelf No</label>
+                                                            <label for="">Shelf </label>
                                                             <select  name="shelf" class="form-control select" required>
                                                                 <option selected disabled>Select</option>
                                                                 <option>A</option>
@@ -115,31 +115,51 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-group row">
-                                                        
+                                                        <div class="col-sm-6">
+                                                            <label for="">Shelf No</label>
+                                                            <select  name="shelfno" class="form-control select" required>
+                                                                <option selected disabled>Select</option>
+                                                                <option>1</option>
+                                                                <option>2</option>
+                                                                <option>3</option>
+                                                                <option>4</option>
+                                                                <option>5</option>
+                                                                <option>6</option>
+                                                                <option>7</option>
+                                                                <option>8</option>
+                                                                <option>9</option>
+                                                                <option>10</option>
+                                                                
+                                                            </select>
+                                                        </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Voucher/Ref No</label>
                                                             <input type="text" name="voucher" class="form-control" placeholder="Voucher/Ref No" required>
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                            <label>Received From</label>
-                                                            <select name="vendor" class="form-control js-example-basic-single" required>
-                                                                    <option selected disabled>Select</option>
-                                                                    <% users.forEach((user)=>{  %>
-                                                                        <option value="<%= user._id %>"><%= user.company %></option>
-                                                                    <% }) %>
-                                                            </select>
-                                                        </div>
+                                                        
                                                        
                                                     </div>
                                                     <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Received From</label>
+                                                                    <select name="vendor" class="form-control js-example-basic-single" required>
+                                                                            <option selected disabled>Select</option>
+                                                                            <% users.forEach((user)=>{  %>
+                                                                                <option value="<%= user._id %>"><%= user.company %></option>
+                                                                            <% }) %>
+                                                                    </select>
+                                                                </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Batch No</label>
                                                             <input type="text" name="batch" class="form-control" placeholder="Batch No" required>
                                                         </div>
-                                                        <div class="col-sm-6">
-                                                                <label>Expiration Date</label>
-                                                                <input type="date" name="expiration" class="form-control" placeholder="Expiration Date" required>
-                                                        </div>
+                                                       
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Expiration Date</label>
+                                                                    <input type="date" name="expiration" class="form-control" placeholder="Expiration Date" required>
+                                                            </div>
                                                     </div>
                                                     <h5 style="color:dodgerblue" class="page-title">Quantity</h5><br><br>
                                                     <div class="form-group row">
@@ -159,9 +179,14 @@
                                                                 <option value="Capsules">Capsules</option>
                                                                 <option value="Caplets">Caplets</option>
                                                                 <option value="Container">Container</option>
-                                                                <option value="Nabules">Nabules</option>
+                                                                <option value="Cartons">Cartons</option>
+                                                                <option value="Nebules">Nebules</option>
+                                                                <option value="Packs">Packs</option>
+                                                                <option value="Pieces">Pieces</option>
                                                                 <option value="Tablets">Tablets</option>
                                                                 <option value="Vials">Vials</option>
+                                                                <option value="Rolls">Rolls</option>
+                                                                <option value="Units">Units</option>
                                                             </select>
                                                         </div>
                                                     </div>

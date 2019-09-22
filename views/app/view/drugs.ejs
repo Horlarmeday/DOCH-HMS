@@ -69,6 +69,7 @@
                                                     <th>Price</th> -->
                                                     <th>Status</th>
                                                     <th>Action</th>
+                                                    <th>Adjust</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -84,6 +85,7 @@
                                                     <td><label class="label label-md bg-danger">Inctive</label></td>
                                                     <% } %>
                                                     <td><a class="btn btn-info" href="/add-brand-name">Add Brand</a></td>
+                                                    <td><a href="/edit-generic-drug/<%= drug._id %>">Edit</a></td>
                                                 </tr>
                                                 <% })  %>
                                             </tbody>

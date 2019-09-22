@@ -11,6 +11,7 @@ const pharmacyItemSchema = new mongoose.Schema({
     name: String,
     productcode: String,
     shelf: String,
+    shelfno: String,
     voucher: String,
     batch: String,
     loss: String,

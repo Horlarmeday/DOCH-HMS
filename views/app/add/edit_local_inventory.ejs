@@ -1,0 +1,195 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+        <!-- Main-body start -->
+        <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Local Inventory</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Add to Local Inventory</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="post">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label for="">Name</label>
+                                                                <input type="text" value="<%= item.name.name %>" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Selling Price(₦)</label>
+                                                                <input type="number" name="price" id="drugAmount" value="<%= item.price %>" class="form-control" readonly >
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Product Code</label>
+                                                            <input type="text" name="productcode" class="form-control"  value=" <%= item.productcode %>"  required>
+                                                        </div>                                                      
+                                                        <div class="col-sm-6">
+                                                            <label for="">Quantity</label>
+                                                            <input name="quantity" class="form-control" type="number" value="<%= item.quantity %>">   
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Unit</label>
+                                                            <select name="unit" class="form-control">
+                                                                    <option selected disabled>Select</option>
+                                                                    <option value="Ampoule" <%= item.unit ? 'selected' : '' %>>Ampoule</option>
+                                                                    <option value="Bag" <%= item.unit ? 'selected' : '' %>>Bag</option>
+                                                                    <option value="Bottle" <%= item.unit ? 'selected' : '' %>>Bottle</option>
+                                                                    <option value="Box" <%= item.unit ? 'selected' : '' %>>Box</option>
+                                                                    <option value="Bundle" <%= item.unit ? 'selected' : '' %>>Bundle</option>
+                                                                    <option value="Capsules" <%= item.unit ? 'selected' : '' %>>Capsules</option>
+                                                                    <option value="Cartons" <%= item.unit ? 'selected' : '' %>>Cartons</option>
+                                                                    <option value="Caplets" <%= item.unit ? 'selected' : '' %>>Caplets</option>
+                                                                    <option value="Container" <%= item.unit ? 'selected' : '' %>>Container</option>
+                                                                    <option value="Nebules" <%= item.unit ? 'selected' : '' %>>Nebules</option>
+                                                                    <option value="Pieces" <%= item.unit ? 'selected' : '' %>>Pieces</option>
+                                                                    <option value="Packs" <%= item.unit ? 'selected' : '' %>>Packs</option>
+                                                                    <option value="Tablets" <%= item.unit ? 'selected' : '' %>>Tablets</option>
+                                                                    <option value="Vials" <%= item.unit ? 'selected' : '' %>>Vials</option>
+                                                                    <option value="Rolls" <%= item.unit ? 'selected' : '' %>>Rolls</option>
+                                                                    <option value="Units" <%= item.unit ? 'selected' : '' %>>Units</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Shelf </label>
+                                                                <select name="shelf" class="form-control select" required>
+                                                                        <option selected disabled>Select</option>
+                                                                        <option value="A" <%= item.shelf ? 'selected' : '' %>>A</option>
+                                                                        <option value="B" <%= item.shelf ? 'selected' : '' %>>B</option>
+                                                                        <option value="C" <%= item.shelf ? 'selected' : '' %>>C</option>
+                                                                        <option value="D" <%= item.shelf ? 'selected' : '' %>>D</option>
+                                                                        <option value="E" <%= item.shelf ? 'selected' : '' %>>E</option>
+                                                                        <option value="F" <%= item.shelf ? 'selected' : '' %>>F</option>
+                                                                        <option value="G" <%= item.shelf ? 'selected' : '' %>>G</option>
+                                                                        <option value="H" <%= item.shelf ? 'selected' : '' %>>H</option>
+                                                                        <option value="I" <%= item.shelf ? 'selected' : '' %>>I</option>
+                                                                        <option value="J" <%= item.shelf ? 'selected' : '' %>>J</option>
+                                                                        <option value="K" <%= item.shelf ? 'selected' : '' %>>K</option>
+                                                                        <option value="L" <%= item.shelf ? 'selected' : '' %>>L</option>
+                                                                        <option value="M" <%= item.shelf ? 'selected' : '' %>>M</option>
+                                                                        <option value="N" <%= item.shelf ? 'selected' : '' %>>N</option>
+                                                                        <option value="O" <%= item.shelf ? 'selected' : '' %>>O</option>
+                                                                        <option value="P" <%= item.shelf ? 'selected' : '' %>>P</option>
+                                                                        <option value="Q" <%= item.shelf ? 'selected' : '' %>>Q</option>
+                                                                        <option value="R" <%= item.shelf ? 'selected' : '' %>>R</option>
+                                                                        <option value="S" <%= item.shelf ? 'selected' : '' %>>S</option>
+                                                                        <option value="T" <%= item.shelf ? 'selected' : '' %>>T</option>
+                                                                        <option value="U" <%= item.shelf ? 'selected' : '' %>>U</option>
+                                                                        <option value="V" <%= item.shelf ? 'selected' : '' %>>V</option>
+                                                                        <option value="W" <%= item.shelf ? 'selected' : '' %>>W</option>
+                                                                        <option value="X" <%= item.shelf ? 'selected' : '' %>>X</option>
+                                                                        <option value="Y" <%= item.shelf ? 'selected' : '' %>>Y</option>
+                                                                        <option value="Z" <%= item.shelf ? 'selected' : '' %>>Z</option>
+                                                                </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label for="">Shelf No</label>
+                                                                <select  name="shelfno" class="form-control select" required>
+                                                                        <option selected disabled>Select</option>
+                                                                        <option value="1" <%= item.shelfno ? 'selected' : '' %>>1</option>
+                                                                        <option value="2" <%= item.shelfno ? 'selected' : '' %>>2</option>
+                                                                        <option value="3" <%= item.shelfno ? 'selected' : '' %>>3</option>
+                                                                        <option value="4" <%= item.shelfno ? 'selected' : '' %>>4</option>
+                                                                        <option value="5" <%= item.shelfno ? 'selected' : '' %>>5</option>
+                                                                        <option value="6" <%= item.shelfno ? 'selected' : '' %>>6</option>
+                                                                        <option value="7" <%= item.shelfno ? 'selected' : '' %>>7</option>
+                                                                        <option value="8" <%= item.shelfno ? 'selected' : '' %>>8</option>
+                                                                        <option value="9" <%= item.shelfno ? 'selected' : '' %>>9</option>
+                                                                        <option value="10" <%= item.shelfno ? 'selected' : '' %>10</option>
+                                                                </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Date Received</label>
+                                                           <input type="text"name="received" class="form-control" value="<%= item.received.toDateString() %>" readonly>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Consumed</label>
+                                                                    <input type="number" name="consumed" class="form-control" value="<%= item.consumed %>">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Balance</label>
+                                                                    <input type="number" name="balance" class="form-control" value="<%= item.balance %>">
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Comments</label>
+                                                                    <textarea name="comment" value="<%= item.comments %>" class="form-control" cols="30" rows="10"></textarea>
+                                                            </div>
+                                                    </div>
+                                                    <button  type="submit" class="btn btn-info float-right ">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>
