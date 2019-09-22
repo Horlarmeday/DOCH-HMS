@@ -1012,4 +1012,7 @@ function myFunction() {
   }
 
 
+  
+
+
 //Getting the drug prescriptions
