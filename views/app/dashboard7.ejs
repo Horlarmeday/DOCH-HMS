@@ -137,8 +137,7 @@
                                             </thead>
                                             <tbody>
                                                 <% users.forEach((patient) => { %>
-                                                    <% if(patient.role === 8){ %>
-                                                    
+                                                    <% if(patient.role === 8 && patient.account.registration || patient.account.consultation){ %>
                                                 <tr>
                                                     <%
                                                         var birthday = new Date(patient.birthday)
@@ -209,7 +208,7 @@
                                                                <button value="<%= total %>" name="<%= patient._id %>" type="button" class="btn btn-success pay">Paid?</button>
                                                             <% } %>
                                                             <% if(patient.account.paid){ %>
-                                                               <a href="/invoice/<%= patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                               <a target="_blank" href="/invoice/<%= patient._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
                                                             <% } %>
                                                         </td>
                                                    
@@ -336,8 +335,8 @@
                                                             <button value="<%= test.tests.price %>"  name="<%= consultation._id %>" type="button" class="btn btn-success labpay"> Paid?</button>
                                                             <% } %>
                                                         <% } %> 
-                                                         <% if(payment.paid){ %>
-                                                            <a href="/labtest-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                         <% if(consultation.labpaid){ %>
+                                                            <a  target="_blank" href="/labtest-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
                                                          <% } %>   
                                                          </td>
                                                         </tr>
@@ -463,7 +462,7 @@
                                                                  <% } %>
                                                                 <% } %>
                                                                 <% if(consultation.pharmacypaid){ %>
-                                                                <a href="/pharmacy-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                                <a target="_blank" href="/pharmacy-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
                                                                 <% } %>
                                                             </td>
                                                             </tr>
@@ -544,23 +543,23 @@
                                                             <% consultation.imaging.forEach((image)=>{ %>
                                                                 
                                                                 <tr>
-
+                                                                <th></th>
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
 
                                                             <td>
-                                                                    <p style="font-weight: 500"><%= image.name %>
-                                                                    <span style="font-weight: 900; color: darkorange">(&#8358;<%= image.images.price %>)</span></p>
+                                                                    <p style="font-weight: 500"><%= image.investigation.name %>
+                                                                    <span style="font-weight: 900; color: darkorange">(&#8358;<%= image.investigation.price %>)</span></p>
                                                                 
                                                             </td>
                                                             <% if(consultation.patient.retainership === "Yes"){ %>
                                                                 <td style="font-weight: 900; font-size: 1rem">
-                                                                        <span style="text-decoration-line: line-through; text-decoration-color: red">&#8358;<%= image.images.price %></span>
-                                                                        (&#8358;<%= image.images.price * 0.1 %>)</td>
+                                                                        <span style="text-decoration-line: line-through; text-decoration-color: red">&#8358;<%= image.investigation.price %></span>
+                                                                        (&#8358;<%= image.investigation.price * 0.1 %>)</td>
                                                             <% }else{ %>
-                                                            <td style="font-weight: 900; font-size: 1rem">&#8358;<%= image.images.price %></td>
+                                                            <td style="font-weight: 900; font-size: 1rem">&#8358;<%= image.investgation.price %></td>
                                                                 
                                                             <% } %>
 
@@ -591,7 +590,7 @@
                                                                     <% } %>
                                                                 <% } %>
                                                                 <% if(consultation.imagingpaid){ %>
-                                                                  <a href="/imaging-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
+                                                                  <a target="_blank" href="/imaging-invoice/<%= consultation._id %>" class="btn btn-primary"><i class="ti-receipt"></i> Invoice </a>
                                                                 <% } %>
                                                             </tr>
                                                             

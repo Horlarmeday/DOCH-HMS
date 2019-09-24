@@ -411,11 +411,12 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .sort('-created')
             .populate('patient')
             .populate('payment')
+            .populate('imaging')
             .deepPopulate([
                 'drugsObject.drugs', 'labtestObject.tests', 'labtestObject.paid', 'drugsObject.paid',
-             'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images'
+                'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images',
+                'imaging.investigation'
             ])
-            .populate('imaging')
             .exec((err, consultations)=>{
                 if(err) return next (err)
                 Appointment.find({}, (err, appointments)=>{
@@ -1137,7 +1138,7 @@ router.route('/edit-patient/:id')
                 .exec((err, count)=>{
                     var counter = count + 1
                     if(err) return next (err)
-                    res.render('app/add/edit_add_patient', { hmos, counter, user})
+                    res.render('app/add/edit_add_patient', { hmos, counter, user })
                 })
             })
         })
@@ -1166,7 +1167,7 @@ router.route('/edit-patient/:id')
                 user.save((err) => {
                     if (err) { return next(err) }
                     req.flash('success', 'Patient has been created')
-                    res.redirect('/patients');
+                    res.redirect('back');
                 })
             }
         })
@@ -3295,7 +3296,7 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     .sort('-created')
     .populate('patient')
     .populate('imaging')
-    .populate('labtestObject')
+    .populate('labtestObject.tests')
     // .populate('drugsObject')
     .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy', 'imaging.investigation'])
     .exec((err, consultations)=>{
@@ -4873,12 +4874,20 @@ router.get('/pharmacy-items', middleware.isLoggedIn, (req, res, next) => {
 
 
 //Generating Registration invoice
-router.get('/invoice/:id', middleware.isLoggedIn, (req, res, next) => {
-    User.findOne({ _id: req.params.id }, (err, user) => {
-        if (err) { return next(err) }
-        res.render('app/view/invoice', { user })
+// router.get('/invoice/:id', middleware.isLoggedIn, (req, res, next) => {
+//     User.findOne({ _id: req.params.id }, (err, user) => {
+//         if (err) { return next(err) }
+//         res.render('app/view/invoice', { user })
+//     })
+// });
+
+//
+router.get('/invoice/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id}, (err, user) => {
+
+        res.render('app/view/reginvoice', {user})
     })
-});
+})
 
 //NURSE SENT PATIENT  TO DOCTOR
 router.post('/see-doctor', middleware.isLoggedIn, (req, res, next)=>{
@@ -5314,10 +5323,7 @@ router.get('/all-antenatal', middleware.isLoggedIn, (req, res, next)=>{
         })
 })
 
-//
-router.get('/new-invoice', middleware.isLoggedIn, (req, res, next)=>{
-    res.render('app/view/newinvoice')
-})
+
 
 //DELIVERY
 router.route('/patient-delivery-information/:id')

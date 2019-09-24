@@ -483,23 +483,25 @@ $(document).ready(function() {
         var payment2 = $('#consultation2').val()
         if(retain === 'Yes'){
             $('#retainershipname').show()
-            let newAmount1 = amount1 * 0.1
-            let newAmount2 = amount2 * 0.1
-            let newPayment1 = payment1 * 0.1
-            let newPayment2 = payment2 * 0.1
-            //REGISTRATION
-            $('#registration1').val(newAmount1)
-            $('#regis1').html(newAmount1)
-            $('#registration2').val(newAmount2)
-            $('#regis2').html(newAmount2)
+            $('.reg-payment').hide()
+            // let newAmount1 = amount1 * 0.1
+            // let newAmount2 = amount2 * 0.1
+            // let newPayment1 = payment1 * 0.1
+            // let newPayment2 = payment2 * 0.1
+            // //REGISTRATION
+            // $('#registration1').val(newAmount1)
+            // $('#regis1').html(newAmount1)
+            // $('#registration2').val(newAmount2)
+            // $('#regis2').html(newAmount2)
 
-            //CONSULTATION
-            $('#consultation1').val(newPayment1)
-            $('#consult1').html(newPayment1)
-            $('#consultation2').val(newPayment2)
-            $('#consult2').html(newPayment2)
+            // //CONSULTATION
+            // $('#consultation1').val(newPayment1)
+            // $('#consult1').html(newPayment1)
+            // $('#consultation2').val(newPayment2)
+            // $('#consult2').html(newPayment2)
 
         }else{
+            $('.reg-payment').show()
             $('#retainershipname').hide()
             $('#hmoname').hide()
             $('#patientId').hide()
@@ -515,6 +517,8 @@ $(document).ready(function() {
             $('#regis1').html(amount1)
             $('#registration2').val(amount2)
             $('#regis2').html(amount2)
+            $('input[name="registration"]').attr('required', true)
+            $('input[name="consultation"]').attr('required', true)
 
             //CONSULTATION
             $('#consultation1').val(payment1)

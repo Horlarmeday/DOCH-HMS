@@ -337,10 +337,17 @@ Credit Card
 @media print
 {
   .no-print {display:none;}
+  @page{
+    width: 50mm;
+    height: 30mm;
+  }
 }
 
 @media screen{
-  
+  @page{
+    width: 280mm;
+    height: 30mm;
+  }
   .credit-card-box {
   -webkit-perspective: 1000;
           perspective: 1000;
