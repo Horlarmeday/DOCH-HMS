@@ -2729,65 +2729,74 @@ router.route('/attending-to-patient/:id')
                             })
                         })
                         
-                        Triage.findOne({_id: user.triages[user.triages.length -1]._id}, function (err, triage) {
-                            if (err) { return next(err) }
+                        // Triage.findOne({_id: user.triages[user.triages.length -1]._id}, function (err, triage) {
+                        //     if (err) { return next(err) }
                            
                             Imaging.find({}, (err, imaging)=>{
                                 if (err) { return next(err) }
                                
                                
                                     
-                                   triage.taken = true;
+                                //    triage.taken = true;
                             
-                                   triage.save((err)=>{
-                                       if(err){
-                                          return next (err)
-                                       }
+                                //    triage.save((err)=>{
+                                //        if(err){
+                                //           return next (err)
+                                //        }
                                        res.render('app/add/attending_to_patient', 
                                        { labs, user, drugs, imaging, serology })
-                                   })
+                                //    })
                                 //}
                             })
                             
-                        })
+                        // })
                     })
                 })
             })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next) => {
-        const consultation = new Consultation({
-            doctor: req.user._id,
-            patient: req.params.id,
-            visit: req.body.visit,
-            physical:{
-                observation: req.body.observation,
-                chest: req.body.chest,
-                cvs: req.body.cvs,
-                abdomen: req.body.abdomen,
-                mss: req.body.mss,
-                other: req.body.other
-            },
-            // labtype: req.body.labtype,
-            // labtest: req.body.labtest,
-            diagnosis: req.body.diagnosis,
-            treatment: req.body.treatment
-        })
-        consultation.save((err)=>{
-            if(err) return next(err)
-        })
-        User.updateOne(
-            {
-                _id: req.params.id
-            },
-            {
-                $push:{consultations: consultation._id}
-            },function (err, count) {
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            if(err) {return next (err)}
+            Triage.findOne({_id: user.triages[user.triages.length -1]._id}, function (err, triage) {
                 if(err) {return next (err)}
-                req.flash('success', 'Patient Investiation saved Successfully!')
-                res.redirect('/edit-consultation/' + consultation._id)
-            }
-        )
+                const consultation = new Consultation({
+                    doctor: req.user._id,
+                    patient: req.params.id,
+                    visit: req.body.visit,
+                    physical:{
+                        observation: req.body.observation,
+                        chest: req.body.chest,
+                        cvs: req.body.cvs,
+                        abdomen: req.body.abdomen,
+                        mss: req.body.mss,
+                        other: req.body.other
+                    },
+                    diagnosis: req.body.diagnosis,
+                    treatment: req.body.treatment
+                })
+                consultation.save((err)=>{
+                    if(err) return next(err)
+                    triage.taken = true;
+                    triage.save()
+                })
+                User.updateOne(
+                    {
+                        _id: req.params.id
+                    },
+                    {
+                        $push:{consultations: consultation._id}
+                    },function (err, count) {
+                        if(err) {return next (err)}
+                        req.flash('success', 'Patient Investiation saved Successfully!')
+                        res.redirect('/edit-consultation/' + consultation._id)
+                    }
+                )
+            })
+        })
+        
+        
+        
     })
 
 
@@ -2820,86 +2829,69 @@ router.route('/consultation/:id')
                             })
                         })
                     })
-                    // //SEROLOGY
-                    // labs[0].tests.forEach((test)=>{
-                    //     serology.push({
-                    //         'name': test.name
-                    //     })
-                    // })
-                    // //MICROBILOGY
-                    // labs[1].tests.forEach((test)=>{
-                    //     micro.push({
-                    //         'name': test.name
-                    //     })
-                    // })
-                    // //CHEMICAL PATHOLOGY
-                    // labs[2].tests.forEach((test)=>{
-                    //     chemical.push({
-                    //         'name': test.name
-                    //     })
-                    // })
-                    Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
-                        if (err) { return next(err) }
+               
+                    // Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+                    //     if (err) { return next(err) }
                        
                         Imaging.find({}, (err, imaging)=>{
                             if (err) { return next(err) }
-                           
-                            // if(appointment.taken){
-                            //     req.flash('error', 'Appointment already taken')
-                            //     return res.redirect('/dashboard')
-                            // }else{
-                                
-                               appointment.taken = true;
+                            //    appointment.taken = true;
                         
-                               appointment.save((err)=>{
-                                   if(err){
-                                      return next (err)
-                                   }
+                            //    appointment.save((err)=>{
+                            //        if(err){
+                            //           return next (err)
+                            //        }
                                    res.render('app/add/add_patient_consultation', 
                                    { labs, user, drugs, imaging, serology })
-                               })
+                            //    })
                             //}
                         })
                         
-                    })
+                    // })
                 })
             })
         })
     })
 })
 .post(middleware.isLoggedIn, (req, res, next) => {
-    const consultation = new Consultation({
-        doctor: req.user._id,
-        patient: req.params.id,
-        visit: req.body.visit,
-        physical:{
-            observation: req.body.observation,
-            chest: req.body.chest,
-            cvs: req.body.cvs,
-            abdomen: req.body.abdomen,
-            mss: req.body.mss,
-            other: req.body.other
-        },
-        // labtype: req.body.labtype,
-        // labtest: req.body.labtest,
-        diagnosis: req.body.diagnosis,
-        treatment: req.body.treatment
-    })
-    consultation.save((err)=>{
+    User.findOne({_id: req.params.id}, (err, user)=>{
         if(err) return next(err)
-    })
-    User.updateOne(
-        {
-            _id: req.params.id
-        },
-        {
-            $push:{consultations: consultation._id}
-        },function (err, count) {
-            if(err) {return next (err)}
-            req.flash('success', 'Patient Consultation saved Successfully!')
-            res.redirect('/edit-consultation/' + consultation._id)
-        }
-    )
+        Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+            if(err) return next(err)
+            const consultation = new Consultation({
+                doctor: req.user._id,
+                patient: req.params.id,
+                visit: req.body.visit,
+                physical:{
+                    observation: req.body.observation,
+                    chest: req.body.chest,
+                    cvs: req.body.cvs,
+                    abdomen: req.body.abdomen,
+                    mss: req.body.mss,
+                    other: req.body.other
+                },
+                diagnosis: req.body.diagnosis,
+                treatment: req.body.treatment
+            })
+            consultation.save((err)=>{
+                if(err) return next(err)
+                appointment.taken = true;
+                appointment.save()
+            })
+            User.updateOne(
+                {
+                    _id: req.params.id
+                },
+                {
+                    $push:{consultations: consultation._id}
+                },function (err, count) {
+                    if(err) {return next (err)}
+                    req.flash('success', 'Patient Consultation saved Successfully!')
+                    res.redirect('/edit-consultation/' + consultation._id)
+                }
+            )
+        })
+    })   
 })
 
 //Editing consultation
@@ -3323,53 +3315,58 @@ router.route('/add-immunization/:id')
         .populate('appointments')
         .exec((err, user)=>{
             if(err) return next(err)
-            Appointment.findOne({_id: user.appointments[ user.appointments.length -1]._id}, (err, appointment)=>{
-                appointment.taken = true;
-                appointment.save((err)=>{
-                    if(err) return next(err)
+            // Appointment.findOne({_id: user.appointments[ user.appointments.length -1]._id}, (err, appointment)=>{
+            //     appointment.taken = true;
+                // appointment.save((err)=>{
+                //     if(err) return next(err)
                     res.render('app/add/add_immunization', {user})
-                })
-            })
+                // })
+            // })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        const immunization = new Immunization({
-            patient: req.body.patient,
-            creator: req.user._id,
-            name: req.body.name,
-            dateofbirth: req.body.dateofbirth,
-            birthweight: req.body.birthweight,
-            placeofbirth: req.body.placeofbirth,
-            // mothersname: req.body.mothersname,
-            // mothersphone: req.body.mothersphone,
-            address: req.body.address,
-            atBirth: req.body.atBirth,
-            at6weeks: req.body.at6weeks,
-            at10weeks: req.body.at10weeks,
-            at14weeks: req.body.at14weeks,
-            at6months: req.body.at6months,
-            at9months: req.body.at9months,
-            at1year: req.body.at1year,
-            at15months: req.body.at15months,
-            at2years: req.body.at2years,
-        })
-        immunization.save((err)=>{
-            if(err) return next (err)
-            User.updateOne(
-                {
-                    _id: immunization.patient
-                },
-                {
-                    $push: { immunizations: immunization._id }
-                },function (err, count) {
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            Appointment.findOne({_id: user.appointments[ user.appointments.length -1]._id}, (err, appointment)=>{
+                const immunization = new Immunization({
+                    patient: req.body.patient,
+                    creator: req.user._id,
+                    name: req.body.name,
+                    dateofbirth: req.body.dateofbirth,
+                    birthweight: req.body.birthweight,
+                    placeofbirth: req.body.placeofbirth,
+                    address: req.body.address,
+                    atBirth: req.body.atBirth,
+                    at6weeks: req.body.at6weeks,
+                    at10weeks: req.body.at10weeks,
+                    at14weeks: req.body.at14weeks,
+                    at6months: req.body.at6months,
+                    at9months: req.body.at9months,
+                    at1year: req.body.at1year,
+                    at15months: req.body.at15months,
+                    at2years: req.body.at2years,
+                })
+                immunization.save((err)=>{
                     if(err) return next (err)
-                    req.flash('success', 'Patient Immunization saved successfully!')
-                    res.redirect('back')
-                }
-
-            )
-            
+                    appointment.taken = true;
+                    appointment.save()
+                    User.updateOne(
+                        {
+                            _id: immunization.patient
+                        },
+                        {
+                            $push: { immunizations: immunization._id }
+                        },function (err, count) {
+                            if(err) return next (err)
+                            req.flash('success', 'Patient Immunization saved successfully!')
+                            res.redirect('back')
+                        }
+        
+                    )
+                    
+                })
+            })
         })
+        
     })
 
 //VIEW IMMUNIZATION
@@ -5031,8 +5028,8 @@ router.route('/create-ante-natal-patient/:id')
             if (err) return next (err)
             User.findOne({_id: req.params.id}, (err, user)=>{
                 if (err) return next (err)
-                Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
-                    if (err) return next (err)
+                // Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+                //     if (err) return next (err)
                     let antenatalCounter = count + 1
                     var birthday = new Date(user.birthday)
                     var today = new Date()
@@ -5044,62 +5041,69 @@ router.route('/create-ante-natal-patient/:id')
                         age
                     }
                     
-                       appointment.taken = true;
-                       appointment.save((err)=>{
-                           if(err){
-                               req.flash('error', "Error taking the appointment")
-                               return res.redirect('back')
-                           }
+                    //    appointment.taken = true;
+                    //    appointment.save((err)=>{
+                    //        if(err){
+                    //            req.flash('error', "Error taking the appointment")
+                    //            return res.redirect('back')
+                    //        }
                            res.render('app/add/register_ante_natal', { antenatalCounter, user, age})
-                       })
+                    //    })
                     
-                })
+                // })
             })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        const anc = new ANC()
-            anc.creator = req.user._id,
-            anc.patient = req.body.patient,
-            anc.ancId = req.body.ancId,
-            anc.age = req.body.age,
-            anc.occupation = req.body.occupation,
-            anc.gravida = req.body.gravida,
-            anc.parity = req.body.parity,
-            anc.lmp = req.body.lmp,
-            anc.edd = req.body.edd,
-            anc.ecc = req.body.ecc,
-            anc.fetalage = req.body.fetalage,
-            anc.medicalhistory = req.body.medicalhistory,
-            anc.surgicalhistory = req.body.surgicalhistory,
-            anc.bloodtransfusion = req.body.bloodtransfusion,
-            anc.familyhistory = req.body.familyhistory,
-            // anc.taken = true,
-            anc.previouspregnancy.push({
-                year: req.body.year,
-                deliveryplace: req.body.deliveryplace,
-                maturity: req.body.maturity,
-                duration: req.body.duration,
-                delivery: req.body.delivery,
-                weight: req.body.weight,
-                sex: req.body.sex,
-                fate: req.body.fate,
-                puerperium: req.body.puerperium,
+        User.findOne({_id: req.params.id}, (err, user)=>{
+            Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+                if (err) return next (err)
+                const anc = new ANC()
+                anc.creator = req.user._id,
+                anc.patient = req.body.patient,
+                anc.ancId = req.body.ancId,
+                anc.age = req.body.age,
+                anc.occupation = req.body.occupation,
+                anc.gravida = req.body.gravida,
+                anc.parity = req.body.parity,
+                anc.lmp = req.body.lmp,
+                anc.edd = req.body.edd,
+                anc.ecc = req.body.ecc,
+                anc.fetalage = req.body.fetalage,
+                anc.medicalhistory = req.body.medicalhistory,
+                anc.surgicalhistory = req.body.surgicalhistory,
+                anc.bloodtransfusion = req.body.bloodtransfusion,
+                anc.familyhistory = req.body.familyhistory,
+                anc.previouspregnancy.push({
+                    year: req.body.year,
+                    deliveryplace: req.body.deliveryplace,
+                    maturity: req.body.maturity,
+                    duration: req.body.duration,
+                    delivery: req.body.delivery,
+                    weight: req.body.weight,
+                    sex: req.body.sex,
+                    fate: req.body.fate,
+                    puerperium: req.body.puerperium,
+                })
+                anc.save((err)=>{
+                    if(err) return next (err)
+                    appointment.taken = true;
+                    appointment.save()
+                    User.update(
+                        {
+                            _id: anc.patient
+                        },
+                        {
+                            $push:{ ancs: anc._id}
+                        },function(err, count){
+                            req.flash('success', 'Patient account was created successfully')
+                            res.redirect('/ante-natal/' + req.params.id)
+                        }
+                    )
+                })
             })
-        anc.save((err)=>{
-            if(err) return next (err)
-            User.update(
-                {
-                    _id: anc.patient
-                },
-                {
-                    $push:{ ancs: anc._id}
-                },function(err, count){
-                    req.flash('success', 'Patient account was created successfully')
-                    res.redirect('/ante-natal/' + req.params.id)
-                }
-            )
         })
+            
     })
 
 //ANTENATAL
@@ -5109,14 +5113,14 @@ router.route('/ante-natal/:id')
         .populate('ancs')
         .exec((err, user)=>{
             if(err) return next (err)
-            Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
-                if (err) return next (err)
-                   appointment.taken = true;
-                   appointment.save((err)=>{
-                       if(err){
-                           req.flash('error', "Error taking the appointment")
-                           return res.redirect('back')
-                       }
+            // Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+            //     if (err) return next (err)
+            //        appointment.taken = true;
+                //    appointment.save((err)=>{
+                //        if(err){
+                //            req.flash('error', "Error taking the appointment")
+                //            return res.redirect('back')
+                //        }
                        ANC.findOne({_id: user.ancs[user.ancs.length -1]._id})
                        .populate('labtest')
                        .deepPopulate('labtest.lab')
@@ -5130,9 +5134,9 @@ router.route('/ante-natal/:id')
                                 })
                            })
                        })
-                   })
+                //    })
                 
-            })
+            // })
            
         })
     })
@@ -5145,26 +5149,31 @@ router.route('/ante-natal/:id')
                     req.flash('error', 'Patient ANC record cannot be found')
                     return res.redirect('back')
                 }
-                anc.presentpregnancy.push({
-                    thedate: req.body.thedate,
-                    weight:  req.body.weight,
-                    urinalysisGlucose: req.body.urinalysisGlucose,
-                    urinalysisProtein: req.body.urinalysisProtein,
-                    bp: req.body.bp,
-                    pallor: req.body.pallor,
-                    maturity: req.body.maturity,
-                    fundalheight: req.body.fundalheight,
-                    presentation: req.body.presentation,
-                    fetalheartrate: req.body.fetalheartrate,
-                    oedema: req.body.oedema,
-                    comments: req.body.comments,
-                    tcadate: req.body.tcadate,
-                    initial: req.body.initial
-                })
-                anc.save((err)=>{
-                    if(err) return next (err)
-                    req.flash('success', 'Details saved successfully')
-                    res.redirect('back')
+                Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+                    if (err) return next (err)
+                       anc.presentpregnancy.push({
+                        thedate: req.body.thedate,
+                        weight:  req.body.weight,
+                        urinalysisGlucose: req.body.urinalysisGlucose,
+                        urinalysisProtein: req.body.urinalysisProtein,
+                        bp: req.body.bp,
+                        pallor: req.body.pallor,
+                        maturity: req.body.maturity,
+                        fundalheight: req.body.fundalheight,
+                        presentation: req.body.presentation,
+                        fetalheartrate: req.body.fetalheartrate,
+                        oedema: req.body.oedema,
+                        comments: req.body.comments,
+                        tcadate: req.body.tcadate,
+                        initial: req.body.initial
+                    })
+                    anc.save((err)=>{
+                        if(err) return next (err)
+                        appointment.taken = true;
+                        appointment.save()
+                        req.flash('success', 'Details saved successfully')
+                        res.redirect('back')
+                    })
                 })
             })
         })
