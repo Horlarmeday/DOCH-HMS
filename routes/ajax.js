@@ -14,6 +14,7 @@ const Vendor = require('../models/vendor')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
 const Investigations = require('../models/investigations')
+const LocalInventory = require('../models/localinventory')
 const ANC = require('../models/anc')
 const Request = require('../models/request')
 // const Counter = require('../models/counters')
@@ -105,11 +106,11 @@ router.post('/get-drug-info', middleware.isLoggedIn, (req, res, next)=>{
     PharmacyItem.findOne({_id: drugId})
     .exec((err, drug)=>{
         if(err) return next (err)
-        console.log(drug)
         res.json({
             price: drug.sellprice,
             rquantity: drug.rquantity,
-            quantity: drug.quantity
+            quantity: drug.quantity,
+            code: drug.productcode
         })
         
     })
@@ -154,7 +155,10 @@ router.post('/get-pharmacy-price', middleware.isLoggedIn, (req, res, next)=>{
     PharmacyItem.findOne({_id: drugCode})
     .exec((err, drug)=>{
         if(err) return next (err)
-        res.json(drug.sellprice)
+        res.json({
+            price: drug.sellprice,
+            code: drug.productcode
+        })
     })
 })
 
@@ -205,6 +209,18 @@ router.post('/get-imaging-price', middleware.isLoggedIn, (req, res, next)=>{
     .exec((err, investigate)=>{
         if(err) return next(err)
         res.json(investigate.price)
+    })
+})
+
+router.post('/get-dispensory-price', middleware.isLoggedIn, (req, res, next)=>{
+    const drugCode = req.body.itemCode
+    LocalInventory.findOne({_id: drugCode})
+    .exec((err, drug)=>{
+        if(err) return next (err)
+        res.json({
+            price: drug.price,
+            balance: drug.balance
+        })
     })
 })
 

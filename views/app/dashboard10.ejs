@@ -235,8 +235,8 @@
                                                            
                                                             <td>
                                                                     <% consultation.labtestObject.forEach((test)=>{ %>
-                                                                        <p style="font-weight: 700"><%= test.name %>
-                                                                        <span style="color: sandybrown">(&#8358;<%= test.price %>)</span>
+                                                                        <p style="font-weight: 700"><%= test.tests.name %>
+                                                                        <span style="color: sandybrown">(&#8358;<%= test.tests.price %>)</span>
                                                                         </p>
                                                                    <% }) %>
                                                                

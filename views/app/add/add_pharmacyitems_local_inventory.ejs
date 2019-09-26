@@ -62,7 +62,11 @@
                                                             <select id="itemId" name="name" class="form-control js-example-basic-single" onchange="getDrugInfo()" required>
                                                                 <option selected disabled>Select</option>
                                                                 <% drugs.forEach((drug)=>{  %>
-                                                                    <option value="<%= drug._id %>"><%= drug.name %></option>
+                                                                    <% if(drug.name){ %>
+                                                                        <option value="<%= drug._id %>"><%= drug.name %></option>
+                                                                    <% }else{ %>
+                                                                        <option value="<%= drug._id %>"><%= drug.pharmname.generic %></option>
+                                                                    <% } %>
                                                                 <% }) %>
                                                             </select>
                                                         </div>
@@ -74,7 +78,7 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Product Code</label>
-                                                            <input type="text" name="productcode" class="form-control" placeholder=" Product Code" required>
+                                                            <input type="text" id="productCode" name="productcode" class="form-control" placeholder=" Product Code" required readonly>
                                                         </div>                                                      
                                                         <div class="col-sm-6">
                                                             <label for="">Quantity</label>

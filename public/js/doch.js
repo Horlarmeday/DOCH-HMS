@@ -814,6 +814,7 @@ function getDrugInfo() {
     .done(function(data) {
         //console.log(data)
         $('#drugAmount').val(data.price)
+        $('#productCode').val(data.code)
         
 
         if(('rquantity' in data && data[1] === undefined)){
@@ -869,6 +870,19 @@ function getDrugPrice() {
        
     })
 }
+
+function getLocalDrugPrice() {
+    const itemCode = $('#itemCode').val()
+    console.log(itemCode)
+    $.post('/get-dispensory-price', { itemCode: itemCode })
+    .done(function(data) {
+        //console.log(data)
+        $('#localPrice').val(data.price)
+        $('#localRemain').val(data.balance)
+       
+    })
+}
+
 
 //Lab tests
 function testSelect () {

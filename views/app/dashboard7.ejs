@@ -419,19 +419,46 @@
                                                                     <th></th>
                                                             <td>
                                                                     <p style="font-weight: 500">
-                                                                        <label><%= drug.drugs.name %></label>
-                                                                            <span style="font-weight: 900; color: darkorange">     
-                                                                             (&#8358;<%= drug.drugs.sellprice %>)</span>
+                                                                            <% if(drug.drugs.name.name){ %>
+                                                                                <label><%= drug.drugs.name.name %></label>
+                                                                            <% }else{ %>
+                                                                                <label> <%= drug.drugs.name.pharmname.generic %></label>
+                                                                            <% } %>
+                                                                       
+                                                                            <span style="font-weight: 900; color: darkorange"> 
+                                                                            <% if(drug.drugs.sellprice){ %>
+                                                                                (&#8358;<%= drug.drugs.sellprice %>)</span>
+                                                                            <% }else{ %>
+                                                                                (&#8358;<%= drug.drugs.price %>)</span>
+                                                                            <% } %>
+                                                                             
                                                                     </p>
                                                                 
                                                             </td>
                                                             
                                                             <% if(consultation.patient.retainership === "Yes"){ %>
+                                                                
                                                                 <td style="font-weight: 900; font-size: 1rem"> 
-                                                                    <span style="text-decoration-line: line-through; text-decoration-color: red">&#8358;<%= drug.drugs.sellprice %></span>
-                                                                     (&#8358;<%= drug.drugs.sellprice * 0.1 %>)</td>
+                                                                    <% if(drug.drugs.sellprice){ %>
+                                                                        <span style="text-decoration-line: line-through; text-decoration-color: red">
+                                                                                &#8358;<%= drug.drugs.sellprice %>
+                                                                            </span>
+                                                                             (&#8358;<%= drug.drugs.sellprice * 0.1 %>)
+                                                                    <% }else{ %>
+                                                                        <span style="text-decoration-line: line-through; text-decoration-color: red">
+                                                                                &#8358;<%= drug.drugs.price %>
+                                                                            </span>
+                                                                             (&#8358;<%= drug.drugs.price * 0.1 %>)
+                                                                    <% } %>
+                                                                   
+                                                                </td>
                                                             <% }else{ %>
-                                                                <td style="font-weight: 900; font-size: 1rem">&#8358;<%= drug.drugs.sellprice %></td>
+                                                                <% if(drug.drugs.sellprice){ %>
+                                                                    <td style="font-weight: 900; font-size: 1rem">&#8358;<%= drug.drugs.sellprice %></td>
+                                                                <% }else{ %>
+                                                                    <td style="font-weight: 900; font-size: 1rem">&#8358;<%= drug.drugs.price %></td>
+                                                                <% } %>
+                                                           
                                                             <% } %>
 
                                                             
@@ -456,9 +483,19 @@
                                                             <td>
                                                                 <% if(!consultation.pharmacypaid){ %>
                                                                     <% if(consultation.patient.retainership === "Yes"){ %>
-                                                                        <button value="<%= drug.drugs.sellprice * 0.1 %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                                        <% if(drug.drugs.sellprice){ %>
+                                                                            <button value="<%= drug.drugs.sellprice * 0.1 %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                                        <% }else{ %>
+                                                                            <button value="<%= drug.drugs.price * 0.1 %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                                        <% } %>
+                                                                       
                                                                  <% }else{ %>
-                                                                    <button value="<%= drug.drugs.sellprice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                                    <% if(drug.drugs.sellprice){ %>
+                                                                        <button value="<%= drug.drugs.sellprice %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                                    <% }else{ %>
+                                                                        <button value="<%= drug.drugs.price %>"  name="<%= consultation._id %>" type="button" class="btn btn-success drugpay"> Paid?</button>
+                                                                    <% } %>
+                                                                    
                                                                  <% } %>
                                                                 <% } %>
                                                                 <% if(consultation.pharmacypaid){ %>

@@ -415,7 +415,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .deepPopulate([
                 'drugsObject.drugs', 'labtestObject.tests', 'labtestObject.paid', 'drugsObject.paid',
                 'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images',
-                'imaging.investigation'
+                'imaging.investigation', 'drugsObject.drugs.name.pharmname',
             ])
             .exec((err, consultations)=>{
                 if(err) return next (err)
@@ -516,7 +516,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 .populate('patient')
                 .populate('doctor')
                 .deepPopulate(['drugsObject.drugs', 'drugsObject.paid', 'patient.retainershipname'])
-                .populate('labtestObject')
+                .populate('labtestObject.tests')
                 .populate('imaging')
                 .exec((err, consultations)=>{
                     res.render('app/dashboard10', { users, appointments, consultations })
@@ -2902,7 +2902,8 @@ router.route('/edit-consultation/:id')
         .populate('patient')
         .populate('labtestObject')
         .populate('imaging')
-        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images', 'drugsObject.prescribedBy', 'imaging.investigation'])
+        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images',
+         'drugsObject.prescribedBy', 'imaging.investigation', 'drugsObject.drugs.name.pharmname'])
         .exec((err, consultation)=>{
             PharmacyItem.find({}, (err, drugs)=>{
                 Lab.find({})
@@ -2922,8 +2923,11 @@ router.route('/edit-consultation/:id')
                         .populate('triages')
                         .populate('consultations')
                         .exec((err, user)=>{
-                            //console.log(user)
-                            res.render('app/add/edit_consultation', {consultation, drugs, labs, imaging, alltests, user})
+                            LocalInventory.find({})
+                            .deepPopulate('name.pharmname')
+                            .exec((err, locals)=>{
+                                res.render('app/add/edit_consultation', {consultation, drugs, labs, imaging, alltests, user, locals})
+                            })
                         })
                     })
                 })
@@ -3290,7 +3294,7 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     .populate('imaging')
     .populate('labtestObject.tests')
     // .populate('drugsObject')
-    .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy', 'imaging.investigation'])
+    .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy', 'imaging.investigation', 'drugsObject.drugs.name.pharmname',])
     .exec((err, consultations)=>{
         if(err) return next (err)
         res.render('app/view/consultations', { consultations })
@@ -3544,6 +3548,7 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
             'consultations.doctor',
             'consultations.labtestObject',
             'consultations.drugsObject.drugs',
+            'consultations.drugsObject.drugs.name.pharmname',
             'payments.services',
             'ancs.delivery.midwife',
             'ancs.postnatal.nurse',
@@ -3832,6 +3837,7 @@ router.route('/edit-inventory/:id')
         if(err) return next (err)
             LocalInventory.findOne({_id: req.params.id })
             .populate('name') 
+            .deepPopulate('name.pharmname') 
             .exec((err, item)=>{
                 res.render('app/add/edit_local_inventory', { drugs, item })
             })
@@ -3867,7 +3873,9 @@ router.route('/edit-inventory/:id')
 
    router.route('/add-to-inventory')
    .get(middleware.isLoggedIn, (req, res, next)=>{
-       PharmacyItem.find({}, (err, drugs)=>{
+       PharmacyItem.find({})
+       .populate('pharmname')
+       .exec((err, drugs)=>{
         if(err) return next (err)
         res.render('app/add/add_pharmacyitems_local_inventory', { drugs })
        })
@@ -3903,6 +3911,7 @@ router.get('/inventory-list', middleware.isLoggedIn, (req, res, next)=>{
     LocalInventory.find({})
     .populate('creator')
     .populate('name')
+    .deepPopulate('name.pharmname')
     .exec((err, items)=>{
         if(err){
             return next(err)
@@ -4121,7 +4130,7 @@ router.route('/add-pharmacy-items')
         const item = new PharmacyItem()
         item.itemDigit = count +1
         item.creator = req.user._id;
-        item.name = req.body.name;
+        item.pharmname = req.body.pharmname;
         item.description = req.body.description;
         item.price = req.body.price;
         item.unit = req.body.unit;
@@ -4153,7 +4162,8 @@ router.route('/add-pharmacy-items')
 
 router.route('/edit-pharmacy-item/:id')
    .get(middleware.isLoggedIn, (req, res, next)=>{
-       PharmacyItem.findOne({_id: req.params.id}, (err, item)=>{
+       PharmacyItem.findOne({ _id: req.params.id })
+       .exec((err, item)=>{
            Drug.find({}, (err, drugs)=>{
                if(err) return next (err)
                User.find({role: 17}, (err, users)=>{
@@ -4863,6 +4873,7 @@ router.get('/pharmacy-items', middleware.isLoggedIn, (req, res, next) => {
     .sort('-created')
     .populate('vendor')
     .populate('dispensehistory')
+    .populate('pharmname')
     .exec( (err, items) => {
         if (err) { return next(err) }
         res.render('app/view/pharmacy_items', { items })

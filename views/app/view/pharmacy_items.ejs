@@ -90,7 +90,12 @@
                                                 <tr style="cursor: pointer" onclick="window.location='/dispense-history/<%= item._id %>';">
                                                     <td></td>
                                                     <td><%= item.productcode %></td>
-                                                    <td><%= item.name %></td>
+                                                    <% if(item.name){ %>
+                                                        <td><%= item.name %></td>
+                                                    <% }else{ %>
+                                                        <td><%= item.pharmname.generic %></td>
+                                                    <% } %>
+                                                    
                                                     <td><%= item.quantity %></td>
                                                     <% if(item.dispensehistory < 1){ %>
                                                         <td style="color: darkviolet"><strong><%= item.quantity %></strong></td>

@@ -9,6 +9,7 @@ const pharmacyItemSchema = new mongoose.Schema({
     checked: {type: Boolean, default: false},
     itemDigit: Number,
     name: String,
+    pharmname: { type: mongoose.Schema.Types.ObjectId, ref: 'Drug'},
     productcode: String,
     shelf: String,
     shelfno: String,

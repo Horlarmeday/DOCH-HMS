@@ -4,7 +4,7 @@ const consultationSchema = new mongoose.Schema({
     doctor: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     drugsObject: [{
-        drugs: {type: mongoose.Schema.Types.ObjectId, ref: "PharmacyItem"},
+        drugs: {type: mongoose.Schema.Types.ObjectId, ref: "LocalInventory"},
         paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
         checked: {type: Boolean, default: false},
         startingdate: Date,

@@ -64,10 +64,10 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Name</label>
-                                                            <select name="name" class="form-control js-example-basic-single" required>
+                                                            <select name="pharmname" class="form-control js-example-basic-single" required>
                                                                 <option selected disabled>Select</option>
                                                                 <% drugs.forEach((drug)=>{  %>
-                                                                    <option value="<%= drug.generic %>"><%= drug.generic %></option>
+                                                                    <option value="<%= drug._id %>"><%= drug.generic %></option>
                                                                 <% }) %>
                                                             </select>
                                                         </div>

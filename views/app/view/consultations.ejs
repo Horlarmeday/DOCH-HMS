@@ -145,10 +145,14 @@
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
+                                                                <th></th>
                                                           
-                                                               
-                                                                <td style="font-weight: 700; color: green"><%= drug.drugs.name %>   
-                                                                </td> 
+                                                                <% if(drug.drugs.name.name){ %>
+                                                                    <td style="font-weight: 700; color: green"> <%= drug.drugs.name.name %></td>
+                                                                <% }else{ %>
+                                                                    <td style="font-weight: 700; color: green"> <%= drug.drugs.name.pharmname.generic %></td>
+                                                                <% } %>
+                                                                 
                                                                 <td>
                                                                     <%= drug.startingdate.toLocaleDateString() %>
                                                                 </td>

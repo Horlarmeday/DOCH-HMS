@@ -86,7 +86,11 @@
                                                 <tr>
                                                     <td></td>
                                                     <td><%= item.productcode %></td>
-                                                    <td><%= item.name.name %></td>
+                                                    <% if(item.name.name){ %>
+                                                        <td><%= item.name.name %></td>
+                                                    <% }else{ %>
+                                                        <td><%= item.name.pharmname.generic %></td>
+                                                   <% } %>
                                                     <td><%= item.quantity %></td>
                                                    
                                                     <td><%= item.shelf %> <%= item.shelfno %></td>
