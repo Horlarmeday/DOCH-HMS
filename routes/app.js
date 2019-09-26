@@ -697,6 +697,54 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 
             })
         })
+    }else if (req.user.role == 20){
+        //HOD LABORATORY
+        User.find({}, (err, users)=>{
+            if(err) return next (err)
+            Consultation.find({})
+            .populate('doctor')
+            .populate('patient')
+            .populate('labtestObject')
+            .deepPopulate(['labtestObject.lab', 'labtestObject.tests', 'labtestObject.tests.lab', 'patient.retainershipname'])
+            .exec((err, consultations)=>{
+                if(err) return next (err)
+                Appointment.find({}, (err, appointments)=>{
+                    if(err) return next (err)
+                    ANC.find({})
+                        .populate('labtest')
+                        .populate('creator')
+                        .populate('patient')
+                        .deepPopulate('labtest.lab')
+                        .exec((err, ancs)=>{
+                            if(err) return next (err)
+                            Request.find({})
+                            .populate('requestedby')
+                            .exec((err, requests)=>{
+                                if(err) return next (err)
+                                res.render('app/dashboard20', { consultations, users, appointments, ancs, requests })
+                            })
+                    })
+                })
+            })
+        })
+    }else if (req.user.role == 21){
+        // HOD NURSE
+        User.find({})
+        .sort('-createdAt')
+        .populate('triages')
+        .exec((err, users)=>{
+            if(err) return next (err)
+            Appointment.find({})
+            .populate('patient')
+            .exec((err, appointments)=>{
+                var appointmentIsEmpty = true
+                if(appointmentIsEmpty > 0){
+                    appointmentIsEmpty = false
+                }
+                if(err) return next (err)
+                res.render('app/dashboard21', { appointments, users, appointmentIsEmpty})              
+            })
+        })
     }
 })
 

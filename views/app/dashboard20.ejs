@@ -213,7 +213,7 @@
                                                 </thead>
                                                 <tbody>
                                                     <% ancs.forEach((anc)=>{ %>
-                                                        <% if(anc.labtest.length > 0){ %>
+                                                       <% if(anc.labtest.length > 0){ %>
                                                     <tr >
                                                         <td></td>
                                                         <td><%= anc.patient.patientId %></td>
@@ -260,7 +260,91 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                        </div>
+
+                        <div class="col-sm-12">
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Requests</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S/N</th>
+                                                        <th>Item(s) Requested</th>
+                                                        <th>Quantity</th>
+                                                        <th>Unit</th>
+                                                        <th>Department</th>
+                                                        <th>RequestedBy</th>
+                                                        <th>Date Requested</th>
+                                                        <th>Time</th>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <% requests.forEach((request) => { %>
+                                                        <% if(request.department === 'Laboratory'){ %>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td><%= request.item %></td>
+                                                            <td><%= request.quantity %></td>
+                                                            <td><%= request.unit %></td>
+                                                            <td>
+
+                                                                <% if(request.requestedby.role == 2){ %>
+                                                                    <span>Doctor</span>
+                                                                <% }else if(request.requestedby.role == 3){ %>
+                                                                    <span>Nurse</span>
+                                                                <% }else if(request.requestedby.role == 4){ %>
+                                                                    <span>Laboratory</span>
+                                                                <% }else if(request.requestedby.role == 5){ %>
+                                                                    <span>Pharmacy</span>
+                                                                <% }else if (request.requestedby.role == 10){ %>
+                                                                    <span>Emergency</span>
+                                                                <% } %>
+                                                            </td>
+
+                                                            <td><%= request.requestedby.firstname %> <%= request.requestedby.lastname %></td>
+                                                            <td><%= request.createdAt.toDateString() %></td>
+                                                            <td><%= request.createdAt.toLocaleTimeString()  %></td>
+                                                             <td>
+                                                                    <% if(request.granted && !request.declined){ %>
+                                                                        <label class="label label-md bg-success">Granted</label> 
+                                                                    <% }else if(!request.granted && request.declined){ %>
+                                                                        <label class="label label-md bg-danger">Declined</label> 
+                                                                    <% }else if(!request.granted && !request.declined){ %>
+                                                                        <label class="label label-md bg-warning">Pending</label>
+                                                                    <% } %>
+                                                                
+                                                            </td>
+                                                            <% if(!request.granted && !request.declined){ %>
+                                                                <td><button  type="button" value="<%= request._id %>" class="btn btn-success approve">Approve</button>
+                                                                
+                                                                    <button type="button" value="<%= request._id %>" class="btn btn-danger decline">Decline</button>
+                                                                </td>
+                                                            <% }else if (request.granted){ %>
+                                                                <td><button  type="button" class="btn btn-default " disabled>Granted</button></td>
+                                                            <% }else if(request.declined){ %>
+                                                                <td><button  type="button" class="btn btn-default " disabled>Declined</button></td>
+                                                            <% } %>
+                                                        </tr>
+                                                        <% }  %>
+                                                    <% }) %>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
 
                     </div>
                 </div>

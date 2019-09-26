@@ -1,0 +1,334 @@
+<% include ../partials/header %>
+<% include ../partials/sidebarCopy %>
+
+ <!-- Center page starts -->
+ <div class="pcoded-content">
+    <div class="pcoded-inner-content">
+        <div class="main-body">
+            <div class="page-wrapper">
+                <!-- Flash message -->
+                <% if(error && error.length > 0){ %>
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= error %>
+                    </div>
+                <% } %>
+                <% if(success && success.length > 0){ %>
+                        <div class="alert alert-success alert-dismissible">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            <%= success %>
+                        </div>
+                <% } %>
+                <div class="page-header">
+                    <div class="page-header-title">
+                        <h4>Dashboard</h4>
+                    </div>
+                </div>
+                <div class="page-body">
+                    <div class="row">
+                        <!-- Visitor Chart Start-->
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newDoctors = users.map(doctor =>{
+                                          if (doctor.role === 2){
+                                            const rDoctor = doctor.role === 2
+                                            return rDoctor;
+                                          }                    
+                                        })
+                                        const doctors = newDoctors.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8  card-visitor-button">
+                                            <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= doctors %></h6>
+                                                <p class="text-muted f-18 m-0">Doctors</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="visitor-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                        <%
+                                        const newPatients = users.map(patient =>{
+                                          if (patient.role === 8){
+                                            const rPatient = patient.role === 8
+                                            return rPatient;
+                                          }                    
+                                        })
+                                        const patients = newPatients.filter(v => v).length;
+                                     %>
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-warning btn-icon"><i class="icofont icofont-paralysis-disability"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= patients %></h6>
+                                                <p class="text-muted f-18 m-0">Patients</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="sale-chart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-12 col-xl-4">
+                            <div class="card">
+                                <div class="card-block-big card-visitor-block">
+                                    <div class="row">
+                                        <div class="col-sm-8 card-visitor-button">
+                                            <button class="btn btn-success btn-icon"><i class="icofont icofont-money"></i></button>
+                                            <div class="card-contain">
+                                                <h6><%= appointments.length %></h6>
+                                                <p class="text-muted f-18 m-0">Appointments</p>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4 text-center">
+                                            <span class="resource-barchart"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Visitor Chart End-->
+
+                        <!-- Scroll - Vertical table start -->
+                        <div class="col-sm-12">
+                        <div class="card">
+                                <div class="card-header">
+                                    <h5>New Patients</h5>
+                                    <div class="card-header-right">
+                                        <i class="icofont icofont-rounded-down"></i>
+                                        <i class="icofont icofont-refresh"></i>
+                                        <i class="icofont icofont-close-circled"></i>
+                                    </div>
+                                </div>
+                                <div class="card-block">
+                                    <div class="dt-responsive table-responsive">
+                                        <table id="order-table" class="table table-striped table-bordered nowrap">
+                                            <thead>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Patient ID</th>
+                                                    <th>Name</th>
+                                                    <th>Age</th>
+                                                    <th>Patient Type</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <% users.forEach((patient) => { %>
+                                                    <% if(patient.role === 8){ %>
+                                                    <%
+                                                        var birthday = new Date(patient.birthday)
+                                                        var today = new Date()
+                                                        var age = today.getFullYear() - birthday.getFullYear()
+                                                        if(today.getMonth() < birthday.getMonth()){
+                                                            age
+                                                        }
+                                                        if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                                                            age
+                                                        }
+                                                    %>
+                                                    <tr class="clickable">
+                                                            <td></td>
+                                                            <td><%= patient.patientId %></td>
+                                                            <td> <a href="/patient/<%= patient._id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td><%= age %></td>
+                                                         
+                                                            <% if(!patient.emergency){ %>
+                                                                <td><label class="label label-bg bg-success">Normal Patient</label></td>
+                                                            <% }else{ %>  
+                                                                <td><label class="label label-bg bg-danger">Emergency Patient</label></td>
+                                                            <% } %>    
+                                                            <% if(!patient.addmitted){ %>
+                                                            <td><label class="label label-md bg-success">Not Admitted</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Admitted</label></td>
+                                                            <% } %>
+                                                            <td>
+                                                            
+                                                            
+                                                                
+                                                            <% if(patient.triages.length < 1){ %>
+                                                                <p style="display: inline; color:red">Patient has no Triage</p>
+                                                                <% }else{ %>
+                                                                    
+                                                                <% if(!patient.triages[patient.triages.length -1].seen){ %>
+                                                                <button name="<%= patient.triages[patient.triages.length -1]._id %>" class="btn btn-inverse seedoctor" type="button">Send to Doctor</button>
+                                                                <% }else{ %>
+                                                                    <button class="btn btn-default">Sent</button>
+                                                                <% } %>
+                                                            <% } %>
+                                                            <a class="btn btn-success" href="/triage/<%= patient._id %>"><i class="ti-shift-right"></i> Add Triage</a>
+                                                            <a class="btn btn-info" href="/visit/<%= patient._id %>"><i class="ti-shift-right"></i> Check In</a>
+                                                            </td>
+                                                       
+                                                    </tr>
+                                                    
+                                                    <% } %>
+                                                    <% }) %>
+                                            </tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>S/N</th>
+                                                    <th>Patient ID</th>
+                                                    <th>Name</th>
+                                                    <th>Age</th>
+                                                
+                                                    <th>Patient Type</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                        </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Ante-Natal Appointments</h5>
+                                        <div class="card-header-right">
+                                                <i class="icofont icofont-rounded-down"></i>
+                                                <i class="icofont icofont-refresh"></i>
+                                                <i class="icofont icofont-close-circled"></i>
+                                            </div>
+                                    </div>
+                                    <div class="card-block product-table">
+                                        <div class="table-responsive">
+                                            <table id="simpletable" class="table">
+                                                <thead>
+                                                    <tr class="text-uppercase">
+                                                        <th>S/N</th>
+                                                        <th>Patient Name</th>
+                                                        <th>Type</th>
+                                                        <th>Date</th>
+                                                        <th>Timing</th>
+                                                        <th>Status</th>
+                                                        <th>Actions</th>
+                                                    </tr>
+                                                </thead>
+                                                <% if(!appointmentIsEmpty){ %>
+                                                <tbody>
+                                                    <% appointments.forEach((appointment)=>{ %>
+                                                        <% if(appointment.taken === false && appointment.type === 'Ante-Natal'){ %>
+                                                    <tr>
+                                                        <td></td>
+                                                        <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
+                                                        <td><%= appointment.type %></td>
+                                                        <td><%= appointment.appointmentdate.toLocaleDateString('en-us') %></td>
+                                                        <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
+                                                        <% if(appointment.taken === true){ %>
+                                                        <td><label class="label label-md bg-success">Attended</label></td>
+                                                        <% }else{ %>
+                                                        <td><label class="label label-md bg-warning">Pending</label></td>
+                                                        <% } %>
+                                                        <td>
+                                                          <% if(appointment.patient.ancs.length < 1){ %>
+                                                              <a href="/create-ante-natal-patient/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Register Patient</a>
+                                                          <% }else{ %>
+                                                            <a href="/ante-natal/<%= appointment.patient._id %>" class="btn btn-inverse btn-round btn-outline-inverse">Take Up</a>
+                                                          <% } %>
+                                                           
+                                                        </td>
+                                                    </tr>
+                                                    <% } %>
+                                                    <% }) %>
+                                                </tbody>
+                                                <% }else{ %>
+                                                    <tbody>
+                                                        <p class="text-center">There are no appointments</p>
+                                                    </tbody>
+                                                <% } %>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5>Immunization Appointments</h5>
+                                            <div class="card-header-right">
+                                                    <i class="icofont icofont-rounded-down"></i>
+                                                    <i class="icofont icofont-refresh"></i>
+                                                    <i class="icofont icofont-close-circled"></i>
+                                                </div>
+                                        </div>
+                                        <div class="card-block product-table">
+                                            <div class="table-responsive">
+                                                <table id="alt-pg-dt" class="table">
+                                                    <thead>
+                                                        <tr class="text-uppercase">
+                                                            <th>S/N</th>
+                                                            <th>Patient Name</th>
+                                                            <th>Type</th>
+                                                            <th>Date</th>
+                                                            <th>Timing</th>
+                                                            <th>Status</th>
+                                                            <th>Actions</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <% if(!appointmentIsEmpty){ %>
+                                                    <tbody>
+                                                        <% appointments.forEach((appointment)=>{ %>
+                                                            <% if(appointment.taken === false && appointment.type === 'Immunization'){ %>
+                                                        <tr>
+                                                            <td></td>
+                                                            <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>
+                                                            <td><%= appointment.type %></td>
+                                                            <td><%= appointment.appointmentdate.toLocaleDateString('en-us') %></td>
+                                                            <td><%= appointment.appointmenttime.toLocaleTimeString('en-us') %></td>
+                                                            <% if(appointment.taken === true){ %>
+                                                            <td><label class="label label-md bg-success">Attended</label></td>
+                                                            <% }else{ %>
+                                                            <td><label class="label label-md bg-warning">Pending</label></td>
+                                                            <% } %>
+                                                            <td>
+                                                                <a href="/add-immunization/<%= appointment.patient._id %>" class="btn btn-success btn-round btn-outline-success">Immunization</a>
+                                                            </td>
+                                                        </tr>
+                                                        <% } %>
+                                                        <% }) %>
+                                                    </tbody>
+                                                    <% }else{ %>
+                                                        <tbody>
+                                                            <p class="text-center">There are no appointments</p>
+                                                        </tbody>
+                                                    <% } %>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+</div>
+<!-- Center page ends -->
+
+<% include ../partials/footerCopy %>
