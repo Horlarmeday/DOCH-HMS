@@ -341,7 +341,6 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                             })
                         })
                     })
-            
             })
         })
     }else if(req.user.role === 4){
@@ -382,7 +381,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 .populate('patient')
                 .populate('doctor')
                 // .populate('drugsObject')
-                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname', 'drugsObject.prescribedBy'])
+                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname', 'drugsObject.prescribedBy', 'drugsObject.drugs.name.pharmname'])
                 .exec((err, consultations)=>{
                     if(err) return next (err)
                     PharmacyItem.find({})
@@ -663,6 +662,39 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                         res.render('app/dashboard18', { theaters, appointments, users, managerrequests })
                     })
                 })
+            })
+        })
+    }else if(req.user.role === 22){
+        //HOD PHARMACY
+        User.find({}, (err, users)=>{
+            if(err) return next (err)
+            Appointment.find({})
+            .populate('doctor')
+            .populate('patient')
+            .exec((err, appointments)=>{
+                if(err) return next (err)
+                Consultation.find({})
+                .populate('patient')
+                .populate('doctor')
+                // .populate('drugsObject')
+                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname', 'drugsObject.prescribedBy', 'drugsObject.drugs.name.pharmname'])
+                .exec((err, consultations)=>{
+                    if(err) return next (err)
+                    PharmacyItem.find({})
+                        .exec((err, drugs)=>{
+                            ANC.find({})
+                                .populate('labtest')
+                                .populate('creator')
+                                .exec((err, ancs)=>{
+                                    Request.find({})
+                                    .populate('requestedby')
+                                    .exec((err, requests)=>{
+                                        res.render('app/dashboard19', { appointments, users, consultations, drugs, ancs, requests })
+                                    })
+                                })
+                        })
+                })
+                
             })
         })
     }

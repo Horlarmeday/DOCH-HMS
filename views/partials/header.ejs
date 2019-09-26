@@ -221,7 +221,13 @@
                                             <span>Manager</span>
                                         <% }else if (currentUser.role == 19){ %>
                                             <span>Theater</span>
-                                        <% }  %>
+                                        <% } else if (currentUser.role == 20){ %>
+                                            <span>HOD Laboratory</span>
+                                        <% }else if (currentUser.role == 21){ %>
+                                            <span>HOD Nurse</span>
+                                        <% }else if (currentUser.role == 22){ %>
+                                            <span>HOD Pharmacy</span>
+                                        <% }  %>  
                                         <i class="ti-angle-down"></i>
                                     </a>
                                     <ul class="show-notification profile-notification">

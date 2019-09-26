@@ -273,7 +273,7 @@
                                 </ul>
                         </li>
                         <% } %>
-                        <% if(currentUser.role == 1 || currentUser.role === 5 || currentUser.role === 4 || currentUser.role === 13 || currentUser.role === 14){ %>
+                        <% if(currentUser.role == 1 || currentUser.role === 5 || currentUser.role === 4 || currentUser.role === 13 || currentUser.role === 14 || currentUser.role === 22){ %>
                             <li class="pcoded-hasmenu">
                                     <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                         <span class="pcoded-micon"><i class="fa fa-hand-lizard-o"></i></span>
@@ -299,7 +299,7 @@
                                             </a>
                                         </li>
                                         <% } %>
-                                        <% if(currentUser.role == 13 || currentUser.role === 14){ %>
+                                        <% if(currentUser.role == 13 || currentUser.role === 14 || currentUser.role === 22){ %>
                                         <li class=" ">
                                                 <a href="/make-manager-request" data-i18n="nav.navigate.navbar-inverse">
                                                     <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -410,7 +410,7 @@
                                 </ul>
                         </li>
                         <% } %>
-                        <% if(currentUser.role == 5 || currentUser.role == 1){ %>
+                        <% if(currentUser.role == 5 || currentUser.role == 1 || currentUser.role === 22){ %>
                         <li class="pcoded-hasmenu">
                                 <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                     <span class="pcoded-micon"><i class="ti-folder"></i></span>
@@ -451,7 +451,7 @@
                                 </ul>
                         </li>
                         <% } %>
-                        <% if(currentUser.role == 5){ %>
+                        <% if(currentUser.role == 5 || currentUser.role === 22){ %>
                             <li class="pcoded-hasmenu">
                                     <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                         <span class="pcoded-micon"><i class="fa fa-book"></i></span>
@@ -553,7 +553,7 @@
                                 </ul>
                             </li>
                             <% } %>
-                        <% if(currentUser.role == 1 || currentUser.role == 13 || currentUser.role === 18){ %>
+                        <% if(currentUser.role == 1 || currentUser.role == 13 || currentUser.role === 18 || currentUser.role === 22){ %>
                         <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                 <span class="pcoded-micon"><i class="ti-layers"></i></span>
@@ -561,7 +561,7 @@
                                 <span class="pcoded-mcaret"></span>
                             </a>
                             <ul class="pcoded-submenu">
-                                    <% if(currentUser.role == 1 || currentUser.role == 13){ %>
+                                    <% if(currentUser.role == 1 || currentUser.role == 13 || currentUser.role === 22){ %>
                                 <li class=" ">
                                         <a href="/add-drug" data-i18n="nav.navigate.navbar-inverse">
                                             <span class="pcoded-micon"><i class="ti-angle-right"></i></span>

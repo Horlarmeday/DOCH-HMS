@@ -116,7 +116,13 @@
                                                             <label style="background-color: rgba(2, 12, 2, 0.705)" class="label label-md">Manager</label>
                                                         <% } else if (user.role === 19){ %>
                                                             <label style="background-color: rgba(20, 103, 109, 0.705)" class="label label-md">Theater</label>
-                                                        <% } %>
+                                                        <% }else if (user.role === 20){ %>
+                                                            <label style="background-color: rgba(81, 139, 14, 0.904)" class="label label-md">HOD Laboratory</label>
+                                                        <% }else if (user.role === 21){ %>
+                                                            <label style="background-color: rgba(46, 27, 71, 0.568)" class="label label-md">HOD Nurse</label>
+                                                        <% } else if (user.role === 22){ %>
+                                                            <label style="background-color: rgba(48, 36, 44, 0.705)" class="label label-md">HOD Pharmacy</label>
+                                                        <% } %> 
                                                     </td>
                                                 </tr>
                                                 <% } %> 
