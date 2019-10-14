@@ -442,6 +442,7 @@
                                                             <th>Price</th>
                                                             <th>PrescribedBy</th>
                                                             <th>Notes</th>
+                                                            <th>Action</th>
                                                             
                                                         </tr>
                                                     </thead>
@@ -449,7 +450,7 @@
                                                         <% if(consultation.drugsObject.length > 0){ %>
 
                                                         
-                                                        <% consultation.drugsObject.forEach((drug)=>{ %>
+                                                        <% consultation.drugsObject.forEach((drug, index, array)=>{ %>
                                                         <tr>
                                                             <td></td>
                                                             <td><%= drug.unit %></td>
@@ -471,7 +472,7 @@
                                                             <% } %>
 
                                                             <td><%= drug.notes %></td>
-               
+                                                            <td><p id="<%= drug._id %>" type="<%= index %>" name="<%= consultation._id %>" class="btn btn-danger remove-drug">Remove</p></td>
                                                         </tr>
                                                         <% }) %>
                                                         <% } %>

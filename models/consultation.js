@@ -21,6 +21,7 @@ const consultationSchema = new mongoose.Schema({
         prescribedOn: {type: Date, default: Date.now},
         status: {type: Boolean, default: false},
     }],
+    picked: [],
     imaging: [{
         images: {type: mongoose.Schema.Types.ObjectId, ref: "Imaging"},
         paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},

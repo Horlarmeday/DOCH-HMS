@@ -179,7 +179,7 @@ $(document).ready(function() {
     //CLICKING PAID FOR DRUGS
     $('.drugpay').click(function (event) {
         let pharmId = $(this).attr('name')
-        let amount = $(this).attr('value')
+        let amount = $('.theprice').html()
         let modeofpayment = $('#modeofpayment3').val()
         event.preventDefault()
         var result = window.confirm(`Are you sure patient has paid N${amount}?`);
@@ -313,6 +313,39 @@ $(document).ready(function() {
         
     })
 
+    // ACCOUNT CHECK BOX IS CHECKED
+    $('.drugChecked').click(function () {
+        const Choosen = $(this).attr('id')
+        const ChoosenConsultation = $(this).attr('name')
+        const drugChoosen = parseInt(Choosen)
+        if ($(this).prop('checked') == true){
+            $.ajax({
+                type: 'POST',
+                url: '/change-status-paid',
+                data: {
+                    drugChoosen: drugChoosen,
+                    ChoosenConsultation: ChoosenConsultation
+                },
+                success:function (data) {
+                    $('.theprice').html(data.amount)
+                }
+            })
+        }else if($(this).prop('checked') == false){
+            $.ajax({
+                type: 'POST',
+                url: '/change-status-unpaid',
+                data: {
+                    drugChoosen: drugChoosen,
+                    ChoosenConsultation: ChoosenConsultation
+                },
+                success:function (data) {
+                    $('.theprice').html(data.amount)
+                   
+                }
+            })
+        }
+    })
+
     //MANAGER REQUEST APPROVAL 
     $('.approval').click(function (event) {
         let approval = $(this).attr('value')
@@ -327,6 +360,29 @@ $(document).ready(function() {
                 },
                 success:function (data) {
                     location.reload()
+                }
+            })
+        }else{
+            window.close()
+        }
+        
+    })
+
+    //PHHARMACY INVOICE 
+    $('.drugInvoice').click(function (event) {
+        let invoice = $(this).attr('name')
+        event.preventDefault()
+        let druganswer = window.confirm("Are you sure you want to print invoice?");
+        if(druganswer){
+            $.ajax({
+                type: 'POST',
+                url: '/print-invoice',
+                data: {
+                    name: 'Drug Invoice',
+                    consultation: invoice
+                },
+                success:function (data) {
+                    location.href('')
                 }
             })
         }else{
@@ -392,6 +448,29 @@ $(document).ready(function() {
                 url: '/approve-billing',
                 data: {
                     approve: approve
+                },
+                success:function (data) {
+                    location.reload()
+                }
+            })
+         }else{
+             window.close()
+         }
+    })
+
+    $('.remove-drug').click(function (event) {
+        let clickedConsultation = $(this).attr('name')
+        let theClicked = $(this).attr('type')
+        let indexClicked = parseInt(theClicked)
+        event.preventDefault()
+         let response = window.confirm("Are you sure you want to approve?");
+         if(response){
+            $.ajax({
+                type: 'POST',
+                url: '/remove-drug',
+                data: {
+                    indexClicked: indexClicked,
+                    clickedConsultation: clickedConsultation
                 },
                 success:function (data) {
                     location.reload()
@@ -882,6 +961,18 @@ function getLocalDrugPrice() {
        
     })
 }
+
+// function removeDrug() {
+//     let drug_ID = $(this).attr('id')
+//     console.log(drug_ID)
+//     // $.post('/get-dispensory-price', { itemCode: itemCode })
+//     // .done(function(data) {
+//     //     //console.log(data)
+//     //     $('#localPrice').val(data.price)
+//     //     $('#localRemain').val(data.balance)
+       
+//     // })
+// }
 
 
 //Lab tests

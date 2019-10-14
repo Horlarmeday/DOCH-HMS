@@ -75,6 +75,7 @@ router.post('/get-patient-age', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+
 //get billings total amount
 router.post('/get-total-amount', middleware.isLoggedIn, (req, res, next)=>{
     const theservice = req.body.theservice
@@ -221,6 +222,70 @@ router.post('/get-dispensory-price', middleware.isLoggedIn, (req, res, next)=>{
             price: drug.price,
             balance: drug.balance
         })
+    })
+})
+
+router.post('/remove-drug', middleware.isLoggedIn, (req, res, next)=>{
+    const indexClicked = req.body.indexClicked
+    const clickedConsultation = req.body.clickedConsultation
+    Consultation.findOne({_id: clickedConsultation})
+    .exec((err, drug)=>{
+       drug.drugsObject[indexClicked].remove()
+       drug.save((err)=>{
+           if(err) return next (err)
+           res.redirect('back')
+       })
+    })
+})
+
+router.post('/change-status-paid', middleware.isLoggedIn, (req, res, next)=>{
+    const drugChoosen = req.body.drugChoosen
+    const ChoosenConsultation = req.body.ChoosenConsultation
+    Consultation.findOne({_id: ChoosenConsultation})
+    .exec((err, drug)=>{
+       drug.drugsObject[drugChoosen].checked = true
+       drug.picked.push(drug.drugsObject[drugChoosen].price)
+       
+       drug.save((err)=>{
+           if(err) return next (err)
+           const arr = drug.picked
+           const add = (a, b) => a + b;
+           var thesum;
+            if(arr === undefined || arr.length == 0){
+                thesum = 0
+            }else{
+                thesum = arr.reduce(add)
+            }
+           res.status(200).json({
+               status: drug.drugsObject[drugChoosen],
+               amount: thesum
+           })
+       })
+    })
+})
+
+router.post('/change-status-unpaid', middleware.isLoggedIn, (req, res, next)=>{
+    const drugChoosen = req.body.drugChoosen
+    const ChoosenConsultation = req.body.ChoosenConsultation
+    Consultation.findOne({_id: ChoosenConsultation})
+    .exec((err, drug)=>{
+       drug.drugsObject[drugChoosen].checked = false
+       drug.picked.pull(drug.drugsObject[drugChoosen].price)
+       drug.save((err)=>{
+           if(err) return next (err)
+           const arr = drug.picked
+           const add = (a, b) => a + b;
+           var sum;
+            if(arr === undefined || arr.length == 0){
+                sum = 0
+            }else{
+                sum = arr.reduce(add)
+            }
+           res.status(200).json({
+               status:drug.drugsObject[drugChoosen],
+               amount: sum
+           })
+       })
     })
 })
 
