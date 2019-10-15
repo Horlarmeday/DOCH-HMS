@@ -787,10 +787,10 @@ router.get('/analytics-page', middleware.isLoggedIn, (req, res, next)=>{
             }
         ], function(err, result) {
             if (err) {
-                next(err);
+                res.status(500).json({data: err});
             } else {
                 // res.json(result);
-                res.render('app/view/analytics', {users, result});
+                res.status(200).json({data: result});
             }
         });
  
@@ -999,16 +999,16 @@ router.route('/add-imaging-investigation')
     })
 
 //ADD IMAGING INVESTIGATION
-router.route('/add-investigation')
+router.route('/add-investigation/:id')
     .get(middleware.isLoggedIn, (req, res, next)=>{
-        Imaging.find({}, (err, imaging)=>{
+        Imaging.findOne({_id: req.params.id}, (err, imaging)=>{
             res.render('app/add/add_imaging_investigation', { imaging })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
         const investigations = new Investigations({
             name: req.body.investigation,
-            imaging: req.body.imaging,
+            imaging: req.params.id,
             status: true,
             price: req.body.price
         })

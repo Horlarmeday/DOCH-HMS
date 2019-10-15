@@ -66,8 +66,8 @@
                                                     <th>Imaging</th>
                                                     <th>Description</th>
                                                     <th>Investigations</th>
-                                                    <th>Price</th>
                                                     <th>Status</th>
+                                                    <th>Add Investigation</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -78,15 +78,15 @@
                                                     <td><%= image.description %></td>
                                                     <td>
                                                         <% image.investigation.forEach((invest)=>{ %>
-                                                            <p><%= invest.name %></p>
+                                                            <p><%= invest.name %> <span style="color: orangered; font-weight: 700;">(₦<%= invest.price %>)</span></p>
                                                         <% }) %>
                                                     </td>
-                                                    <td><%= image.price %></td>
                                                     <% if(image.status === true){ %>
                                                     <td><label class="label label-md bg-success">Active</label></td>
                                                     <% }else{ %>
                                                     <td><label class="label label-md bg-danger">Inctive</label></td>
                                                     <% } %>
+                                                    <td><a class="btn btn-primary" href="/add-investigation/<%= image._id %>">Add Investigation</a></td>
                                                 </tr>
                                                 <% })  %>
                                             </tbody>

@@ -61,12 +61,8 @@
                                                 </div> -->
                                                 <div class="form-group">
                                                     <label for="">Imaging</label>
-                                                        <select name="imaging" class="form-control">
-                                                            <option selected disabled>Select</option>
-                                                            <% imaging.forEach((imaging)=>{ %>
-                                                            <option value="<%= imaging._id %>"><%=  imaging.name %></option>
-                                                            <% }) %>
-                                                        </select><br>
+                                                        <input type="text" class="form-control" value="<%= imaging.name %>" disabled>
+                                                        <br>
                                                     <!-- <div class="col-sm-12"> -->
                                                         <label for="">Investigation Name</label>
                                                         <input type="text" name="investigation" class="form-control" placeholder="Investigation Name" required><br>

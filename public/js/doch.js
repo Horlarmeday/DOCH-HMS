@@ -833,7 +833,7 @@ function getImaging() {
     const image = $('#image').val()
     $.post('/get-imaging', { image: image })
     .done(function(data) {
-        $("#myImage option").remove();
+        $("#myImage option[value]").remove();
         $.each(data, function(index, value){
             $("#myImage").append($("<option>",{
                   value: value.id,
