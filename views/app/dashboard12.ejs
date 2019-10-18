@@ -138,7 +138,14 @@
                                                         <% if(request.department === 'Laboratory'){ %>
                                                         <tr>
                                                             <td></td>
-                                                            <td><%= request.item %></td>
+                                                            <td>
+                                                                <% if(request.labitem){ %>
+
+                                                                    <%= request.labitem.name %>
+                                                                <% }else{ %>
+                                                                    <%= request.item %>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= request.quantity %></td>
                                                             <td><%= request.unit %></td>
                                                             <td>
@@ -225,7 +232,11 @@
                                                         <td><%= item.name %></td>
                                                         <td>LAB/ITEM/000<%= item.itemDigit %></td>
                                                         <td><%= item.quantity %></td>
-                                                        <td style="color: rgb(210, 30, 150)"><strong><%= item.rquantity %></strong></td>
+                                                        <% if(item.dispensehistory < 1){ %>
+                                                            <td style="color: darkviolet"><strong><%= item.quantity %></strong></td>
+                                                            <% }else{ %>
+                                                            <td style="color: darkviolet"><strong> <%= item.dispensehistory[item.dispensehistory.length -1].rquantity %></strong></td>
+                                                        <% } %>
                                                         <td><%= item.unit %></td>
                                                         <td><%= item.price %></td>
                                                         <td><%= item.cost %></td>

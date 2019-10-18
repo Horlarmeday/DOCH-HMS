@@ -79,7 +79,7 @@
                                                     <th>Balance </th>
                                                     <th>Remarks </th>
                                                     <th>CreatedBy</th>
-                                                    <th>Dispense </th>
+                                                    <th>Actions </th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -107,7 +107,8 @@
                                                     <td><%= item.balance %></td>
                                                     <td><%= item.remarks %></td>
                                                     <td><%= item.creator.firstname %> <%= item.creator.lastname %></td>
-                                                    <td> <a class="btn btn-success btn-sm" href="/lab-dispense/<%= item._id %>">Dispense</a></td>
+                                                    <td> <a class="btn btn-success btn-md" href="/lab-dispense/<%= item._id %>">Dispense</a>
+                                                     <a class="btn btn-inverse btn-md" href="/edit-lab-item/<%= item._id %>">Edit</a></td>
                                                 </tr>
                                                 
                                                 <% }) %>

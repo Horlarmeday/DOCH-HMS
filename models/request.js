@@ -1,9 +1,9 @@
 const mongoose =  require('mongoose');
+const deepPopulate = require('mongoose-deep-populate')(mongoose)
 
 const requestSchema = new mongoose.Schema({
     pharmitem: {type: mongoose.Schema.Types.ObjectId, ref: "PharmacyItem"},
     labitem: {type: mongoose.Schema.Types.ObjectId, ref: "labItem"},
-    
     department: String,
     quantity: Number,
     unit: String,
@@ -14,4 +14,6 @@ const requestSchema = new mongoose.Schema({
     declined: {type: Boolean, default: false},
 }, { timestamps: true });
 
+//Populates schema to any level
+requestSchema.plugin(deepPopulate)
 module.exports = mongoose.model('Request', requestSchema);

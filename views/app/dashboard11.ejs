@@ -139,7 +139,17 @@
                                                         <% if(request.department === 'Pharmacy'){ %>
                                                         <tr>
                                                             <td></td>
-                                                            <td><%= request.item %></td>
+                                                            <td>
+                                                                <% if(request.pharmitem){ %>
+                                                                    <% if(request.pharmitem.pharmname){ %>
+                                                                        <%= request.pharmitem.pharmname.generic %>
+                                                                    <% }else{ %>
+                                                                        <%= request.pharmitem.name %>
+                                                                    <% } %>
+                                                                <% }else{ %>
+                                                                    <%= request.item %>
+                                                                <% } %>
+                                                            </td>
                                                             <td><%= request.quantity %></td>
                                                             <td><%= request.unit %></td>
                                                             <td>

@@ -477,7 +477,6 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                             'created': user.createdAt.toDateString(),
                         })
                     }
-                    console.log(allUsers)
                 })
                 res.render('app/dashboard8', {allUsers, users, usersIsEmpty, appointments})
             })
@@ -534,6 +533,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     if(err) return next (err)
                     Request.find({})
                     .populate('requestedby')
+                    .deepPopulate('pharmitem.pharmname')
                     .exec((err, requests)=>{
                         if(err) return next (err)
                         res.render('app/dashboard11', { items, appointments, users, requests})
@@ -543,7 +543,9 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         })
     }else if(req.user.role === 14){
         //LAB INVENTORY
-        labItem.find({}, (err, items)=>{
+        labItem.find({})
+        .populate('dispensehistory')
+        .exec((err, items)=>{
             if(err) return next (err)
             Appointment.find({})
             .populate('patient')
@@ -553,6 +555,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     if(err) return next (err)
                     Request.find({})
                     .populate('requestedby')
+                    .populate('labitem')
                     .exec((err, requests)=>{
                         if(err) return next (err)
                         res.render('app/dashboard12', { items, appointments, users, requests})
@@ -1160,13 +1163,7 @@ router.route('/add-patient')
                         registration: req.body.registration,
                         consultation: req.body.consultation,
                     };
-                    // user.family = {
-                    //     family1: req.body.family1,
-                    //     familydate2: req.body.familydate2,
-                    // };
-                    // var dependantdate = req.body.familydate2
-                    // var newdate = dependantdate.map(s => Date(s))
-                    // console.log(newdate[1])
+                  
                     user.family.push({
                         family1: req.body.family1,
                         familydate2: req.body.familydate2,
@@ -1197,7 +1194,6 @@ router.route('/add-patient')
                                 'routing': 4,
                             })
                             .end(function (response) {
-                                console.log(response.body);
                             });
                         req.flash('success', 'Patient has been created')
                         res.redirect('back');
@@ -1348,7 +1344,7 @@ router.route('/add-emergency-patient')
                         'routing': 4,
                     })
                     .end(function (response) {
-                        console.log(response.body);
+                       
                     });
             })
             User.update(
@@ -1532,7 +1528,7 @@ router.route('/add-appointment')
                                             
                                         })
                                         .end(function (response) {
-                                            console.log(response.body);
+                                   
                                         });
                                     req.flash('success', 'Appointment has been created')
                                     res.redirect('/appointments'); 
@@ -1624,7 +1620,7 @@ router.route('/add-appointment/:id')
                                     .populate('patient')
                                     .deepPopulate('doctor')
                                     .exec((err, appointment)=>{
-                                        console.log(appointment)
+                         
                                         unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
                                         .header({'Accept' : 'application/json'})
                                         .send({
@@ -1637,7 +1633,7 @@ router.route('/add-appointment/:id')
                                             
                                         })
                                         .end(function (response) {
-                                            console.log(response.body);
+                                       
                                         });
                                     req.flash('success', 'Patient Appointment has been created')
                                     res.redirect('/dashboard'); 
@@ -1868,7 +1864,7 @@ router.route('/send-sms')
                         'routing': 4,
                     })
                     .end(function (response) {
-                        console.log(response.body);
+                  
                     });
                 })
             },
@@ -1922,7 +1918,7 @@ router.route('/sms-patient/:id')
                         'routing': 4,
                     })
                     .end(function (response) {
-                        console.log(response.body);
+                     
                     });
                 })
             },
@@ -3740,6 +3736,7 @@ router.route('/visit/:id')
 router.route('/make-request')
     .get(middleware.isLoggedIn, (req, res, next) => {
         PharmacyItem.find({})
+            .populate('pharmname')
             .exec((err, pharmitems)=>{
             if(err) {return next (err)}
             labItem.find({}, (err, labitems)=> {
@@ -3753,7 +3750,9 @@ router.route('/make-request')
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
         const request = new Request({
-            item: req.body.item,
+            labitem: req.body.item,
+            pharmitem: req.body.pitem,
+            // item: req.body.item,
             unit: req.body.unit,
             quantity: req.body.quantity,
             department: req.body.department,
@@ -3837,22 +3836,20 @@ router.post('/manager-decline-request', middleware.isLoggedIn, (req, res, next)=
 //APPROVING REQUEST
 router.post('/approve-request', middleware.isLoggedIn, (req, res, next)=>{
     const approve = req.body.approve 
-    console.log(approve)
     Request.findOne({ _id: approve }, (err, request)=>{
-        if(err) return next (err)
-        request.granted = true;
-        request.save((err)=>{
-            if(err) {
-                req.flash('error', 'Error granting request')
-                res.redirect('back')
-            }
-            req.flash('success', 'Request was granted successfully')
-            res.redirect('/dashboard')
-        })
+            request.granted = true;
+            request.save((err)=>{
+                if(err) {
+                    req.flash('error', 'Error granting request')
+                    res.redirect('back')
+                }
+                req.flash('success', 'Request was granted successfully')
+                res.redirect('/dashboard')
+            })
     })
 })
 
-//DECL:INING REQUEST
+//DECLINING REQUEST
 router.post('/decline-request', middleware.isLoggedIn, (req, res, next)=>{
     const decline = req.body.decline 
     Request.findOne({_id: decline}, (err, request)=>{
@@ -3889,6 +3886,7 @@ router.route('/add-lab-items')
        item.cost = req.body.cost;
        item.productcode = req.body.productcode;
        item.shelf = req.body.shelf;
+       item.shelfno = req.body.shelfno;
        item.voucher = req.body.voucher;
        item.batch = req.body.batch;
        item.loss = req.body.loss;
@@ -3901,13 +3899,56 @@ router.route('/add-lab-items')
        item.save((err)=>{
            if(err){
                req.flash('error', err.message)
-               console.log(err)
             return res.redirect('/add-lab-items')
            }
            req.flash('success', 'Item was added!')
            res.redirect('back')
        })
     })
+})
+
+// Edit Lab item
+
+router.route('/edit-lab-item/:id')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       labItem.findOne({ _id: req.params.id })
+       .exec((err, item)=>{
+               User.find({role: 17}, (err, users)=>{
+                   if(err) return next (err)
+                   res.render('app/add/edit_lab_item', {users, item})
+               })
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+        labItem.findOne({_id: req.params.id})
+        .exec((err, item)=>{
+        if(err) return next (err)
+            if(item) {
+                if (req.body.name) item.name = req.body.name;
+                if (req.body.description) item.description = req.body.description;
+                if (req.body.price) item.price = req.body.price;
+                if (req.body.unit) item.unit = req.body.unit;
+                if (req.body.quantity) item.quantity = req.body.quantity;
+                if (req.body.cost) item.cost = req.body.cost;
+                if (req.body.productcode) item.productcode = req.body.productcode;
+                if (req.body.shelf) item.shelf = req.body.shelf;
+                if (req.body.shelfno) item.shelfno = req.body.shelfno;
+                if (req.body.voucher) item.voucher = req.body.voucher;
+                if (req.body.batch) item.batch = req.body.batch;
+                if (req.body.loss) item.loss = req.body.loss;
+                if (req.body.batch) item.batch = req.body.batch;
+                if (req.body.balance) item.balance = req.body.balance;
+                if (req.body.remarks) item.remarks = req.body.remarks;
+                if (req.body.expiration) item.expiration = req.body.expiration;
+                if (req.body.vendor) item.vendor = req.body.vendor;
+                if (req.body.received) item.received = req.body.received;
+            }
+            item.save((err)=>{
+                if(err) return next(err)
+                req.flash('success', 'Item was updated!')
+                res.redirect('back') 
+            })
+        })
    })
 
 // EDIT DRUGS TO LOCAL INVENTORY
@@ -4037,7 +4078,7 @@ router.route('/lab-dispense/:id')
         function (labDispense, done) {
             labItem.findOne({_id: req.params.id}, (err, item)=>{
                 if(err) return next(err)
-                item.rquantity = (item.quantity - labDispense.quantity)
+                item.rquantity = labDispense.rquantity
                 item.save((err)=>{
                   if(err) return next(err)
                   done(err, labItem)
@@ -4161,7 +4202,6 @@ router.get('/dispense-history/:id', middleware.isLoggedIn, (req, res, next)=>{
     .populate('dispensehistory')
     .deepPopulate(['dispensehistory.receivedBy', 'dispensehistory.creator', 'dispensehistory.dispenseTo'])
     .exec((err, history)=>{
-        console.log(history)
         if(err) return next(err)
         res.render('app/view/pharm_history', { history })
     })
@@ -4186,7 +4226,6 @@ router.get('/lab-dispense-history/:id', middleware.isLoggedIn, (req, res, next)=
     .populate('dispensehistory')
     .deepPopulate(['dispensehistory.receivedBy', 'dispensehistory.creator', 'dispensehistory.dispenseTo'])
         .exec((err, history)=>{
-        console.log(history)
         if(err) return next(err)
         res.render('app/view/lab_history', { history })
     })
@@ -4432,7 +4471,6 @@ router.route('/accounts')
                         
                     })
                     .end(function (response) {
-                        console.log(response.body);
                     });
                     User.update(
                         {
@@ -4482,7 +4520,6 @@ router.post('/approve-billing', middleware.isLoggedIn, (req, res, next)=>{
                 
             })
             .end(function (response) {
-                console.log(response.body);
             });
             res.redirect('back')
         })
@@ -5540,7 +5577,6 @@ router.get('/antenatal-results/:id', middleware.isLoggedIn, (req, res, next)=>{
             }else{
                 ANC.findOne({patient: user._id})
                     .exec((err, ancs)=>{
-                        console.log(ancs)
                     if(err) return next(err)
                     res.render('app/view/antenatal_results', {ancs, user})
                 })

@@ -59,14 +59,35 @@
                                                     <div class="form-group">
                                                         <div  class="col-sm-12">
                                                             <label for="">Request For?</label>
-                                                            <input type="text" name="item" class="form-control">
+                                                            <% if(currentUser.role == 4){ %>
+                                                            <select name="item" class="form-control js-example-basic-single">
+                                                                <option selected disabled>Select</option>
+                                                                <% labitems.forEach((item)=>{ %>
+                                                                    <option value="<%= item._id %>"><%= item.name %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                            <% }else{ %>
+                                                            <select name="pitem" class="form-control js-example-basic-single">
+                                                                <option selected disabled>Select</option>
+                                                                <% pharmitems.forEach((item)=>{ %>
+                                                                    <% if(!item.pharmname){ %>
+                                                                        <option value="<%= item._id %>"><%= item.name %></option>
+                                                                    <% }else{ %>
+                                                                        <option value="<%= item._id %>"><%= item.pharmname.generic %></option>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            </select>
+                                                            <% } %>
                                                         </div><br>
                                                         <div class="col-sm-12">
                                                             <label for="">Inventory</label>
                                                             <select name="department" class="form-control js-example-basic-single">
                                                                 <option selected disabled>Select</option>
-                                                                <option value="Pharmacy">Pharmacy</option>
-                                                                <option value="Laboratory">Laboratory</option>
+                                                                <% if(currentUser.role == 4){ %>
+                                                                    <option value="Laboratory">Laboratory</option>
+                                                                    <% }else{ %>
+                                                                    <option value="Pharmacy">Pharmacy</option>
+                                                                <% } %>
                                                             </select>
                                                         </div><br>                                                        
                                                         <div class="col-sm-12">
