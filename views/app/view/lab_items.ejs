@@ -76,7 +76,7 @@
                                                     <th>Date Received</th>
                                                     <th>Vendor</th>
                                                     <th>Expiration </th>
-                                                    <th>Balance </th>
+                                          
                                                     <th>Remarks </th>
                                                     <th>CreatedBy</th>
                                                     <th>Actions </th>
@@ -104,7 +104,7 @@
                                                     <td><%= item.received.toLocaleDateString() %></td>
                                                     <td><%= item.vendor.company %></td>
                                                     <td><%= item.expiration.toLocaleDateString() %></td>
-                                                    <td><%= item.balance %></td>
+                                               
                                                     <td><%= item.remarks %></td>
                                                     <td><%= item.creator.firstname %> <%= item.creator.lastname %></td>
                                                     <td> <a class="btn btn-success btn-md" href="/lab-dispense/<%= item._id %>">Dispense</a>

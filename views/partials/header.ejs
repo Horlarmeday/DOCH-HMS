@@ -3,14 +3,6 @@
 <meta http-equiv="content-type" content="text/html;charset=UTF-8" />
 <head>
     <title>HMS</title>
-    <!-- <script src="https://cdn.lr-ingest.io/LogRocket.min.js" crossorigin="anonymous"></script> -->
-    <!-- <script>window.LogRocket && window.LogRocket.init('8rqpol/hms');</script>
-    <script>window.LogRocket.identify('<%= currentUser._id %>', {
-        name: '<%= currentUser.firstname %> <%= currentUser.firstname %>',
-        email: '<%= currentUser.email %>',
-        
-    })
-    </script> -->
     <!-- HTML5 Shim and Respond.js IE9 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -37,12 +29,12 @@
       <!-- Font Awesome -->
     <link rel="stylesheet" type="text/css" href="/assets/icon/font-awesome/css/font-awesome.min.css">
       <!-- flag icon framework css -->
-      <link rel="stylesheet" type="text/css" href="/assets/pages/flag-icon/flag-icon.min.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/pages/flag-icon/flag-icon.min.css"> -->
       <!--SVG Icons Animated-->
-      <link rel="stylesheet" type="text/css" href="/assets/icon/SVG-animated/svg-weather.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/icon/SVG-animated/svg-weather.css"> -->
       <!-- Menu-Search css -->
       <link rel="stylesheet" type="text/css" href="/assets/pages/menu-search/css/component.css">
-      <link rel="stylesheet" type="text/css" href="/assets/pages/social-timeline/timeline.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/pages/social-timeline/timeline.css"> -->
       <!--forms-wizard css-->
     <link rel="stylesheet" type="text/css" href="/../bower_components/jquery.steps/css/jquery.steps.css">
 
@@ -56,16 +48,16 @@
       <!-- animation nifty modal window effects css -->
       <link rel="stylesheet" type="text/css" href="/assets/css/component.css">
     <!-- notify js Fremwork -->
-    <link rel="stylesheet" type="text/css" href="/../bower_components/pnotify/css/pnotify.css">
+    <!-- <link rel="stylesheet" type="text/css" href="/../bower_components/pnotify/css/pnotify.css">
     <link rel="stylesheet" type="text/css" href="/../bower_components/pnotify/css/pnotify.brighttheme.css">
     <link rel="stylesheet" type="text/css" href="/../bower_components/pnotify/css/pnotify.buttons.css">
     <link rel="stylesheet" type="text/css" href="/../bower_components/pnotify/css/pnotify.history.css">
     <link rel="stylesheet" type="text/css" href="/../bower_components/pnotify/css/pnotify.mobile.css">
-    <link rel="stylesheet" type="text/css" href="/assets/pages/pnotify/notify.css">
+    <link rel="stylesheet" type="text/css" href="/assets/pages/pnotify/notify.css"> -->
       <!-- Chartlist chart css -->
-    <link rel="stylesheet" href="../bower_components/chartist/css/chartist.css" type="text/css" media="all">
+    <!-- <link rel="stylesheet" href="../bower_components/chartist/css/chartist.css" type="text/css" media="all"> -->
     <!-- C3 chart -->
-    <link rel="stylesheet" href="../bower_components/c3/css/c3.css" type="text/css" media="all">
+    <!-- <link rel="stylesheet" href="../bower_components/c3/css/c3.css" type="text/css" media="all"> -->
       <!-- Data Table Css -->
       <link rel="stylesheet" type="text/css" href="/../bower_components/datatables.net-bs4/css/dataTables.bootstrap4.min.css">
       <link rel="stylesheet" type="text/css" href="/assets/pages/data-table/css/buttons.dataTables.min.css">
@@ -79,20 +71,20 @@
       <link rel="stylesheet" type="text/css" href="/../bower_components/bootstrap-multiselect/css/bootstrap-multiselect.css" />
       <link rel="stylesheet" type="text/css" href="/../bower_components/multiselect/css/multi-select.css" />
       <!-- Horizontal-Timeline css -->
-      <link rel="stylesheet" type="text/css" href="/assets/pages/dashboard/horizontal-timeline/css/style.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/pages/dashboard/horizontal-timeline/css/style.css"> -->
       <!-- amchart css -->
-      <link rel="stylesheet" type="text/css" href="/assets/pages/dashboard/amchart/css/amchart.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/pages/dashboard/amchart/css/amchart.css"> -->
       <!-- Calender css -->
-      <link rel="stylesheet" type="text/css" href="/assets/pages/widget/calender/pignose.calendar.min.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/pages/widget/calender/pignose.calendar.min.css"> -->
       <!-- flag icon framework css -->
-      <link rel="stylesheet" type="text/css" href="/assets/pages/flag-icon/flag-icon.min.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/pages/flag-icon/flag-icon.min.css"> -->
       <!-- Style.css -->
       <link rel="stylesheet" type="text/css" href="/assets/css/style.css">
       <!--color css-->
 
       
 
-      <link rel="stylesheet" type="text/css" href="/assets/css/linearicons.css">
+      <!-- <link rel="stylesheet" type="text/css" href="/assets/css/linearicons.css"> -->
       <link rel="stylesheet" type="text/css" href="/assets/css/simple-line-icons.css">
       <link rel="stylesheet" type="text/css" href="/assets/css/ionicons.css">
       <link rel="stylesheet" type="text/css" href="/assets/css/jquery.mCustomScrollbar.css">
@@ -149,9 +141,7 @@
                                 </li>
                             </ul>
                             <ul class="nav-right">
-                                    <li class="header-notification">
-                                            <div>Time Left: <span style="font-size: 14px; color: green; font-weight: 900" id="timer"></span></div>
-                                    </li>
+                                   
                                 <li class="header-notification">
                                     <a href="#!">
                                         <i class="ti-bell"></i>
@@ -192,7 +182,7 @@
                                         <% }else if(currentUser.role == 4){ %>
                                             <span>Laboratory</span>
                                         <% }else if(currentUser.role == 5){ %>
-                                            <span>OPD Dispensory</span>
+                                            <span>Outpatient Pharmacy</span>
                                         <% }else if(currentUser.role == 6){ %>
                                             <span>Accountant</span>
                                         <% }else if(currentUser.role == 7){ %>
@@ -227,7 +217,9 @@
                                             <span>HOD Nurse</span>
                                         <% }else if (currentUser.role == 22){ %>
                                             <span>HOD Pharmacy</span>
-                                        <% }  %>  
+                                        <% }else if (currentUser.role == 23){ %>
+                                            <span>Inpatient Pharmacy</span>
+                                        <% }   %>  
                                         <i class="ti-angle-down"></i>
                                     </a>
                                     <ul class="show-notification profile-notification">
