@@ -632,10 +632,10 @@
                                                                     <div class="form-group row">
                                                                             <label class="col-sm-3 col-form-label">Select Lab</label>
                                                                             <div class="col-sm-6">
-                                                                                <select name="labtype" id="tests" onchange="showOptions()" class="form-control">
-                                                                                    <option selected disabled>Select Lab</option>
+                                                                                <select name="labtype" id="lab" onchange="getTests()" class="form-control">
+                                                                                    <option>Select Lab</option>
                                                                                     <% labs.forEach((lab)=>{ %>
-                                                                                        <option value="<%= lab.name %>"><%= lab.name %></option>
+                                                                                        <option value="<%= lab._id %>"><%= lab.name %></option>
                                                                                     <% }) %>
                                                                                 </select>
                                                                             </div>
@@ -643,14 +643,17 @@
                                                                     <div class="form-group row">
                                                                         <label class="col-sm-3 col-form-label">Choose</label>                                                                          
                                                                             <div class="col-sm-6">
-                                                                                <select name="labtest" class="form-control ">
-                                                                                    <option selected disabled>Select Test </option>
-                                                                                    <% alltests.forEach((test)=>{ %>
-                                                                                        <option value="<%= test.id %>"><%= test.name %></option>
-                                                                                    <% }) %>
+                                                                                <select id="myTests" name="labtest" class="form-control " onchange="getTestPrice()">
+                                                                                    <option>Select Test </option>
                                                                                 </select>                                                                  
                                                                             </div>
                                                                     </div>
+                                                                    <div class="form-group row">
+                                                                            <label class="col-sm-3 col-form-label">Price</label>                                                                          
+                                                                                <div class="col-sm-6">
+                                                                                   <input type="number" id="testPrice" class="form-control" name="price" readonly>                                                                 
+                                                                                </div>
+                                                                        </div>
                                                                     <!-- <div class="form-group row">
                                                                         <label for="" class="col-sm-2 col-form-label">Price</label>
                                                                             <div class="col-sm-6">
@@ -675,10 +678,9 @@
                                                             <th>S/N</th>
                                                             <th>Test</th>
                                                             <th>Laboratory</th>
+                                                            <th>Price</th>
                                                             <th>Created</th>
-                                                            
-                                                            
-                                                            
+                                                    
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -688,6 +690,7 @@
                                                                 <td></td>
                                                                 <td> <%= test.tests.name %></td>
                                                                 <td> <%= test.tests.lab.name %></td>
+                                                                <td> <%= test.tests.price %></td>
                                                                 <td> <%= test.created.toLocaleString() %> </td>
                                                             </tr>
                                                             <% }) %>

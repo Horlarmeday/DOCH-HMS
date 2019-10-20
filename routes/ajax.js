@@ -244,11 +244,11 @@ router.post('/change-status-paid', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.findOne({_id: ChoosenConsultation})
     .exec((err, drug)=>{
        drug.drugsObject[drugChoosen].checked = true
-       drug.picked.push(drug.drugsObject[drugChoosen].price)
+       drug.drugspicked.push(drug.drugsObject[drugChoosen].price)
        
        drug.save((err)=>{
            if(err) return next (err)
-           const arr = drug.picked
+           const arr = drug.drugspicked
            const add = (a, b) => a + b;
            var thesum;
             if(arr === undefined || arr.length == 0){
@@ -270,10 +270,10 @@ router.post('/change-status-unpaid', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.findOne({_id: ChoosenConsultation})
     .exec((err, drug)=>{
        drug.drugsObject[drugChoosen].checked = false
-       drug.picked.pull(drug.drugsObject[drugChoosen].price)
+       drug.drugspicked.pull(drug.drugsObject[drugChoosen].price)
        drug.save((err)=>{
            if(err) return next (err)
-           const arr = drug.picked
+           const arr = drug.drugspicked
            const add = (a, b) => a + b;
            var sum;
             if(arr === undefined || arr.length == 0){
@@ -286,6 +286,120 @@ router.post('/change-status-unpaid', middleware.isLoggedIn, (req, res, next)=>{
                amount: sum
            })
        })
+    })
+})
+
+router.post('/get-lab', middleware.isLoggedIn, (req, res, next)=>{
+    const lab = req.body.lab
+    Lab.findOne({_id: lab})
+    .populate('tests')
+    .exec((err, lab)=>{
+        if(err) return next(err)
+        var tests = []
+        lab.tests.forEach((test)=>{
+            tests.push({
+                id: test._id,
+                tests: test.name,
+            })
+        })
+
+        res.json(tests)
+    })
+})
+
+router.post('/get-tests-price', middleware.isLoggedIn, (req, res, next)=>{
+    const price = req.body.price
+    Test.findOne({_id: price})
+    .exec((err, test)=>{
+        if(err) return next(err)
+        res.json(test.price)
+    })
+})
+
+router.post('/change-lab-status-paid', middleware.isLoggedIn, (req, res, next)=>{
+    const testChoosen = req.body.testChoosen
+    const ChoosenConsultation = req.body.ChoosenConsultation
+    Consultation.findOne({_id: ChoosenConsultation})
+    .exec((err, test)=>{
+       test.labtestObject[testChoosen].status = true
+       test.testpicked.push(test.labtestObject[testChoosen].price)
+       
+       test.save((err)=>{
+           if(err) return next (err)
+           const arr = test.testpicked
+           const add = (a, b) => a + b;
+           var thesum;
+            if(arr === undefined || arr.length == 0){
+                thesum = 0
+            }else{
+                thesum = arr.reduce(add)
+            }
+            console.log(test.labtestObject[testChoosen])
+           res.status(200).json({
+               status: test.labtestObject[testChoosen],
+               amount: thesum
+           })
+       })
+    })
+})
+
+router.post('/change-lab-status-unpaid', middleware.isLoggedIn, (req, res, next)=>{
+    const testChoosen = req.body.testChoosen
+    const ChoosenConsultation = req.body.ChoosenConsultation
+    Consultation.findOne({_id: ChoosenConsultation})
+    .exec((err, test)=>{
+        test.labtestObject[testChoosen].status = false
+        test.testpicked.pull(test.labtestObject[testChoosen].price)
+        test.save((err)=>{
+           if(err) return next (err)
+           const arr = test.testpicked
+           const add = (a, b) => a + b;
+           var sum;
+            if(arr === undefined || arr.length == 0){
+                sum = 0
+            }else{
+                sum = arr.reduce(add)
+            }
+           res.status(200).json({
+               status:test.labtestObject[testChoosen],
+               amount: sum
+           })
+       })
+    })
+})
+
+router.post('/get-consultation', middleware.isLoggedIn, (req, res, next)=>{
+    const index = req.body.index
+    const consultation = req.body.consultation
+    Consultation.findOne({_id: consultation})
+    .populate('patient')
+    .populate('prescribedBy')
+    .deepPopulate(['drugsObject.prescribedBy', 'drugsObject.drugs.name.pharmname'])
+    .exec((err, found)=>{
+    
+        var clickedConsultation = []
+        found.drugsObject.forEach((drug)=>{
+            
+            clickedConsultation.push({
+                id: drug._id,
+                name: found.patient.firstname,
+                date: drug.startingdate.toLocaleDateString(),
+                drugs: drug.drugs.name.name,
+                dose: drug.time,
+                frequency: drug.direction,
+                duration: drug.duration,
+                total: drug.quantity,
+                price: drug.price,
+                note:  drug.notes,
+                docfirst:  drug.prescribedBy.firstname ,
+                docsecond:  drug.prescribedBy.lastname ,
+            })
+        })
+        console.log(clickedConsultation)
+        res.status(200).json(
+        clickedConsultation
+        )
+
     })
 })
 

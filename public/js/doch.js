@@ -179,7 +179,7 @@ $(document).ready(function() {
     //CLICKING PAID FOR DRUGS
     $('.drugpay').click(function (event) {
         let pharmId = $(this).attr('name')
-        let amount = $('.theprice').html()
+        let amount = $(this).attr('value')
         let modeofpayment = $('#modeofpayment3').val()
         event.preventDefault()
         var result = window.confirm(`Are you sure patient has paid N${amount}?`);
@@ -345,6 +345,44 @@ $(document).ready(function() {
             })
         }
     })
+
+    
+    // ACCOUNT CHECK BOX IS CHECKED
+    $('.labChecked').click(function () {
+        const Choosen = $(this).attr('id')
+        const ChoosenConsultation = $(this).attr('name')
+        const testChoosen = parseInt(Choosen)
+       
+        if ($(this).prop('checked') == true){
+            $.ajax({
+                type: 'POST',
+                url: '/change-lab-status-paid',
+                data: {
+                    testChoosen: testChoosen,
+                    ChoosenConsultation: ChoosenConsultation
+                },
+                success:function (data) {
+                    $('.theprice').html(data.amount)
+                
+                }
+            })
+        }else if($(this).prop('checked') == false){
+            $.ajax({
+                type: 'POST',
+                url: '/change-lab-status-unpaid',
+                data: {
+                    testChoosen: testChoosen,
+                    ChoosenConsultation: ChoosenConsultation
+                },
+                success:function (data) {
+                    $('.theprice').html(data.amount)
+               
+                }
+            })
+        }
+    })
+
+ 
 
     //MANAGER REQUEST APPROVAL 
     $('.approval').click(function (event) {
@@ -851,6 +889,31 @@ function getInvestigationPrice(){
     })
 }
 
+// ggetting the lab tests
+function getTests() {
+    const lab = $('#lab').val()
+    $.post('/get-lab', { lab: lab })
+    .done(function(data) {
+        $("#myTests option[value]").remove();
+        $.each(data, function(index, value){
+            $("#myTests").append($("<option>",{
+                  value: value.id,
+                  text: value.tests
+            }))
+        })
+    })
+}
+
+
+
+function getTestPrice(){
+    const price = $('#myTests').val()
+    $.post('/get-tests-price', { price: price })
+    .done(function(data) {
+        $("#testPrice").val(data)
+    })
+}
+
 //getting user age
 function getUserAge() {
     const userid = $('#patienttriage').val()
@@ -1052,6 +1115,77 @@ function dispDate(dateObj) {
     if (year < 2000) year += 1900;
     
     return (month + "/" + day + "/" + year);
+}
+
+function createTable() {
+    const index = $('.drugmodal').attr('name')
+    const consultation = $('.drugmodal').attr('id')
+    $.ajax({
+        type: 'POST',
+        url: '/get-consultation',
+        data: {
+            index,
+            consultation
+        },
+        success:function (data) {
+            const drugs = data.clickedConsultation
+            $('#myModal').modal('show');
+            $('.modal-title').html(data.clickedConsultation[0].name)
+            var col = [];
+            for (var i = 0; i < drugs; i++) {
+                for (var key in drugs[i]) {
+                    if (col.indexOf(key) === -1) {
+                        col.push(key);
+                    }
+                }
+            }
+
+            // CREATE DYNAMIC TABLE.
+            // var table = $("<table cellspacing='0' class='text'></table>");
+            // $.append(t);
+            var table = document.createElement("table");
+
+            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+
+            var tr = table.insertRow(-1);                   // TABLE ROW.
+
+            for (var i = 0; i < col.length; i++) {
+                var th = document.createElement("th");      // TABLE HEADER.
+                th.innerHTML = col[i];
+                tr.appendChild(th);
+            }
+
+            // ADD JSON DATA TO THE TABLE AS ROWS.
+            for (var i = 0; i < drugs.length; i++) {
+
+                tr = table.insertRow(-1);
+
+                for (var j = 0; j < col.length; j++) {
+                    var tabCell = tr.insertCell(-1);
+                    tabCell.innerHTML = drugs[i][col[j]];
+                }
+            }
+
+            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+            var divContainer = document.getElementById("showData");
+            divContainer.innerHTML = "";
+            divContainer.appendChild(table);
+            // $.each(data.clickedConsultation, function(index, value){
+                
+            //     $("#table").append($("<td>",{
+            //             text: value.date,
+            //             text: value.drugs,
+            //             text: value.dose,
+            //             text: value.frequency,
+            //             text: value.duration,
+            //             text: value.total,
+            //             text: value.price,
+            //             text: value.note
+            //     }))
+            // })
+        
+        }
+    })
 }
     
 function pregnancyCalc() {

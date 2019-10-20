@@ -23,6 +23,7 @@ const Request = require('../models/request')
 const WardRound = require('../models/wardRound')
 const Careplan = require('../models/careplan')
 const Treatment = require('../models/treatment')
+const InPatient = require('../models/inPatientInventory')
 const Consentform = require('../models/consentform')
 const Assessment = require('../models/assessment')
 const Immunization = require('../models/immunization')
@@ -523,7 +524,9 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         })
     }else if(req.user.role === 13){
         //PHARMACY INVENTORY
-        PharmacyItem.find({}, (err, items)=>{
+        PharmacyItem.find({})
+        .populate('pharmname')
+        .exec((err, items)=>{
             if(err) return next (err)
             Appointment.find({})
             .populate('patient')
@@ -746,6 +749,37 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 }
                 if(err) return next (err)
                 res.render('app/dashboard21', { appointments, users, appointmentIsEmpty})              
+            })
+        })
+    }else if(req.user.role == 23){
+        // INPATIENT PHARMACY
+        User.find({}, (err, users)=>{
+            if(err) return next (err)
+            Appointment.find({})
+            .populate('doctor')
+            .populate('patient')
+            .exec((err, appointments)=>{
+                if(err) return next (err)
+                Consultation.find({})
+                .populate('patient')
+                .populate('doctor')
+                // .populate('drugsObject')
+                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname', 'drugsObject.prescribedBy', 'drugsObject.drugs.name.pharmname'])
+                .exec((err, consultations)=>{
+                    if(err) return next (err)
+                    PharmacyItem.find({})
+                        .exec((err, drugs)=>{
+                            ANC.find({})
+                                .populate('labtest')
+                                .populate('creator')
+                                .exec((err, ancs)=>{
+                                    Request.find({requestedby: req.user._id}, (err, requests)=>{
+                                        res.render('app/dashboard22', { appointments, users, consultations, drugs, ancs, requests })
+                                    })
+                                })
+                        })
+                })
+                
             })
         })
     }
@@ -3056,6 +3090,8 @@ router.post('/labtest/:id', middleware.isLoggedIn, (req, res, next)=>{
                     if(req.body){
                         foundconsultation.labtestObject.push({
                             tests: req.body.labtest,
+                            price: req.body.price,
+                            labtype: req.body.labtype,
                             paid: paid
                         })
                     }
@@ -3992,6 +4028,7 @@ router.route('/edit-inventory/:id')
     
    })
 
+//    ADD DRUGGS TO LOCAL INVENTORY
    router.route('/add-to-inventory')
    .get(middleware.isLoggedIn, (req, res, next)=>{
        PharmacyItem.find({})
@@ -4040,6 +4077,97 @@ router.get('/inventory-list', middleware.isLoggedIn, (req, res, next)=>{
         res.render('app/view/inventory_list', { items })
     })
 })
+
+//    ADD DRUGGS TO INPATIENT INVENTORY
+router.route('/add-to-inpatient-inventory')
+.get(middleware.isLoggedIn, (req, res, next)=>{
+    PharmacyItem.find({})
+    .populate('pharmname')
+    .exec((err, drugs)=>{
+     if(err) return next (err)
+     res.render('app/add/add_pharmacyitems_inpatient_inventory', { drugs })
+    })
+}) 
+.post(middleware.isLoggedIn, (req, res, next)=>{
+    const item = new InPatient()
+    item.creator = req.user._id;
+    item.name = req.body.name;
+    item.price = req.body.price;
+    item.unit = req.body.unit;
+    item.quantity = req.body.quantity;
+    item.cost = req.body.cost;
+    item.productcode = req.body.productcode;
+    item.shelf = req.body.shelf;
+    item.shelfno = req.body.shelfno;
+    item.consumed = req.body.consumed;
+    item.balance = req.body.balance;
+    item.comment = req.body.comment;
+    item.received = req.body.received;
+    item.save((err)=>{
+        if(err){
+            req.flash('error', err.message)
+         return res.redirect('back')
+        }
+        req.flash('success', 'Item was added!')
+        res.redirect('back')
+    })
+ 
+})
+
+// PHARMACY INPATIENT INVENTORY LIST
+router.get('/inpatient-inventory-list', middleware.isLoggedIn, (req, res, next)=>{
+    InPatient.find({})
+    .populate('creator')
+    .populate('name')
+    .deepPopulate('name.pharmname')
+    .exec((err, items)=>{
+        if(err){
+            return next(err)
+        }
+        res.render('app/view/inpatient_inventory_list', { items })
+    })
+})
+
+// EDIT DRUGS TO LOCAL INVENTORY
+router.route('/edit-inpatient-inventory/:id')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       PharmacyItem.find({}, (err, drugs)=>{
+        if(err) return next (err)
+            InPatient.findOne({_id: req.params.id })
+            .populate('name') 
+            .deepPopulate('name.pharmname') 
+            .exec((err, item)=>{
+                res.render('app/add/edit_inpatient_inventory', { drugs, item })
+            })
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+    InPatient.findOne({_id: req.params.id }, (err, item)=>{
+        if(item){
+            if (req.body.name) item.name = req.body.name;
+            if (req.body.price) item.price = req.body.price;
+            if (req.body.unit) item.unit = req.body.unit;
+            if (req.body.quantity) item.quantity = req.body.quantity;
+            if (req.body.cost) item.cost = req.body.cost;
+            if (req.body.productcode) item.productcode = req.body.productcode;
+            if (req.body.shelf) item.shelf = req.body.shelf;
+            if (req.body.shelfno) item.shelfno = req.body.shelfno;
+            if (req.body.consumed) item.consumed = req.body.consumed;
+            if (req.body.balance) item.balance = req.body.balance;
+            if (req.body.comment) item.comment = req.body.comment;
+            if (req.body.received) item.received = req.body.received;
+            item.save((err)=>{
+                if(err){
+                    req.flash('error', err.message)
+                 return res.redirect('back')
+                }
+                req.flash('success', 'Item was updated!')
+                res.redirect('/inpatient-inventory-list')
+            })
+        }
+    })
+    
+   })
 
 
 //LAB DISPENSE BY ID
@@ -4138,7 +4266,9 @@ router.route('/lab-dispense/:id')
 //PHARMACY DISPENSE BY ID
 router.route('/pharmacy-dispense/:id')
    .get(middleware.isLoggedIn, (req, res, next)=>{
-    PharmacyItem.findOne({_id: req.params.id}, (err, item)=>{
+    PharmacyItem.findOne({_id: req.params.id})
+    .populate('pharmname')
+    .exec((err, item)=>{
         if(err) return next(err)
             Department.find({}, (err, departments)=>{
                 if(err) return next(err)
@@ -5034,10 +5164,10 @@ router.get('/labtest-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
         .populate('patient')
         .populate('drugsObject.drugs')
-        .populate('labtestObject')
+        .deepPopulate('labtestObject.tests')
         .exec((err, consultation)=>{
             if(err) return next (err)
-            res.render('app/view/labinvoice', { consultation })
+            res.render('app/view/lab_invoice', { consultation })
         })
 });
 
@@ -5047,11 +5177,11 @@ router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     .populate('patient')
     .populate('payment')
     .populate('drugsObject.drugs')
-    .deepPopulate(['payment.drugs'])
+    .deepPopulate(['payment.drugs', 'drugsObject.drugs.name.pharmname'])
     .populate('labtestObject')
     .exec((err, consultation)=>{
         if(err) return next (err)
-        res.render('app/view/pharminvoice', { consultation })
+        res.render('app/view/pharmacyinvoice', { consultation })
     })
 });
 
@@ -5059,11 +5189,11 @@ router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
 router.get('/imaging-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
     .populate('patient')
-    .populate('imaging')
+    .deepPopulate('imaging.investigation')
     .populate('labtestObject')
     .exec((err, consultation)=>{
         if(err) return next (err)
-        res.render('app/view/imaginginvoice', { consultation })
+        res.render('app/view/imaging_invoice', { consultation })
     })
 });
 
@@ -5074,7 +5204,7 @@ router.get('/billing-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     .populate('services')
     .exec((err, payment)=>{
         if(err) return next (err)
-        res.render('app/view/billinginvoice', { payment })
+        res.render('app/view/billing_invoice', { payment })
     })
 });
 

@@ -62,7 +62,11 @@
                                                         <div class="col-sm-12">
                                                             <label for="">Drug Name</label>
                                                             <select id="labitem" name="item" class="form-control js-example-basic-single" disabled>
-                                                                <option><%= item.name %> </option>
+                                                                <% if(item.pharmname){ %>
+                                                                    <option><%= item.pharmname.generic %> </option>
+                                                                <% }else{ %>
+                                                                    <option><%= item.name %> </option>
+                                                                <% } %>
                                                             </select>
                                                         </div><br>
                                                         <div class="col-sm-12">
@@ -138,7 +142,6 @@
                                                                 <select name="dispenseTo" class="form-control js-example-basic-single" required>
                                                                         <option selected disabled>Select</option>
                                                                     <% departments.forEach((department) =>{ %>
-                                                                        
                                                                         <option value="<%= department._id  %>"><%= department.name %></option>
                                                                         
                                                                     <% }) %>

@@ -89,7 +89,7 @@
             <div class="row">
                 <div class="col-xs-8">
                 <h1>Invoice</small></h1>
-                <h4 class="text-muted">NO: 554775/R1 | Date: <%= user.createdAt.toLocaleString('en-US') %></h4>
+                <h4 class="text-muted">NO: 554775/R1 | Date: <%= new Date().toLocaleString('en-US') %></h4>
                 </div>
                 <div class="col-xs-4">
                 <div class="media">
@@ -152,22 +152,22 @@
                 function getSum(total, num) {
                     return total + num;
                 }
-                const totalDrugPrice = consultation.drugsObject.map(price =>{
+                const totalImagingPrice = consultation.imaging.map(price =>{
                     const rPrice = price.price
                     return rPrice;
-                                    
+                                
                 })
-                var totalPrice;
-                if(totalDrugPrice === undefined || totalDrugPrice.length == 0){
-                    totalPrice = 0
+                var imagingPrice;
+                if(totalImagingPrice === undefined || totalImagingPrice.length == 0){
+                    imagingPrice = 0
                 }else{
-                    totalPrice = totalDrugPrice.reduce(getSum)
+                    imagingPrice = totalImagingPrice.reduce(getSum)
                 }
-                                                            
-            %>
+                                                                
+             %>
             <div class="panel panel-default">
                 <div class="panel-heading">
-                <h3 class="panel-title">Drugs</h3>
+                <h3 class="panel-title">Imaging</h3>
                 </div>
                 <table class="table table-bordered table-condensed">
                 <thead>
@@ -175,41 +175,38 @@
                     <th>Item / Details</th>
                     <th class="text-center colfix">Unit Cost</th>
                     <th class="text-center colfix">Discount</th>
-                    
+                    <!-- <th class="text-center colfix">Discount</th>
+                    <th class="text-center colfix">Tax</th> -->
                     <th class="text-center colfix">Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                        <% consultation.drugsObject.forEach((drug, index, array)=>{ %>
+                        <% consultation.imaging.forEach((inage)=>{ %>
                     <tr>
-                        <td>
-                                <% if(drug.drugs.name.name){ %>
-                                    <label><%= drug.drugs.name.name %></label>
-                                <% }else{ %>
-                                    <label> <%= drug.drugs.name.pharmname.generic %></label>
-                                <% } %>
-                            <br>
-                        
-                        </td>
-                        <td class="text-right">
-                            <span class="mono">&#8358;<%= drug.price %></span>
-                            <br>
-                            <!-- <small class="text-muted">Before Tax</small> -->
-                        </td>
-                        <td class="text-right">
-                            <span class="mono">&#8358;0.00</span>
-                            <br>
-                            <!-- <small class="text-muted">18 Units</small> -->
-                        </td>
-                    
-                        <td class="text-right">
-                            <strong class="mono">&#8358;<%= drug.price %></strong>
-                            <br>
+                            <td>
+                                    <%= image.investigation.name %>
+                                <br>
+                                <!-- <small class="text-muted">The best lorem in town, try it now or leave forever</small> -->
+                            </td>
+                            <td class="text-right">
+                                <span class="mono">&#8358;<%= image.investigation.price %></span>
+                                <br>
+                                <!-- <small class="text-muted">Before Tax</small> -->
+                            </td>
+                            <td class="text-right">
+                                <span class="mono">&#8358;0.00</span>
+                                <br>
+                                
+                            </td>
                             
-                        </td>
+                            <td class="text-right">
+                                <strong class="mono">&#8358;<%= image.investigation.price %></strong>
+                                <br>
+                                <!-- <small class="text-muted mono">$16,200.00</small> -->
+                            </td>
                     </tr>
+
                     <% }) %>
-                    
                 </tbody>
                 </table>
             </div>
@@ -225,9 +222,9 @@
                 </thead>
                 <tbody>
                     <tr>
-                    <th class="text-center rowtotal mono">&#8358;<%= totalPrice %></th>
+                    <th class="text-center rowtotal mono">&#8358;<%= imagingPrice %></th>
                     <th class="text-center rowtotal mono">&#8358;0.00</th>
-                    <th class="text-center rowtotal mono">&#8358;<%= totalPrice %></th>
+                    <th class="text-center rowtotal mono">&#8358;<%= imagingPrice %></th>
                     
                     </tr>
                 </tbody>

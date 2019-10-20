@@ -21,7 +21,9 @@ const consultationSchema = new mongoose.Schema({
         prescribedOn: {type: Date, default: Date.now},
         status: {type: Boolean, default: false},
     }],
-    picked: [],
+    drugspicked: [],
+    testpicked: [],
+    imagingpicked: [],
     imaging: [{
         images: {type: mongoose.Schema.Types.ObjectId, ref: "Imaging"},
         paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
@@ -119,6 +121,8 @@ const consultationSchema = new mongoose.Schema({
     labtestObject: [{
         tests: {type: mongoose.Schema.Types.ObjectId, ref: "Test"},
         paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
+        price: Number,
+        labtype: {type: mongoose.Schema.Types.ObjectId, ref: "Lab"},
         status: {type: Boolean, default: false},
         created: {type: Date, default: Date.now}
     }],
@@ -378,7 +382,7 @@ const consultationSchema = new mongoose.Schema({
         },
     },
     // imaging: String,
-    labtype: String,
+    
     radiology: String,
     treatment: String,
     labstatus: {type: Boolean, default: false},

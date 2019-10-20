@@ -182,10 +182,21 @@
                                                                     <button type="button" value="<%= request._id %>" class="btn btn-danger decline">Decline</button>
                                                                 </td>
                                                             <% }else if (request.granted){ %>
-                                                                <td><button  type="button" class="btn btn-default " disabled>Granted</button></td>
+
+                                                                <td>
+                                                                    
+                                                                    <% if(request.labitem){ %>
+
+                                                                        <a href="/lab-dispense/<%= request.labitem._id %>" class="btn btn-info">Dispense</a>
+                                                                    <% }else{ %>
+                                                                        
+                                                                    <% } %>
+                                                                   
+                                                                </td>
                                                             <% }else if(request.declined){ %>
                                                                 <td><button  type="button" class="btn btn-default " disabled>Declined</button></td>
                                                             <% } %>
+                                                           
                                                         </tr>
                                                         <% }  %>
                                                     <% }) %>

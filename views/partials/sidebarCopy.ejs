@@ -276,7 +276,7 @@
                         </li>
                         <% } %>
                         <% if(currentUser.role == 1 || currentUser.role === 5 || currentUser.role === 4 || currentUser.role === 13 || currentUser.role === 14 
-                        || currentUser.role === 22 || currentUser.role === 20){ %>
+                        || currentUser.role === 22 || currentUser.role === 20 || currentUser.role === 23){ %>
                             <li class="pcoded-hasmenu">
                                     <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                         <span class="pcoded-micon"><i class="fa fa-hand-lizard-o"></i></span>
@@ -293,7 +293,7 @@
                                             </a>
                                         </li>
                                         <% } %>
-                                        <% if(currentUser.role == 5 || currentUser.role === 4){ %>
+                                        <% if(currentUser.role == 5 || currentUser.role === 4 || currentUser.role === 23){ %>
                                         <li class=" ">
                                             <a href="/make-request" data-i18n="nav.navigate.navbar-inverse">
                                                 <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
@@ -413,7 +413,7 @@
                                 </ul>
                         </li>
                         <% } %>
-                        <% if(currentUser.role == 5 || currentUser.role == 1 || currentUser.role === 22){ %>
+                        <% if(currentUser.role == 5 || currentUser.role == 1 || currentUser.role === 22 || currentUser.role === 23){ %>
                         <li class="pcoded-hasmenu">
                                 <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                     <span class="pcoded-micon"><i class="ti-folder"></i></span>
@@ -458,7 +458,7 @@
                             <li class="pcoded-hasmenu">
                                     <a href="javascript:void(0)" data-i18n="nav.navigate.main">
                                         <span class="pcoded-micon"><i class="fa fa-book"></i></span>
-                                        <span class="pcoded-mtext">Local Inventory</span>
+                                        <span class="pcoded-mtext">Outpatient Inventory</span>
                                         <span class="pcoded-mcaret"></span>
                                     </a>
                                     <ul class="pcoded-submenu">
@@ -481,6 +481,33 @@
                                     </ul>
                             </li>
                             <% } %>
+                            <% if(currentUser.role == 23 || currentUser.role === 22){ %>
+                                <li class="pcoded-hasmenu">
+                                        <a href="javascript:void(0)" data-i18n="nav.navigate.main">
+                                            <span class="pcoded-micon"><i class="fa fa-book"></i></span>
+                                            <span class="pcoded-mtext">Inpatient Inventory</span>
+                                            <span class="pcoded-mcaret"></span>
+                                        </a>
+                                        <ul class="pcoded-submenu">
+                                           
+                                            <li class=" ">
+                                                <a href="/add-to-inpatient-inventory" data-i18n="nav.navigate.navbar-inverse">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Add to Inventory</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            <li class=" ">
+                                                <a href="/inpatient-inventory-list" data-i18n="nav.navigate.navbar-inverse">
+                                                    <span class="pcoded-micon"><i class="ti-angle-right"></i></span>
+                                                    <span class="pcoded-mtext">Inventory List</span>
+                                                    <span class="pcoded-mcaret"></span>
+                                                </a>
+                                            </li>
+                                            
+                                        </ul>
+                                </li>
+                                <% } %>
                         <% if(currentUser.role == 1 || currentUser.role == 14 || currentUser.role === 18 || currentUser.role === 20){ %>
                         <li class="pcoded-hasmenu">
                             <a href="javascript:void(0)" data-i18n="nav.navigate.main">
