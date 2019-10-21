@@ -8,7 +8,7 @@ const labDispenseSchema = new mongoose.Schema({
     rquantity: Number,
     dateReceived: {type: Date},
     expiry: {type: Date},
-    dispenseTo: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Department'},
+    dispenseTo: String,
     receivedBy: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'},
     dateDispensed: {type: Date},
     created: {type: Date, default: Date.now}

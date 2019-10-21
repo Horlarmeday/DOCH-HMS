@@ -61,11 +61,11 @@
                                                     <div class="form-group">
                                                         <div class="col-sm-12">
                                                             <label for="">Drug Name</label>
-                                                            <select id="labitem" name="item" class="form-control js-example-basic-single" disabled>
+                                                            <select id="labitem" name="item" class="form-control js-example-basic-single" re>
                                                                 <% if(item.pharmname){ %>
-                                                                    <option><%= item.pharmname.generic %> </option>
+                                                                    <option value="<%= item._id %>"><%= item.pharmname.generic %> </option>
                                                                 <% }else{ %>
-                                                                    <option><%= item.name %> </option>
+                                                                    <option value="<%= item._id %>"><%= item.name %> </option>
                                                                 <% } %>
                                                             </select>
                                                         </div><br>
@@ -142,7 +142,7 @@
                                                                 <select name="dispenseTo" class="form-control js-example-basic-single" required>
                                                                         <option selected disabled>Select</option>
                                                                     <% departments.forEach((department) =>{ %>
-                                                                        <option value="<%= department._id  %>"><%= department.name %></option>
+                                                                        <option><%= department.name %></option>
                                                                         
                                                                     <% }) %>
                                                                 </select>

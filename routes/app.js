@@ -4284,7 +4284,7 @@ router.route('/pharmacy-dispense/:id')
         function (done) {
             const pharmDispense = new PharmDispense()
             pharmDispense.creator = req.user._id;
-            pharmDispense.name = req.body.name;
+            pharmDispense.name = req.params.id;
             pharmDispense.quantity = req.body.quantity;
             pharmDispense.unit = req.body.unit;
             pharmDispense.rquantity = req.body.rquantity;
@@ -4301,6 +4301,55 @@ router.route('/pharmacy-dispense/:id')
         function (pharmDispense, done) {
             PharmacyItem.findOne({_id: req.params.id}, (err, item)=>{
                 if(err) return next(err)
+                if(pharmDispense.dispenseTo ===  'Outpatient Pharmacy'){
+                   LocalInventory.findOne({name: pharmDispense.name }, (err, drug)=>{
+                       if(!drug){
+                            const newDrug = new LocalInventory({
+                                creator: req.user._id,
+                                name: pharmDispense.name,
+                                productcode: item.productcode,
+                                received: Date.now(),
+                                price: item.price,
+                                unit: pharmDispense.unit,
+                                quantity: pharmDispense.quantity,
+                                cost: item.cost,
+                                expiration: item.expiration,
+                            })
+                            newDrug.save((err)=>{
+                                if(err) return next(err)
+                            })
+                       }else{
+                           drug.quantity+= pharmDispense.quantity
+                           drug.save((err)=>{
+                            if(err) return next(err)
+                           })
+                       }
+                   })
+                }else if(pharmDispense.dispenseTo ===  'Inpatient Pharmacy'){
+                    InPatient.findOne({name: pharmDispense.name }, (err, inDrug)=>{
+                        if(!inDrug){
+                             const inNewDrug = new InPatient({
+                                 creator: req.user._id,
+                                 name: pharmDispense.name,
+                                 productcode: item.productcode,
+                                 received: Date.now(),
+                                 price: item.price,
+                                 unit: pharmDispense.unit,
+                                 quantity: pharmDispense.quantity,
+                                 cost: item.cost,
+                                 expiration: item.expiration,
+                             })
+                             inNewDrug.save((err)=>{
+                                 if(err) return next(err)
+                             })
+                        }else{
+                            inDrug.quantity+= pharmDispense.quantity
+                            inDrug.save((err)=>{
+                             if(err) return next(err)
+                            })
+                        }
+                    })
+                }
                 item.rquantity = (item.quantity - pharmDispense.quantity)
                 item.save((err)=>{
                   if(err) return next(err)
