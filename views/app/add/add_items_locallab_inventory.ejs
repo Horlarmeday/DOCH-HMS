@@ -1,0 +1,200 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+        <!-- Main-body start -->
+        <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Local Lab Inventory</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!"></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Local Lab Inventory</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="post">
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Drug Name</label>
+                                                            <select name="name" class="form-control js-example-basic-single" required>
+                                                                <option selected disabled>Select</option>
+                                                                <% items.forEach((item)=>{  %>
+                                                                        <option><%= item.name %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Price(₦)</label>
+                                                                <input type="number" name="price" class="form-control"  >
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Product Code</label>
+                                                            <input type="text" id="productCode" name="productcode" class="form-control" placeholder=" Product Code" required >
+                                                        </div>                                                      
+                                                        <div class="col-sm-6">
+                                                            <label for="">Quantity</label>
+                                                            <input name="quantity" class="form-control" type="text">   
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Unit</label>
+                                                            <select name="unit" class="form-control">
+                                                                <option selected disabled>Select</option>
+                                                                <option value="Ampoule">Ampoule</option>
+                                                                <option value="Bag">Bag</option>
+                                                                <option value="Bottle">Bottle</option>
+                                                                <option value="Box">Box</option>
+                                                                <option value="Bundle">Bundle</option>
+                                                                <option value="Capsules">Capsules</option>
+                                                                <option value="Caplets">Caplets</option>
+                                                                <option value="Container">Container</option>
+                                                                <option value="Nebules">Nebules</option>
+                                                                <option value="Packs">Packs</option>
+                                                                <option value="Pieces">Pieces</option>
+                                                                <option value="Tablets">Tablets</option>
+                                                                <option value="Vials">Vials</option>
+                                                                <option value="Rolls">Rolls</option>
+                                                                <option value="Units">Units</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                                <label for="">Shelf </label>
+                                                                <select  name="shelf" class="form-control select" required>
+                                                                    <option selected disabled>Select</option>
+                                                                    <option>A</option>
+                                                                    <option>B</option>
+                                                                    <option>C</option>
+                                                                    <option>D</option>
+                                                                    <option>E</option>
+                                                                    <option>F</option>
+                                                                    <option>G</option>
+                                                                    <option>H</option>
+                                                                    <option>I</option>
+                                                                    <option>J</option>
+                                                                    <option>K</option>
+                                                                    <option>L</option>
+                                                                    <option>M</option>
+                                                                    <option>N</option>
+                                                                    <option>O</option>
+                                                                    <option>P</option>
+                                                                    <option>Q</option>
+                                                                    <option>R</option>
+                                                                    <option>S</option>
+                                                                    <option>T</option>
+                                                                    <option>U</option>
+                                                                    <option>V</option>
+                                                                    <option>W</option>
+                                                                    <option>X</option>
+                                                                    <option>Y</option>
+                                                                    <option>Z</option>
+                                                                </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                                <label for="">Shelf No</label>
+                                                                <select  name="shelfno" class="form-control select" required>
+                                                                    <option selected disabled>Select</option>
+                                                                    <option>1</option>
+                                                                    <option>2</option>
+                                                                    <option>3</option>
+                                                                    <option>4</option>
+                                                                    <option>5</option>
+                                                                    <option>6</option>
+                                                                    <option>7</option>
+                                                                    <option>8</option>
+                                                                    <option>9</option>
+                                                                    <option>10</option>
+                                                                    
+                                                                </select>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <label for="">Date Received</label>
+                                                           <input type="date" name="received" class="form-control" placeholder="" required>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Consumed</label>
+                                                                    <input type="number" name="consumed" class="form-control" placeholder="Number Consumed">
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Balance</label>
+                                                                    <input type="number" name="balance" class="form-control" placeholder="Balance">
+                                                            </div>
+                                                        
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label for="">Comments</label>
+                                                                    <textarea name="comment" placeholder="Optional" class="form-control" cols="30" rows="10"></textarea>
+                                                            </div>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-info float-right">Submit</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

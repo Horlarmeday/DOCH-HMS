@@ -1000,6 +1000,7 @@ function dosageCalc(){
 
     let dosage = duration * frequency * time
     $('.quantity').val(dosage)
+    $('.iquantity').val(dosage)
 }
 
 //egettin drugg price
@@ -1015,7 +1016,6 @@ function getDrugPrice() {
 
 function getLocalDrugPrice() {
     const itemCode = $('#itemCode').val()
-    console.log(itemCode)
     $.post('/get-dispensory-price', { itemCode: itemCode })
     .done(function(data) {
         //console.log(data)
@@ -1117,76 +1117,76 @@ function dispDate(dateObj) {
     return (month + "/" + day + "/" + year);
 }
 
-function createTable() {
-    const index = $('.drugmodal').attr('name')
-    const consultation = $('.drugmodal').attr('id')
-    $.ajax({
-        type: 'POST',
-        url: '/get-consultation',
-        data: {
-            index,
-            consultation
-        },
-        success:function (data) {
-            const drugs = data.clickedConsultation
-            $('#myModal').modal('show');
-            $('.modal-title').html(data.clickedConsultation[0].name)
-            var col = [];
-            for (var i = 0; i < drugs; i++) {
-                for (var key in drugs[i]) {
-                    if (col.indexOf(key) === -1) {
-                        col.push(key);
-                    }
-                }
-            }
+// function createTable() {
+//     const index = $('.drugmodal').attr('name')
+//     const consultation = $('.drugmodal').attr('id')
+//     $.ajax({
+//         type: 'POST',
+//         url: '/get-consultation',
+//         data: {
+//             index,
+//             consultation
+//         },
+//         success:function (data) {
+//             const drugs = data.clickedConsultation
+//             $('#myModal').modal('show');
+//             $('.modal-title').html(data.clickedConsultation[0].name)
+//             var col = [];
+//             for (var i = 0; i < drugs; i++) {
+//                 for (var key in drugs[i]) {
+//                     if (col.indexOf(key) === -1) {
+//                         col.push(key);
+//                     }
+//                 }
+//             }
 
-            // CREATE DYNAMIC TABLE.
-            // var table = $("<table cellspacing='0' class='text'></table>");
-            // $.append(t);
-            var table = document.createElement("table");
+//             // CREATE DYNAMIC TABLE.
+//             // var table = $("<table cellspacing='0' class='text'></table>");
+//             // $.append(t);
+//             var table = document.createElement("table");
 
-            // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
+//             // CREATE HTML TABLE HEADER ROW USING THE EXTRACTED HEADERS ABOVE.
 
-            var tr = table.insertRow(-1);                   // TABLE ROW.
+//             var tr = table.insertRow(-1);                   // TABLE ROW.
 
-            for (var i = 0; i < col.length; i++) {
-                var th = document.createElement("th");      // TABLE HEADER.
-                th.innerHTML = col[i];
-                tr.appendChild(th);
-            }
+//             for (var i = 0; i < col.length; i++) {
+//                 var th = document.createElement("th");      // TABLE HEADER.
+//                 th.innerHTML = col[i];
+//                 tr.appendChild(th);
+//             }
 
-            // ADD JSON DATA TO THE TABLE AS ROWS.
-            for (var i = 0; i < drugs.length; i++) {
+//             // ADD JSON DATA TO THE TABLE AS ROWS.
+//             for (var i = 0; i < drugs.length; i++) {
 
-                tr = table.insertRow(-1);
+//                 tr = table.insertRow(-1);
 
-                for (var j = 0; j < col.length; j++) {
-                    var tabCell = tr.insertCell(-1);
-                    tabCell.innerHTML = drugs[i][col[j]];
-                }
-            }
+//                 for (var j = 0; j < col.length; j++) {
+//                     var tabCell = tr.insertCell(-1);
+//                     tabCell.innerHTML = drugs[i][col[j]];
+//                 }
+//             }
 
-            // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
-            var divContainer = document.getElementById("showData");
-            divContainer.innerHTML = "";
-            divContainer.appendChild(table);
-            // $.each(data.clickedConsultation, function(index, value){
+//             // FINALLY ADD THE NEWLY CREATED TABLE WITH JSON DATA TO A CONTAINER.
+//             var divContainer = document.getElementById("showData");
+//             divContainer.innerHTML = "";
+//             divContainer.appendChild(table);
+//             // $.each(data.clickedConsultation, function(index, value){
                 
-            //     $("#table").append($("<td>",{
-            //             text: value.date,
-            //             text: value.drugs,
-            //             text: value.dose,
-            //             text: value.frequency,
-            //             text: value.duration,
-            //             text: value.total,
-            //             text: value.price,
-            //             text: value.note
-            //     }))
-            // })
+//             //     $("#table").append($("<td>",{
+//             //             text: value.date,
+//             //             text: value.drugs,
+//             //             text: value.dose,
+//             //             text: value.frequency,
+//             //             text: value.duration,
+//             //             text: value.total,
+//             //             text: value.price,
+//             //             text: value.note
+//             //     }))
+//             // })
         
-        }
-    })
-}
+//         }
+//     })
+// }
     
 function pregnancyCalc() {
     let lmp = $('#lmp').val();

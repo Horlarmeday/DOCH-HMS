@@ -396,7 +396,7 @@ const consultationSchema = new mongoose.Schema({
     imagingdate: {type: Date},
     labResultDate: {type: Date},
     created: {type: Date, default: Date.now}
-});
+}, { timestamps: true });
 
 //Populates schema to any level
 consultationSchema.plugin(deepPopulate)

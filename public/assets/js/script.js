@@ -416,70 +416,7 @@ $(document).ready(function() {
 });
 
 
-// // creates variable for url we want to fetch
-// const url = 'http://localhost:3031/analytics';
 
-// // fetch call to our /api/data page
-// fetch(url)
-
-//  // creates promise to work with response from /api/data
-//   .then(res => {
-
-// // throws error if there is a problem fetching page 
-//     if (!res.ok) {
-
-//      // returns error with response text of error
-//       throw new Error(res.statusText);
-
-//     }
-
-//     // returns data from /api/data page in json format to next promise
-//     return res.json();
-
-//   })
-
-//   // creates promise with returned data from previous promise
-//   .then(data => {
-//     console.log(data)
-//    // creates employees variable to store JSON data form /api/data
-//     let patients = data;
-
-//     // creates empty employeeInfo array
-//     let patientInfo = [];
-
-//    // loops through data from employee variable 
-//     patients.forEach(user => {
-
-//       // pushes values from employees variable to empty employeeInfo array 
-//       patientInfo.push([user.createdAt, user.gender]);
-
-//     });
-
-//     // creates chart const with employeeInfo array
-//     const chart = {
-//       type: 'bar',
-//       series: [
-//         {
-//           values: patientInfo,
-//           "text": "Male"
-//         },
-//         {
-//             values: patientInfo,
-//             "text": "Female"
-//         }
-//       ]
-//     };
-//     <script src="https://cdn.zingchart.com/zingchart.min.js"></script>
-//     // renders zingchart to the page 
-//     zingchart.render({
-//       id: 'myChart',
-//       data: chart,
-//       height: '100%',
-//       width: '100%'
-//     });
-
-//    // catches errors in promise chain
-//   }).catch(error => console.log("fetch error"));
 
 /* Search header start */
 (function() {
@@ -626,28 +563,28 @@ $('.color-picker a.handle').click(function(e) {
 });
 
 /* Crazyegg */
-setTimeout(function(){var a=document.createElement("script");
-var b=document.getElementsByTagName("script")[0];
-a.src=document.location.protocol+"//script.crazyegg.com/pages/scripts/0067/0651.js?"+Math.floor(new Date().getTime()/3600000);
-a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
+// setTimeout(function(){var a=document.createElement("script");
+// var b=document.getElementsByTagName("script")[0];
+// a.src=document.location.protocol+"//script.crazyegg.com/pages/scripts/0067/0651.js?"+Math.floor(new Date().getTime()/3600000);
+// a.async=true;a.type="text/javascript";b.parentNode.insertBefore(a,b)}, 1);
 
 // Global site tag (gtag.js) - Google Analytics 
-function loadScriptAsync(scriptSrc, callback) {
-    if (typeof callback !== 'function') {
-        throw new Error('Not a valid callback for async script load');
-    }
-    var script = document.createElement('script');
-    script.onload = callback;
-    script.src = scriptSrc;
-    document.head.appendChild(script);
-}
+// function loadScriptAsync(scriptSrc, callback) {
+//     if (typeof callback !== 'function') {
+//         throw new Error('Not a valid callback for async script load');
+//     }
+//     var script = document.createElement('script');
+//     script.onload = callback;
+//     script.src = scriptSrc;
+//     document.head.appendChild(script);
+// }
 
 /* This is the part where you call the above defined function and "call back" your code which gets executed after the script has loaded */
-loadScriptAsync('https://www.googletagmanager.com/gtag/js?id=UA-105635514-1', function(){
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'UA-105635514-1', { 'anonymize_ip': true });
-})
+// loadScriptAsync('https://www.googletagmanager.com/gtag/js?id=UA-105635514-1', function(){
+//     window.dataLayer = window.dataLayer || [];
+//     function gtag(){dataLayer.push(arguments);}
+//     gtag('js', new Date());
+//     gtag('config', 'UA-105635514-1', { 'anonymize_ip': true });
+// })
 
 

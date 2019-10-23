@@ -475,6 +475,164 @@
 
 
 
+
+
+
+
+    <div class="col-sm-12">
+            <!-- Zero config.table start -->
+            <div class="card">
+                <div class="card-header">
+                    <h5>Pharmacy Requests</h5>
+                    <div class="card-header-right">
+                        <i class="icofont icofont-rounded-down"></i>
+                        <i class="icofont icofont-refresh"></i>
+                        <i class="icofont icofont-close-circled"></i>
+                    </div>
+                </div>
+                <div class="card-block">
+                    <div class="dt-responsive table-responsive">
+                        <table id="simpletable" class="table table-striped table-bordered nowrap">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">S/N</th>
+                                    <th rowspan="2">Patient ID</th>
+                                    <th rowspan="2">Name</th>
+                                    <th rowspan="2">Reason for Visit</th>
+                                    <th rowspan="2">Doctor</th>
+                                    <th rowspan="2">Status</th>
+                                    <th rowspan="2">Payment Status</th>
+                                    <th rowspan="2">Action</th>
+                                    <th colspan="9">Drugs & Prescriptions</th>
+                                    <tr>
+                                        <th>Drugs</th>
+                                        <th>Starting Date</th>
+                                        <th  >Unit Dose</th>
+                                        <th  >Frequency</th>
+                                        <th  >Duration</th>
+                                        <th  >Total to Dispense</th>
+                                        <th  >Unit Price</th>
+                                        <th>PrescribedBy</th>
+                                       
+                                        <th  >Notes</th>
+                                    </tr>
+                                </tr>
+                           
+                            </thead>  
+                                <tr v-for="consultation in consultations" :key="consultation._id">
+                                    <div v-if="consultation.pharmacystatus === true && consultation.pharmacyfinish === false">
+                                        <td></td>
+                                        <td>{{ consultation.patient.patientId }}</td>
+                                        <td>
+                                             <a :href="#" class="mr-2"> 
+                                                {{ consultation.patient.firstname}} {{ consultation.patient.lastname}}</a>
+                                             
+                                                <label v-if="consultation.patient.retainership == 'Yes'" 
+                                                class="label label-md bg-success">{{ consultation.patient.retainershipname.hmoname }}</label>
+                                           
+                                        </td>
+                                        <td> {{ consultation.visit }}</td>
+                                        <td>{{ consultation.doctor.firstname }} {{ consultation.doctor.lastname }}</td>
+                                       
+                                        <td>
+                                            <label v-if="consultation.pharmacyfinish === false" class="label label-md bg-warning">Ongoing</label>
+                                            <label v-else class="label label-md bg-success">Finished</label>
+                                        </td>
+                                        
+                                        
+                                        <td>
+                                            <label v-if="consultation.pharmacypaid === false" class="label label-md bg-warning">Not Paid</label>
+                                            <label v-else class="label label-md bg-success">Paid</label>
+                                        </td>
+                                       
+                                       
+                                        <td v-if="consultation.pharmacypaid && !consultation.pharmacyfinish">
+                                            <button class="btn btn-success paid">Dispense</button>
+                                            <a class="btn btn-inverse addAnother"data-toggle="modal" 
+                                            href="#secondModal">
+                                                Add Drugs
+                                            </a>
+                                            <button @click.prevent="getDrugs" class="btn btn-info drugmodal"
+                                                 data-toggle="modal" 
+                                                href="#myModal">
+                                                View
+                                            </button>  
+                                        </td>
+                                      
+                                        <td v-else-if="!consultation.pharmacypaid && !consultation.pharmacyfinish"><a href="#" 
+                                            class="btn btn-default ">Dispensed</a>
+                                        </td>
+                                       
+                                       <td v-else-if="consultation.pharmacypaid && consultation.pharmacyfinish"><button class="btn btn-success" 
+                                        disabled>Prescribed</button>
+                                       </td>
+                                 
+                                       <td>
+                                             
+                                           <tr v-for="(drug, index) in consultation.drugsObject" :key="drug._id">
+                                                       <th></th>
+                                                       <th></th>
+                                                       <th></th>
+                                                       <th></th>
+                                                       <th></th>
+                                                       <th></th>
+                                                       <th></th>
+                                                       <th></th>
+                                                 
+                                                       
+                                                       
+                                                        <td v-if="drug.drugs.name.name" style="font-weight: 700; color: green">
+                                                        {{ drug.drugs.name.name }}
+                                                        </td>
+                                                    
+                                                        <td v-else style="font-weight: 700; color: green">
+                                                        {{ drug.drugs.name.pharmname.generic  }}  
+                                                        </td>
+                                                          
+                                                       
+                                                       <td>
+                                                           {{ drug.startingdate }}
+                                                       </td>
+                                                       <td>
+                                                           {{ drug.time }}
+                                                       </td>
+                                                    
+                                                       <td>
+                                                               {{ drug.direction }}
+                                                       </td>
+                                                       <td>
+                                                               {{ drug.duration }}
+                                                       </td>
+                                                       <td>
+                                                               {{ drug.quantity }}
+                                                       </td>
+                                                       <td>
+                                                               {{ drug.price }}
+                                                       </td>
+                                                    
+
+                                                        <td v-if="drug.prescribedBy">
+                                                            {{ drug.prescribedBy.firstname }}
+                                                            {{ drug.prescribedBy.lastname }}
+                                                        </td>
+                                                       
+                                                        <td v-else></td>
+                                                    
+                                                        <td>{{ drug.notes }}</td>
+                                                        
+                                           </tr>
+                                        
+                                       </td>  
+                                    </div>
+                                </tr>
+                        </table>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+
     <%
         function getSum(total, num) {
             return total + num;

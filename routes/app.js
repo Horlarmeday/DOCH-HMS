@@ -24,6 +24,7 @@ const WardRound = require('../models/wardRound')
 const Careplan = require('../models/careplan')
 const Treatment = require('../models/treatment')
 const InPatient = require('../models/inPatientInventory')
+const LabInventory = require('../models/labLocalInventory')
 const Consentform = require('../models/consentform')
 const Assessment = require('../models/assessment')
 const Immunization = require('../models/immunization')
@@ -381,11 +382,16 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 Consultation.find({})
                 .populate('patient')
                 .populate('doctor')
-                // .populate('drugsObject')
-                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname', 'drugsObject.prescribedBy', 'drugsObject.drugs.name.pharmname'])
+                .deepPopulate([
+                    'drugsObject.drugs',
+                    'patient.retainershipname',
+                    'drugsObject.prescribedBy',
+                    'drugsObject.drugs.name.pharmname'
+                ])
                 .exec((err, consultations)=>{
                     if(err) return next (err)
-                    PharmacyItem.find({})
+                    LocalInventory.find({})
+                        .deepPopulate('name.pharmname')
                         .exec((err, drugs)=>{
                             ANC.find({})
                                 .populate('labtest')
@@ -2868,7 +2874,7 @@ router.route('/attending-to-patient/:id')
     .post(middleware.isLoggedIn, (req, res, next) => {
         User.findOne({_id: req.params.id}, (err, user)=>{
             if(err) {return next (err)}
-            Triage.findOne({_id: user.triages[user.triages.length -1]._id}, function (err, triage) {
+            Triage.findOne({_id: user.triages[user.triages.length -1]}, function (err, triage) {
                 if(err) {return next (err)}
                 const consultation = new Consultation({
                     doctor: req.user._id,
@@ -2903,10 +2909,7 @@ router.route('/attending-to-patient/:id')
                     }
                 )
             })
-        })
-        
-        
-        
+        })   
     })
 
 
@@ -3215,7 +3218,8 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
 router.get('/pharmacy-prescription/:id', middleware.isLoggedIn, (req, res, next)=>[
     User.findOne({_id: req.params.id})
         .exec((err, user)=>{
-            PharmacyItem.find({})
+            LocalInventory.find({})
+                .deepPopulate('name.pharmname')
                 .exec((err, drugs)=>{
                     res.render('app/add/pharmacy_prescription', {drugs, user})
                 })
@@ -3981,6 +3985,7 @@ router.route('/edit-lab-item/:id')
             }
             item.save((err)=>{
                 if(err) return next(err)
+
                 req.flash('success', 'Item was updated!')
                 res.redirect('back') 
             })
@@ -4206,6 +4211,31 @@ router.route('/lab-dispense/:id')
         function (labDispense, done) {
             labItem.findOne({_id: req.params.id}, (err, item)=>{
                 if(err) return next(err)
+                if(labDispense.dispenseTo === 'Laboratory'){
+                    LabInventory.findOne({name: labDispense.name }, (err, labitem)=>{
+                        if(!labitem){
+                             const newItem = new LabInventory({
+                                 creator: req.user._id,
+                                 name: labDispense.name,
+                                 productcode: item.productcode,
+                                 received: Date.now(),
+                                 price: item. price,
+                                 unit: labDispense.unit,
+                                 quantity: labDispense.quantity,
+                                 cost: item.cost,
+                                 expiration: item.expiration,
+                             })
+                             newItem.save((err)=>{
+                                 if(err) return next(err)
+                             })
+                        }else{
+                            labitem.quantity+= labDispense.quantity
+                            labitem.save((err)=>{
+                             if(err) return next(err)
+                            })
+                        }
+                    })
+                }
                 item.rquantity = labDispense.rquantity
                 item.save((err)=>{
                   if(err) return next(err)
@@ -4229,6 +4259,93 @@ router.route('/lab-dispense/:id')
         }
         
     ])
+    
+   })
+
+
+//    ADD ITEMS TO LOCAL LAB INVENTORY
+router.route('/add-to-lab-inventory')
+.get(middleware.isLoggedIn, (req, res, next)=>{
+    labItem.find({})
+    .exec((err, items)=>{
+     if(err) return next (err)
+     res.render('app/add/add_items_locallab_inventory', { items })
+    })
+}) 
+.post(middleware.isLoggedIn, (req, res, next)=>{
+    const item = new LabInventory()
+    item.creator = req.user._id;
+    item.name = req.body.name;
+    item.price = req.body.price;
+    item.unit = req.body.unit;
+    item.quantity = req.body.quantity;
+    item.cost = req.body.cost;
+    item.productcode = req.body.productcode;
+    item.shelf = req.body.shelf;
+    item.shelfno = req.body.shelfno;
+    item.consumed = req.body.consumed;
+    item.balance = req.body.balance;
+    item.comment = req.body.comment;
+    item.received = req.body.received;
+    item.save((err)=>{
+        if(err){
+            req.flash('error', err.message)
+         return res.redirect('back')
+        }
+        req.flash('success', 'Item was added!')
+        res.redirect('back')
+    })
+ 
+})
+
+// LOCAL LAB INVENTORY LIST
+router.get('/lablocal-inventory-list', middleware.isLoggedIn, (req, res, next)=>{
+    LabInventory.find({})
+    .populate('creator')
+    .exec((err, items)=>{
+        if(err){
+            return next(err)
+        }
+        res.render('app/view/lablocal_inventory_list', { items })
+    })
+})
+
+// EDIT ITEMS TO LAB LOCAL INVENTORY
+router.route('/edit-lablocal-inventory/:id')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       labItem.find({}, (err, drugs)=>{
+        if(err) return next (err)
+            LabInventory.findOne({_id: req.params.id })
+            .exec((err, item)=>{
+                res.render('app/add/edit_lablocal_inventory', { drugs, item })
+            })
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+    LabInventory.findOne({_id: req.params.id }, (err, item)=>{
+        if(item){
+            if (req.body.name) item.name = req.body.name;
+            if (req.body.price) item.price = req.body.price;
+            if (req.body.unit) item.unit = req.body.unit;
+            if (req.body.quantity) item.quantity = req.body.quantity;
+            if (req.body.cost) item.cost = req.body.cost;
+            if (req.body.productcode) item.productcode = req.body.productcode;
+            if (req.body.shelf) item.shelf = req.body.shelf;
+            if (req.body.shelfno) item.shelfno = req.body.shelfno;
+            if (req.body.consumed) item.consumed = req.body.consumed;
+            if (req.body.balance) item.balance = req.body.balance;
+            if (req.body.comment) item.comment = req.body.comment;
+            if (req.body.received) item.received = req.body.received;
+            item.save((err)=>{
+                if(err){
+                    req.flash('error', err.message)
+                 return res.redirect('back')
+                }
+                req.flash('success', 'Item was updated!')
+                res.redirect('/lablocal-inventory-list')
+            })
+        }
+    })
     
    })
 
@@ -4309,7 +4426,7 @@ router.route('/pharmacy-dispense/:id')
                                 name: pharmDispense.name,
                                 productcode: item.productcode,
                                 received: Date.now(),
-                                price: item.price,
+                                price: item.sellprice,
                                 unit: pharmDispense.unit,
                                 quantity: pharmDispense.quantity,
                                 cost: item.cost,
@@ -4333,7 +4450,7 @@ router.route('/pharmacy-dispense/:id')
                                  name: pharmDispense.name,
                                  productcode: item.productcode,
                                  received: Date.now(),
-                                 price: item.price,
+                                 price: item.sellprice,
                                  unit: pharmDispense.unit,
                                  quantity: pharmDispense.quantity,
                                  cost: item.cost,
@@ -4496,10 +4613,37 @@ router.route('/edit-pharmacy-item/:id')
             if (req.body.sell_price) item.sellprice = req.body.sell_price;
             if (req.body.received) item.received = req.body.received;
         }
+
+
         item.save((err)=>{
             if(err) return next(err)
-            req.flash('success', 'Item was updated!')
-            res.redirect('back') 
+            LocalInventory.findOne({name: req.params.id}, (err, drug)=>{
+                console.log(drug)
+                if(drug){
+                    drug.price = item.sellprice
+                    drug.save((err)=>{
+                        if(err) return next (err)
+                    })
+                }else{
+                    req.flash('error', 'Item not updated in the Outpatient Dsipensary, Please check!')
+                    res.redirect('back') 
+                }
+                InPatient.findOne({name: req.params.id}, (err, inDrug)=>{
+                    if(err) return next (err)
+                    if(inDrug){
+                        inDrug.price = item.sellprice
+                        inDrug.save((err)=>{
+                            if(err) return next (err)
+                            req.flash('success', 'Item was updated!')
+                            res.redirect('back') 
+                        })
+                    }else{
+                        req.flash('error', 'Item not updated in the Inpatient Dispensary, Please check!')
+                        res.redirect('back') 
+                    }
+                })
+            })
+            
         })
     })
    })
