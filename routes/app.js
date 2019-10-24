@@ -3214,6 +3214,10 @@ router.post('/imaging/:id', middleware.isLoggedIn, (req, res, next)=>{
         })
 })
 
+router.get('/test', middleware.isLoggedIn, (req, res)=>{
+    res.render('app/add/test')
+})
+
 //Add Pharmacy Prescription
 router.get('/pharmacy-prescription/:id', middleware.isLoggedIn, (req, res, next)=>[
     User.findOne({_id: req.params.id})
@@ -3405,7 +3409,7 @@ router.get('/triages', middleware.isLoggedIn, (req, res, next)=>{
 //VIEW ALL CONSULTATIONS
 router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({}) 
-    .sort('-created')
+    .sort('-updatedAt')
     .populate('patient')
     .populate('imaging')
     .populate('labtestObject.tests')

@@ -383,6 +383,7 @@ router.post("/get-consultation", middleware.isLoggedIn, (req, res, next) => {
       "drugsObject.drugs.name.pharmname"
     ])
     .exec((err, found) => {
+        
       var clickedConsultation = [];
       found.drugsObject.forEach(drug => {
         clickedConsultation.push({
@@ -435,12 +436,28 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
                 consultation.drugsObject[index].status = true;
                 consultation.save(err => {
                   if (err) return next(err);
-                  return res
-                  .status(200)
-                  .json({
-                    data: consultation.drugsObject[index].status,
-                    message: "Drug dispensed successfully"
-                  });
+                  const complete = consultation.drugsObject.map(status =>{
+                    const rStatus = status.status
+                    return rStatus;
+                  })
+                  let truthLength = complete.filter(v => v).length
+                  if(truthLength === consultation.drugsObject.length){
+                    consultation.pharmacyfinish = true;
+                    consultation.save();
+                    return res
+                    .status(200)
+                    .json({
+                        data: consultation.drugsObject[index].status,
+                        message: 'All drugs dispensed!'
+                    })
+                  }else{
+                    return res
+                    .status(200)
+                    .json({
+                        data: consultation.drugsObject[index].status,
+                        message: "Drug dispensed successfully"
+                    });
+                  }
                 });
               }
             } else {
@@ -488,7 +505,7 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
 
 // Pharmacy drugs prescription
 router.post('/json-prescription', middleware.isLoggedIn, (req, res, next)=>{
-            const id = req.body.consultation
+            const id = req.body.id
             Consultation.findOne({ _id: id })
                 .populate('patient')
                 .populate('doctor')
@@ -512,7 +529,7 @@ router.post('/json-prescription', middleware.isLoggedIn, (req, res, next)=>{
                             paid: paid,
                             drugs: req.body.drug_brand,
                             startingdate: req.body.startingdate,
-                            quantity: req.body.quantity,
+                            quantity: req.body.dosage,
                             medicineunit: req.body.medicineunit,
                             unit: req.body.unit,
                             dose: req.body.dose,
@@ -531,6 +548,7 @@ router.post('/json-prescription', middleware.isLoggedIn, (req, res, next)=>{
                         if(err) {
                             return res.status(400).json(err.message)
                         }
+
                         return res.status(200).json({
                             data: [
                                 theconsultation.drugs,
@@ -555,7 +573,7 @@ router.post('/json-prescription', middleware.isLoggedIn, (req, res, next)=>{
 // Liist of all consultations
 router.get('/json-consultations', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({})
-    .sort('created')
+    .sort('-updatedAt')
     .populate('patient')
     .populate('doctor')
     .deepPopulate([
@@ -566,35 +584,6 @@ router.get('/json-consultations', middleware.isLoggedIn, (req, res, next)=>{
     ])
     .exec((err, consultations)=>{
         if(err) return res.status(400).json(err.message)
-        // let allConsultations = []
-        // let allDrugs = []
-        // consultations.forEach((consultation)=>{
-        //     allConsultations.push({
-        //        firstname: consultation.patient.firstname,
-        //        lastname: consultation.patient.lastname,
-        //        patientId: consultation.patient.patientId,
-        //        hmoname: consultation.patient.retainershipname,
-        //        retainership: consultation.patient.retainership,
-        //        visit: consultation.visit,
-        //        pharmacyfinish: consultation.pharmacyfinish,
-        //        pharmacypaid: consultation.pharmacypaid,
-        //     })
-        //     consultation.drugsObject.forEach((drug)=>{
-        //         allDrugs.push({
-        //             name: drug.drugs.name.name,
-        //             thedrug: drug.drugs.name.pharmname,
-        //             startingdate: drug.startingdate,
-        //             time: drug.time,
-        //             direction: drug.direction,
-        //             duration: drug.duration,
-        //             quantity: drug.quantity,
-        //             price: drug.price,
-        //             firstname: drug.prescribedBy.firstname,
-        //             lastname: drug.prescribedBy.lastname,
-        //             notes: drug.notes
-        //         })
-        //     })
-        // })
         
         res.status(200).json(
             consultations
