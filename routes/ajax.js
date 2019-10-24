@@ -422,7 +422,7 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
           { _id: consultation.drugsObject[index].drugs },
           (err, foundDrug) => {
             if (foundDrug) {
-              if (foundDrug.balance == 0) {
+              if (foundDrug.balance <= 0) {
                 return res
                   .status(400)
                   .json("Sorry, the balance in the dispensary is Zero");
@@ -486,10 +486,28 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
                 consultation.drugsObject[index].status = true;
                 consultation.save(err => {
                   if (err) return next(err);
-                  return res.status(200).json({
-                    data: consultation.drugsObject[index].status,
-                    message: "Drug dispensed successfully"
-                  });
+                  const complete = consultation.drugsObject.map(status =>{
+                    const rStatus = status.status
+                    return rStatus;
+                  })
+                  let truthLength = complete.filter(v => v).length
+                  if(truthLength === consultation.drugsObject.length){
+                    consultation.pharmacyfinish = true;
+                    consultation.save();
+                    return res
+                    .status(200)
+                    .json({
+                        data: consultation.drugsObject[index].status,
+                        message: 'All drugs dispensed!'
+                    })
+                  }else{
+                    return res
+                    .status(200)
+                    .json({
+                        data: consultation.drugsObject[index].status,
+                        message: "Drug dispensed successfully"
+                    });
+                  }
                 });
               }
             } else {

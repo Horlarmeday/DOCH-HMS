@@ -621,8 +621,7 @@ new Vue({
                     self.fname = result[i].fname
                     self.lname = result[i].lname
                 }
-          
-                console.log(self.drugs)
+      
             })
             .catch(function (error) {
               console.log(error.response.data);
@@ -650,7 +649,10 @@ new Vue({
                 }
             })
             .catch(function (error) {
-              console.log(error.response.data);
+                self.feedback = error.response.data
+                self.showRed = true;
+                self.dispenseLoading = false;
+                console.log(error.response.data);
             });
         },
 
@@ -697,10 +699,10 @@ new Vue({
                 }
             })
             .catch(function (error) {
-                self.message = error.response.data.message
+                self.message = error.response.data
                 self.showRed = true;
                 self.addDrugLoading = false;
-                console.log(error.response.data.message);
+                console.log(error.response.data);
             });
         },
 
