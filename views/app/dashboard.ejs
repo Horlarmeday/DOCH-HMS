@@ -28,7 +28,7 @@
                         <h4>Dashboard</h4>
                     </div>
                 </div>
-                <div class="page-body">
+                <div id="charts" class="page-body">
                     <div class="row">
                         <!-- Visitor Chart Start-->
                         <div class="col-md-6 col-xl-4">
@@ -128,7 +128,7 @@
                          <div class="col-md-12 col-lg-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>New Patients</h5>
+                                        <h5> Registrations</h5>
                                         
                                         <div class="card-header-right">
                                             <i class="icofont icofont-rounded-down"></i>
@@ -150,7 +150,7 @@
                           <div class="col-md-12 col-lg-6">
                                 <div class="card">
                                     <div class="card-header">
-                                        <h5>Patient Total</h5>
+                                        <h5>Revenue</h5>
                                         <div class="card-header-right">
                                             <i class="icofont icofont-rounded-down"></i>
                                             <i class="icofont icofont-refresh"></i>
@@ -320,56 +320,139 @@
 </div>
 <!-- Center page ends -->
 <script src="/assets/js/apexcharts.js"></script>
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script> -->
 <script>
-var options = {
-  chart: {
-    height: 380,
-    width: "100%",
-    type: "area"
-  },
-  series: [
-    {
-      name: "Series 1",
-      data: [[1, 34], [3.8, 43], [5, 31] , [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
+new Vue({
+    el: '#charts',
+    data: {
+        users_reg_url: '/user-registrations',
+        payments_url: '/analytics-page',
+        usersData: null,
+        usersDataMonth: null,
+        paymentsData: null,
+        paymentsDataMonth: null
+    },
+    mounted() {
+        this.registrations();
+        this.payments()
+    },
+
+    methods: {
+        registrations: function () {
+            let self = this;
+            axios.get(self.users_reg_url)
+            .then(function (response) {
+                self.usersData = response.data.data
+                self.usersDataMonth = response.data.months
+                var MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                var options = {
+                    chart: {
+                        height: 380,
+                        width: "100%",
+                        type: "area"
+                    },
+                    series: [
+                        {
+                            name: "Patient Registration",
+                            data: self.usersData
+                        }
+                    ],
+                    yaxis: {
+                        title: {
+                            text: 'Count'
+                        }
+                    },
+                    xaxis: {
+                        categories: self.usersDataMonth, 
+                        title: {
+                            text: 'Month'
+                        }
+                                       
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: function(val, index) {
+                                return val;
+                            }
+                        }
+                    }
+                };
+                let chart = new ApexCharts(document.querySelector("#tchart"), options);
+                chart.render();
+                
+            })
+            .catch(function (error) {
+                console.log(error.response.data)
+            })
+        },
+
+        payments: function () {
+            let self = this;
+            axios.get(self.payments_url)
+            .then(function (response) {
+                self.paymentsData = response.data.data
+                self.paymentsDataMonth = response.data.months
+                // Second Chart
+                var colors = ['#00E396', '#008FFB',  '#FEB019', '#FF4560', '#775DD0', '#546E7A', '#26a69a', '#D10CE8'];
+                var options = {
+                chart: {
+                    height: 380,
+                    width: "100%",
+                    type: "bar",
+                },
+                colors: colors,
+                plotOptions: {
+                    bar: {
+                        columnWidth: '55%',
+                        distributed: true
+                    }
+                },
+                dataLabels: {
+                    enabled: true,
+                },
+                series: [
+                    {
+                    name: "Payments",
+                    data: self.paymentsData
+                    }
+                ],
+                yaxis: {
+                        title: {
+                            text: '(₦) Amount'
+                        }
+                },
+                xaxis: {
+                    categories: self.paymentsDataMonth,
+                    title: {
+                        text: 'Month'
+                    },
+                    
+                    // categories: ,                
+                },
+                tooltip: {
+                    x: {
+                        formatter: function(val, { series, seriesIndex, dataPointIndex, w }) {
+                            return val;
+                        }
+                    }
+                }
+                };
+
+                let secondchart = new ApexCharts(document.querySelector("#barchart"), options);
+
+                secondchart.render();
+            })
+            .catch(function (error) {
+                console.log(error.response.data)
+            })
+        }
     }
-  ],
-  tooltip: {
-    x: {
-      formatter: function(val) {
-        return val.toFixed(1);
-      }
-    }
-  }
-};
 
-let chart = new ApexCharts(document.querySelector("#tchart"), options);
+})
 
-chart.render();
+    // First Chart
 
-// Second Chart
-var options = {
-  chart: {
-    height: 380,
-    width: "100%",
-    type: "bar"
-  },
-  series: [
-    {
-      name: "Series 1",
-      data: [[2, 34], [3.8, 43], [5, 31] , [10, 43], [13, 33], [15, 43], [18, 33] , [20, 52]]
-    }
-  ],
-  tooltip: {
-    x: {
-      formatter: function(val) {
-        return val.toFixed(1);
-      }
-    }
-  }
-};
 
-let secondchart = new ApexCharts(document.querySelector("#barchart"), options);
 
-secondchart.render();
 </script>
 <% include ../partials/footerCopy %>

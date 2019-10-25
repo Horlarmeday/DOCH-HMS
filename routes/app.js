@@ -808,38 +808,118 @@ router.get('/analytics', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+// Convert Numbers to month
+function changeToMonth(arr){
+    var err = []
+    for (let index = 0; index < arr.length; index++) {
+        if(arr[index] === 1){
+            err.push('Jan')
+        }else if(arr[index] === 2){
+            err.push('Feb')
+        }else if(arr[index] === 3){
+            err.push('Mar')
+        }else if(arr[index] === 4){
+            err.push('Apr')
+        }else if(arr[index] === 5){
+            err.push('May')
+        }else if(arr[index] === 6){
+            err.push('Jun')
+        }else if(arr[index] === 7){
+            err.push('Jul')
+        }else if(arr[index] === 8){
+            err.push('Aug')
+        }else if(arr[index] === 9){
+            err.push('Sep')
+        }else if(arr[index] === 10){
+            err.push('Oct')
+        }else if(arr[index] === 11){
+            err.push('Nov')
+        }else if(arr[index] === 12){
+            err.push('Dec')
+        }
+    }
+    return err
+   
+}
+
 //ANAlYTICS
 router.get('/analytics-page', middleware.isLoggedIn, (req, res, next)=>{
-    User.find({role: 8}, (err, users)=>{
-        if(err) return next (err)
-        // var femalepatients = []
-        // users.forEach((user)=>{
-        //     femalepatients.push({
-        //         'created': user.createdAt.getTime()
-        //     })
-        // })
-        
+   
         Payment.aggregate([
             {
                 
                   $group : { 
-                        _id : { year: { $year : "$createdAt" }, month: { $month : "$createdAt" },day: { $dayOfMonth : "$createdAt" }}, 
+                        _id : { year: { $year : "$createdAt" }, month: { $month : "$createdAt" }}, 
                         totalAmount : { $sum : {$add: '$amount'}},
                         count: {$sum: 1}
                    }
-            }
+            },
+            { $sort: { '_id.month': 1 } },
         ], function(err, result) {
+            const response = result.map(counts=>{
+                const rCount = counts.totalAmount
+                return Number(rCount.toFixed(1));
+            })
+            const allmonths = result.map(count=>{
+                const rMonth = count._id.month;
+                return rMonth;
+            })
+
+            const allyear = result.map(count=>{
+                const rYear = count._id.year;
+                return rYear;
+            })
+
             if (err) {
                 res.status(500).json({data: err});
             } else {
                 // res.json(result);
-                res.status(200).json({data: result});
+                res.status(200).json({
+                    data: response,
+                    sample: allyear,
+                    months: changeToMonth(allmonths)
+                });
             }
         });
- 
-      });
-    })
 
+})
+
+
+
+router.get('/user-registrations', middleware.isLoggedIn, (req, res, next)=>{
+        User.aggregate([
+            { $match: { role: 8 } },
+            {
+                $group : { 
+                    _id : {year: { $year : "$createdAt" }, month: { $month : "$createdAt" }}, 
+                    // totalAmount : { $sum : {$add: '$amount'}},
+                    count: {$sum: 1}
+                }
+            },
+            { $sort: { '_id.month': 1 } },
+        ], function(err, result) {
+            const response = result.map(counts=>{
+                const rCount = counts.count
+                return rCount;
+            })
+            const allmonths = result.map(count=>{
+                const rMonth = count._id.month
+                return rMonth;
+            })
+            
+            if (err) {
+                res.status(500).json({data: err});
+            } else {
+                // res.json(result);
+                res.status(200).json({
+                    data: response,
+                    months: changeToMonth(allmonths)
+                });
+            }
+        });
+        
+
+})
 
 //REGISTRATION FEE
 router.get('/registration-fees', middleware.isLoggedIn, (req, res, next)=>{
