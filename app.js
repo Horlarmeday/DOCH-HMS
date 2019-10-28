@@ -1,6 +1,5 @@
 const express = require('express')
-// const fs = require('fs')
-// const https = require('https')
+
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
 const mongoose = require('mongoose');
@@ -9,7 +8,8 @@ const session = require('express-session');
 const flash = require('express-flash');
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
-const passportSocketIo = require("passport.socketio");
+// const passportSocketIo = require("passport.socketio");
+const compression = require('compression')
 const userRoutes = require('./routes/user');
 const authRoutes = require('./routes/auth');
 const testRoutes = require('./routes/tests');
@@ -24,11 +24,11 @@ require('dotenv').config()
 const sessionStore = new MongoStore({ url: config.database, autoReconnect: true });
 
 const sessionMiddleware = session({
-  resave: true,
-  saveUninitialized: true,
+  resave: false,
+  saveUninitialized: false,
   secret: 'process.env.SECRET',
   store: sessionStore,
-  cookie: { maxAge: 7200000000 }, 
+  cookie: { maxAge: 72000000 }, 
 })
 
 //Connection to the DB
@@ -37,7 +37,7 @@ mongoose.connect(config.database, { useFindAndModify: false }, function(err) {
   console.log("Connected to HMS database");
 });
 // mongoose.set('useFindAndModify', false)
-
+app.use(compression())
 // Various Library Use
 app.set('view engine', 'ejs');
 app.use(express.static('download'));
@@ -97,7 +97,6 @@ app.use(function (req, res, next) {
   res.render('app/view/404')
 })
 
-// app.use(mainRoutes);
 
 
 //Server listener
