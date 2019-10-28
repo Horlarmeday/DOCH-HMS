@@ -335,43 +335,22 @@
                                                                                 </div>
                                                                             </div>
                                                                             <h5 style="color:dodgerblue" class="page-title">Dependants</h5><br><br>
-                                                                                <% if(patient.hmodependant.dependant1.dateofbirth != null){ %>
+                                                                                <% patient.hmodependant[0].names.forEach((dependant)=>{ %>
                                                                                     <div class="form-group row">
                                                                                         <div class="col-sm-6">
-                                                                                            <label for="">Dependant Name (1)</label>
-                                                                                            <input type="text" class="form-control" placeholder="<%= patient.hmodependant.dependant1.name %>">
+                                                                                            <label for="">Dependant Name</label>
+                                                                                            <input type="text" class="form-control" placeholder="<%= dependant %>">
                                                                                         </div>
+                                                                                    </div>
+                                                                                <% }) %>
+                                                                                <% patient.hmodependant[0].dob.forEach((dependant)=>{ %>
+                                                                                    <div class="form-group row">
                                                                                         <div class="col-sm-6">
-                                                                                            <label for="">Dependant Date of Birth (1)</label>
-                                                                                            <input type="text" class="form-control" placeholder="<%= patient.hmodependant.dependant1.dateofbirth.toLocaleDateString() %>">
+                                                                                            <label for="">Dependant Date of Birth</label>
+                                                                                            <input type="text" class="form-control" placeholder="<%= dependant %>">
                                                                                         </div>
                                                                                     </div>
-                                                                                <% } %>
-                                                                                <% if(patient.hmodependant.dependant2.dateofbirth != null){ %>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Dependant Name (2)</label>
-                                                                                        <input type="text" class="form-control" placeholder="<%= patient.hmodependant.dependant2.name %>">
-                                                                                    </div>
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Dependant Date of Birth (2)</label>
-                                                                                        <input type="text" class="form-control" placeholder="<%= patient.hmodependant.dependant2.dateofbirth.toLocaleDateString() %>">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <% } %>
-                                                                                <% if(patient.hmodependant.dependant3.dateofbirth != null){ %>
-                                                                                <div class="form-group row">
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Dependant Name (3)</label>
-                                                                                        <input type="text" class="form-control" placeholder="<%= patient.hmodependant.dependant3.name %>">
-                                                                                       
-                                                                                    </div>
-                                                                                    <div class="col-sm-6">
-                                                                                        <label for="">Dependant Date of Birth (3)</label>
-                                                                                        <input type="text" class="form-control" placeholder="<%= patient.hmodependant.dependant3.dateofbirth.toLocaleDateString() %>">
-                                                                                    </div>
-                                                                                </div>
-                                                                                <% } %>
+                                                                                <% }) %>
                                                                         <% } %>
                                                                 </form>
                                                                 </div>

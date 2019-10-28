@@ -24,6 +24,7 @@ const UserSchema = new mongoose.Schema({
     relationship: String,
     allergies: [],
     state: String,
+    thestate: String,
     country: String,
     ward: String,
     department: String,
@@ -40,25 +41,11 @@ const UserSchema = new mongoose.Schema({
         consultation: {type: Number, default: 0},
     },
     family: [
-        {
-            family1: String,
-            familydate2: String
-        }
+        
     ],
-    hmodependant:{
-       dependant1: {
-            name: String,
-            dateofbirth: {type: Date}
-       },
-       dependant2: {
-            name: String,
-            dateofbirth: {type: Date}
-       },
-       dependant3: {
-            name: String,
-            dateofbirth: {type: Date}
-       }
-    },
+    hmodependant:[
+       
+    ],
     passwordResetExpires: Date,
     photo: String,
     status: {type: Boolean, default: true},

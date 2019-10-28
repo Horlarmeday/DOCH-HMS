@@ -430,6 +430,7 @@ $(document).ready(function() {
     })
 
     $('#example-1').multifield();
+    $('#example-2').multifield();
     $('#form-show').multifield();
 
 
@@ -601,6 +602,8 @@ $(document).ready(function() {
         if(retain === 'Yes'){
             $('#retainershipname').show()
             $('.reg-payment').hide()
+            $('input[name="registration"]').attr('required', false)
+            $('input[name="consultation"]').attr('required', false)
             // let newAmount1 = amount1 * 0.1
             // let newAmount2 = amount2 * 0.1
             // let newPayment1 = payment1 * 0.1
@@ -618,12 +621,17 @@ $(document).ready(function() {
             // $('#consult2').html(newPayment2)
 
         }else{
+            $('#hmos').val('')
+            $('#mySelect').val('')
+            $('.hmocode').val('')
+            $('.dependanname').val('')
+            $('.dependandate').val('')
             $('.reg-payment').show()
             $('#retainershipname').hide()
             $('#hmoname').hide()
             $('#patientId').hide()
             $('#dependants').hide()
-            $('.form-block1').hide()
+            $('.depend').hide()
             $('.form-block2').hide()
             $('.form-block3').hide()
             $('#btn-addition').hide()
@@ -840,7 +848,7 @@ $('.userbirtday').change(function () {
 function openPatientId() {
     $('#patientId').show()
     $('#dependants').show()
-    $('.form-block1').show()
+    $('.depend').show()
     $('#btn-addition').show()
     $('#btn-subtract').show()
 }
@@ -856,7 +864,7 @@ function gethmo() {
     $('#hmoname').show()
     $.post('/get-hmo', { hmoid: hmoid })
     .done(function(data) {
-        $("#mySelect option").remove();
+        $("#mySelect option[value]").remove();
         $.each(data, function(index, value){
             $("#mySelect").append($("<option>",{
                   value: value,

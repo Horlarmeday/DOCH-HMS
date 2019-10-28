@@ -1204,34 +1204,7 @@ router.route('/add-patient')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         HMO.find({}, (err, hmos)=>{
             if(err) return next (err)
-            // var nHIS = []
-            // var fHSS = []
-            // var privateHMO = []
-            // var retainership = []
-            // //FHSS
-            // hmos[0].hmoenrols.forEach((name)=>{
-            //   fHSS.push({
-            //     'name': name.hmoenrollee
-            //   })
-            // })
-            // //NHIS
-            // hmos[1].hmoenrols.forEach((name)=>{
-            //     nHIS.push({
-            //       'name': name.hmoenrollee
-            //     })
-            // })
-            // //PRIVATE HMO
-            // hmos[2].hmoenrols.forEach((name)=>{
-            //     privateHMO.push({
-            //       'name': name.hmoenrollee
-            //     })
-            // })
-            // //RETAINERSHIP
-            // hmos[3].hmoenrols.forEach((name)=>{
-            //     retainership.push({
-            //       'name': name.hmoenrollee
-            //     })
-            // })
+            
             User.countDocuments({role: 8})
             .exec((err, count)=>{
                 var counter = count + 1
@@ -1250,6 +1223,7 @@ router.route('/add-patient')
                     return res.redirect('/add-patient');
                 }else{
                     const user = new User()
+                    console.log(req.body)
                     user.patientId = `DOCH/00000${count + 1}`
                     user.registeredby = req.user._id;
                     user.email = req.body.email;
@@ -1274,7 +1248,7 @@ router.route('/add-patient')
                     user.nextofkinaddress = req.body.nextofkinaddress;
                     user.relationship = req.body.relationship;
                     user.city = req.body.city;
-                    user.state = req.body.state;
+                    user.state = req.body.nigstate;
                     user.country = req.body.country;
                     user.retainershipname = req.body.retainershipname;
                     user.hmoname = req.body.hmoname;
@@ -1285,21 +1259,13 @@ router.route('/add-patient')
                     };
                   
                     user.family.push({
-                        family1: req.body.family1,
-                        familydate2: req.body.familydate2,
+                        names: req.body.family1,
+                        dob: req.body.familydate2,
                     });
-                    user.hmodependant.dependant1 = {
-                        name: req.body.dependantname1,
-                        dateofbirth: req.body.dateofbirth1
-                    },
-                    user.hmodependant.dependant2 = {
-                        name: req.body.dependantname2,
-                        dateofbirth: req.body.dateofbirth2
-                    },
-                    user.hmodependant.dependant3 = {
-                        name: req.body.dependantname3,
-                        dateofbirth: req.body.dateofbirth3
-                    }
+                    user.hmodependant.push({
+                        names: req.body.dependantname,
+                        dob: req.body.dependantdate
+                    });
                     user.photo = user.gravatar();
                     user.save((err) => {
                         if (err) { return next(err) }

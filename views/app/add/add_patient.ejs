@@ -119,7 +119,7 @@
                                                             <div class="col-sm-6">
                                                                 <div class="foreign">
                                                                     <label for="">Country</label>
-                                                                    <input type="text" class="form-control" name="state">
+                                                                    <input type="text" class="form-control" name="thestate">
                                                                 </div>
                                                                 <div class="nigeria">
                                                                     <label for="">State<span class="text-danger">*</span></label>
@@ -259,54 +259,36 @@
                                                                 <label>HMO Name</label>
                                                                 <select id="mySelect" name="hmoname" class="form-control" onchange="openPatientId()">
                                                                     <option>Select</option>
-                                                                    <!-- <option selected disabled>Select</option> -->
-                                                                    <!-- <option id="mmoname"></option> -->
+                                                                   
                                                                 </select>
                                                                 
                                                             </div>
                                                             <div id="patientId" class="col-sm-6">
                                                                 <label for="">Patient HMO Code</label>
-                                                                <input type="text" class="form-control" name="patientcode" placeholder="Patient HMO Code">
+                                                                <input type="text" class="form-control hmocode" name="patientcode" placeholder="Patient HMO Code">
                                                             </div>
                                                     </div>
                                                     <h5 id="dependants" style="color:dodgerblue" class="page-title">Dependants</h5><br><br>
-                                                        <div class="form-block1">
-                                                            <div class="form-group row form-clone1">
+                                                    <div id="example-2" class="depend" data-mfield-options='{"section": ".group","btnAdd":"#btnAdd","btnRemove":".btnRemove"}'>
+                                                        <div >
+                                                            <button type="button" id="btnAdd" class="btn btn-primary">Add</button>
+                                                        </div><br>
+                                                        <div class="form-group row group">
                                                                 <div class="col-sm-6">
                                                                     <label for="">Name</label>
-                                                                    <input type="text" name="dependantname1" class="form-control" placeholder="Dependant Name">
+                                                                    <input type="text" name="dependantname" class="form-control dependanname" placeholder="Dependant Name">
                                                                 </div>
-                                                                <div class="col-sm-6">
+                                                                <div class="col-sm-5">
                                                                     <label for="">Date of Birth</label>
-                                                                    <input type="date" name="dateofbirth1" class="form-control">
+                                                                    <input type="date" name="dependantdate" class="form-control dependandate">
                                                                 </div>
-                                                            </div>
+                                                                <div class="col-sm-1">
+                                                                    <button style="margin-top: 32px" type="button" class="btn btn-danger btnRemove">Remove</button>
+                                                                </div>
                                                         </div>
-                                                        <div class="form-block2">
-                                                            <div class="form-group row form-clone2">
-                                                                <div class="col-sm-6">
-                                                                    <label for="">Name</label>
-                                                                    <input type="text" name="dependantname2" class="form-control" placeholder="Dependant Name">
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <label for="">Date of Birth</span></label>
-                                                                    <input type="date" name="dateofbirth2" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="form-block3">
-                                                            <div class="form-group row form-clone3">
-                                                                <div class="col-sm-6">
-                                                                    <label for="">Name</label>
-                                                                    <input type="text" name="dependantname3" class="form-control" placeholder="Dependant Name">
-                                                                </div>
-                                                                <div class="col-sm-6">
-                                                                    <label for="">Date of Birth</label>
-                                                                    <input type="date" name="dateofbirth3" class="form-control">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    <a id="btn-addition" style="color: aliceblue" class="btn btn-info add-more-btn add-btn">Add</a>
+                                                        
+                                                    </div>
+                                                       
                                                     <!-- <a id="btn-subtract" style="color: aliceblue" class="btn btn-danger remove-more-btn">Remove</a> -->
                                                     <hr>
                                                     <div class="reg-payment">
