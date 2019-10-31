@@ -65,6 +65,7 @@
                                                     <th>S/N</th>
                                                     <th>PatientID</th>
                                                     <th>Name</th>
+                                                    <th>Image</th>
                                                     <th>Birthday</th>
                                                     <th>Age</th>
                                                     <th>Religion</th>
@@ -75,7 +76,7 @@
                                                     <th>Patient Type</th>
                                                    
                                                     <th>Registered By</th>
-                                                    <th>Adjust</th>
+                                                    <th>Actions</th>
                                                     <% if(currentUser.role == 9){ %>
                                                     <th>Action</th>
                                                     <% } %>
@@ -91,6 +92,13 @@
                                                             <a href="/patient/<%= patient.id %>" class="mr-2"><%= patient.firstname %> <%= patient.lastname %></a> 
                                                             <% if(patient.retainershipname){ %>
                                                             <label class="label label-md bg-success"><%= patient.retainershipname.hmoname %></label>
+                                                            <% } %>
+                                                        </td>
+                                                        <td>
+                                                            <% if(patient.photo.includes('image')){ %>
+                                                                <a href="uploads/<%= patient.photo %>"><img width="30" src="uploads/<%= patient.photo %>" alt="User Image"></a>
+                                                            <% }else{ %>
+                                                                <img width="30" src="/assets/images/social/profile.jpg" alt="User Image">
                                                             <% } %>
                                                         </td>
                                                         <td><%= patient.birthday.toLocaleDateString() %></td>
@@ -113,7 +121,10 @@
                                                         <% }else{ %>
                                                             <td></td>
                                                         <% }  %>
-                                                        <td><a href="/edit-patient/<%= patient.id %>">Edit</a></td>
+                                                        <td>
+                                                            <a class="mr-4" href="/capture-image/<%= patient.id %>"><i class="icon-camera"></i></a>
+                                                            <a href="/edit-patient/<%= patient.id %>"><i class="icon-note"></i></a>
+                                                        </td>
                                                         <% if(currentUser.role == 9){ %>
                                                         <td>
                                                             <!-- <a class="btn btn-info" href="/invoice/<%= patient.id %>">Invoice</a> -->

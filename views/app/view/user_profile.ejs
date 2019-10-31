@@ -98,7 +98,10 @@
                                                             <div>
                                                                 <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Name:</p>
                                                                 <p style="font-size:1.7em; font-weight: 700;display: inline"><%= patient.firstname %> <%= patient.lastname %></p>
-                                                                <p style="font-size:1.2em; font-weight: 500;display: inline; border: 0.5px solid rgb(221, 219, 210); padding: 5px 10px; background-color: rgb(233, 233, 233)" class="float-right"><%= patient.patientId  %></p>
+                                                                <p style="font-size:1.2em; font-weight: 500;display: inline; border: 0.5px solid rgb(221, 219, 210); padding: 5px 10px; background-color: rgb(233, 233, 233)"
+                                                                 class="float-right"><%= patient.patientId  %>
+                                                                </p>
+                                                               
                                                             </div><br>
                                                             <div>
                                                                 <p style="font-size:1.3em; font-weight: 500; display: inline" class="mr-2">Gender:</p>
@@ -202,12 +205,12 @@
                                                                                         </td>
                                                                                         
                                                                                         <td>
-                                                                                                <p> <span style="color: royalblue">General Examination: </span> <%= consultation.physical.observation %></p>
-                                                                                                <p> <span style="color: royalblue"> Chest: </span><%= consultation.physical.chest %></p>
-                                                                                                <p> <span style="color: royalblue">CVS:</span>  <%= consultation.physical.cvs %></p>
-                                                                                                <p> <span style="color: royalblue"> Abdomen:</span> <%= consultation.physical.abdomen %></p>
-                                                                                                <p> <span style="color: royalblue"> MSS:</span> <%= consultation.physical.mss %></p>
-                                                                                                <p> <span style="color: royalblue"> Others:</span> <%= consultation.physical.others %></p>
+                                                                                            <p> <span style="color: royalblue">General Examination: </span> <%= consultation.physical.observation %></p>
+                                                                                            <p> <span style="color: royalblue"> Chest: </span><%= consultation.physical.chest %></p>
+                                                                                            <p> <span style="color: royalblue">CVS:</span>  <%= consultation.physical.cvs %></p>
+                                                                                            <p> <span style="color: royalblue"> Abdomen:</span> <%= consultation.physical.abdomen %></p>
+                                                                                            <p> <span style="color: royalblue"> MSS:</span> <%= consultation.physical.mss %></p>
+                                                                                            <p> <span style="color: royalblue"> Others:</span> <%= consultation.physical.others %></p>
                                                                                         </td>
                                                                                         
                                                                                         <td><%= consultation.diagnosis %></td>
@@ -222,7 +225,7 @@
                                                                                     <% }  %>
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div>
+                                                                    </div>
                                                             </div>
                                                             <div class="tab-pane" id="profile3" role="tabpanel">
                                                             
@@ -400,7 +403,7 @@
                                                                                     <% })  %>
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div>
+                                                                    </div>
                                                             </div>
                                                             <div class="tab-pane" id="settings3" role="tabpanel">
                                                                     <div class="dt-responsive table-responsive">
@@ -432,7 +435,7 @@
                                                                                     <% })  %>
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div>
+                                                                    </div>
                                                             </div>
                                                             <div class="tab-pane" id="visits" role="tabpanel">
                                                                 <div class="dt-responsive table-responsive">
@@ -530,7 +533,7 @@
                                                                                     <% })  %>
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div>
+                                                                    </div>
                                                             </div>
                                                             <div class="tab-pane" id="labs" role="tabpanel">
                                                                     <div class="dt-responsive table-responsive">
@@ -577,7 +580,7 @@
                                                                                     <% })  %>
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div> 
+                                                                    </div> 
                                                             </div>
                                                             <div class="tab-pane" id="vitalsigns" role="tabpanel">
                                                                     <div class="dt-responsive table-responsive">
@@ -585,7 +588,6 @@
                                                                                 <thead>
                                                                                     <tr>
                                                                                         <th>S/N</th>
-                                                                                        
                                                                                         <th>Weight</th>
                                                                                         <th>Height</th>
                                                                                         <th>BMI</th>
@@ -628,7 +630,7 @@
                                                                                     <% })  %>
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div> 
+                                                                    </div> 
                                                             </div>
                                                             <div class="tab-pane" id="allergies" role="tabpanel">
                                                                 <h5>Allergies</h5>
@@ -937,7 +939,7 @@
                                                                                     <% })  %>
                                                                                 </tbody>
                                                                             </table>
-                                                                        </div> 
+                                                                    </div> 
                                                             </div>
                                                             <div class="tab-pane" id="round" role="tabpanel">
                                                                 <div class="dt-responsive table-responsive">
@@ -971,7 +973,7 @@
                                                                                 <% })  %>
                                                                             </tbody>
                                                                         </table>
-                                                                    </div> 
+                                                                </div> 
                                                         </div>
                                                         </div>
                                                     </div>
@@ -1013,7 +1015,7 @@
             </div> -->
           </div>
         </div>
-        </div>
+</div>
             </div>
             <!-- Main-body end -->
 

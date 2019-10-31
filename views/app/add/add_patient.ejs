@@ -57,7 +57,7 @@
                                     <div class="card-block">
                                         <div class="row">
                                             <div class="col-sm-12 mobile-inputs">
-                                                <form method="POST">
+                                                <form method="POST" enctype="multipart/form-data">
                                                     <!-- <div class="form-group">
                                                         <input type="text" class="form-control form-txt-primary" placeholder=".form-txt-primary">
                                                     </div> -->
@@ -246,7 +246,7 @@
                                                         </div>
                                                         <div id="retainershipname" class="col-sm-6">
                                                             <label>Retainership Name</label>
-                                                            <select id="hmos" name="retainershipname" class="form-control" onchange="gethmo()">
+                                                            <select id="hmos" name="retainershipname" class="form-control retainershipname " onchange="gethmo()">
                                                                 <option selected disabled>Select</option>
                                                                 <% hmos.forEach((hmo)=>{ %>
                                                                   <option value="<%= hmo._id %>"><%= hmo.hmoname %></option>
@@ -256,16 +256,16 @@
                                                     </div>
                                                     <div class="form-group row">
                                                             <div id="hmoname" class="col-sm-6">
-                                                                <label>HMO Name</label>
-                                                                <select id="mySelect" name="hmoname" class="form-control" onchange="openPatientId()">
+                                                                <label>Enrollees</label>
+                                                                <select id="mySelect" name="hmoname" class="form-control hmoname" onchange="openPatientId()">
                                                                     <option>Select</option>
                                                                    
                                                                 </select>
                                                                 
                                                             </div>
                                                             <div id="patientId" class="col-sm-6">
-                                                                <label for="">Patient HMO Code</label>
-                                                                <input type="text" class="form-control hmocode" name="patientcode" placeholder="Patient HMO Code">
+                                                                <label for="">Enrollee ID</label>
+                                                                <input type="text" class="form-control hmocode" name="patientcode" placeholder="Enrollee ID">
                                                             </div>
                                                     </div>
                                                     <h5 id="dependants" style="color:dodgerblue" class="page-title">Dependants</h5><br><br>
@@ -282,11 +282,19 @@
                                                                     <label for="">Date of Birth</label>
                                                                     <input type="date" name="dependantdate" class="form-control dependandate">
                                                                 </div>
+                                                                
                                                                 <div class="col-sm-1">
                                                                     <button style="margin-top: 32px" type="button" class="btn btn-danger btnRemove">Remove</button>
                                                                 </div>
                                                         </div>
                                                         
+                                                    </div>
+                                                    <div class="depend form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Picture</label>
+                                                            <small>Please choose multiple pictures if applicable</small>
+                                                            <input type="file" name="file" class="form-control dependanfile file-size" multiple>
+                                                        </div>
                                                     </div>
                                                        
                                                     <!-- <a id="btn-subtract" style="color: aliceblue" class="btn btn-danger remove-more-btn">Remove</a> -->

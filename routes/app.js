@@ -1,5 +1,7 @@
 const router = require('express').Router();
 const async = require('async');
+const fs = require('fs');
+const mime = require('mime');
 const User = require('../models/user');
 const mongoose = require('mongoose');
 const Department = require('../models/department');
@@ -31,12 +33,12 @@ const Immunization = require('../models/immunization')
 const ManagerRequest = require('../models/managerRequest')
 const Iochart = require('../models/iochart')
 const WardInventory = require('../models/wardinventory')
-// const Counter = require('../models/counters')
 const labItem = require('../models/labitem')
 const PharmacyItem = require('../models/pharmacyItem')
 const PharmDispense = require('../models/pharmDispense')
 const LabDispense = require('../models/labDispense')
 const HMO = require('../models/hmo')
+const File = require('../models/file')
 const Drug = require('../models/drug')
 const Test = require('../models/test')
 const Invoice = require('../models/invoice')
@@ -1183,6 +1185,45 @@ router.get('/vendors', middleware.isLoggedIn, (req, res, next)=>{
     })
 })
 
+// test camera capture
+router.route('/capture-image/:id')
+.get(middleware.isLoggedIn, (req, res, next)=>{
+        User.findById(req.params.id, (err, user)=>{
+            res.render('app/view/camera', {user})
+        })
+})
+
+.post(middleware.isLoggedIn, function(req, res, next) {
+    var matches = req.body.base64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    response = {}
+    if(matches.length !== 3){
+        return res.status(400).json('invalid base64 string')
+    }
+
+    response.type = matches[1];
+    response.data = Buffer.from(matches[2], 'base64');
+    let decodedImg = response;
+    let imageBuffer = decodedImg.data;
+    let type = decodedImg.type;
+    let extension = mime.extension(type);
+    let fileName = 'image' + Date.now() + '.' + extension;
+
+   
+	fs.writeFile(`./public/uploads/${fileName}`, imageBuffer, 'utf8', function(err) {
+		if(err){
+			  res.status(400).json(err.message);
+			}else{
+            User.findById(req.params.id, (err, user) =>{
+                user.photo = fileName;
+                user.save((err)=>{
+                    if(err) return next (err)
+                    res.status(200).json('User picture taken successfully')
+                })
+            })            
+		}
+	});
+});
+
 // router.post('/test-patient', middleware.isLoggedIn, [
 //     check('email').custom(value => {
 //         return User.findByEmail(value).then(user => {
@@ -1222,68 +1263,124 @@ router.route('/add-patient')
                     req.flash('error',  'Account with that phone number already exists.');
                     return res.redirect('/add-patient');
                 }else{
-                    const user = new User()
-                    console.log(req.body)
-                    user.patientId = `DOCH/00000${count + 1}`
-                    user.registeredby = req.user._id;
-                    user.email = req.body.email;
-                    user.creator = req.user._id;
-                    user.firstname = req.body.fname;
-                    user.lastname = req.body.lname;
-                    user.oldpatientId = req.body.oldpatientID;
-                    user.createdby = 1;
-                    user.isVerified = true;
-                    user.religion = req.body.religion;
-                    user.gender = req.body.gender;
-                    user.mstatus = req.body.mstatus;
-                    user.phonenumber = req.body.phone;
-                    user.cardtype = req.body.type;
-                    user.lga = req.body.lga;
-                    user.birthday = req.body.birthday;
-                    user.role = patient;
-                    user.address = req.body.address;
-                    user.retainership = req.body.retainership;
-                    user.nextofkinname = req.body.nextofkinname;
-                    user.nextofkinphone = req.body.nextofkinphone;
-                    user.nextofkinaddress = req.body.nextofkinaddress;
-                    user.relationship = req.body.relationship;
-                    user.city = req.body.city;
-                    user.state = req.body.nigstate;
-                    user.country = req.body.country;
-                    user.retainershipname = req.body.retainershipname;
-                    user.hmoname = req.body.hmoname;
-                    user.patientcode = req.body.patientcode;
-                    user.account = {
-                        registration: req.body.registration,
-                        consultation: req.body.consultation,
-                    };
-                  
-                    user.family.push({
-                        names: req.body.family1,
-                        dob: req.body.familydate2,
-                    });
-                    user.hmodependant.push({
-                        names: req.body.dependantname,
-                        dob: req.body.dependantdate
-                    });
-                    user.photo = user.gravatar();
-                    user.save((err) => {
-                        if (err) { return next(err) }
-                        unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                            .header({'Accept' : 'application/json'})
-                            .send({
-                                'username': process.env.SMSSMARTUSERNAME,
-                                'password': process.env.SMSSMARTPASSWORD,
-                                'sender': process.env.SMSSMARTSENDERID,
-                                'recipient' : `234${user.phonenumber}`,
-                                'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
-                                'routing': 4,
-                            })
-                            .end(function (response) {
-                            });
-                        req.flash('success', 'Patient has been created')
-                        res.redirect('back');
-                    })
+                    
+                        upload(req, res, (err) => {
+                            if (err instanceof multer.MulterError) {
+                                req.flash('error', 'Your file is too large, try reducing the size')
+                                return res.redirect('back')
+                            }
+                            else if (err) {
+                                return next(err)
+                            }
+                            else if (req.files == undefined) {
+                                req.flash('error',  'File is undefined.');
+                                return res.redirect('back')
+                            }
+                                else {
+                                async.waterfall([
+                                    function (done) {
+                                        const user = new User()
+                                        user.patientId = `DOCH/00000${count + 1}`;
+                                        user.username = `PATIENT/0${count + 1}`;
+                                        user.registeredby = req.user._id;
+                                        user.email = req.body.email;
+                                        user.creator = req.user._id;
+                                        user.firstname = req.body.fname;
+                                        user.lastname = req.body.lname;
+                                        user.oldpatientId = req.body.oldpatientID;
+                                        user.createdby = 1;
+                                        user.isVerified = true;
+                                        user.religion = req.body.religion;
+                                        user.gender = req.body.gender;
+                                        user.mstatus = req.body.mstatus;
+                                        user.phonenumber = req.body.phone;
+                                        user.cardtype = req.body.type;
+                                        user.lga = req.body.lga;
+                                        user.birthday = req.body.birthday;
+                                        user.role = patient;
+                                        user.address = req.body.address;
+                                        user.retainership = req.body.retainership;
+                                        user.nextofkinname = req.body.nextofkinname;
+                                        user.nextofkinphone = req.body.nextofkinphone;
+                                        user.nextofkinaddress = req.body.nextofkinaddress;
+                                        user.relationship = req.body.relationship;
+                                        user.city = req.body.city;
+                                        user.state = req.body.state;
+                                        user.country = req.body.country;
+                                        user.retainershipname = req.body.retainershipname;
+                                        user.hmoname = req.body.hmoname;
+                                        user.patientcode = req.body.patientcode;
+                                        user.account = {
+                                            registration: req.body.registration,
+                                            consultation: req.body.consultation,
+                                        };
+                                    
+                                        if(req.body.type === 'Family'){
+                                            user.family.push({
+                                                names: req.body.family1,
+                                                dob: req.body.familydate2,
+                                            });
+                                        }
+                                        
+                                        if(req.body.retainership === 'Yes'){
+                                            user.hmodependant.push({
+                                                names: req.body.dependantname,
+                                                dob: req.body.dependantdate,
+                                                files:  req.files.filename
+                                            });
+                                        }
+                                        user.photo = user.gravatar();
+                                        user.save((err) => {
+                                            if (err) { return next(err) }
+                                            done(err, user)
+                                        })
+                                    },
+                                    function name(user, done) {
+                                        console.log(req.files)
+                                        if(req.files.length > 0){
+                                            const fullpath = req.files
+                                            const document = {
+                                                name: fullpath,
+                                                creator: req.user._id,
+                                                patient: user._id
+                                            }
+                                            const file = new File(document)
+                                            file.save((err)=> {
+                                                // unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                                                //     .header({'Accept' : 'application/json'})
+                                                //     .send({
+                                                //         'username': process.env.SMSSMARTUSERNAME,
+                                                //         'password': process.env.SMSSMARTPASSWORD,
+                                                //         'sender': process.env.SMSSMARTSENDERID,
+                                                //         'recipient' : `234${user.phonenumber}`,
+                                                //         'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
+                                                //         'routing': 4,
+                                                //     })
+                                                //     .end(function (response) {
+                                                //     });
+                                                User.updateOne(
+                                                    {
+                                                        _id: user._id
+                                                    },
+                                                    {
+                                                        $push:{files: file._id}
+                                                    },function (err, count) {
+                                                        req.flash('success', 'Patient has been created')
+                                                        return res.redirect('/capture-image/' + user._id);
+                                                    }
+                                                )
+                                            })
+                                        }else{
+                                            req.flash('success', 'Patient has been created')
+                                            return res.redirect('/capture-image/' + user._id);
+                                        }
+                                    }
+                                ])
+                               
+                                
+                            }
+                        })
+                    
                 }
             })
         })
@@ -3371,6 +3468,7 @@ router.get('/patients', middleware.isLoggedIn, (req, res, next)=>{
                     'retainershipname': user.retainershipname,
                     'registeredby': user.registeredby,
                     'gender': user.gender,
+                    'photo': user.photo,
                     'religion': user.religion,
                     'birthday': user.birthday,
                     'createdby': user.createdby,
@@ -3580,7 +3678,7 @@ router.get('/immunizations', middleware.isLoggedIn, (req, res, next)=>{
 //     //     }
 //     //       else {
 //     //         /** Create new record in mongoDB*/
-//     //         var fullPath = newFile
+//     //         var fullPath = req.files.filename
 //     //         var document = {
 //     //             photo: fullPath,
 //     //             email: req.body.email,
@@ -3629,6 +3727,50 @@ router.get('/departments', middleware.isLoggedIn, (req, res, next)=>{
         if(err) {return next (err)}
         res.render('app/view/departments', { departments })
     })
+})
+
+router.get('/profile-test/:id', (req, res, next)=>{
+        User.findOne({ _id: req.params.id})
+        .populate('appointments')
+        .populate('consultations')
+        .populate('payments')
+        .populate('triages')
+        .populate('visits')
+        .populate('reports')
+        .populate('ancs')
+        .populate('wardrounds')
+        .populate('immunizations')
+        .populate('retainershipname')
+    
+        .deepPopulate([
+            'appointments.doctor',
+            'consultations.drusObject',
+            'consultations.doctor',
+            'consultations.labtestObject',
+            'consultations.drugsObject.drugs',
+            'consultations.drugsObject.drugs.name.pharmname',
+            'payments.services',
+            'ancs.delivery.midwife',
+            'ancs.postnatal.nurse',
+            'reports.doctor',
+            'reports.creator',
+            'wardrounds.doctor',
+            'wardrounds.creator'
+        ])
+        .exec((err, patient)=>{
+        if(err) {return next (err)}
+        var birthday = new Date(patient.birthday)
+        var today = new Date()
+        var age = today.getFullYear() - birthday.getFullYear()
+        if(today.getMonth() < birthday.getMonth()){
+            age
+        }
+        if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+            age
+        }
+        res.render('app/view/user_profile', { patient, age })
+    })
+    
 })
 
 //ADDMITTED PATIENTS
@@ -3704,6 +3846,7 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
         .populate('visits')
         .populate('reports')
         .populate('ancs')
+        .populate('files')
         .populate('wardrounds')
         .populate('immunizations')
         .populate('retainershipname')
@@ -3734,7 +3877,7 @@ router.get('/patient/:id', middleware.isLoggedIn, (req, res, next)=>{
         if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
             age
         }
-        res.render('app/view/user_profile', { patient, age })
+        res.render('app/view/profile_updated', { patient, age })
     })
 })
 

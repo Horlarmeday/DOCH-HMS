@@ -217,7 +217,8 @@ router.post(
       if (err) return next(err);
       res.json({
         price: drug.price,
-        balance: drug.balance
+        balance: drug.balance,
+        quantity: drug.quantity
       });
     });
   }
@@ -422,10 +423,10 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
           { _id: consultation.drugsObject[index].drugs },
           (err, foundDrug) => {
             if (foundDrug) {
-              if (foundDrug.balance <= 0) {
+              if (foundDrug.balance <= 0 || foundDrug.balance < consultation.drugsObject[index].quantity) {
                 return res
                   .status(400)
-                  .json("Sorry, the balance in the dispensary is Zero");
+                  .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
               } else {
                 foundDrug.balance =
                   foundDrug.quantity - consultation.drugsObject[index].quantity;

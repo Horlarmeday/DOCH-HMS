@@ -105,6 +105,9 @@ const UserSchema = new mongoose.Schema({
     wardrounds:[{
         type: mongoose.Schema.Types.ObjectId, ref: "WardRound"
     }],
+    files:[{
+        type: mongoose.Schema.Types.ObjectId, ref: "File"
+    }],
     registeredby:{
         type: mongoose.Schema.Types.ObjectId, ref: "User"
     },

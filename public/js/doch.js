@@ -624,8 +624,11 @@ $(document).ready(function() {
             $('#hmos').val('')
             $('#mySelect').val('')
             $('.hmocode').val('')
+            $('.retainershipname').val('')
+            $('.hmoname').val('')
             $('.dependanname').val('')
             $('.dependandate').val('')
+            $('.dependanfile').val('')
             $('.reg-payment').show()
             $('#retainershipname').hide()
             $('#hmoname').hide()
@@ -810,6 +813,15 @@ $('.temperature').change(function () {
         }
    
 })
+
+
+//checking file size before upload
+$(".file-size").change(function() {
+    if (this.files[0].size > 7000000) {
+        alert("Try to upload file less than 7MB!");
+        $(this).val("");
+    }
+});
 
 
 
@@ -1026,9 +1038,14 @@ function getLocalDrugPrice() {
     const itemCode = $('#itemCode').val()
     $.post('/get-dispensory-price', { itemCode: itemCode })
     .done(function(data) {
-        //console.log(data)
-        $('#localPrice').val(data.price)
-        $('#localRemain').val(data.balance)
+        console.log(data)
+        if(data.balance === '' || data.balance === undefined){
+            $('#localPrice').val(data.price)
+            $('#localRemain').val(data.quantity)
+        }else{
+            $('#localPrice').val(data.price)
+            $('#localRemain').val(data.balance)
+        }
        
     })
 }
