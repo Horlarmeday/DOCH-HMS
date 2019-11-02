@@ -139,7 +139,7 @@
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
-                                                    <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
+                                                    <td> <a href="/patient/<%= consultation.patient._id %>"><%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a></td>
                                                     <td> <%= consultation.visit %></td>
                                                     <td>
                                                         <% consultation.imaging.forEach((image)=>{ %>

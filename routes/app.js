@@ -421,7 +421,6 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .sort('-created')
             .populate('patient')
             .populate('payment')
-            .populate('imaging')
             .deepPopulate([
                 'drugsObject.drugs', 'labtestObject.tests', 'labtestObject.paid', 'drugsObject.paid',
                 'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images',
@@ -1372,7 +1371,7 @@ router.route('/add-patient')
                                         })
                                     },
                                     function name(user, done) {
-                                        console.log(req.files)
+                                        
                                         if(req.files.length > 0){
                                             const fullpath = req.files
                                             const document = {
@@ -3202,7 +3201,6 @@ router.route('/edit-consultation/:id')
         .sort('drugsObject')
         .populate('patient')
         .populate('labtestObject')
-        .populate('imaging')
         .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images',
          'drugsObject.prescribedBy', 'imaging.investigation', 'drugsObject.drugs.name.pharmname'])
         .exec((err, consultation)=>{
@@ -3600,11 +3598,11 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     Consultation.find({}) 
     .sort('-updatedAt')
     .populate('patient')
-    .populate('imaging')
     .populate('labtestObject.tests')
     // .populate('drugsObject')
     .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy', 'imaging.investigation', 'drugsObject.drugs.name.pharmname',])
     .exec((err, consultations)=>{
+
         if(err) return next (err)
         res.render('app/view/consultations', { consultations })
     })
@@ -4882,7 +4880,7 @@ router.route('/edit-pharmacy-item/:id')
         item.save((err)=>{
             if(err) return next(err)
             LocalInventory.findOne({name: req.params.id}, (err, drug)=>{
-                console.log(drug)
+              
                 if(drug){
                     drug.price = item.sellprice
                     drug.save((err)=>{
