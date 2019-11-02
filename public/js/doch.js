@@ -1038,8 +1038,7 @@ function getLocalDrugPrice() {
     const itemCode = $('#itemCode').val()
     $.post('/get-dispensory-price', { itemCode: itemCode })
     .done(function(data) {
-        console.log(data)
-        if(data.balance === '' || data.balance === undefined){
+        if(data.balance === '' || data.balance === null || data.balance === undefined){
             $('#localPrice').val(data.price)
             $('#localRemain').val(data.quantity)
         }else{

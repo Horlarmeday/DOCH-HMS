@@ -5644,8 +5644,8 @@ router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
 router.get('/imaging-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
     .populate('patient')
-    .deepPopulate('imaging.investigation')
     .populate('labtestObject')
+    .deepPopulate('imaging.investigation')
     .exec((err, consultation)=>{
         if(err) return next (err)
         res.render('app/view/imaging_invoice', { consultation })
