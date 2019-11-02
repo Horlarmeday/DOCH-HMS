@@ -85,14 +85,14 @@
                                                             <div class="tab-pane active" id="home3" role="tabpanel">
                                                                     <a style="color: aliceblue" class="btn btn-info text-center" data-toggle="modal" data-target="#exampleModalCenter"><i class="ti-plus">
 
-                                                                        </i> Add HMO Name</a>
+                                                                        </i> Add Enrollee Name</a>
                                                                 <div class="dt-responsive table-responsive">
                                                                     <table id="scr-vrt-dt" class="table table-striped table-bordered nowrap">
                                                                         <thead>
                                                                             <tr>
                                                                                 <th>S/N</th>
-                                                                                <th>HMO Name</th>
-                                                                                <th>HMO Code</th>
+                                                                                <th>Enrollee Name</th>
+                                                                                <th>Enrollee Code</th>
                                                                                 <!-- <th>Status</th> -->
                                                                                 <!-- <th>Action</th> -->
                                                                             </tr>
@@ -188,18 +188,18 @@
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalCenterTitle"><%= hmo.hmoname %> Enrolles</h5>
+                        <h5 class="modal-title" id="exampleModalCenterTitle"><%= hmo.hmoname %> Enrollee</h5>
                         </div>
                         <div class="modal-body">
                         <form method="POST">
                             <div class="form-group">
                                 <div class="col-md-12">
-                                    <input name="hmoenrollee" class="form-control" type="text" placeholder="Enter <%= hmo.hmoname %> Enrollee">
+                                    <input name="hmoenrollee" class="form-control" type="text" placeholder="Enter Enrollee Name">
                                 </div>
                             </div> 
                             <div class="form-group">
                                     <div class="col-md-12">
-                                        <input name="hmocode" class="form-control" type="text" placeholder="Enter  <%= hmo.hmoname %> Code">
+                                        <input name="hmocode" class="form-control" type="text" placeholder="Enter Enrollee Code">
                                     </div>
                                 </div> 
                             <div class="mb-5">
