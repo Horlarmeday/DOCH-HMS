@@ -246,7 +246,7 @@
                                                         </div>
                                                         <div id="retainershipname" class="col-sm-6">
                                                             <label>Retainership Name</label>
-                                                            <select id="hmos" name="retainershipname" class="form-control retainershipname " onchange="gethmo()">
+                                                            <select id="hmos" name="retainershipname" class="form-control retainershipname js-example-basic-single" onchange="gethmo()">
                                                                 <option selected disabled>Select</option>
                                                                 <% hmos.forEach((hmo)=>{ %>
                                                                   <option value="<%= hmo._id %>"><%= hmo.hmoname %></option>
@@ -257,7 +257,7 @@
                                                     <div class="form-group row">
                                                             <div id="hmoname" class="col-sm-6">
                                                                 <label>Enrollees</label>
-                                                                <select id="mySelect" name="hmoname" class="form-control hmoname" onchange="openPatientId()">
+                                                                <select id="mySelect" name="hmoname" class="form-control js-example-basic-single hmoname" onchange="openPatientId()">
                                                                     <option>Select</option>
                                                                    
                                                                 </select>
@@ -291,8 +291,8 @@
                                                     </div>
                                                     <div class="depend form-group row">
                                                         <div class="col-sm-6">
-                                                            <label for="">Picture</label>
-                                                            <small>Please choose multiple pictures if applicable</small>
+                                                            <label for="">Picture</label><br>
+                                                            <small style="color: red;">Please choose multiple pictures if applicable</small>
                                                             <input type="file" name="file" class="form-control dependanfile file-size" multiple>
                                                         </div>
                                                     </div>

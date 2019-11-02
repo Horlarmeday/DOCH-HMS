@@ -82,6 +82,7 @@
                                             </thead>
                                             <tbody>
                                                 <% triages.forEach((triage) => { %>
+                                                    <% if(triage.patient != null){ %>
                                                 <tr>
                                                     <td></td>
                                                     <td><%= triage.patient.firstname %> <%= triage.patient.lastname %></td>                                                   
@@ -106,6 +107,7 @@
                                                     <% } %> 
                                                     <td><%= triage.creator.firstname %> <%= triage.creator.lastname %></td>
                                                 </tr>
+                                                <% } %>
                                                 <% }) %>
                                             </tbody>
                                         </table>

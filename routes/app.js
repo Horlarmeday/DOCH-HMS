@@ -1243,7 +1243,10 @@ router.route('/capture-image/:id')
 //ADD A PATIENT
 router.route('/add-patient')
     .get(middleware.isLoggedIn, (req, res, next)=>{
-        HMO.find({}, (err, hmos)=>{
+        var mysort = { hmoname: 1 };
+        HMO.find({})
+        .sort(mysort)
+        .exec((err, hmos)=>{
             if(err) return next (err)
             
             User.countDocuments({role: 8})
@@ -1346,18 +1349,18 @@ router.route('/add-patient')
                                             }
                                             const file = new File(document)
                                             file.save((err)=> {
-                                                // unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
-                                                //     .header({'Accept' : 'application/json'})
-                                                //     .send({
-                                                //         'username': process.env.SMSSMARTUSERNAME,
-                                                //         'password': process.env.SMSSMARTPASSWORD,
-                                                //         'sender': process.env.SMSSMARTSENDERID,
-                                                //         'recipient' : `234${user.phonenumber}`,
-                                                //         'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
-                                                //         'routing': 4,
-                                                //     })
-                                                //     .end(function (response) {
-                                                //     });
+                                                unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
+                                                    .header({'Accept' : 'application/json'})
+                                                    .send({
+                                                        'username': process.env.SMSSMARTUSERNAME,
+                                                        'password': process.env.SMSSMARTPASSWORD,
+                                                        'sender': process.env.SMSSMARTSENDERID,
+                                                        'recipient' : `234${user.phonenumber}`,
+                                                        'message' : `Dear ${user.firstname}, Thanks for your patronage, your health is important to us. Your user ID is ${user.patientId}`,
+                                                        'routing': 4,
+                                                    })
+                                                    .end(function (response) {
+                                                    });
                                                 User.updateOne(
                                                     {
                                                         _id: user._id

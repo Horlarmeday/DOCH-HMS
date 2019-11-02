@@ -43,12 +43,16 @@ var unirest = require("unirest");
 //get the corresponding hmo enrolle
 router.post("/get-hmo", middleware.isLoggedIn, (req, res, next) => {
   const hmoid = req.body.hmoid;
-  HMO.findOne({ _id: hmoid }, (err, hmo) => {
+  var mysort = { hmoname: 1 };
+  HMO.findOne({ _id: hmoid })
+  .sort(mysort)
+  .exec((err, hmo) => {
     if (err) return next(err);
     var enrolless = [];
     hmo.hmoenrols.forEach(hmo => {
       enrolless.push(hmo.hmoenrollee);
     });
+    console.log(enrolless)
     res.json(enrolless);
   });
 });

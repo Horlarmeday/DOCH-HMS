@@ -62,9 +62,9 @@
                                                             <input type="text" name="name" class="form-control" placeholder="Name" required>
                                                         </div><br>                                                        
                                                         <div class="col-sm-12">
-                                                            <label for="">Department</label>
+                                                            <label for="">Laboratory</label>
                                                             <select name="lab" class="form-control js-example-basic-single" required>
-                                                                <option selected disabled>Select Department</option>
+                                                                <option selected disabled>Select Laboratory</option>
                                                                 <% labs.forEach((lab)=>{ %>
                                                                     <option value="<%= lab._id %>"><%= lab.name %></option>
                                                                 <% }) %>
