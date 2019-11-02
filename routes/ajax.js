@@ -573,18 +573,7 @@ router.post('/json-prescription', middleware.isLoggedIn, (req, res, next)=>{
                         }
 
                         return res.status(200).json({
-                            data: [
-                                theconsultation.drugs,
-                                theconsultation.startingdate,
-                                theconsultation.quantity,
-                                theconsultation.unit,
-                                theconsultation.time,
-                                theconsultation.direction,
-                                theconsultation.duration,
-                                theconsultation.price,
-                                theconsultation.prescribedBy,
-                                theconsultation.notes
-                            ],
+                            data: theconsultation,
                             message: "Drugs added!"
                         })
                     })

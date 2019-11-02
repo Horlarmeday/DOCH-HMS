@@ -3221,7 +3221,9 @@ router.route('/edit-consultation/:id')
                         .populate('triages')
                         .populate('consultations')
                         .exec((err, user)=>{
+                            var mysort = { name: -1 };
                             LocalInventory.find({})
+                            .sort(mysort)
                             .deepPopulate('name.pharmname')
                             .exec((err, locals)=>{
                                 res.render('app/add/edit_consultation', {consultation, drugs, labs, imaging, alltests, user, locals})
@@ -5040,7 +5042,7 @@ router.route('/accounts')
                         to: 'admin@doch.com.ng',
                         from: 'DOCH Account<noreply@doch.com.ng>',
                         subject: 'New Payment Made',
-                        html: `<p>Hello Admin,\n\n  A new patient ${user.firstname} ${user.lastname} has just made the sum of &#8358;${payment.amount} for registration and consultation payment, Thank You.\n</p>`,
+                        html: `<p>Hello Admin,\n\n  A new patient ${user.firstname} ${user.lastname} has just made the sum of ₦${payment.amount} for registration and consultation payment, Thank You.\n</p>`,
                     };
                     sgMail.send(msg);
                     unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
@@ -5089,7 +5091,7 @@ router.post('/approve-billing', middleware.isLoggedIn, (req, res, next)=>{
                 to: 'admin@doch.com.ng',
                 from: 'DOCH Account<noreply@doch.com.ng>',
                 subject: 'New Payment Made',
-                html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made payment of &#8358;${payment.amount} for his/her  billings, Thank You.\n</p>`,
+                html: `<p>Hello Admin,\n\n  A new patient (${payment.patient.firstname} ${payment.patient.lastname}) has just made payment of ₦${payment.amount} for his/her  billings, Thank You.\n</p>`,
             };
             sgMail.send(msg);
             unirest.post( 'https://api.smartsmssolutions.com/smsapi.php')
@@ -5196,7 +5198,7 @@ router.post('/lab-test-payment', middleware.isLoggedIn, (req, res, next)=>{
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her lab test, Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of ₦${payment.amount} for his/her lab test, Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
                 //Send SMS
@@ -5261,7 +5263,7 @@ router.post('/imaging-payment', middleware.isLoggedIn, (req, res, next)=>{
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her imaging payment, Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of ₦${payment.amount} for his/her imaging payment, Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
                 //Send SMS
@@ -5382,7 +5384,7 @@ router.post('/pharmacy-payment', middleware.isLoggedIn, (req, res, next)=>{
                     to: 'admin@doch.com.ng',
                     from: 'DOCH Account<noreply@doch.com.ng>',
                     subject: 'New Payment Made',
-                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of &#8358;${payment.amount} for his/her drugs, Thank You.\n</p>`,
+                    html: `<p>Hello Admin,\n\n  A new patient (${consult.patient.firstname} ${consult.patient.lastname}) has just made the payment of ₦${payment.amount} for his/her drugs, Thank You.\n</p>`,
                 };
                 sgMail.send(msg);
                 //Send SMS
