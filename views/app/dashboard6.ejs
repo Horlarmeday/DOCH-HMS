@@ -158,119 +158,119 @@
                                                
                                                 </thead>  
                                                     <tbody v-for="consultation in consultations" :key="consultation._id">
-                                                        <tr>
-                                                            
-                                                                <td></td>
-                                                                <td>{{ consultation.patient.patientId }}</td>
-                                                                <td>
-                                                                     <a :href="consultation.patientprofileurl"> 
-                                                                        {{ consultation.patient.firstname}} {{ consultation.patient.lastname}}
-                                                                     </a>
-                                                                     
-                                                                        <label v-if="consultation.patient.retainershipname" 
-                                                                        class="label label-md bg-success">{{ consultation.patient.retainershipname.hmoname }}</label>
+                                                            <tr>
+                                                                
+                                                                    <td></td>
+                                                                    <td>{{ consultation.patient.patientId }}</td>
+                                                                    <td>
+                                                                         <a :href="consultation.patientprofileurl"> 
+                                                                            {{ consultation.patient.firstname}} {{ consultation.patient.lastname}}
+                                                                         </a>
+                                                                         
+                                                                            <label v-if="consultation.patient.retainershipname" 
+                                                                            class="label label-md bg-success">{{ consultation.patient.retainershipname.hmoname }}</label>
+                                                                       
+                                                                    </td>
+                                                                    <td> {{ consultation.visit }}</td>
+                                                                    <td>{{ consultation.doctor.firstname }} {{ consultation.doctor.lastname }}</td>
                                                                    
-                                                                </td>
-                                                                <td> {{ consultation.visit }}</td>
-                                                                <td>{{ consultation.doctor.firstname }} {{ consultation.doctor.lastname }}</td>
-                                                               
-                                                                <td>
-                                                                    <label v-if="consultation.pharmacyfinish === false" class="label label-md bg-warning">Ongoing</label>
-                                                                    <label v-else class="label label-md bg-success">Finished</label>
-                                                                </td>
-                                                                
-                                                                
-                                                                <td>
-                                                                    <label v-if="consultation.pharmacypaid === false" class="label label-md bg-warning">Not Paid</label>
-                                                                    <label v-else class="label label-md bg-success">Paid</label>
-                                                                </td>
-                                                               
-                                                               
-                                                                <td v-if="consultation.pharmacypaid && !consultation.pharmacyfinish">
+                                                                    <td>
+                                                                        <label v-if="consultation.pharmacyfinish === false" class="label label-md bg-warning">Ongoing</label>
+                                                                        <label v-else class="label label-md bg-success">Finished</label>
+                                                                    </td>
                                                                     
-                                                                    <a @click="sendConsultation(consultation)" class="btn btn-inverse addAnother"data-toggle="modal" 
-                                                                    href="#secondModal">
-                                                                        Add Drugs
-                                                                    </a>
-                                                                    <button @click.prevent="getDrugs(consultation)" class="btn btn-info drugmodal"
-                                                                         data-toggle="modal" 
-                                                                        href="#myModal">
-                                                                        Dispense
-                                                                    </button> 
                                                                     
-                                                                </td>
-                                                              
-                                                                <td v-else-if="!consultation.pharmacypaid && !consultation.pharmacyfinish"><a href="#" 
-                                                                    class="btn btn-default ">Not Paid</a>
-                                                                </td>
-                                                               
-                                                               <td v-else-if="consultation.pharmacypaid && consultation.pharmacyfinish">
-                                                                   <button class="btn btn-success" 
-                                                                disabled>Prescribed</button>
-                                                               </td>
-                                                         
-                                                              
-                                                                     
-                                                                    <tr v-for="drug in consultation.drugsObject" >
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                            <th></th>
-                                                                      
-                                                                            
-                                                                            
-                                                                             <td v-if="drug.drugs.name.name" style="font-weight: 700; color: green">
-                                                                             {{ drug.drugs.name.name }}
-                                                                             <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
-                                                                             <span v-else class="label label-sm bg-warning">Pending</span>
-                                                                             </td>
+                                                                    <td>
+                                                                        <label v-if="consultation.pharmacypaid === false" class="label label-md bg-warning">Not Paid</label>
+                                                                        <label v-else class="label label-md bg-success">Paid</label>
+                                                                    </td>
+                                                                   
+                                                                   
+                                                                    <td v-if="consultation.pharmacypaid && !consultation.pharmacyfinish">
+                                                                        
+                                                                        <a @click="sendConsultation(consultation)" class="btn btn-inverse addAnother"data-toggle="modal" 
+                                                                        href="#secondModal">
+                                                                            Add Drugs
+                                                                        </a>
+                                                                        <button @click.prevent="getDrugs(consultation)" class="btn btn-info drugmodal"
+                                                                             data-toggle="modal" 
+                                                                            href="#myModal">
+                                                                            Dispense
+                                                                        </button> 
+                                                                        
+                                                                    </td>
+                                                                  
+                                                                    <td v-else-if="!consultation.pharmacypaid && !consultation.pharmacyfinish"><a href="#" 
+                                                                        class="btn btn-default ">Not Paid</a>
+                                                                    </td>
+                                                                   
+                                                                   <td v-else-if="consultation.pharmacypaid && consultation.pharmacyfinish">
+                                                                       <button class="btn btn-success" 
+                                                                    disabled>Prescribed</button>
+                                                                   </td>
+                                                             
+                                                                  
                                                                          
-                                                                             <td v-else style="font-weight: 700; color: green">
-                                                                             {{ drug.drugs.name.pharmname.generic  }} 
-                                                                             <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
-                                                                             <span v-else class="label label-sm bg-warning">Pending</span> 
-                                                                             </td>
-                                                                               
-                                                                            
-                                                                            <td>
-                                                                                {{ formatDate(drug.startingdate) }}
-                                                                            </td>
-                                                                            <td>
-                                                                                {{ drug.time }}
-                                                                            </td>
-                                                                         
-                                                                            <td>
-                                                                                    {{ drug.direction }}
-                                                                            </td>
-                                                                            <td>
-                                                                                    {{ drug.duration }}
-                                                                            </td>
-                                                                            <td>
-                                                                                    {{ drug.quantity }}
-                                                                            </td>
-                                                                            <td>
-                                                                                    {{ drug.price }}
-                                                                            </td>
-                                                                         
-                     
-                                                                             <td v-if="drug.prescribedBy">
-                                                                                 {{ drug.prescribedBy.firstname }}
-                                                                                 {{ drug.prescribedBy.lastname }}
-                                                                             </td>
-                                                                            
-                                                                             <td v-else></td>
-                                                                         
-                                                                             <td>{{ drug.notes }}</td>
+                                                                        <tr v-for="drug in consultation.drugsObject" >
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                                <th></th>
+                                                                          
+                                                                                
+                                                                                
+                                                                                 <td v-if="drug.drugs.name.name" style="font-weight: 700; color: green">
+                                                                                 {{ drug.drugs.name.name }}
+                                                                                 <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
+                                                                                 <span v-else class="label label-sm bg-warning">Pending</span>
+                                                                                 </td>
                                                                              
-                                                                </tr>
-                                                                
-                                                                
-                                                           
-                                                        </tr>
+                                                                                 <td v-else style="font-weight: 700; color: green">
+                                                                                 {{ drug.drugs.name.pharmname.generic  }} 
+                                                                                 <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
+                                                                                 <span v-else class="label label-sm bg-warning">Pending</span> 
+                                                                                 </td>
+                                                                                   
+                                                                                
+                                                                                <td>
+                                                                                    {{ formatDate(drug.startingdate) }}
+                                                                                </td>
+                                                                                <td>
+                                                                                    {{ drug.time }}
+                                                                                </td>
+                                                                             
+                                                                                <td>
+                                                                                        {{ drug.direction }}
+                                                                                </td>
+                                                                                <td>
+                                                                                        {{ drug.duration }}
+                                                                                </td>
+                                                                                <td>
+                                                                                        {{ drug.quantity }}
+                                                                                </td>
+                                                                                <td>
+                                                                                        {{ drug.price }}
+                                                                                </td>
+                                                                             
+                         
+                                                                                 <td v-if="drug.prescribedBy">
+                                                                                     {{ drug.prescribedBy.firstname }}
+                                                                                     {{ drug.prescribedBy.lastname }}
+                                                                                 </td>
+                                                                                
+                                                                                 <td v-else></td>
+                                                                             
+                                                                                 <td>{{ drug.notes }}</td>
+                                                                                 
+                                                                    </tr>
+                                                                    
+                                                                    
+                                                               
+                                                            </tr>
                                                     </tbody>
                                             </table>
                                         </div>

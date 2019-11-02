@@ -73,7 +73,7 @@
                                             </thead>
                                             <tbody>
                                                     <% payments.forEach((payment) => { %>
-                                                        <% if(payment.services.length > 1){ %>
+                                                        <% if(payment.services.length > 1 && (payment.patient !== null || payment.patient !== undefined)){ %>
                                                         
                                                 <tr>
                                                    

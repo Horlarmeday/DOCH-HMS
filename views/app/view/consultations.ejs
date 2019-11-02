@@ -89,6 +89,7 @@
                                             </thead>
                                             <tbody>
                                                 <% consultations.forEach((consultation)=>{ %>
+                                                    <% if (consultation.patient !== null || consultation.patient !== undefined){ %>
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
@@ -188,6 +189,7 @@
                                                 <% } %> 
                              
                                                 </tr>
+                                                <% } %>
                                                 <% }) %>
                                             </tbody>
                                         </table>

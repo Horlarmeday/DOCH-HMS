@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4>Laboratory Fees</h4>
+                        <h4>Imaging Fees</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,7 +35,7 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#">Laboratory Fees</a>
+                            <li class="breadcrumb-item"><a href="/pharmacy-fees">Imaging Fees</a>
                             </li>
                             <li class="breadcrumb-item"><a href="#"></a>
                             </li>
@@ -46,22 +46,21 @@
                 <!-- Page-body start -->
                 <div class="page-body">
                     <div class="row">
-                        <!-- LABORATORY TEST FEE -->
+                       <!-- IMAGING FEE -->
             <div class="col-sm-12">
                     <!-- Zero config.table start -->
                     <div class="card">
                       <div class="card-header">
-                        <h5>Laboratory Test Fee</h5>
+                        <h5>Medical Imaging Fee</h5>
                         <div class="card-header-right">
                           <i class="icofont icofont-rounded-down"></i>
                           <i class="icofont icofont-refresh"></i>
                           <i class="icofont icofont-close-circled"></i>
                         </div>
                       </div>
-      
                       <div class="card-block">
                         <div class="dt-responsive table-responsive">
-                          <table id="order-table" class="table table-striped table-bordered nowrap">
+                          <table id="alt-pg-dt" class="table table-striped table-bordered nowrap">
                             <thead>
                               <tr>
                                 <th>S/N</th>
@@ -69,43 +68,43 @@
                                 <th>Patient Name</th>
                                 <th>Patient Type</th>
                                 <th>Status</th>
-                                <th>Tests</th>
+                                <th>Investigation</th>
                                 <th>Unit Amount</th>
                                 <th>Total Amount</th>
+      
                                 <th>Mode of Payment</th>
                                 <th>Action</th>
                               </tr>
                             </thead>
                             <tbody>
                               <% consultations.forEach((consultation) => { %> 
-                                <% if(consultation.labtestObject.length > 0){ %>
+                                <% if(consultation.imaging.length > 0){ %>
+      
                               <tr>
-                                <%
-                                 function getSum(total, num){ 
-                                   return total + num; 
+                                <% 
+                                  function getSum(total, num) { 
+                                    return total + num;
                                   }
-                                   const totalTestPrice = consultation.labtestObject.map(price =>{
+                                  const totalImagingPrice = consultation.imaging.map(price =>{ 
                                     const rPrice = price.price 
                                     return rPrice;
-                                   }) 
-                                  var testPrice;
-                                  if(totalTestPrice === undefined || totalTestPrice.length == 0){ 
-                                    testPrice = 0 
-                                  }else{
-                                    testPrice = totalTestPrice.reduce(getSum)
-                                  }
-                               %>
+                                }) 
+                                var imagingPrice;
+                                  if(totalImagingPrice === undefined || totalImagingPrice.length == 0){ 
+                                    imagingPrice = 0
+                                  }else{ 
+                                    imagingPrice = totalImagingPrice.reduce(getSum)
+                                  } 
+                                %>
                                 <td></td>
                                 <td><%= consultation.patient.patientId %></td>
                                 <td>
-                                  <a href="/patient/<%= consultation.patient._id %>"
-                                    class="mr-2"><%= consultation.patient.firstname %> 
+                                  <a href="/patient/<%= consultation.patient.id %>"><%= consultation.patient.firstname %> 
                                     <%= consultation.patient.lastname %></a>
                                   <% if(consultation.patient.retainershipname){ %>
-                                  <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname%></label>
+                                  <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
                                   <% } %>
                                 </td>
-      
                                 <% if(!consultation.patient.emergency){ %>
                                 <td>
                                   <label class="label label-bg bg-success">Normal Patient</label>
@@ -115,59 +114,55 @@
                                   <label class="label label-bg bg-danger">Emergency Patient</label>
                                 </td>
                                 <% } %>
-                                 <% if(consultation.labpaid && consultation.patient.retainership === "Yes"){ %>
-                                <td>
-                                  <label class="label label-md bg-success">Cleared by NHIS</label>
-                                </td>
-                                <% }else if(consultation.labpaid){ %>
-                                <td>
-                                  <label class="label label-md bg-success">Paid</label>
-                                </td>
-                                <% }else if(!consultation.labpaid){ %>
+                                 <% if(consultation.imagingpaid === false){ %>
                                 <td>
                                   <label class="label label-md bg-warning">pending</label>
                                 </td>
+                                <% }else{ %>
+                                <td>
+                                  <label class="label label-md bg-success">paid</label>
+                                </td>
                                 <% } %>
                                 <td>
-                                  <% consultation.labtestObject.forEach((test, index, array)=>{ %>
-      
+                                  <% consultation.imaging.forEach((image, index, array)=>{ %>
                                   <input type="checkbox" name="<%= consultation._id %>" id="<%= index %>"
-                                    class="form-control labChecked" />
+                                    class="form-control drugChecked" />
+      
                                   <p style="font-weight: 500">
-                                    <label><%= test.tests.name %></label>
-                                    <% if(consultation.labpaid && consultation.patient.retainership === "Yes"){ %>
-                                    <span class="label label-sm bg-success">Cleared by NHIS</span>
-                                    <% }else if(test.status){ %>
-                                    <span class="label label-sm bg-success labpaid">Paid</span>
-                                    <% }else if(!test.status){ %>
-                                    <span class="label label-sm bg-warning labunpaid">pending</span>
+                                    <%= image.investigation.name %> <% if(image.status === false){ %>
+                                    <span><label class="label label-sm bg-warning">pending</label></span>
+                                    <% }else{ %>
+                                    <span><label class="label label-sm bg-success">paid</label></span>
                                     <% } %>
                                   </p>
                                   <% }) %>
                                 </td>
+      
                                 <td>
-                                  <% consultation.labtestObject.forEach((test)=>{ %>
+                                  <% consultation.imaging.forEach((image)=>{ %>
                                   <p style="font-weight: 900; color: darkorange">
-                                    (&#8358;<%= test.price %>)
+                                    (&#8358;<%= image.investigation.price %>)
                                   </p>
                                   <% }) %>
                                 </td>
+      
                                 <% if(consultation.patient.retainership === "Yes"){ %>
                                 <td style="font-weight: 900; font-size: 1rem">
                                   <span style="text-decoration-line: line-through; text-decoration-color: red">
-                                    &#8358;<%= testPrice %></span>
-                                  (&#8358;<%= testPrice * 0.1 %>)
+                                    &#8358;<%= imagingPrice %></span>
+                                  (&#8358;<%= imagingPrice * 0.1 %>)
                                 </td>
                                 <% }else{ %>
                                 <td style="font-weight: 900; font-size: 1rem">
-                                  &#8358;<%= testPrice %>
+                                  &#8358;<%= imagingPrice %>
                                 </td>
+      
                                 <% } %>
       
                                 <td>
-                                  <% if(!consultation.labpaid){ %>
+                                  <% if(!consultation.imagingpaid){ %>
                                   <div class="input-group">
-                                    <select id="modeofpayment2" name="modeofpayment" class="form-control">
+                                    <select id="modeofpayment4" name="modeofpayment" class="form-control">
                                       <option>Select</option>
                                       <option value="Cash">Cash</option>
                                       <option value="POS">POS</option>
@@ -175,24 +170,24 @@
                                       <option value="Bank Deposit">Bank Deposit</option>
                                     </select>
                                   </div>
-                                  <% }%>
+                                  <% } %>
                                 </td>
                                 <td>
-                                  <% if(!consultation.labpaid){ %> 
-                                    <% if(consultation.patient.retainership === "Yes"){ %>
-                                  <button value="<%= testPrice * 0.1 %>" name="<%= consultation._id %>" type="button"
-                                    class="btn btn-success labpay">
+                                  <% if(!consultation.imagingpaid){ %>
+                                     <% if(consultation.patient.retainership === "Yes"){ %>
+                                  <button name="<%= consultation._id %>" value="<%= imagingPrice * 0.1 %>"
+                                    class="btn btn-success imagingpay">
                                     Pay
                                   </button>
                                   <% }else{ %>
-                                  <button value="<%= testPrice %>" name="<%= consultation._id %>" type="button"
-                                    class="btn btn-success labpay">
+                                  <button name="<%= consultation._id %>" value="<%= imagingPrice %>"
+                                    class="btn btn-success imagingpay">
                                     Pay
                                   </button>
-                                  <% } %>
-                                   <% } %>
-                                    <% if(consultation.labpaid){ %>
-                                  <a target="_blank" href="/labtest-invoice/<%= consultation._id %>"
+                                  <% } %> 
+                                  <% } %> 
+                                  <% if(consultation.imagingpaid){ %>
+                                  <a target="_blank" href="/imaging-invoice/<%= consultation._id %>"
                                     class="btn btn-primary"><i class="ti-receipt"></i> Invoice
                                   </a>
                                   <% } %>
