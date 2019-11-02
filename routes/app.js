@@ -170,24 +170,26 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     if(err) return next (err)
                     var allTriages = []
                     triages.forEach((triage)=>{
-                        var birthday = new Date(triage.patient.birthday)
-                        var today = new Date()
-                        var age = today.getFullYear() - birthday.getFullYear()
-                        if(today.getMonth() < birthday.getMonth()){
-                            age
+                        if(triage.patient !== null){
+                            var birthday = new Date(triage.patient.birthday)
+                            var today = new Date()
+                            var age = today.getFullYear() - birthday.getFullYear()
+                            if(today.getMonth() < birthday.getMonth()){
+                                age
+                            }
+                            if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
+                                age
+                            }
+                            allTriages.push({
+                                'firstname': triage.patient.firstname,
+                                'lastname': triage.patient.lastname,
+                                'id': triage.patient._id,
+                                'age': age,
+                                'seen': triage.seen,
+                                'taken': triage.taken
+                                
+                            })
                         }
-                        if(today.getMonth() == birthday.getMonth() && today.getDate() < birthday.getDate()){
-                            age
-                        }
-                        allTriages.push({
-                            'firstname': triage.patient.firstname,
-                            'lastname': triage.patient.lastname,
-                            'id': triage.patient._id,
-                            'age': age,
-                            'seen': triage.seen,
-                            'taken': triage.taken
-                            
-                        })
 
                     })
                     var appointmentIsEmpty = true;
