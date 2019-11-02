@@ -148,23 +148,7 @@
                 </div>
                 </div>
             </div>
-            <%
-                function getSum(total, num) {
-                    return total + num;
-                }
-                const totalImagingPrice = consultation.imaging.map(price =>{
-                    const rPrice = price.price
-                    return rPrice;
-                                
-                })
-                var imagingPrice;
-                if(totalImagingPrice === undefined || totalImagingPrice.length == 0){
-                    imagingPrice = 0
-                }else{
-                    imagingPrice = totalImagingPrice.reduce(getSum)
-                }
-                                                                
-             %>
+            
             <div class="panel panel-default">
                 <div class="panel-heading">
                 <h3 class="panel-title">Imaging</h3>

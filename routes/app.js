@@ -3200,7 +3200,6 @@ router.route('/edit-consultation/:id')
         Consultation.findOne({ _id: req.params.id })
         .sort('drugsObject')
         .populate('patient')
-        .populate('labtestObject')
         .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images',
          'drugsObject.prescribedBy', 'imaging.investigation', 'drugsObject.drugs.name.pharmname'])
         .exec((err, consultation)=>{
