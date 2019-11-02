@@ -78,7 +78,7 @@
                             </thead>
                             <tbody>
                               <% consultations.forEach((consultation) => { %> 
-                                <% if(consultation.imaging.length > 0){ %>
+                                <% if(consultation.imaging.length > 0 consultation.patient !== null){ %>
       
                               <tr>
                                 <% 

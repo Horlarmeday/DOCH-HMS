@@ -78,7 +78,7 @@
                             </thead>
                             <tbody>
                               <% consultations.forEach((consultation) => { %> 
-                                <% if(consultation.labtestObject.length > 0){ %>
+                                <% if(consultation.labtestObject.length > 0 consultation.patient !== null){ %>
                               <tr>
                                 <%
                                  function getSum(total, num){ 

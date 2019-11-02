@@ -1,4 +1,5 @@
-<% include ../partials/header %> <% include ../partials/sidebarCopy %>
+<% include ../partials/header %> 
+<% include ../partials/sidebarCopy %>
 
 <!-- Center page starts -->
 <div class="pcoded-content">
@@ -42,9 +43,15 @@
             <div class="col-md-6 col-xl-4">
               <div class="card">
                 <div class="card-block-big card-visitor-block">
-                  <% const newDoctors = allUsers.map(doctor =>{ if (doctor.role
-                  === 2){ const rDoctor = doctor.role === 2 return rDoctor; } })
-                  const doctors = newDoctors.filter(v => v).length; %>
+                  <% 
+                    const newDoctors = allUsers.map(doctor =>{ 
+                      if (doctor.role === 2){ 
+                        const rDoctor = doctor.role === 2
+                        return rDoctor; 
+                        }
+                      })
+                      const doctors = newDoctors.filter(v => v).length;
+                   %>
                   <div class="row">
                     <div class="col-sm-8  card-visitor-button">
                       <button class="btn btn-primary btn-icon">
@@ -65,10 +72,14 @@
             <div class="col-md-6 col-xl-4">
               <div class="card">
                 <div class="card-block-big card-visitor-block">
-                  <% const newPatients = allUsers.map(patient =>{ if
-                  (patient.role === 8){ const rPatient = patient.role === 8
-                  return rPatient; } }) const patients = newPatients.filter(v =>
-                  v).length; %>
+                  <% 
+                    const newPatients = allUsers.map(patient =>{
+                     if(patient.role === 8){ 
+                       const rPatient = patient.role === 8
+                       return rPatient; }
+                       }) 
+                       const patients = newPatients.filter(v => v).length;
+                   %>
                   <div class="row">
                     <div class="col-sm-8 card-visitor-button">
                       <button class="btn btn-warning btn-icon">
@@ -136,19 +147,17 @@
                       </thead>
                       <% if(!appointmentIsEmpty){ %>
                       <tbody>
-                        <% appointments.forEach((appointment)=>{ %> <%
-                        if(!appointment.taken && appointment.type !==
-                        'Ante-Natal' && appointment.type !== 'Immunization'
-                        &&(appointment.patient !== null)){ %>
+                        <% appointments.forEach((appointment)=>{ %> 
+                          <% if(!appointment.taken && appointment.type !=='Ante-Natal' && appointment.type !== 'Immunization' &&(appointment.patient !== null)){ %>
                         <tr>
                           <td></td>
                           <td>
-                            <%= appointment.patient.firstname %> <%=
-                            appointment.patient.lastname %>
+                            <%= appointment.patient.firstname %> 
+                            <%= appointment.patient.lastname %>
                           </td>
                           <td>
-                            <%= appointment.doctor.firstname %> <%=
-                            appointment.doctor.lastname %>
+                            <%= appointment.doctor.firstname %> 
+                            <%= appointment.doctor.lastname %>
                           </td>
                           <td><%= appointment.type %></td>
                           <td>
@@ -180,7 +189,8 @@
                             >
                           </td>
                         </tr>
-                        <% } %> <% }) %>
+                        <% } %> 
+                        <% }) %>
                       </tbody>
                       <% }else{ %>
                       <tbody>
@@ -219,8 +229,8 @@
                       </thead>
 
                       <tbody>
-                        <% allTriages.forEach((triage) => { %> <%
-                        if(triage.taken === false && triage.seen === true){ %>
+                        <% allTriages.forEach((triage) => { %>
+                           <% if(triage.taken === false && triage.seen === true){ %>
                         <tr>
                           <td></td>
                           <td>
@@ -249,7 +259,8 @@
                             >
                           </td>
                         </tr>
-                        <% } %> <% }) %>
+                        <% } %> 
+                        <% }) %>
                       </tbody>
                     </table>
                   </div>

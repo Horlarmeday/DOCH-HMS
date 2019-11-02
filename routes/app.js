@@ -170,7 +170,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     if(err) return next (err)
                     var allTriages = []
                     triages.forEach((triage)=>{
-                        if(triage.patient !== null || triage.patient !== undefined){
+                        if(triage.patient !== null){
                             var birthday = new Date(triage.patient.birthday)
                             var today = new Date()
                             var age = today.getFullYear() - birthday.getFullYear()

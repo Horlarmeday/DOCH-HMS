@@ -228,7 +228,7 @@
                                                 <% if(!appointmentIsEmpty){ %>
                                                 <tbody>
                                                     <% appointments.forEach((appointment)=>{ %>
-                                                        <% if(appointment.taken === false && appointment.type === 'Ante-Natal'){ %>
+                                                        <% if(appointment.taken === false && appointment.type === 'Ante-Natal' && (appointment.patient !== null)){ %>
                                                     <tr>
                                                         <td></td>
                                                         <td><%= appointment.patient.firstname %> <%= appointment.patient.lastname %></td>

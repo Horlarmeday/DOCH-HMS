@@ -78,7 +78,7 @@
                             </thead>
                             <tbody>
                               <% consultations.forEach((consultation) => { %> 
-                                <% if(consultation.drugsObject.length > 0){ %>
+                                <% if(consultation.drugsObject.length > 0 && consultation.patient !== null){ %>
                               <tr>
                                 <td></td>
                                 <td><%= consultation.patient.patientId %></td>
