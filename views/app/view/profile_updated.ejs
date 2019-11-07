@@ -826,26 +826,32 @@
                                                       <td></td>
                                                       <td>
                                                           <% if (Array.isArray(patient.hmodependant[0].names)){ %>
-                                                            <% patient.hmodependant[0].names.forEach((dependant)=>{ %>
-                                                              <p><%= dependant %></p>
-                                                            <% }) %>
+                                                            <% if(patient.hmodependant.length > 0){ %>
+                                                              <% patient.hmodependant[0].names.forEach((dependant)=>{ %>
+                                                                <p><%= dependant %></p>
+                                                              <% }) %>
+                                                            <% } %>
                                                           <% }else{ %>
                                                             <%= patient.hmodependant[0].names %>
                                                           <% } %>
                                                       </td>
                                                       <td>
-                                                          <% if (Array.isArray(patient.hmodependant[0].dob)){ %>
-                                                            <% patient.hmodependant[0].dob.forEach((dependant)=>{ %>
-                                                              <p><%= dependant %></p>
-                                                            <% }) %>
+                                                          <% if(Array.isArray(patient.hmodependant[0].dob)){ %>
+                                                            <% if(patient.hmodependant.length > 0){ %>
+                                                              <% patient.hmodependant[0].dob.forEach((dependant)=>{ %>
+                                                                <p><%= dependant %></p>
+                                                              <% }) %>
+                                                            <% } %>
                                                           <% }else{ %>
                                                             <%= patient.hmodependant[0].dob %>
                                                           <% } %>
                                                       </td>
                                                       <td>
-                                                          <% patient.files[0].name.forEach((file)=>{ %>
-                                                            <p><a href="/uploads/<%= file.filename %>">View</a></p>
-                                                          <% }) %>
+                                                          <% if(patient.files.length > 0){ %>
+                                                            <% patient.files[0].name.forEach((file)=>{ %>
+                                                              <p><a href="/uploads/<%= file.filename %>">View</a></p>
+                                                            <% }) %>
+                                                          <% } %>
                                                       </td>
                                                   </tr>
                                               </tbody>
