@@ -143,7 +143,6 @@
                                                                         <option selected disabled>Select</option>
                                                                     <% departments.forEach((department) =>{ %>
                                                                         <option><%= department.name %></option>
-                                                                        
                                                                     <% }) %>
                                                                 </select>
                                                             </div>
@@ -153,7 +152,7 @@
                                                                     <option selected disabled>Select</option>
                                                                     <% users.forEach((user) =>{ %>
                                                                         <% if(user.role != 8 && user.role != 1){ %>
-                                                                        <option value="<%= user._id  %>"><%= user.firstname %> <%= user.lastname %></option>
+                                                                           <option value="<%= user._id  %>"><%= user.firstname %> <%= user.lastname %></option>
                                                                         <% } %>
                                                                     <% }) %>
                                                                       

@@ -235,6 +235,9 @@
                           <td></td>
                           <td>
                             <%= triage.firstname %> <%= triage.lastname %>
+                            <% if(triage.retainershipname){ %>
+                              <label class="label label-md bg-success"><%= triage.retainershipname.hmoname%></label>
+                            <% } %>
                           </td>
                           <td><%= triage.age %></td>
 

@@ -15,6 +15,9 @@ const Payment = require("../models/payments");
 const Imaging = require("../models/imaging");
 const Investigations = require("../models/investigations");
 const LocalInventory = require("../models/localinventory");
+const Inpatient = require("../models/inPatientInventory");
+const NhisOpdInventory = require('../models/nhisOpdInventory')
+const NhisIpdInventory = require('../models/nhisIpdInventory')
 const ANC = require("../models/anc");
 const Request = require("../models/request");
 // const Counter = require('../models/counters')
@@ -228,6 +231,22 @@ router.post(
   }
 );
 
+router.post(
+  "/get-nhis-drug-price",
+  middleware.isLoggedIn,
+  (req, res, next) => {
+    const drugCode = req.body.nhisItem;
+    NhisOpdInventory.findOne({ _id: drugCode }).exec((err, drug) => {
+      if (err) return next(err);
+      res.json({
+        price: drug.price,
+        balance: drug.balance,
+        quantity: drug.quantity
+      });
+    });
+  }
+);
+
 router.post("/remove-drug", middleware.isLoggedIn, (req, res, next) => {
   const indexClicked = req.body.indexClicked;
   const clickedConsultation = req.body.clickedConsultation;
@@ -381,36 +400,62 @@ router.post("/get-consultation", middleware.isLoggedIn, (req, res, next) => {
   const index = req.body.index;
   const consultation = req.body.consultation;
   Consultation.findOne({ _id: consultation })
-    .populate("patient")
     .populate("prescribedBy")
     .deepPopulate([
       "drugsObject.prescribedBy",
-      "drugsObject.drugs.name.pharmname"
+      "patient.retainershipname",
+      "drugsObject.drugs.name.pharmname",
+      "drugsObject.drugs.name",
+      "drugsObject.nhisdrugs.name.pharmname"
     ])
     .exec((err, found) => {
-        
+      
       var clickedConsultation = [];
       found.drugsObject.forEach(drug => {
-        clickedConsultation.push({
-          index: index,
-          consultationId: found._id,
-          id: drug._id,
-          fname: found.patient.firstname,
-          patientId: found.patient._id,
-          lname: found.patient.lastname,
-          date: drug.startingdate.toLocaleDateString(),
-          drugs: drug.drugs.name.name,
-          thedrug: drug.drugs.name.pharmname,
-          dose: drug.time,
-          status: drug.status,
-          frequency: drug.direction,
-          duration: drug.duration,
-          total: drug.quantity,
-          price: drug.price,
-          note: drug.notes,
-          docfirst: drug.prescribedBy.firstname,
-          docsecond: drug.prescribedBy.lastname
-        });
+        if(found.patient.retainershipname){
+          clickedConsultation.push({
+            index: index,
+            consultationId: found._id,
+            id: drug._id,
+            fname: found.patient.firstname,
+            nhisname: found.patient.retainershipname.hmoname,
+            patientId: found.patient._id,
+            lname: found.patient.lastname,
+            date: drug.startingdate.toLocaleDateString(),
+            nhisdrugs: drug.nhisdrugs.name.name,
+            nhisthedrug: drug.nhisdrugs.name.pharmname,
+            dose: drug.time,
+            status: drug.status,
+            frequency: drug.direction,
+            duration: drug.duration,
+            total: drug.quantity,
+            price: drug.price,
+            note: drug.notes,
+            docfirst: drug.prescribedBy.firstname,
+            docsecond: drug.prescribedBy.lastname
+          });
+        }else{
+          clickedConsultation.push({
+            index: index,
+            consultationId: found._id,
+            id: drug._id,
+            fname: found.patient.firstname,
+            patientId: found.patient._id,
+            lname: found.patient.lastname,
+            date: drug.startingdate.toLocaleDateString(),
+            drugs: drug.drugs.name.name,
+            thedrug: drug.drugs.name.pharmname,
+            dose: drug.time,
+            status: drug.status,
+            frequency: drug.direction,
+            duration: drug.duration,
+            total: drug.quantity,
+            price: drug.price,
+            note: drug.notes,
+            docfirst: drug.prescribedBy.firstname,
+            docsecond: drug.prescribedBy.lastname
+          });
+        }
       });
       res.status(200).json(clickedConsultation);
     });
@@ -420,106 +465,218 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
   const index = req.body.index;
   const consultationId = req.body.id;
   Consultation.findOne({ _id: consultationId })
-    .deepPopulate("drugsObject.drugs")
+    .deepPopulate(["drugsObject.drugs.name", "patient.retainershipname", "drugsObject.nhisdrugs.name",])
     .exec((err, consultation) => {
       if (req.user.role == 5) {
-        LocalInventory.findOne(
-          { _id: consultation.drugsObject[index].drugs },
-          (err, foundDrug) => {
-            if (foundDrug) {
-              if (foundDrug.balance <= 0 || foundDrug.balance < consultation.drugsObject[index].quantity) {
-                return res
-                  .status(400)
-                  .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
-              } else {
-                foundDrug.balance =
-                  foundDrug.quantity - consultation.drugsObject[index].quantity;
-                foundDrug.save(err => {
-                  if (err) return next(err);
-                });
-
-                consultation.drugsObject[index].status = true;
-                consultation.save(err => {
-                  if (err) return next(err);
-                  const complete = consultation.drugsObject.map(status =>{
-                    const rStatus = status.status
-                    return rStatus;
-                  })
-                  let truthLength = complete.filter(v => v).length
-                  if(truthLength === consultation.drugsObject.length){
-                    consultation.pharmacyfinish = true;
-                    consultation.save();
-                    return res
-                    .status(200)
-                    .json({
-                        data: consultation.drugsObject[index].status,
-                        message: 'All drugs dispensed!'
+        if(consultation.patient.retainershipname){
+          NhisOpdInventory.findOne(
+            { _id: consultation.drugsObject[index].nhisdrugs },
+            (err, foundDrug) => {
+              if (foundDrug) {
+                if (foundDrug.balance <= 0 || foundDrug.balance < consultation.drugsObject[index].quantity) {
+                  return res
+                    .status(400)
+                    .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
+                } else {
+                  foundDrug.balance =
+                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                  foundDrug.consumed +=
+                    consultation.drugsObject[index].quantity;
+                  foundDrug.save(err => {
+                    if (err) return next(err);
+                  });
+  
+                  consultation.drugsObject[index].status = true;
+                  consultation.save(err => {
+                    if (err) return next(err);
+                    const complete = consultation.drugsObject.map(status =>{
+                      const rStatus = status.status
+                      return rStatus;
                     })
-                  }else{
-                    return res
-                    .status(200)
-                    .json({
-                        data: consultation.drugsObject[index].status,
-                        message: "Drug dispensed successfully"
-                    });
-                  }
-                });
+                    let truthLength = complete.filter(v => v).length
+                    if(truthLength === consultation.drugsObject.length){
+                      consultation.pharmacyfinish = true;
+                      consultation.save();
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: 'All drugs dispensed!'
+                      })
+                    }else{
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: "Drug dispensed successfully"
+                      });
+                    }
+                  });
+                }
+              } else {
+                res
+                  .status(404)
+                  .json("Drug not found in the NHIS Outpatient Inventory");
               }
-            } else {
-              res
-                .status(404)
-                .json("Drug not found in the Outpatient Inventory");
             }
-          }
-        );
+          );
+        }else{
+          LocalInventory.findOne(
+            { _id: consultation.drugsObject[index].drugs },
+            (err, foundDrug) => {
+              if (foundDrug) {
+                if (foundDrug.balance <= 0 || foundDrug.balance < consultation.drugsObject[index].quantity) {
+                  return res
+                    .status(400)
+                    .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
+                } else {
+                  foundDrug.balance =
+                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                  foundDrug.consumed +=
+                    consultation.drugsObject[index].quantity;
+                  foundDrug.save(err => {
+                    if (err) return next(err);
+                  });
+  
+                  consultation.drugsObject[index].status = true;
+                  consultation.save(err => {
+                    if (err) return next(err);
+                    const complete = consultation.drugsObject.map(status =>{
+                      const rStatus = status.status
+                      return rStatus;
+                    })
+                    let truthLength = complete.filter(v => v).length
+                    if(truthLength === consultation.drugsObject.length){
+                      consultation.pharmacyfinish = true;
+                      consultation.save();
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: 'All drugs dispensed!'
+                      })
+                    }else{
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: "Drug dispensed successfully"
+                      });
+                    }
+                  });
+                }
+              } else {
+                res
+                  .status(404)
+                  .json("Drug not found in the Outpatient Inventory");
+              }
+            }
+          );
+        }
       } else if (req.user.role == 23) {
-        Inpatient.findOne(
-          { name: consultation.drugsObject[index].drugs.name },
-          (err, gottenDrug) => {
-            if (gottenDrug) {
-              if (gottenDrug.balance == 0) {
-                return res
-                  .status(400)
-                  .json("Sorry, the balance in the dispensary is Zero");
-              } else {
-                gottenDrug.balance =
-                  foundDrug.quantity - consultation.drugsObject[index].quantity;
-                gottenDrug.save(err => {
-                  if (err) return next(err);
-                });
-
-                consultation.drugsObject[index].status = true;
-                consultation.save(err => {
-                  if (err) return next(err);
-                  const complete = consultation.drugsObject.map(status =>{
-                    const rStatus = status.status
-                    return rStatus;
-                  })
-                  let truthLength = complete.filter(v => v).length
-                  if(truthLength === consultation.drugsObject.length){
-                    consultation.pharmacyfinish = true;
-                    consultation.save();
-                    return res
-                    .status(200)
-                    .json({
-                        data: consultation.drugsObject[index].status,
-                        message: 'All drugs dispensed!'
+        if(consultation.patient.retainershipname){
+          NhisIpdInventory.findOne(
+            { name: consultation.drugsObject[index].nhisdrugs.name },
+            (err, foundDrug) => {
+              if (foundDrug) {
+                if (foundDrug.balance <= 0 || foundDrug.balance < consultation.drugsObject[index].quantity) {
+                  return res
+                    .status(400)
+                    .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
+                } else {
+                  foundDrug.balance =
+                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                  foundDrug.consumed +=
+                    consultation.drugsObject[index].quantity;
+                  foundDrug.save(err => {
+                    if (err) return next(err);
+                  });
+  
+                  consultation.drugsObject[index].status = true;
+                  consultation.save(err => {
+                    if (err) return next(err);
+                    const complete = consultation.drugsObject.map(status =>{
+                      const rStatus = status.status
+                      return rStatus;
                     })
-                  }else{
-                    return res
-                    .status(200)
-                    .json({
-                        data: consultation.drugsObject[index].status,
-                        message: "Drug dispensed successfully"
-                    });
-                  }
-                });
+                    let truthLength = complete.filter(v => v).length
+                    if(truthLength === consultation.drugsObject.length){
+                      consultation.pharmacyfinish = true;
+                      consultation.save();
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: 'All drugs dispensed!'
+                      })
+                    }else{
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: "Drug dispensed successfully"
+                      });
+                    }
+                  });
+                }
+              } else {
+                res
+                  .status(404)
+                  .json("Drug not found in the NHIS Inpatient Inventory");
               }
-            } else {
-              res.status(404).json("Drug not found in the Inpatient Inventory");
             }
-          }
-        );
+          );
+        }else{
+          Inpatient.findOne(
+            { name: consultation.drugsObject[index].drugs.name },
+            (err, gottenDrug) => {
+              if (gottenDrug) {
+                if (gottenDrug.balance <= 0 || gottenDrug.balance < consultation.drugsObject[index].quantity) {
+                  return res
+                    .status(400)
+                    .json("Sorry, the balance in the dispensary is Zero or less than the quantity to be dispensed");
+                } else {
+                  gottenDrug.balance =
+                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                  gottenDrug.consumed +=
+                    consultation.drugsObject[index].quantity;
+                  gottenDrug.save(err => {
+                    if (err) return next(err);
+                  });
+  
+                  consultation.drugsObject[index].status = true;
+                  consultation.save(err => {
+                    if (err) return next(err);
+                    const complete = consultation.drugsObject.map(status =>{
+                      const rStatus = status.status
+                      return rStatus;
+                    })
+                    let truthLength = complete.filter(v => v).length
+                    if(truthLength === consultation.drugsObject.length){
+                      consultation.pharmacyfinish = true;
+                      consultation.save();
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: 'All drugs dispensed!'
+                      })
+                    }else{
+                      return res
+                      .status(200)
+                      .json({
+                          data: consultation.drugsObject[index].status,
+                          message: "Drug dispensed successfully"
+                      });
+                    }
+                  });
+                }
+              } else {
+                res.status(404).json("Drug not found in the Inpatient Inventory");
+              }
+            }
+          );
+        }
       } else {
         return res.status(400).json("You are not allowed to dispense drugs!");
       }
@@ -592,7 +749,8 @@ router.get('/json-consultations', middleware.isLoggedIn, (req, res, next)=>{
         'drugsObject.drugs',
         'patient.retainershipname',
         'drugsObject.prescribedBy',
-        'drugsObject.drugs.name.pharmname'
+        'drugsObject.drugs.name.pharmname',
+        "drugsObject.nhisdrugs.name.pharmname",
     ])
     .exec((err, consultations)=>{
         if(err) return res.status(400).json(err.message)

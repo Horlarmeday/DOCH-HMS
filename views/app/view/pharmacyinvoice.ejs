@@ -183,11 +183,21 @@
                         <% consultation.drugsObject.forEach((drug, index, array)=>{ %>
                     <tr>
                         <td>
-                                <% if(drug.drugs.name.name){ %>
-                                    <label><%= drug.drugs.name.name %></label>
+                                <% if(!drug.nhisdrugs){ %>
+                                    <% if(drug.drugs.name.name){ %>
+                                        <label> <%= drug.drugs.name.name %></label>
+                                    <% }else{ %>
+                                        <label> <%= drug.drugs.name.pharmname.generic %></label>
+                                    <% } %>
                                 <% }else{ %>
-                                    <label> <%= drug.drugs.name.pharmname.generic %></label>
+                                    <% if(drug.nhisdrugs.name.name){ %>
+                                        <label> <%= drug.nhisdrugs.name.name %></label>
+                                    <% }else{ %>
+                                        <label> <%= drug.nhisdrugs.name.pharmname.generic %></label>
+                                    <% } %>
                                 <% } %>
+                                
+                                
                             <br>
                         
                         </td>
@@ -197,13 +207,21 @@
                             <!-- <small class="text-muted">Before Tax</small> -->
                         </td>
                         <td class="text-right">
-                            <span class="mono">&#8358;0.00</span>
+                             <% if(consultation.patient.retainershipname){ %>
+                              <span class="mono">90%</span>
+                              <% }else{ %>
+                                <span class="mono">&#8358;0.00</span>
+                             <% } %>
                             <br>
                             <!-- <small class="text-muted">18 Units</small> -->
                         </td>
                     
                         <td class="text-right">
+                        <% if(consultation.patient.retainershipname){ %>
+                            <strong class="mono">&#8358;<%= drug.price * 0.1 %></strong>
+                            <% }else{ %>
                             <strong class="mono">&#8358;<%= drug.price %></strong>
+                        <% } %>
                             <br>
                             
                         </td>
@@ -225,9 +243,24 @@
                 </thead>
                 <tbody>
                     <tr>
-                    <th class="text-center rowtotal mono">&#8358;<%= totalPrice %></th>
-                    <th class="text-center rowtotal mono">&#8358;0.00</th>
-                    <th class="text-center rowtotal mono">&#8358;<%= totalPrice %></th>
+                    <% if(consultation.patient.retainershipname){ %>
+                        <th class="text-center rowtotal mono">&#8358;<%= totalPrice  * 0.1 %></th>
+                    <% }else{ %>
+                        <th class="text-center rowtotal mono">&#8358;<%= totalPrice %></th>
+                    <% } %>
+
+                    <% if(consultation.patient.retainershipname){ %>
+                        <th class="text-center rowtotal mono">90%</th>
+                    <% }else{ %>
+                        <th class="text-center rowtotal mono">&#8358;0.00</th>
+                   <% } %>
+
+                    <% if(consultation.patient.retainershipname){ %>
+                        <th class="text-center rowtotal mono">&#8358;<%= totalPrice * 0.1 %></th>
+                    <% }else{ %>
+                        <th class="text-center rowtotal mono">&#8358;<%= totalPrice %></th>
+                    <% } %>
+                    
                     
                     </tr>
                 </tbody>

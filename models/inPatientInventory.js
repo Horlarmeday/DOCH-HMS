@@ -15,7 +15,7 @@ const inPatientInventory = new mongoose.Schema({
     quantity: Number,
     cost: Number,
     expiration: {type: Date},
-    consumed: String,
+    consumed: {type: Number, default: 0},
     created: {type: Date, default: Date.now}
 });
  

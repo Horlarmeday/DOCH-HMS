@@ -432,6 +432,7 @@
                           <th>Patient Name</th>
                           <th>Patient Type</th>
                           <th>Status</th>
+                          <th>Tick</th>
                           <th>Drugs</th>
                           <th>Unit Amount</th>
                           <th>Total Amount</th>
@@ -486,22 +487,37 @@
                               totalPrice = totalDrugPrice.reduce(getSum)
                             }
                           %>
-
+                            
                           <td>
-                            <% consultation.drugsObject.forEach((drug, index,array)=>{ %>
-                            <input type="checkbox" name="<%= consultation._id %>" id="<%= index %>"
-                              class="form-control drugChecked" />
+                              <% consultation.drugsObject.forEach((drug, index,array)=>{ %>
+                              <input type="checkbox" name="<%= consultation._id %>" id="<%= index %>"
+                              class="form-control drugChecked" /> <br>
+                            <% }) %>
+                          </td>
+                          <td>
+                              <% consultation.drugsObject.forEach((drug, index,array)=>{ %>
+                            
                             <p style="font-weight: 500; ">
-                              <% if(drug.drugs.name.name){ %>
-                              <label><%= drug.drugs.name.name %></label>
+                                <% if(!drug.nhisdrugs){ %>
+                                  <% if(drug.drugs.name.name){ %>
+                                      <label> <%= drug.drugs.name.name %></label>
+                                  <% }else{ %>
+                                      <label> <%= drug.drugs.name.pharmname.generic %></label>
+                                  <% } %>
                               <% }else{ %>
-                              <label>
-                                <%= drug.drugs.name.pharmname.generic %></label>
+                                  <% if(drug.nhisdrugs.name.name){ %>
+                                      <label> <%= drug.nhisdrugs.name.name %></label>
+                                  <% }else{ %>
+                                      <label> <%= drug.nhisdrugs.name.pharmname.generic %></label>
+                                  <% } %>
                               <% } %>
-                               <% if(drug.checked === false){ %>
-                              <span><label class="label label-sm bg-warning">pending</label></span>
+                              
+                              
+
+                              <% if(drug.checked === false){ %>
+                                <span><label class="label label-sm bg-warning">pending</label></span>
                               <% }else{ %>
-                              <span><label class="label label-sm bg-success">paid</label></span>
+                                <span><label class="label label-sm bg-success">paid</label></span>
                               <% } %>
                             </p>
                             <% }) %>

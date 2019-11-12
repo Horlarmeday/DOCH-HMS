@@ -64,7 +64,13 @@
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
                                                             <label for="">Item</label>
-                                                            <input type="text" name=" name" class="form-control" placeholder="Item Name" required>
+                                                            <select name="item" class="form-control js-example-basic-single" required>
+                                                                <option selected disabled>Select</option>
+                                                                <% drugs.forEach((drug)=>{ %>
+                                                                    <option value="<%= drug._id  %>"><%= drug.generic  %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                       
                                                         </div>
                                                         <div class="col-sm-6">
                                                             <label for="">Description</label>

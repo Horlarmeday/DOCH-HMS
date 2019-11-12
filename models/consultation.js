@@ -5,6 +5,7 @@ const consultationSchema = new mongoose.Schema({
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     drugsObject: [{
         drugs: {type: mongoose.Schema.Types.ObjectId, ref: "LocalInventory"},
+        nhisdrugs: {type: mongoose.Schema.Types.ObjectId, ref: "NhisOpdInventory"},
         paid: {type: mongoose.Schema.Types.ObjectId, ref: "Paid"},
         checked: {type: Boolean, default: false},
         startingdate: Date,

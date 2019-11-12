@@ -1,4 +1,5 @@
 const mongoose =  require('mongoose');
+const deepPopulate = require('mongoose-deep-populate')(mongoose)
 
 const triageSchema = new mongoose.Schema({
     creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
@@ -21,5 +22,6 @@ const triageSchema = new mongoose.Schema({
     seen: {type: Boolean, default: false},
     created: {type: Date, default: Date.now}
 });
-
+//Populates schema to any level
+triageSchema.plugin(deepPopulate)
 module.exports = mongoose.model('Triage', triageSchema);

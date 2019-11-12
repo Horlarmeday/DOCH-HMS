@@ -16,6 +16,8 @@ const Supply = require('../models/supply')
 const Payment = require('../models/payments')
 const Imaging = require('../models/imaging')
 const LocalInventory = require('../models/localinventory')
+const NhisOpdInventory = require('../models/nhisOpdInventory')
+const NhisIpdInventory = require('../models/nhisIpdInventory')
 const Discharge = require('../models/discharge')
 const Investigations = require('../models/investigations')
 const Donor = require('../models/donor')
@@ -137,6 +139,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         User.find({})
         .sort('-createdAt')
         .populate('triages')
+        .populate('retainershipname')
         .exec((err, users)=>{
             if(err) return next (err)
             Appointment.find({})
@@ -164,8 +167,9 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .exec((err, appointments)=>{
                 if(err) return next (err)
                 Triage.find({})
-                .sort('-created')
+                .sort('created')
                 .populate('patient')
+                .deepPopulate('patient.retainershipname')
                 .exec((err, triages)=>{
                     if(err) return next (err)
                     var allTriages = []
@@ -186,8 +190,8 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                                 'id': triage.patient._id,
                                 'age': age,
                                 'seen': triage.seen,
-                                'taken': triage.taken
-                                
+                                'taken': triage.taken,
+                                'retainershipname': triage.patient.retainershipname
                             })
                         }
 
@@ -356,7 +360,6 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             Consultation.find({})
             .populate('doctor')
             .populate('patient')
-            .populate('labtestObject')
             .deepPopulate(['labtestObject.lab', 'labtestObject.tests', 'labtestObject.tests.lab', 'patient.retainershipname'])
             .exec((err, consultations)=>{
                 if(err) return next (err)
@@ -390,7 +393,8 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                     'drugsObject.drugs',
                     'patient.retainershipname',
                     'drugsObject.prescribedBy',
-                    'drugsObject.drugs.name.pharmname'
+                    'drugsObject.drugs.name.pharmname',
+                    "drugsObject.nhisdrugs.name.pharmname",
                 ])
                 .exec((err, consultations)=>{
                     if(err) return next (err)
@@ -424,7 +428,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
             .deepPopulate([
                 'drugsObject.drugs', 'labtestObject.tests', 'labtestObject.paid', 'drugsObject.paid',
                 'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images',
-                'imaging.investigation', 'drugsObject.drugs.name.pharmname',
+                'imaging.investigation', 'drugsObject.drugs.name.pharmname',  "drugsObject.nhisdrugs.name.pharmname",
             ])
             .exec((err, consultations)=>{
                 if(err) return next (err)
@@ -618,6 +622,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         //VENDOR
         Supply.find({creator: req.user._id})
         .sort('-created')
+        .populate('pharmname')
         .exec((err, supplies)=>{
             if(err) return next (err)
             Appointment.find({})
@@ -773,10 +778,16 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                 .populate('patient')
                 .populate('doctor')
                 // .populate('drugsObject')
-                .deepPopulate(['drugsObject.drugs', 'patient.retainershipname', 'drugsObject.prescribedBy', 'drugsObject.drugs.name.pharmname'])
+                .deepPopulate([
+                 'drugsObject.drugs',
+                 'patient.retainershipname', 'drugsObject.prescribedBy',
+                  'drugsObject.drugs.name.pharmname',
+                 "drugsObject.nhisdrugs.name.pharmname",
+                ])
                 .exec((err, consultations)=>{
                     if(err) return next (err)
-                    PharmacyItem.find({})
+                    LocalInventory.find({})
+                    .deepPopulate('name.pharmname')
                         .exec((err, drugs)=>{
                             ANC.find({})
                                 .populate('labtest')
@@ -1056,12 +1067,14 @@ router.route('/add-vendor')
 router.route('/add-vendor-supply')
     .get(middleware.isLoggedIn, (req, res, next)=>{
         User.find({}, (err, users)=>{
-            res.render('app/add/add_supply', {users})
+            Drug.find({}, (err, drugs)=>{
+                res.render('app/add/add_supply', {users, drugs})
+            })
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
         const supply = new Supply({
-            name: req.body.name,
+            pharmname: req.body.item,
             creator: req.user._id,
             description: req.body.description,
             price: req.body.price,
@@ -2994,106 +3007,8 @@ router.get('/lab-tests', middleware.isLoggedIn, (req, res, next)=>{
 })
 
 //ATTENDING TO PATIENT NOT ON APPOINTMENT
-router.route('/attending-to-patient/:id')
-    .get(middleware.isLoggedIn, (req, res, next)=>{
-        Lab.find({}, (err, labs) => {
-            if (err) { return next(err) }
-            User.findOne({ _id: req.params.id })
-            .populate('triages')
-            .populate('consultations')
-            .populate('appointments')
-            .deepPopulate('consultations.drugsObject.drugs')
-            .exec((err, user)=>{
-                if (err) { return next(err) }
-                PharmacyItem.find({}, (err, drugs)=>{
-                    if (err) { return next(err) }
-                    Lab.find({})
-                    .populate('tests')
-                    .exec((err, labs)=>{
-                        var serology = []
-                        var chemical = []
-                        var micro = []
-                        if (err) { return next(err) }
-                        labs.forEach((lab)=>{
-                            lab.tests.forEach((test)=>{
-                                serology.push({
-                                    'name': test.name,
-                                    'id': test._id
-                                })
-                            })
-                        })
-                        
-                        // Triage.findOne({_id: user.triages[user.triages.length -1]._id}, function (err, triage) {
-                        //     if (err) { return next(err) }
-                           
-                            Imaging.find({}, (err, imaging)=>{
-                                if (err) { return next(err) }
-                               
-                               
-                                    
-                                //    triage.taken = true;
-                            
-                                //    triage.save((err)=>{
-                                //        if(err){
-                                //           return next (err)
-                                //        }
-                                       res.render('app/add/attending_to_patient', 
-                                       { labs, user, drugs, imaging, serology })
-                                //    })
-                                //}
-                            })
-                            
-                        // })
-                    })
-                })
-            })
-        })
-    })
-    .post(middleware.isLoggedIn, (req, res, next) => {
-        User.findOne({_id: req.params.id}, (err, user)=>{
-            if(err) {return next (err)}
-            Triage.findOne({_id: user.triages[user.triages.length -1]}, function (err, triage) {
-                if(err) {return next (err)}
-                const consultation = new Consultation({
-                    doctor: req.user._id,
-                    patient: req.params.id,
-                    visit: req.body.visit,
-                    physical:{
-                        observation: req.body.observation,
-                        chest: req.body.chest,
-                        cvs: req.body.cvs,
-                        abdomen: req.body.abdomen,
-                        mss: req.body.mss,
-                        other: req.body.other
-                    },
-                    diagnosis: req.body.diagnosis,
-                    treatment: req.body.treatment
-                })
-                consultation.save((err)=>{
-                    if(err) return next(err)
-                    triage.taken = true;
-                    triage.save()
-                })
-                User.updateOne(
-                    {
-                        _id: req.params.id
-                    },
-                    {
-                        $push:{consultations: consultation._id}
-                    },function (err, count) {
-                        if(err) {return next (err)}
-                        req.flash('success', 'Patient Investiation saved Successfully!')
-                        res.redirect('/edit-consultation/' + consultation._id)
-                    }
-                )
-            })
-        })   
-    })
-
-
-//ADD PATIENT CONSULTATION
 router
-  .route("/consultation/:id")
+  .route("/attending-to-patient/:id")
   .get(middleware.isLoggedIn, (req, res, next) => {
     Lab.find({}, (err, labs) => {
       if (err) {
@@ -3103,49 +3018,87 @@ router
         .populate("triages")
         .populate("consultations")
         .populate("appointments")
-        .deepPopulate("consultations.drugsObject.drugs")
+        .populate("retainershipname")
         .exec((err, user) => {
           if (err) {
             return next(err);
           }
-          PharmacyItem.find({}, (err, drugs) => {
-            if (err) {
-              return next(err);
-            }
-            Lab.find({})
-              .populate("tests")
-              .exec((err, labs) => {
-                var serology = [];
 
-                if (err) {
-                  return next(err);
-                }
-                labs.forEach(lab => {
-                  lab.tests.forEach(test => {
-                    serology.push({
-                      name: test.name,
-                      id: test._id
-                    });
-                  });
-                });
-
-                Imaging.find({}, (err, imaging) => {
-                  if (err) {
-                    return next(err);
-                  }
-
-                  res.render("app/add/add_patient_consultation", {
-                    labs,
-                    user,
-                    drugs,
-                    imaging,
-                    serology
-                  });
-                });
-              });
+          res.render("app/add/attending_to_patient", {
+            user,
           });
         });
     });
+  })
+  .post(middleware.isLoggedIn, (req, res, next) => {
+    User.findOne({ _id: req.params.id }, (err, user) => {
+      if (err) {
+        return next(err);
+      }
+      Triage.findOne({ _id: user.triages[user.triages.length - 1] }, function(
+        err,
+        triage
+      ) {
+        if (err) {
+          return next(err);
+        }
+        const consultation = new Consultation({
+          doctor: req.user._id,
+          patient: req.params.id,
+          visit: req.body.visit,
+          physical: {
+            observation: req.body.observation,
+            chest: req.body.chest,
+            cvs: req.body.cvs,
+            abdomen: req.body.abdomen,
+            mss: req.body.mss,
+            other: req.body.other
+          },
+          diagnosis: req.body.diagnosis,
+          treatment: req.body.treatment
+        });
+        consultation.save(err => {
+          if (err) return next(err);
+          triage.taken = true;
+          triage.save();
+          User.updateOne(
+            {
+              _id: req.params.id
+            },
+            {
+              $push: { consultations: consultation._id }
+            },
+            function(err, count) {
+              if (err) {
+                return next(err);
+              }
+              req.flash("success", "Patient Investiation saved Successfully!");
+              res.redirect("/edit-consultation/" + consultation._id);
+            }
+          );
+        });
+      });
+    });
+  });
+
+
+//ADD PATIENT CONSULTATION
+router
+  .route("/consultation/:id")
+  .get(middleware.isLoggedIn, (req, res, next) => {
+    User.findOne({ _id: req.params.id })
+      .populate("triages")
+      .populate("consultations")
+      .populate("appointments")
+      .populate("retainershipname")
+      .exec((err, user) => {
+        if (err) {
+          return next(err);
+        }
+        res.render("app/add/add_patient_consultation", {
+          user
+        });
+      });
   })
   .post(middleware.isLoggedIn, (req, res, next) => {
     User.findOne({ _id: req.params.id }, (err, user) => {
@@ -3195,68 +3148,89 @@ router
   });
 
 //Editing consultation
-router.route('/edit-consultation/:id')
-    .get(middleware.isLoggedIn, (req, res, next)=>{
-        Consultation.findOne({ _id: req.params.id })
-        .sort('drugsObject')
-        .populate('patient')
-        .deepPopulate(['drugsObject.drugs', 'labtestObject.tests.lab', 'labtestObject.tests', 'imaging.images',
-         'drugsObject.prescribedBy', 'imaging.investigation', 'drugsObject.drugs.name.pharmname'])
-        .exec((err, consultation)=>{
-            PharmacyItem.find({}, (err, drugs)=>{
-                Lab.find({})
-                .populate('tests')
-                .exec((err, labs)=>{
-                    let alltests = []
-                    labs.forEach((lab)=>{
-                        lab.tests.forEach((tetest)=>{
-                            alltests.push({
-                                'name': tetest.name,
-                                'id': tetest._id
-                            })
+router
+  .route("/edit-consultation/:id")
+  .get(middleware.isLoggedIn, (req, res, next) => {
+    Consultation.findOne({ _id: req.params.id })
+      .deepPopulate([
+        "drugsObject.drugs.name.pharmname",
+        "drugsObject.nhisdrugs.name.pharmname",
+        "drugsObject.prescribedBy",
+        "labtestObject.tests.lab",
+        "labtestObject.tests",
+        "imaging.images",
+        "imaging.investigation",
+        "patient.triages",
+        "patient.retainershipname",
+      ])
+      .exec((err, consultation) => {
+          Lab.find({})
+            .populate("tests")
+            .exec((err, labs) => {
+              let alltests = [];
+              labs.forEach(lab => {
+                lab.tests.forEach(tetest => {
+                  alltests.push({
+                    name: tetest.name,
+                    id: tetest._id
+                  });
+                });
+              });
+              Imaging.find({}, (err, imaging) => {
+                User.findOne({ _id: consultation.patient })
+                  .populate("triages")
+                  .populate("consultations")
+                  .populate("retainership")
+                  .exec((err, user) => {
+                    var mysort = { name: -1 };
+                    LocalInventory.find({})
+                      .sort(mysort)
+                      .deepPopulate("name.pharmname")
+                      .exec((err, locals) => {
+                        NhisOpdInventory.find({})
+                        .sort(mysort)
+                        .deepPopulate("name.pharmname")
+                        .exec((err, nhisDrugs)=>{
+                            res.render("app/add/edit_consultation", {
+                              consultation,
+                              labs,
+                              imaging,
+                              alltests,
+                              user,
+                              locals,
+                              nhisDrugs
+                            });
                         })
-                    })
-                    Imaging.find({}, (err, imaging)=>{
-                        User.findOne({_id: consultation.patient})
-                        .populate('triages')
-                        .populate('consultations')
-                        .exec((err, user)=>{
-                            var mysort = { name: -1 };
-                            LocalInventory.find({})
-                            .sort(mysort)
-                            .deepPopulate('name.pharmname')
-                            .exec((err, locals)=>{
-                                res.render('app/add/edit_consultation', {consultation, drugs, labs, imaging, alltests, user, locals})
-                            })
-                        })
-                    })
-                })
-            })
-        })
-    })
-    .post(middleware.isLoggedIn, (req, res, next)=>{
-        Consultation.findOne({ _id: req.params.id }, (err, foundConsultation)=>{
-            if (req.body.visit) foundConsultation.visit = req.body.visit
-            if (req.body.diagnosis) foundConsultation.diagnosis = req.body.diagnosis
-            if (req.bodytreatment) foundConsultation.treatment =  req.body.treatment
-            if(req.body.observation) foundConsultation.physical.observation = req.body.observation
-            if(req.body.chest) foundConsultation.physical.chest = req.body.chest
-            if(req.body.cvs) foundConsultation.physical.cvs = req.body.cvs
-            if(req.body.abdomen) foundConsultation.physical.abdomen = req.body.abdomen
-            if(req.body.mss) foundConsultation.physical.mss = req.body.mss
-            if(req.body.other) foundConsultation.physical.abdomen = req.body.other
-            foundConsultation.save((err)=>{
-                if(err){
-                    req.flash('error', 'Error saving patient examination')
-                    return res.redirect('back')
-                }else{
-                    req.flash('success', 'Successfully saved patient examination')
-                    return res.redirect('back')
-                }
-            })
-
-        })
-    })
+                      });
+                  });
+              });
+            });
+      });
+  })
+  .post(middleware.isLoggedIn, (req, res, next) => {
+    Consultation.findOne({ _id: req.params.id }, (err, foundConsultation) => {
+      if (req.body.visit) foundConsultation.visit = req.body.visit;
+      if (req.body.diagnosis) foundConsultation.diagnosis = req.body.diagnosis;
+      if (req.bodytreatment) foundConsultation.treatment = req.body.treatment;
+      if (req.body.observation)
+        foundConsultation.physical.observation = req.body.observation;
+      if (req.body.chest) foundConsultation.physical.chest = req.body.chest;
+      if (req.body.cvs) foundConsultation.physical.cvs = req.body.cvs;
+      if (req.body.abdomen)
+        foundConsultation.physical.abdomen = req.body.abdomen;
+      if (req.body.mss) foundConsultation.physical.mss = req.body.mss;
+      if (req.body.other) foundConsultation.physical.abdomen = req.body.other;
+      foundConsultation.save(err => {
+        if (err) {
+          req.flash("error", "Error saving patient examination");
+          return res.redirect("back");
+        } else {
+          req.flash("success", "Successfully saved patient examination");
+          return res.redirect("back");
+        }
+      });
+    });
+  });
 
 
 //ADD PATIENT LAB TEST
@@ -3330,6 +3304,7 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                         theconsultation.drugsObject.push({
                             paid: paid,
                             drugs: req.body.drug_brand,
+                            nhisdrugs: req.body.nhis_drug_brand,
                             startingdate: req.body.startingdate,
                             quantity: req.body.quantity,
                             medicineunit: req.body.medicineunit,
@@ -3601,9 +3576,16 @@ router.get('/consultations', middleware.isLoggedIn, (req, res, next)=>{
     .populate('patient')
     .populate('labtestObject.tests')
     // .populate('drugsObject')
-    .deepPopulate(['drugsObject.drugs', 'drugsObject.prescribedBy', 'imaging.investigation', 'drugsObject.drugs.name.pharmname',])
+    .deepPopulate([
+        'drugsObject.drugs', 
+        'drugsObject.prescribedBy', 
+        'drugsObject.drugs.name.pharmname',
+        "drugsObject.nhisdrugs.name.pharmname",
+        'imaging.investigation', 
+        'patient.retainershipname'
+    ])
     .exec((err, consultations)=>{
-
+        console.log(consultations)
         if(err) return next (err)
         res.render('app/view/consultations', { consultations })
     })
@@ -4438,6 +4420,118 @@ router.route('/edit-inpatient-inventory/:id')
    })
 
 
+//NHIS OUTPATIENT INVENTORY LIST
+router.get('/nhis-outpatient-inventory-list', middleware.isLoggedIn, (req, res, next)=>{
+    NhisOpdInventory.find({})
+    .populate('creator')
+    .populate('name')
+    .deepPopulate('name.pharmname')
+    .exec((err, items)=>{
+        if(err){
+            return next(err)
+        }
+        res.render('app/view/nhis_outpatient_inventory', { items })
+    })
+})
+
+// EDIT DRUGS TO NHIS OUTPATIENT INVENTORY
+router.route('/edit-nhis-outpatient-inventory/:id')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       PharmacyItem.find({}, (err, drugs)=>{
+        if(err) return next (err)
+            NhisOpdInventory.findOne({_id: req.params.id })
+            .populate('name') 
+            .deepPopulate('name.pharmname') 
+            .exec((err, item)=>{
+                res.render('app/add/edit_nhis_outpatient_inventory', { drugs, item })
+            })
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+    NhisOpdInventory.findOne({_id: req.params.id }, (err, item)=>{
+        if(item){
+            if (req.body.name) item.name = req.body.name;
+            if (req.body.price) item.price = req.body.price;
+            if (req.body.unit) item.unit = req.body.unit;
+            if (req.body.quantity) item.quantity = req.body.quantity;
+            if (req.body.cost) item.cost = req.body.cost;
+            if (req.body.productcode) item.productcode = req.body.productcode;
+            if (req.body.shelf) item.shelf = req.body.shelf;
+            if (req.body.shelfno) item.shelfno = req.body.shelfno;
+            if (req.body.consumed) item.consumed = req.body.consumed;
+            if (req.body.balance) item.balance = req.body.balance;
+            if (req.body.comment) item.comment = req.body.comment;
+            if (req.body.received) item.received = req.body.received;
+            item.save((err)=>{
+                if(err){
+                    req.flash('error', err.message)
+                 return res.redirect('back')
+                }
+                req.flash('success', 'Item was updated!')
+                res.redirect('/nhis-outpatient-inventory-list')
+            })
+        }
+    })
+    
+   })
+
+
+//NHIS INPATIENT INVENTORY LIST
+router.get('/nhis-inpatient-inventory-list', middleware.isLoggedIn, (req, res, next)=>{
+    NhisIpdInventory.find({})
+    .populate('creator')
+    .populate('name')
+    .deepPopulate('name.pharmname')
+    .exec((err, items)=>{
+        if(err){
+            return next(err)
+        }
+        res.render('app/view/nhis_inpatient_inventory', { items })
+    })
+})
+
+// EDIT DRUGS TO NHIS INPATIENT INVENTORY
+router.route('/edit-nhis-inpatient-inventory/:id')
+   .get(middleware.isLoggedIn, (req, res, next)=>{
+       PharmacyItem.find({}, (err, drugs)=>{
+        if(err) return next (err)
+            NhisIpdInventory.findOne({_id: req.params.id })
+            .populate('name') 
+            .deepPopulate('name.pharmname') 
+            .exec((err, item)=>{
+                res.render('app/add/edit_nhis_inpatient_inventory', { drugs, item })
+            })
+       })
+   }) 
+   .post(middleware.isLoggedIn, (req, res, next)=>{
+    NhisIpdInventory.findOne({_id: req.params.id }, (err, item)=>{
+        if(item){
+            if (req.body.name) item.name = req.body.name;
+            if (req.body.price) item.price = req.body.price;
+            if (req.body.unit) item.unit = req.body.unit;
+            if (req.body.quantity) item.quantity = req.body.quantity;
+            if (req.body.cost) item.cost = req.body.cost;
+            if (req.body.productcode) item.productcode = req.body.productcode;
+            if (req.body.shelf) item.shelf = req.body.shelf;
+            if (req.body.shelfno) item.shelfno = req.body.shelfno;
+            if (req.body.consumed) item.consumed = req.body.consumed;
+            if (req.body.balance) item.balance = req.body.balance;
+            if (req.body.comment) item.comment = req.body.comment;
+            if (req.body.received) item.received = req.body.received;
+            item.save((err)=>{
+                if(err){
+                    req.flash('error', err.message)
+                 return res.redirect('back')
+                }
+                req.flash('success', 'Item was updated!')
+                res.redirect('/nhis-inpatient-inventory-list')
+            })
+        }
+    })
+    
+   })
+
+
 //LAB DISPENSE BY ID
 router.route('/lab-dispense/:id')
    .get(middleware.isLoggedIn, (req, res, next)=>{
@@ -4681,6 +4775,7 @@ router.route('/pharmacy-dispense/:id')
         function (pharmDispense, done) {
             PharmacyItem.findOne({_id: req.params.id}, (err, item)=>{
                 if(err) return next(err)
+
                 if(pharmDispense.dispenseTo ===  'Outpatient Pharmacy'){
                    LocalInventory.findOne({name: pharmDispense.name }, (err, drug)=>{
                        if(!drug){
@@ -4705,7 +4800,7 @@ router.route('/pharmacy-dispense/:id')
                            })
                        }
                    })
-                }else if(pharmDispense.dispenseTo ===  'Inpatient Pharmacy'){
+                } else if(pharmDispense.dispenseTo ===  'Inpatient Pharmacy'){
                     InPatient.findOne({name: pharmDispense.name }, (err, inDrug)=>{
                         if(!inDrug){
                              const inNewDrug = new InPatient({
@@ -4725,6 +4820,54 @@ router.route('/pharmacy-dispense/:id')
                         }else{
                             inDrug.quantity+= pharmDispense.quantity
                             inDrug.save((err)=>{
+                             if(err) return next(err)
+                            })
+                        }
+                    })
+                } else if(pharmDispense.dispenseTo ===  'NHIS Outpatient'){
+                    NhisOpdInventory.findOne({name: pharmDispense.name }, (err, nhisDrug)=>{
+                        if(!nhisDrug){
+                             const newNhisDrug = new NhisOpdInventory({
+                                 creator: req.user._id,
+                                 name: pharmDispense.name,
+                                 productcode: item.productcode,
+                                 received: Date.now(),
+                                 price: item.sellprice,
+                                 unit: pharmDispense.unit,
+                                 quantity: pharmDispense.quantity,
+                                 cost: item.cost,
+                                 expiration: item.expiration,
+                             })
+                             newNhisDrug.save((err)=>{
+                                 if(err) return next(err)
+                             })
+                        }else{
+                            nhisDrug.quantity+= pharmDispense.quantity
+                            nhisDrug.save((err)=>{
+                             if(err) return next(err)
+                            })
+                        }
+                    })
+                } else if(pharmDispense.dispenseTo ===  'NHIS Inpatient'){
+                    NhisIpdInventory.findOne({name: pharmDispense.name }, (err, nhisInDrug)=>{
+                        if(!nhisInDrug){
+                             const newNhisInDrug = new NhisIpdInventory({
+                                 creator: req.user._id,
+                                 name: pharmDispense.name,
+                                 productcode: item.productcode,
+                                 received: Date.now(),
+                                 price: item.sellprice,
+                                 unit: pharmDispense.unit,
+                                 quantity: pharmDispense.quantity,
+                                 cost: item.cost,
+                                 expiration: item.expiration,
+                             })
+                             newNhisInDrug.save((err)=>{
+                                 if(err) return next(err)
+                             })
+                        }else{
+                            nhisInDrug.quantity+= pharmDispense.quantity
+                            nhisInDrug.save((err)=>{
                              if(err) return next(err)
                             })
                         }
@@ -4758,8 +4901,14 @@ router.route('/pharmacy-dispense/:id')
 //PHARMACY DISPENSE HISTORY
 router.get('/dispense-history/:id', middleware.isLoggedIn, (req, res, next)=>{
     PharmacyItem.findOne({_id: req.params.id})
+    .sort('-dispensehistory')
     .populate('dispensehistory')
-    .deepPopulate(['dispensehistory.receivedBy', 'dispensehistory.creator', 'dispensehistory.dispenseTo'])
+    .populate('pharmname')
+    .deepPopulate([
+        'dispensehistory.receivedBy', 
+        'dispensehistory.creator', 
+        'dispensehistory.dispenseTo',
+    ])
     .exec((err, history)=>{
         if(err) return next(err)
         res.render('app/view/pharm_history', { history })
@@ -5011,8 +5160,11 @@ router.route('/accounts')
             if(err) return next (err)
             Consultation.find({})
             .populate('patient')
-            .deepPopulate('drugsObject.drugs')
-            .populate('labtestObject')
+            .deepPopulate([
+                'drugsObject.drugs', 'labtestObject.tests', 'labtestObject.paid', 'drugsObject.paid',
+                'patient.retainershipname', 'payment.drugs', 'payment.lab', 'payment.imaging', 'imaging.images',
+                'imaging.investigation', 'drugsObject.drugs.name.pharmname',
+            ])
             .exec((err, consultations)=>{
                 if(err) return next (err)
                 res.render('app/view/account', { users, consultations })
@@ -5632,8 +5784,7 @@ router.get('/pharmacy-invoice/:id', middleware.isLoggedIn, (req, res, next) => {
     Consultation.findOne({ _id: req.params.id})
     .populate('patient')
     .populate('payment')
-    .populate('drugsObject.drugs')
-    .deepPopulate(['payment.drugs', 'drugsObject.drugs.name.pharmname'])
+    .deepPopulate(['payment.drugs', 'drugsObject.drugs.name.pharmname', 'drugsObject.nhisdrugs.name.pharmname'])
     .populate('labtestObject')
     .exec((err, consultation)=>{
         if(err) return next (err)

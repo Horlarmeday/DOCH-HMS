@@ -147,7 +147,14 @@
                                                     <tr class="clickable">
                                                             <td></td>
                                                             <td><%= patient.patientId %></td>
-                                                            <td> <a href="/patient/<%= patient._id %>"><%= patient.firstname %> <%= patient.lastname %></a></td>
+                                                            <td> 
+                                                                <a href="/patient/<%= patient._id %>">
+                                                                <%= patient.firstname %> <%= patient.lastname %>
+                                                                <% if(patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success"><%= patient.retainershipname.hmoname%></label>
+                                                                  <% } %>
+                                                               </a>
+                                                            </td>
                                                             <td><%= age %></td>
                                                          
                                                             <% if(!patient.emergency){ %>

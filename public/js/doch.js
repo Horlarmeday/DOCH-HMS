@@ -1049,6 +1049,21 @@ function getLocalDrugPrice() {
     })
 }
 
+function getNhisDrugPrice() {
+    const nhisItem = $('#nhisItem').val()
+    $.post('/get-nhis-drug-price', { nhisItem: nhisItem })
+    .done(function(data) {
+        if(data.balance === '' || data.balance === null || data.balance === undefined){
+            $('#localPrice').val(data.price)
+            $('#localRemain').val(data.quantity)
+        }else{
+            $('#localPrice').val(data.price)
+            $('#localRemain').val(data.balance)
+        }
+       
+    })
+}
+
 // function removeDrug() {
 //     let drug_ID = $(this).attr('id')
 //     console.log(drug_ID)

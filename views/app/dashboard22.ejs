@@ -1,8 +1,20 @@
 <% include ../partials/header %>
 <% include ../partials/sidebarCopy %>
+<style>
+ .red{
+     color: white;
+     background-color: orangered;
+     padding: 5px 7px;
+ }
 
+ .green{
+     color: white;
+     background-color: green;
+     padding: 5px 7px;
+ }
+</style>
  <!-- Center page starts -->
- <div class="pcoded-content">
+ <div  class="pcoded-content">
     <div class="pcoded-inner-content">
         <div class="main-body">
             <div class="page-wrapper">
@@ -28,21 +40,21 @@
                         <h4>Dashboard</h4>
                     </div>
                 </div>
-                <div class="page-body">
+                <div id="dasboard" class="page-body">
                     <div class="row">
                         <!-- Visitor Chart Start-->
                         <div class="col-md-6 col-xl-4">
                             <div class="card">
                                 <div class="card-block-big card-visitor-block">
                                         <%
-                                        const newDoctors = users.map(doctor =>{
-                                          if (doctor.role === 2){
-                                            const rDoctor = doctor.role === 2
-                                            return rDoctor;
-                                          }                    
-                                        })
-                                        const doctors = newDoctors.filter(v => v).length;
-                                     %>
+                                            const newDoctors = users.map(doctor =>{
+                                            if (doctor.role === 2){
+                                                const rDoctor = doctor.role === 2
+                                                return rDoctor;
+                                            }                    
+                                            })
+                                            const doctors = newDoctors.filter(v => v).length;
+                                        %>
                                     <div class="row">
                                         <div class="col-sm-8  card-visitor-button">
                                             <button class="btn btn-primary btn-icon"><i class="icofont icofont-stethoscope"></i></button>
@@ -106,149 +118,394 @@
                         <!-- Visitor Chart End-->
 
                         <div class="col-sm-12">
-                            <!-- Zero config.table start -->
-                            <div class="card">
-                                <div class="card-header">
-                                    <h5>Pharmacy Requests</h5>
-                                    <div class="card-header-right">
-                                        <i class="icofont icofont-rounded-down"></i>
-                                        <i class="icofont icofont-refresh"></i>
-                                        <i class="icofont icofont-close-circled"></i>
+                                <!-- Zero config.table start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Pharmacy Requests</h5>
+                                        <div class="card-header-right">
+                                            <i class="icofont icofont-rounded-down"></i>
+                                            <i class="icofont icofont-refresh"></i>
+                                            <i class="icofont icofont-close-circled"></i>
+                                        </div>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="dt-responsive table-responsive">
+                                            <table id="simpletable" class="table table-striped table-bordered nowrap">
+                                                <thead>
+                                                    <tr>
+                                                        <th rowspan="2">S/N</th>
+                                                        <th rowspan="2">Patient ID</th>
+                                                        <th rowspan="2">Name</th>
+                                                        <th rowspan="2">Reason for Visit</th>
+                                                        <th rowspan="2">Doctor</th>
+                                                        <th rowspan="2">Status</th>
+                                                        <th rowspan="2">Payment Status</th>
+                                                        <th rowspan="2">Action</th>
+                                                        <th colspan="9">Drugs & Prescriptions</th>
+                                                        <tr>
+                                                            <th>Drugs</th>
+                                                            <th>Starting Date</th>
+                                                            <th  >Unit Dose</th>
+                                                            <th  >Frequency</th>
+                                                            <th  >Duration</th>
+                                                            <th  >Total to Dispense</th>
+                                                            <th  >Unit Price</th>
+                                                            <th>PrescribedBy</th>
+                                                           
+                                                            <th  >Notes</th>
+                                                        </tr>
+                                                    </tr>
+                                               
+                                                </thead>  
+                                                    <tbody v-for="consultation in consultations" :key="consultation._id">
+                                                        <tr>
+                                                                <td></td>
+                                                                <td>{{ consultation.patient.patientId }}</td>
+                                                                <td>
+                                                                        <a :href="consultation.patientprofileurl"> 
+                                                                        {{ consultation.patient.firstname}} {{ consultation.patient.lastname}}
+                                                                        </a>
+                                                                        
+                                                                        <label v-if="consultation.patient.retainershipname" 
+                                                                        class="label label-md bg-success">{{ consultation.patient.retainershipname.hmoname }}</label>
+                                                                    
+                                                                </td>
+                                                                <td> {{ consultation.visit }}</td>
+                                                                <td>{{ consultation.doctor.firstname }} {{ consultation.doctor.lastname }}</td>
+                                                                
+                                                                <td>
+                                                                    <label v-if="consultation.pharmacyfinish === false" class="label label-md bg-warning">Ongoing</label>
+                                                                    <label v-else class="label label-md bg-success">Finished</label>
+                                                                </td>
+                                                                
+                                                                
+                                                                <td>
+                                                                    <label v-if="consultation.pharmacypaid === false" class="label label-md bg-warning">Not Paid</label>
+                                                                    <label v-else class="label label-md bg-success">Paid</label>
+                                                                </td>
+                                                                
+                                                                
+                                                                <td v-if="consultation.pharmacypaid && !consultation.pharmacyfinish">
+                                                                    
+                                                                    <a @click="sendConsultation(consultation)" class="btn btn-inverse addAnother"data-toggle="modal" 
+                                                                    href="#secondModal">
+                                                                        Add Drugs
+                                                                    </a>
+                                                                    <button @click.prevent="getDrugs(consultation)" class="btn btn-info drugmodal"
+                                                                            data-toggle="modal" 
+                                                                        href="#myModal">
+                                                                        Dispense
+                                                                    </button> 
+                                                                    
+                                                                </td>
+                                                                
+                                                                <td v-else-if="!consultation.pharmacypaid && !consultation.pharmacyfinish"><a href="#" 
+                                                                    class="btn btn-default ">Not Paid</a>
+                                                                </td>
+                                                                
+                                                                <td v-else-if="consultation.pharmacypaid && consultation.pharmacyfinish">
+                                                                    <button class="btn btn-success" 
+                                                                disabled>Prescribed</button>
+                                                                </td>
+                                                            
+                                                           
+                                                                <tr v-for="drug in consultation.drugsObject" >
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                            <th></th>
+                                                                        
+                                                                            
+                                                                            
+                                                                                <td v-if="!drug.nhisdrugs">
+                                                                                <p v-if="drug.drugs.name.name" style="font-weight: 700; color: green">
+                                                                                    {{ drug.drugs.name.name }}
+                                                                                    <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
+                                                                                    <span v-else class="label label-sm bg-warning">Pending</span>
+                                                                                </p>
+                                                                                <p v-else style="font-weight: 700; color: green">
+                                                                                    {{ drug.drugs.name.pharmname.generic  }} 
+                                                                                    <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
+                                                                                    <span v-else class="label label-sm bg-warning">Pending</span> 
+                                                                                </p>
+                                                                                </td>
+                                                                            
+                                                                                <td v-else>
+                                                                                    <p v-if="drug.nhisdrugs.name.name" style="font-weight: 700; color: green">
+                                                                                            {{ drug.nhisdrugs.name.name }}
+                                                                                            <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
+                                                                                            <span v-else class="label label-sm bg-warning">Pending</span>
+                                                                                    </p>
+                                                                                    <p v-else style="font-weight: 700; color: green">
+                                                                                        {{ drug.nhisdrugs.name.pharmname.generic  }} 
+                                                                                        <span v-if="drug.status === true" class="label label-sm bg-success">Dispensed</span>
+                                                                                        <span v-else class="label label-sm bg-warning">Pending</span> 
+                                                                                    </p>
+                                                                                </td>
+                                                                                
+                                                                            
+                                                                            <td>
+                                                                                {{ formatDate(drug.startingdate) }}
+                                                                            </td>
+                                                                            <td>
+                                                                                {{ drug.time }}
+                                                                            </td>
+                                                                            
+                                                                            <td>
+                                                                                    {{ drug.direction }}
+                                                                            </td>
+                                                                            <td>
+                                                                                    {{ drug.duration }}
+                                                                            </td>
+                                                                            <td>
+                                                                                    {{ drug.quantity }}
+                                                                            </td>
+                                                                            <td>
+                                                                                    {{ drug.price }}
+                                                                            </td>
+                                                                            
+                        
+                                                                                <td v-if="drug.prescribedBy">
+                                                                                    {{ drug.prescribedBy.firstname }}
+                                                                                    {{ drug.prescribedBy.lastname }}
+                                                                                </td>
+                                                                            
+                                                                                <td v-else></td>
+                                                                            
+                                                                                <td>{{ drug.notes }}</td>
+                                                                                
+                                                                </tr>
+                                                             
+                                                        </tr>
+                                                    </tbody>
+                                            </table>
+                                        </div>
+                                        
                                     </div>
                                 </div>
-                                <div class="card-block">
-                                    <div class="dt-responsive table-responsive">
-                                        <table id="simpletable" class="table table-striped table-bordered nowrap">
-                                            <thead>
-                                                <tr>
-                                                    <th rowspan="2">S/N</th>
-                                                    <th rowspan="2">Patient ID</th>
-                                                    <th rowspan="2">Name</th>
-                                                    <th rowspan="2">Reason for Visit</th>
-                                                    <th rowspan="2">Doctor</th>
-                                                    <th rowspan="2">Status</th>
-                                                    <th rowspan="2">Payment Status</th>
-                                                    <th rowspan="2">Action</th>
-                                                    <th colspan="9">Drugs & Prescriptions</th>
-                                                    <tr>
+                        </div>
+
+                       
+                        
+                        <div class="modal hide fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-lg" role="document" style="width: 220%;">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h3 v-if="nhisname" class="modal-title" id="exampleModalCenterTitle">
+                                            {{ fname }} {{ lname }} 
+                                                <label class="label label-md bg-success">
+                                                    {{ nhisname }}
+                                                </label>
+                                        </h3>
+                                        <h3 v-else class="modal-title" id="exampleModalCenterTitle">
+                                                {{ fname }} {{ lname }} 
+                                        </h3>
+                                        </div>
+                                        <div class="modal-body">
+                                           <div class="dt-responsive table-responsive">
+                                               <table class="table table-striped table-bordered nowrap">
+                                                   <thead>
+                                                       <th>S/N</th>
                                                         <th>Drugs</th>
-                                                        <th>Starting Date</th>
+                                                        <th>Starting</th>
                                                         <th  >Unit Dose</th>
                                                         <th  >Frequency</th>
                                                         <th  >Duration</th>
                                                         <th  >Total to Dispense</th>
                                                         <th  >Unit Price</th>
                                                         <th>PrescribedBy</th>
-                                                       
                                                         <th  >Notes</th>
-                                                    </tr>
-                                                </tr>
-                                           
-                                            </thead>
-                                                <% consultations.forEach((consultation)=>{ %>
-                                                    <% if(consultation.pharmacystatus === true && consultation.pharmacyfinish === false){ %>
-                                                       
-                                                <tr>
-                                                    <td></td>
-                                                    <td><%= consultation.patient.patientId %></td>
-                                                    <td>
-                                                         <a href="/patient/<%= consultation.patient._id %>" class="mr-2"> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></a>
-                                                         <% if(consultation.patient.retainershipname){ %>
-                                                            <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname %></label>
-                                                        <% } %>
-                                                    </td>
-                                                    <td> <%= consultation.visit %></td>
-                                                    
-                                                    <td><%= consultation.doctor.firstname %> <%= consultation.doctor.lastname %></td>
-                                                        
-                                                    <% if(consultation.pharmacyfinish === false){ %>
-                                                    <td><label class="label label-md bg-warning">Ongoing</label></td>
-                                                    <% }else{ %>
-                                                    <td><label class="label label-md bg-success">Finished</label></td>
-                                                    <% } %>
-                                                    <% if(consultation.pharmacypaid === false){ %>
-                                                        <td><label class="label label-md bg-warning">Not Paid</label></td>
-                                                    <% }else{ %>
-                                                    <td><label class="label label-md bg-success">Paid</label></td>
-                                                    <% } %>
-
-                                                    <% if(consultation.pharmacypaid && !consultation.pharmacyfinish){ %>
-                                                    <td>
-                                                        <button id="<%= consultation._id %>" class="btn btn-success paid">Dispense</button>
-                                                        <a target="_blank" class="btn btn-inverse" href="/pharmacy-prescription/<%= consultation.patient._id %>">Pharmacy</a>
-                                                    </td>
-                                                    <% }else if(!consultation.pharmacypaid && !consultation.pharmacyfinish){ %>
-                                                    <td><a href="#"  class="btn btn-default ">Dispense</a>
-                                                    <% }else if(consultation.pharmacypaid && consultation.pharmacyfinish){ %>
-                                                   <td><button class="btn btn-success" disabled>Prescribed</button></td>
-                                                    <% } %> 
-                                                
-                                                    <td>
-                                                            <% consultation.drugsObject.forEach((drug)=>{ %>
-                                                        <tr>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                                    <th></th>
-                                                              
-                                                                   
-                                                                    <% if(drug.drugs.name.name){ %>
-                                                                        <td style="font-weight: 700; color: green"><%= drug.drugs.name.name %>   
-                                                                        </td>
-                                                                    <% }else{ %>
-                                                                        <td style="font-weight: 700; color: green"><%= drug.drugs.name.pharmname.generic %>   
-                                                                        </td>
-                                                                       
-                                                                    <% } %> 
-                                                                    <td>
-                                                                        <%= drug.startingdate.toLocaleDateString() %>
-                                                                    </td>
-                                                                    <td>
-                                                                        <%= drug.time %>
-                                                                    </td>
-                                                                 
-                                                                    <td>
-                                                                            <%= drug.direction %>
-                                                                    </td>
-                                                                    <td>
-                                                                            <%= drug.duration %>
-                                                                    </td>
-                                                                    <td>
-                                                                            <%= drug.quantity %>
-                                                                    </td>
-                                                                    <td>
-                                                                            <%= drug.price %>
-                                                                    </td>
-                                                                    <% if(drug.prescribedBy){ %>
-
-                                                                        <td><%= drug.prescribedBy.firstname %> <%= drug.prescribedBy.lastname %></td>
-                                                                    <%}else{ %>
-                                                                       <td></td>
-                                                                    <% } %>
-                                                                    <td><%= drug.notes %></td>
-                                                                    
-                                                                    
-                                                                    
-                                                                    
-                                                        </tr>
-                                                        <% }) %>
-                                                    </td>  
-                                                                                
-                                               
-                                                </tr>
-                                                <% } %>
-                                                
-                                                <% }) %>
-                                           
-                                        </table>
+                                                        <th>Status</th>
+                                                        <th>Action</th>
+                                                   </thead>
+                                                   <tbody>
+                                                       <tr v-for="(drug, index) in drugs" :key="drug.id">
+                                                           <td></td>
+                                                           <td>
+                                                               <p v-if="drug.drugs">
+                                                                   {{ drug.drugs }}
+                                                               </p>
+                                                               <p v-else-if="drug.thedrug">
+                                                                    {{ drug.thedrug.generic }}
+                                                               </p>
+                                                               <p v-else-if="drug.nhisdrugs">
+                                                                    {{ drug.nhisdrugs }}
+                                                               </p>
+                                                               <p v-else-if="drug.nhisthedrug">
+                                                                    {{ drug.nhisthedrug.generic }}
+                                                                </p>
+                                                           </td>
+                                                           
+                                                           <td>{{ drug.date }}</td>
+                                                           <td>{{ drug.dose }}</td>
+                                                           <td>{{ drug.frequency }}</td>
+                                                           <td>{{ drug.duration }}</td>
+                                                           <td>{{ drug.total }}</td>
+                                                           <td>{{ drug.price }}</td>
+                                                           <td>{{ drug.docfirst }} {{ drug.docsecond }}</td>
+                                                           <td>{{ drug.note }}</td>
+                                                           <td>
+                                                               <span v-if="drug.status === true" class="label label-md bg-success">Dispensed</span>
+                                                               <span v-else class="label label-md bg-warning">Pending</span>
+                                                           </td>
+                                                           <td v-if="drug.status == false">
+                                                               <button v-if="!dispenseLoading" @click.prevent="dispenseDrug(drug, index)" 
+                                                               type="button"
+                                                               class="btn btn-md btn-success">
+                                                                   Dispense
+                                                               </button>
+                                                               <p v-if="dispenseLoading">
+                                                                   <img width="30" src="../images/spinner.gif" alt="">
+                                                                  
+                                                               </p>
+                                                           </td>
+                                                           <td v-else>
+                                                                <button 
+                                                                type="button"
+                                                                class="btn btn-md btn-default" disabled>
+                                                                    Dispensed
+                                                                </button>
+                                                           </td>
+                                                       </tr>
+                                                   </tbody>
+                                               </table>
+                                           </div>
+                                        </div>
+                                                                                                     
                                     </div>
-                                    
                                 </div>
-                            </div>
+                        </div>
+
+                        <div class="modal hide fade" id="secondModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Choose Drug</h5>
+                                        <!-- <h6 v-if="showRed" class="red">{{ message }}</h6>
+                                        <h6 v-else></h6>
+                                        <h6 v-if="showGreen" class="green">{{ message }}</h6>
+                                        <h6 v-else></h6> -->
+                                        </div>
+                                        <div class="modal-body">
+                                            <div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label">Choose</label>                                                                          
+                                                        <div class="col-sm-8">
+                                                            <select  v-model="drug_brand" class="form-control" v-on:change="getLocalPrice">
+                                                                <option selected disabled>Select Drug </option>
+                                                                <% drugs.forEach((drug)=>{ %>
+                                                                    <% if(drug.name.name){ %>
+                                                                        <option value="<%= drug._id %>"><%= drug.name.name %></option>
+                                                                    <% }else{ %>
+                                                                        <option value="<%= drug._id %>"><%= drug.name.pharmname.generic %></option>
+                                                                    <% } %>
+                                                                <% }) %>
+                                                            </select>                                                                  
+                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-sm-3 col-form-label">Price</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" v-model="price"  readonly>
+                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label for="" class="col-sm-3 col-form-label">Quantity Remaining</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" v-model="remain" class="form-control" readonly>
+                                                        </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-3 col-form-label">Starting Date</label>
+                                                    <div class="col-sm-8">
+                                                        <input type="date" class="form-control" v-model="startingdate" required>
+                                                    </div>
+                                                </div> 
+                                                
+                                                <div class="form-group row">
+                                                    <label for="" class="col-sm-3 col-form-label">Route</label>
+                                                        
+                                                        <div class="col-sm-8">
+                                                            <select v-model="unit" class="form-control">
+                                                                    <option>Select </option>
+                                                                    <option>im</option>
+                                                                    <option>IV</option>
+                                                                    <option>Eye</option>
+                                                                    <option>SC</option>
+                                                                    <option>PO</option>
+                                                                    <option>Sublingna</option>
+                                                                    <option>Rectal</option>
+                                                                    <option>Ear</option>
+                                                            
+                                                            </select>
+                                                        </div>
+                                                </div> 
+                                                <div class="form-group row">
+                                                        <label class="col-sm-3 col-form-label">Duration</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="number" class="form-control " v-model="duration" required>
+                                                        </div>
+                                                    </div> 
+                                                <div class="form-group row">
+                                                    <label for="" class="col-sm-3 col-form-label">Frequency</label>
+                                                    <div class="col-sm-2">
+                                                        <input type="text" class="form-control " v-model="direction" required>
+                                                    </div>
+                                                    <div class="col-sm-3">
+                                                        <select v-model="dose" class="form-control" required>
+                                                            <option>Select</option>
+                                                            <option>Tablet</option>
+                                                            <option>Capsule</option>
+                                                            <option>Solution</option>
+                                                            <option>Suspension</option>
+                                                            <option>tsp</option>
+                                                            <option>units</option>
+                                                            <option>cream</option>
+                                                            <option>ointment</option>
+                                                            <option>gtts(drops)</option>
+                                                        </select>
+                                                    </div>
+                                                    <p class="mt-2">in</p>
+                                                    <div class="col-sm-3">
+                                                        <select v-model="time" class="form-control " required v-on:change="calcDosage()">
+                                                                <option>Select</option>
+                                                                <option value="1">OD</option>
+                                                                <option value="2">BD</option>
+                                                                <option value="3">TDS</option>
+                                                                <option value="4">QDS</option>
+                                                                <option value="6">Q4H</option>
+                                                               
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                        <label for="" class="col-sm-3 col-form-label">Quantity</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" v-model="dosage" required readonly>
+                                                        </div>
+                                                    </div>
+                                                <div class="form-group row">
+                                                        <label for="" class="col-sm-3 col-form-label">Notes</label>
+                                                        <div class="col-sm-8">
+                                                            <input type="text" class="form-control" v-model="notes">
+                                                        </div>
+                                                </div>
+                                                <button v-if="!addDrugLoading" @click.prevent="addToDrug" class="btn btn-info float-right" 
+                                                type="button">Save
+                                                </button>
+                                                <p v-if="addDrugLoading">
+                                                        <img width="30" src="../images/spinner.gif" alt="">
+                                                       
+                                                </p>
+                                            </div>
+                                        </div>
+                                                                                                     
+                                    </div>
+                                </div>
                         </div>
 
                         <div class="col-sm-12">
@@ -302,6 +559,9 @@
                                 </div>
                         </div>
 
+                       
+
+
                     </div>
                 </div>
             </div>
@@ -314,4 +574,242 @@
 </div>
 <!-- Center page ends -->
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+<script src="../js/toastr.min.js" type="text/javascript"></script>
+<script>
+// Izitoast seettings
+iziToast.settings({
+    timeout: 3000, // default timeout
+      resetOnHover: true,
+      transitionIn: 'flipInX',
+      transitionOut: 'flipOutX',
+      position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
+      onOpen: function () {
+        console.log('callback abriu!');
+      },
+      onClose: function () {
+        console.log("callback fechou!");
+      }
+});
+new Vue({
+    el: '#dasboard',
+    data: {
+       drugs: [],
+       consultations: [],
+       remain: '',
+       url: '/get-consultation',
+       fname: '',
+       lname: '',
+       nhisname: '',
+       consultId: '',
+       dispense_url: '/dispense-drug',
+       add_to_drug_url: '/json-prescription',
+       consultations_url: '/json-consultations',
+       dispenseLoading: false,
+       addDrugLoading: false,
+       dispensed: false,
+       showRed: false,
+       showGreen: false,
+       feedback: '',
+       message: '',
+       quantity: '',
+        drug_brand: '',
+        price: '',
+        startingdate: '',
+        dosage: '',
+        unit: '',
+        dose: '',
+        time: '',
+        notes: '',
+        direction: '',
+        duration: '',
+       patienturl: '/patient/',
+       get_drug_price_url: '/get-dispensory-price'
+    },
+    mounted(){
+       this.getConsultations()
+    },
+
+    methods:{
+        getConsultations: function () {
+            let self = this;
+            axios.get(self.consultations_url)
+            .then(function (response) {
+                self.consultations = response.data;
+              
+                
+                let result = self.consultations
+
+                for(let i = 0; i < result.length; i++){
+                    result.patientprofileurl = self.patienturl + result[i].patient._id
+                }
+          
+        
+            })
+            .catch(function (error) {
+              console.log(error.response.data);
+            });
+        },
+        getDrugs: function (consultation) {
+            
+            let data = {
+                consultation: consultation._id
+            }
+            let self = this;
+            axios.post(self.url, data)
+            .then(function (response) {
+                self.drugs = response.data;
+                let result = self.drugs
+                console.log(self.drugs)
+                for(let i = 0; i < result.length; i++){
+                    self.fname = result[i].fname
+                    self.lname = result[i].lname
+                    if (result[i].nhisname) {
+                       self.nhisname = result[i].nhisname
+                    }
+                }
+      
+            })
+            .catch(function (error) {
+              console.log(error.response.data);
+            });
+        },
+
+        dispenseDrug: function (drug, index) {
+            this.dispenseLoading = true;
+            let self = this;
+            let data = {
+                id: drug.consultationId,
+                index: index
+            }
+            axios.post(self.dispense_url, data)
+            .then(function (response) {
+                if(response.status == 200){
+                    self.drugs[index].status = response.data.data;
+                    iziToast.success({
+                        position: "topRight", 
+                        backgroundColor: 'rgba(4, 134, 4, 0.973)',
+                        title: 'Success!', 
+                        titleColor: 'rgb(235, 230, 230)',
+                        message: response.data.message,
+                        messageColor: 'rgb(235, 230, 230)'
+                    });
+                    // self.feedback = response.data.message;
+                    // self.showGreen = true;
+                    self.dispenseLoading = false;
+                }else{
+                    iziToast.error({
+                        position: "topRight", 
+                        backgroundColor: 'rgba(201, 30, 30, 0.87)',
+                        title: 'Error!', 
+                        titleColor: 'rgb(235, 230, 230)',
+                        message: response.data.message,
+                        messageColor: 'rgb(235, 230, 230)'
+                    });
+                    // self.feedback = response.data
+                    // self.showRed = true;
+                    self.dispenseLoading = false;
+                }
+            })
+            .catch(function (error) {
+                iziToast.error({
+                    position: "topRight", 
+                    backgroundColor: 'rgba(201, 30, 30, 0.87)',
+                    title: 'Error!', 
+                    titleColor: 'rgb(235, 230, 230)',
+                    message: error.response.data,
+                    messageColor: 'rgb(235, 230, 230)'
+                });
+                // self.feedback = error.response.data
+                // self.showRed = true;
+                self.dispenseLoading = false;
+                console.log(error.response.data);
+            });
+        },
+
+        sendConsultation: function (consultation) {
+            this.consultId = consultation._id
+        },
+        addToDrug: function () {
+            this.addDrugLoading = true;
+            let data = {
+                id: this.consultId,
+                drug_brand: this.drug_brand,
+                price: this.price,
+                startingdate: this.startingdate,
+                dosage: this.dosage,
+                unit: this.unit,
+                dose: this.dose,
+                time: this.time,
+                notes: this.notes,
+                direction: this.direction,
+                duration: this.duration,
+            }
+            let self = this;
+            axios.post(self.add_to_drug_url, data)
+            .then(function (response) {
+                console.log(response.data.data)
+                if(response.status == 200){
+                    self.message = response.data.message;
+                    self.showGreen = true;
+                    self.addDrugLoading = false;
+                    self.drug_brand = '';
+                    self.price = '';
+                    self.startingdate = '';
+                    self.dosage = '';
+                    self.unit = '';
+                    self.dose = '';
+                    self.time = '';
+                    self.notes = '';
+                    self.remain = '';
+                    self.direction = '';
+                    self.duration = '';
+                }else{
+                    self.message = response.data
+                    self.showRed = true;
+                    self.addDrugLoading = false;
+                }
+            })
+            .catch(function (error) {
+                self.message = error.response.data
+                self.showRed = true;
+                self.addDrugLoading = false;
+                console.log(error.response.data);
+            });
+        },
+
+        getLocalPrice: function () {
+            let data = {
+                itemCode: this.drug_brand
+            }
+            let self = this;
+            axios.post(self.get_drug_price_url, data)
+            .then(function (response) {
+                if(response.data.balance === '' || response.data.balance === null || response.data.balance === undefined){
+                    self.remain = response.data.quantity
+                    self.price = response.data.price
+                }else{
+                    self.remain = response.data.balance
+                    self.price = response.data.price
+                }
+               
+            })
+            .catch(function (error) {
+                console.log(error.response.data)
+            })
+        },
+
+        calcDosage: function () {
+             this.dosage = this.duration * this.direction * this.time
+        },
+
+        formatDate: function (getDate) {
+            let date = new Date(getDate).toDateString()
+            return date;
+        }
+    },
+
+    
+})
+</script>
 <% include ../partials/footerCopy %>

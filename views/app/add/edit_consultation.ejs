@@ -53,7 +53,7 @@
                                     <div class="card-header">
                                         <h5>DOCTOR CONSULTATION</h5>
                                         <div class="card-header-right">
-                                            <p style="font-weight: 900"><%= user.patientId %></p>
+                                            <p style="font-weight: 900"><%= consultation.patient.patientId %></p>
                                             <i class="icofont icofont-rounded-down"></i>
                                             <i class="icofont icofont-refresh"></i>
                                             <i class="icofont icofont-close-circled"></i>
@@ -67,7 +67,7 @@
                                                         PATIENT DETAILS
                                                     </div>
                                                     <%
-                                                        var birthday = new Date(user.birthday)
+                                                        var birthday = new Date(consultation.patient.birthday)
                                                         var today = new Date()
                                                         var age = today.getFullYear() - birthday.getFullYear()
                                                         if(today.getMonth() < birthday.getMonth()){
@@ -80,17 +80,25 @@
                                                     <div class="panel-body">
                                                         <dl class="dl-horizontal row">
                                                             <dt style="font-size:1em" class="col-sm-3">Patient Name</dt>
-                                                            <dd class="col-sm-9"><a href="/patient/<%= user._id %>"><%= user.firstname %> <%= user.lastname %></a></dd>
+                                                            <dd class="col-sm-9"><a href="/patient/<%= consultation.patient._id %>">
+                                                                <%= consultation.patient.firstname %> <%= consultation.patient.lastname %>
+                                                                <% if(consultation.patient.retainershipname){ %>
+                                                                    <label class="label label-md bg-success">
+                                                                        <%= consultation.patient.retainershipname.hmoname%>
+                                                                    </label>
+                                                                  <% } %>
+                                                            </a>
+                                                            </dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Phone </dt>
-                                                            <dd class="col-sm-9">+234<%= user.phonenumber %></dd>
+                                                            <dd class="col-sm-9">+234<%= consultation.patient.phonenumber %></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Marital Status</dt>
-                                                            <% if(user.mstatus){ %>
-                                                                <dd class="col-sm-9"><%= user.mstatus %></dd>
+                                                            <% if(consultation.patient.mstatus){ %>
+                                                                <dd class="col-sm-9"><%= consultation.patient.mstatus %></dd>
                                                             <% }else{ %>
                                                                 <dd class="col-sm-9">Nil</dd>
                                                             <% } %>
                                                             <dt style="font-size:1em" class="col-sm-3">Gender</dt>
-                                                            <dd class="col-sm-9"><%= user.gender %></dd>
+                                                            <dd class="col-sm-9"><%= consultation.patient.gender %></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Age</dt>
                                                             <dd class="col-sm-9"><%= age %></dd>
                                                         </dl>
@@ -108,15 +116,15 @@
                                                     <div class="panel-body">
                                                         <dl class="dl-horizontal row">
                                                             <dt style="font-size:1em" class="col-sm-3">Height</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].height %> <span style="color: darkorange">(cm)</span></dd>
+                                                            <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].height %> <span style="color: darkorange">(cm)</span></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Weight</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].weight %> <span style="color: darkorange">(kg)</span></dd>
+                                                            <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].weight %> <span style="color: darkorange">(kg)</span></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">BMI</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].bmi %> <span style="color: darkorange">(kg/m^2)</dd>
+                                                            <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].bmi %> <span style="color: darkorange">(kg/m^2)</dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Heart Rate</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].heartrate %> <span style="color: darkorange">(B/min)</dd>
+                                                            <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].heartrate %> <span style="color: darkorange">(B/min)</dd>
                                                             <dt style="font-size:1em" class="col-sm-3">Date Created</dt>
-                                                            <dd class="col-sm-9"><%= user.triages[user.triages.length -1].created.toLocaleString() %></dd>
+                                                            <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].created.toLocaleString() %></dd>
                                                         </dl>
                                                     </div>
                                                     <div class="panel-footer text-primary">
@@ -132,19 +140,19 @@
                                                     <div class="panel-body">
                                                             <dl class="dl-horizontal row">
                                                                     <dt style="font-size:1em" class="col-sm-3">RVS</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].rvs %> <span style="color: darkorange">(rvs)</dd>
+                                                                    <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].rvs %> <span style="color: darkorange">(rvs)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Temperature</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].temperature %> <span style="color: darkorange">(°C)</dd>
+                                                                    <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].temperature %> <span style="color: darkorange">(°C)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Respiration</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].respiration %> <span style="color: darkorange">(C/min)</dd>
+                                                                    <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].respiration %> <span style="color: darkorange">(C/min)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Blood Pressure</dt>
-                                                                    <% if(user.triages[user.triages.length -1].dystolic){ %>
-                                                                        <dd class="col-sm-9"><%= user.triages[user.triages.length -1].dystolic %>/<%= user.triages[user.triages.length -1].systolic %> <span style="color: darkorange">(mmHg)</dd>
+                                                                    <% if(consultation.patient.triages[consultation.patient.triages.length -1].dystolic){ %>
+                                                                        <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].dystolic %>/<%= consultation.patient.triages[consultation.patient.triages.length -1].systolic %> <span style="color: darkorange">(mmHg)</dd>
                                                                     <% }else{ %>
                                                                         <dd class="col-sm-9">-</dd>
                                                                     <% } %>
                                                                     <dt style="font-size:1em" class="col-sm-3">RVS</dt>
-                                                                    <dd class="col-sm-9"><%= user.triages[user.triages.length -1].rvs %> <span style="color: darkorange">(rvs)</dd>
+                                                                    <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].rvs %> <span style="color: darkorange">(rvs)</dd>
                                                              </dl>
                                                     </div>
                                                     <div class="panel-footer text-warning">
@@ -159,7 +167,7 @@
                                 <!-- Panel card end -->
                             </div>
                         </div>
-                        <% if(user.consultations.length < 1){ %>
+                        <% if(consultation.patient.consultations.length < 1){ %>
 
                         
                         <form method="post">
@@ -423,7 +431,7 @@
                                 </div>
                                 <div class="card-block">
                                     <div class="col-sm-12">
-                                     <!-- <form action="/prescription/<%= user._id %>" method="post"> -->
+                                
                                         <div class="form-group">
                                                 <button class="btn btn-info" type="button" data-toggle="modal" data-target="#exampleModalCenter3">Add Medication</button>
                                         </div>
@@ -448,17 +456,24 @@
                                                     </thead>
                                                     <tbody>
                                                         <% if(consultation.drugsObject.length > 0){ %>
-
-                                                        
                                                         <% consultation.drugsObject.forEach((drug, index, array)=>{ %>
                                                         <tr>
                                                             <td></td>
                                                             <td><%= drug.unit %></td>
-                                                            <% if(drug.drugs.name.name){ %>
-                                                                <td> <%= drug.drugs.name.name %></td>
+                                                            <% if(!drug.nhisdrugs){ %>
+                                                                <% if(drug.drugs.name.name){ %>
+                                                                    <td> <%= drug.drugs.name.name %></td>
+                                                                <% }else{ %>
+                                                                    <td> <%= drug.drugs.name.pharmname.generic %></td>
+                                                                <% } %>
                                                             <% }else{ %>
-                                                                <td> <%= drug.drugs.name.pharmname.generic %></td>
+                                                                <% if(drug.nhisdrugs.name.name){ %>
+                                                                    <td> <%= drug.nhisdrugs.name.name %></td>
+                                                                <% }else{ %>
+                                                                    <td> <%= drug.nhisdrugs.name.pharmname.generic %></td>
+                                                                <% } %>
                                                             <% } %>
+                                                            
                                                             <td> <%= drug.startingdate.toDateString() %></td>
                                                             <td> <%= drug.time %></td>
                                                             <td> <%= drug.direction %></td>
@@ -486,10 +501,11 @@
                                                             <h5 class="modal-title" id="exampleModalCenterTitle">Choose Drug</h5>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="/prescription/<%= user._id %>" method="POST">
+                                                                <form action="/prescription/<%= consultation.patient._id %>" method="POST">
                                                                     <div class="form-group row">
                                                                         <label class="col-sm-3 col-form-label">Choose</label>                                                                          
                                                                             <div class="col-sm-8">
+                                                                                <% if(!consultation.patient.retainershipname){ %>
                                                                                 <select id="itemCode" name="drug_brand" class="form-control" onchange="getLocalDrugPrice()">
                                                                                     <option selected disabled>Select Drug </option>
                                                                                     <% locals.forEach((drug)=>{ %>
@@ -499,7 +515,19 @@
                                                                                             <option value="<%= drug._id %>"><%= drug.name.pharmname.generic %></option>
                                                                                         <% } %>
                                                                                     <% }) %>
-                                                                                </select>                                                                  
+                                                                                </select>    
+                                                                                <% }else{ %>
+                                                                                <select id="nhisItem" name="nhis_drug_brand" class="form-control" onchange="getNhisDrugPrice()">
+                                                                                        <option selected disabled>Select Drug </option>
+                                                                                        <% nhisDrugs.forEach((nhisdrug)=>{ %>
+                                                                                            <% if(nhisdrug.name.name){ %>
+                                                                                                <option value="<%= nhisdrug._id %>"><%= nhisdrug.name.name %></option>
+                                                                                            <% }else{ %>
+                                                                                                <option value="<%= nhisdrug._id %>"><%= nhisdrug.name.pharmname.generic %></option>
+                                                                                            <% } %>
+                                                                                        <% }) %>
+                                                                                </select>
+                                                                                <% } %>                                                              
                                                                             </div>
                                                                     </div>
                                                                     <div class="form-group row">
@@ -628,7 +656,7 @@
                                                             <h5 class="modal-title" id="exampleModalCenterTitle">Choose Test</h5>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="/labtest/<%= user._id %>" method="POST">
+                                                                <form action="/labtest/<%= consultation.patient._id %>" method="POST">
                                                                     <div class="form-group row">
                                                                             <label class="col-sm-3 col-form-label">Select Lab</label>
                                                                             <div class="col-sm-6">
@@ -720,7 +748,7 @@
                                     <div class="card-block">
                                         <div class="col-sm-12">
                                             <div class="sub-title">Imaging <span style="color:red">*</span> </div>
-                                            <form action="/imaging/<%= user._id %>" method="post">
+                                            <form action="/imaging/<%= consultation.patient._id %>" method="post">
                                                 <div class="form-group row">
                                                     <label class="col-sm-2 col-form-label">Medical Imaging</label>
                                                     <div class="col-sm-6">

@@ -1,23 +1,24 @@
 const mongoose =  require('mongoose');
 const deepPopulate = require('mongoose-deep-populate')(mongoose)
 
-const supplySchema = new mongoose.Schema({
+const nhisOpdInventory = new mongoose.Schema({
     creator: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User'},
-    itemDigit: Number,
-    pharmname: { type: mongoose.Schema.Types.ObjectId, ref: 'Drug'},
-    // labname: { type: mongoose.Schema.Types.ObjectId, ref: 'Drug'},
+    name: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'PharmacyItem'},
+    productcode: String,
+    shelf: String,
+    shelfno: String,
+    balance: Number,
+    comment: String,
     received: {type: Date},
-    description: String,
     price: Number,
     unit: String,
     quantity: Number,
-    rquantity: {type:Number},
     cost: Number,
     expiration: {type: Date},
-    serialnum: Number,
+    consumed: {type: Number, default: 0},
     created: {type: Date, default: Date.now}
 });
  
 //Populates schema to any level
-supplySchema.plugin(deepPopulate)
-module.exports = mongoose.model('Supply', supplySchema);
+nhisOpdInventory.plugin(deepPopulate)
+module.exports = mongoose.model('NhisOpdInventory', nhisOpdInventory);

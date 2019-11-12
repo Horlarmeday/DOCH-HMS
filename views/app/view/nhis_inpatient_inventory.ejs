@@ -26,7 +26,7 @@
                 <!-- Page-header start -->
                 <div class="page-header">
                     <div class="page-header-title">
-                        <h4><%= history.name %> Dispense</h4>
+                        <h4>NHIS Inpatient Inventory</h4>
                     </div>
                     <div class="page-header-breadcrumb">
                         <ul class="breadcrumb-title">
@@ -35,9 +35,9 @@
                                     <i class="icofont icofont-home"></i>
                                 </a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#!">History</a>
+                            <li class="breadcrumb-item"><a href="#!">Items</a>
                             </li>
-                            <li class="breadcrumb-item"><a href="#!"></a>
+                            <li class="breadcrumb-item"><a href="#">Add Item</a>
                             </li>
                         </ul>
                     </div>
@@ -50,11 +50,7 @@
                             <!-- Zero config.table start -->
                             <div class="card">
                                 <div class="card-header">
-                                    <% if(history.name){ %>
-                                        <h5><%= history.name %> Dispense History</h5>
-                                    <% }else{ %>
-                                        <h5><%= history.pharmname.generic %> Dispense History</h5>
-                                    <% } %>
+                                    <h5>Inventory List</h5>
                                     <div class="card-header-right">
                                         <i class="icofont icofont-rounded-down"></i>
                                         <i class="icofont icofont-refresh"></i>
@@ -67,29 +63,55 @@
                                             <thead>
                                                 <tr>
                                                     <th>S/N</th>
-                                                    <th>Quantity Dispense</th>
-                                                    <th>LeftOver</th>
-                                                    <th>Expiration Date</th>
-                                                    <th>Dispensed To</th>
-                                                    <th>Dispensed By</th>
-                                                    <th>Received By</th>
-                                                    <th>Date Dispensed</th>
+                                                    <th>Product Code</th>
+                                                    <th>Item Name</th>
+                                                    <th>Quantity</th>
+                                                    
+                                                    <th>Shelf</th>
+                                                    <th>Unit</th>
+                                                    
+                                                    <th>Selling Price(₦)</th>
+                                                    <th>Consumed</th>
+                                                    
+                                                    <th>Date Received</th>
+                                                    <th>Balance </th>
+                                                    <th>Comment </th>
+                                                   <th>Creator</th>
+                                                   <th>Action</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <% history.dispensehistory.forEach((item)=>{ %>
+                                                <% items.forEach((item) => { %>
+                                                    
                                                 <tr>
                                                     <td></td>
-                                                    <td><%= item.quantity %> <%= item.unit %></td>
-                                                    <td><%= item.rquantity %></td>
-                                                    <td><%= item.expiry.toDateString() %></td>
-                                                    <td><%= item.dispenseTo %></td>
+                                                    <td><%= item.productcode %></td>
+                                                    <% if(item.name.name){ %>
+                                                        <td><%= item.name.name %></td>
+                                                    <% }else{ %>
+                                                        <td><%= item.name.pharmname.generic %></td>
+                                                   <% } %>
+                                                    <td><%= item.quantity %></td>
+                                                   
+                                                    <td><%= item.shelf %> <%= item.shelfno %></td>
+                                                    <td><%= item.unit %></td>
+                                                    <td><%= item.price %></td>
+                                                    <td><%= item.consumed %></td>
+                                                   
+                                                    <td><%= item.received.toDateString() %></td>
+                                                    
+                                                    <td><%= item.balance %></td>
+                                                    <td><%= item.comment %></td>
                                                     <td><%= item.creator.firstname %> <%= item.creator.lastname %></td>
-                                                    <td><%= item.receivedBy.firstname %> <%= item.receivedBy.lastname %></td>
-                                                    <td><%= item.dateDispensed.toDateString() %></td>
+                                                    <td>
+                                                        <a class="btn btn-info" href="/edit-nhis-inpatient-inventory/<%= item._id %>">Edit</a>
+                                                        <!-- <button id="<%= item._id %>" class="btn btn-danger localItem">Delete</button> -->
+                                                    </td>
+
                                                 </tr>
-                
-                                                <% }) %> 
+                                                
+                                                
+                                                <% }) %>
                                             </tbody>
                                         </table>
                                     </div>

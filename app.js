@@ -32,7 +32,7 @@ const sessionMiddleware = session({
 })
 
 //Connection to the DB
-mongoose.connect(config.database, { useFindAndModify: false }, function(err) {
+mongoose.connect(config.database, { useFindAndModify: false },  function(err) {
   if (err) console.log(err);
   console.log("Connected to HMS database");
 });

@@ -93,7 +93,14 @@
                                                 <tr>
                                                     <td></td>
                                                     <td><%= consultation.patient.patientId %></td>
-                                                    <td> <%= consultation.patient.firstname %> <%= consultation.patient.lastname %></td>
+                                                    <td>
+                                                            <a href="/patient/<%= consultation.patient._id %>"
+                                                              class="mr-2"><%= consultation.patient.firstname %> 
+                                                              <%= consultation.patient.lastname %></a>
+                                                            <% if(consultation.patient.retainershipname){ %>
+                                                            <label class="label label-md bg-success"><%= consultation.patient.retainershipname.hmoname%></label>
+                                                            <% } %>
+                                                          </td>
                                                     <td> <%= consultation.visit %></td>
                                                     <td> <%= consultation.diagnosis %></td>
                                                     
@@ -147,13 +154,20 @@
                                                                 <th></th>
                                                                 <th></th>
                                                                 <th></th>
-                                                          
-                                                                <% if(drug.drugs.name.name){ %>
-                                                                    <td style="font-weight: 700; color: green"> <%= drug.drugs.name.name %></td>
+                                                                <% if(!drug.nhisdrugs){ %>
+                                                                    <% if(drug.drugs.name.name){ %>
+                                                                        <td style="font-weight: 700; color: green"> <%= drug.drugs.name.name %></td>
+                                                                    <% }else{ %>
+                                                                        <td style="font-weight: 700; color: green"> <%= drug.drugs.name.pharmname.generic %></td>
+                                                                    <% } %>
                                                                 <% }else{ %>
-                                                                    <td style="font-weight: 700; color: green"> <%= drug.drugs.name.pharmname.generic %></td>
+                                                                    <% if(drug.nhisdrugs.name.name){ %>
+                                                                        <td style="font-weight: 700; color: green"> <%= drug.nhisdrugs.name.name %></td>
+                                                                    <% }else{ %>
+                                                                        <td style="font-weight: 700; color: green"> <%= drug.nhisdrugs.name.pharmname.generic %></td>
+                                                                    <% } %>
                                                                 <% } %>
-                                                                 
+                                                                
                                                                 <td>
                                                                     <%= drug.startingdate.toLocaleDateString() %>
                                                                 </td>
