@@ -1904,7 +1904,6 @@ router.route('/add-triage')
             triage.dystolic = req.body.dystolic;
             triage.systolic = req.body.systolic;
             triage.muac = req.body.muac;
-            triage.muac = req.body.muac;
             triage.fheartrate = req.body.fheartrate;
             triage.save((err) => {
                 if (err) { return next (err) }

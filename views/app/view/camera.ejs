@@ -101,7 +101,6 @@ upload.addEventListener('click', function () {
     let imageCaptureUrl = '/capture-image/'+ '<%= user._id %>'
     let data = {
         base64: canvas.toDataURL()
-
     }
     axios.post(imageCaptureUrl, data)
         .then(function (response) {
