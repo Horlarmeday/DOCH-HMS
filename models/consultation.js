@@ -96,12 +96,13 @@ const consultationSchema = new mongoose.Schema({
             cervix: String,
             impression: String,
         },
-
         // X-ray
         lumbosacral: {
             conclusion: String
         }
     },
+    scanPhoto:[
+    ],
     payment: [{type: mongoose.Schema.Types.ObjectId, ref: "Payment"}],
     imagingresult: String,
     visit: String,

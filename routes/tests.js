@@ -22,6 +22,7 @@ const Visit = require('../models/visit')
 const Lab = require('../models/lab')
 const sgMail = require('@sendgrid/mail');
 const multer = require('multer');
+const upload = require('./upload')
 const fs = require('fs');
 const middleware = require("../middleware");
 
@@ -786,6 +787,35 @@ router.post('/transvaginal/:id', middleware.isLoggedIn, (req, res, next)=>{
                 req.flash('success', 'Transvaginal scan result submitted successfully!')
                 res.redirect('back')
             })
+        }) 
+    })
+})
+router.post('/scan-picture/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id})
+    .populate('consultations')
+    .exec((err, user)=>{
+        if(err) return next (err)
+        Consultation.findOne({_id: user.consultations[user.consultations.length -1]._id}, (err, consultation)=>{
+            upload(req, res, (err) => {
+                if (err instanceof multer.MulterError) {
+                    return res.status(400).json({message:'Your file is too large, try reducing the size'})
+                }
+                else if (err) {
+                    return res.status(400).json({message: err.message})
+                }
+                else if (req.files == undefined) {
+                    return res.status(404).json({message: 'File is undefined.'});
+                }
+                else{
+                    consultation.scanPhoto.push(req.files[0].filename)
+                    consultation.save((err)=>{
+                        console.log(err)
+                        if(err) return res.status(500).json({message: err.message})
+                        return res.status(200).json({message: 'Scan Photo submitted successfully!'})
+                    })
+                }
+            })
+            
         }) 
     })
 })
