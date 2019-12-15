@@ -17,12 +17,12 @@ const hmoSchema = new mongoose.Schema({
         price: Number,
       }
     ],
-   hmodrugs:[
-    { 
-      drug: String,
-      price: Number,
-    }
-   ],
+    hmodrugs:[
+      { 
+        drug: String,
+        price: Number,
+      }
+    ],
     created: {type: Date, default: Date.now}
 });
 

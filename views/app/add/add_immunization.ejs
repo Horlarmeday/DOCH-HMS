@@ -1,6 +1,17 @@
 <% include ../../partials/header %>
 <% include ../../partials/sidebarCopy %>
+<style>
+    .active{
+        background: #0073aa;
+    }
 
+    .point{
+        cursor: pointer;
+    }
+    .hide{
+        display: none;
+    }
+</style>
 <div class="pcoded-content">
         <div class="pcoded-inner-content">
             <!-- Flash message -->
@@ -48,13 +59,33 @@
                     <!-- Page body start -->
                     <div class="page-body">
                         <div class="row">
-                            <div class="col-sm-12">
+                            <div class="col-sm-4">
+                                <div class="card" style="width: 18rem;">
+                                    <div class="card-header">
+                                        <h5>Period</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item point active">At Birth</li>
+                                            <li class="list-group-item point">At 6 Weeks</li>
+                                            <li class="list-group-item point">At 10 Weeks</li>
+                                            <li class="list-group-item point">At 14 Weeks</li>
+                                            <li class="list-group-item point">At 6 Months</li>
+                                            <li class="list-group-item point">At 9 Months</li>
+                                            <li class="list-group-item point">At 15 Months</li>
+                                            <li class="list-group-item point">At 1 Year</li>
+                                            <li class="list-group-item point">At 2 Years</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
                                 <!-- Basic Form Inputs card start -->
                                 <div class="card">
                                     <div class="card-header">
                                         <h5>Add Immunization</h5>
                                     </div>
-                                    <div class="card-block">
+                                    <div class="1 card-block">
                                         <div class="row">
                                             <div class="col-sm-12 mobile-inputs">
                                                 <form method="POST">
@@ -72,17 +103,15 @@
                                                        
                                                     </div>
                                                     <div class="form-group row">
-                                                            <div class="col-sm-6">
-                                                                    <label>Birth Weight </label>
-                                                                    <input class="form-control" type="text" name="birthweight">  
-                                                            </div>
-                                                            <div class="col-sm-6">
-                                                                    <label>Date of Birth </label>
-                                                                   <input type="date" name="dateofbirth" class="form-control">
-                                                            </div>
-                                                            
-                                                            
+                                                        <div class="col-sm-6">
+                                                                <label>Birth Weight </label>
+                                                                <input class="form-control" type="text" name="birthweight">  
                                                         </div>
+                                                        <div class="col-sm-6">
+                                                                <label>Date of Birth </label>
+                                                                <input type="date" name="dateofbirth" class="form-control">
+                                                        </div>
+                                                    </div>
                                                    
                                                     <div class="form-group row">
                                                         <div class="col-sm-6">
@@ -99,21 +128,104 @@
                                                                         <option>Vit A mum</option>
                                                                     </select>
                                                         </div>
-                                                        
-                                                        
                                                     </div>
-                                                    <div class="form-group row">
-                                                            
+                                         
+                                                    
+                                                  
+                                                    <button type="submit" class="btn btn-info float-right">Save</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="2 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
                                                             <div class="col-sm-6">
-                                                                <label>At 6weeks</label>
-                                                                <select name="at6weeks" class="form-control js-example-basic-multiple" multiple required>
-                                                                        <option  disabled>Select</option>
-                                                                        <option>Penta 1</option>
-                                                                        <option>PCV 1</option>
-                                                                        <option>OPV 1</option>
-                                                                        <option>Rota 1</option>
-                                                                    </select>
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
                                                                 
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>At 6weeks</label>
+                                                                    <select name="at6weeks" class="form-control js-example-basic-multiple" multiple required>
+                                                                            <option  disabled>Select</option>
+                                                                            <option>Penta 1</option>
+                                                                            <option>PCV 1</option>
+                                                                            <option>OPV 1</option>
+                                                                            <option>Rota 1</option>
+                                                                        </select>
+                                                                    
+                                                                </div>
+                                                            
+                                                            
+                                                        </div>
+                                                       
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="3 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                     <label>At 10weeks </label>
@@ -127,9 +239,48 @@
                                                             </div>
                                                             
                                                             
+                                                        </div>
+                                                       
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="4 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
                                                         
-                                                    </div>
-                                                    <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
+                                                            </div>
                                                             <div class="col-sm-6">
                                                                     <label>At 14weeks </label>
                                                                         <select name="at14weeks" class="form-control js-example-basic-multiple" multiple required>
@@ -141,6 +292,49 @@
                                                                             <option>IPV</option>
                                                                         </select>
                                                             </div>
+                                                            
+                                                        </div>
+                                                       
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="5 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
+                                                            </div>
                                                             <div class="col-sm-6">
                                                                     <label>At 6months </label>
                                                                     <select name="at6months" class="form-control js-example-basic-multiple" multiple required>
@@ -149,9 +343,49 @@
                                                                             <option>Albendazole </option>
                                                                     </select>
                                                             </div>
-
-                                                    </div>
-                                                    <div class="form-group row">
+                                                            
+                                                        </div>
+                                                       
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="6 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
+                                                            </div>
                                                             <div class="col-sm-6">
                                                                     <label>At 9months </label>
                                                                     <select name="at9months" class="form-control js-example-basic-multiple" multiple required>
@@ -159,6 +393,101 @@
                                                                             <option>Measles</option>
                                                                             <option>Yellow Fever </option>
                                                                     </select>
+                                                            </div>
+                                                            
+                                                            
+                                                        </div>
+                                                        
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="7 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                    <label>At 15months </label>
+                                                                    <select name="at15months" class="form-control js-example-basic-multiple" multiple required>
+                                                                            <option  disabled>Select</option>
+                                                                            <option>MMR 2 </option>
+                                                                    </select>
+                                                                </div>
+                                                            
+                                                        </div>
+                                                        
+                                                      
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="8 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                     <label>At 1year </label>
@@ -171,14 +500,49 @@
                                                             </div>
                                                             
                                                             
-                                                    </div>
-                                                    <div class="form-group row">
+                                                            
+                                                            
+                                                        </div>
+                                                        
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                    </div>
+                                    <div class="9 card-block hide">
+                                            <div class="row">
+                                                <div class="col-sm-12 mobile-inputs">
+                                                    <form method="POST">
+                                                        <div class="form-group row">
                                                             <div class="col-sm-6">
-                                                                <label>At 15months </label>
-                                                                <select name="at15months" class="form-control js-example-basic-multiple" multiple required>
-                                                                        <option  disabled>Select</option>
-                                                                        <option>MMR 2 </option>
-                                                                </select>
+                                                                <label for="">Mother Name</label>
+                                                                <input type="text" class="form-control" placeholder="<%= user.firstname %> <%= user.lastname %>" readonly>
+                                                                <input type="hidden" name="patient" value="<%= user._id %>">
+                                                            </div>
+                                                        
+                                                            <div class="col-sm-6">
+                                                                <label>Name of Baby </label>
+                                                                <input class="form-control" type="text" name="name">     
+                                                            </div>
+                                                           
+                                                        </div>
+                                                        <div class="form-group row">
+                                                                <div class="col-sm-6">
+                                                                        <label>Birth Weight </label>
+                                                                        <input class="form-control" type="text" name="birthweight">  
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                        <label>Date of Birth </label>
+                                                                       <input type="date" name="dateofbirth" class="form-control">
+                                                                </div>
+                                                                
+                                                                
+                                                            </div>
+                                                       
+                                                        <div class="form-group row">
+                                                            <div class="col-sm-6">
+                                                                    <label>Place of Birth </label>
+                                                                    <input name="placeofbirth" class="form-control" type="text" required>
                                                             </div>
                                                             <div class="col-sm-6">
                                                                     <label>At 2years </label>
@@ -189,14 +553,14 @@
                                                                             
                                                                     </select>
                                                             </div>
-
-                                                    </div>
-                                                    
-                                                  
-                                                    <button type="submit" class="btn btn-info float-right">Save</button>
-                                                </form>
+                                                            
+                                                            
+                                                        </div>
+                                                        
+                                                        <button type="submit" class="btn btn-info float-right">Save</button>
+                                                    </form>
+                                                </div>
                                             </div>
-                                        </div>
                                     </div>
                                 </div>
                                 <!-- Basic Form Inputs card end -->
@@ -214,3 +578,4 @@
     </div>
 
 <% include ../../partials/footerCopy %>
+$()

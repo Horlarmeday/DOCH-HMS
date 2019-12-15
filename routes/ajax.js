@@ -479,7 +479,7 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
                     .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
                 } else {
                   foundDrug.balance =
-                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                    foundDrug.quantity - consultation.drugsObject[index].dispense;
                   foundDrug.consumed +=
                     consultation.drugsObject[index].quantity;
                   foundDrug.save(err => {
@@ -531,7 +531,7 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
                     .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
                 } else {
                   foundDrug.balance =
-                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                    foundDrug.quantity - consultation.drugsObject[index].dispense;
                   foundDrug.consumed +=
                     consultation.drugsObject[index].quantity;
                   foundDrug.save(err => {
@@ -585,7 +585,7 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
                     .json("Sorry, the balance in the dispensary is Zero or not upto quantity to be dispensed");
                 } else {
                   foundDrug.balance =
-                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                    foundDrug.quantity - consultation.drugsObject[index].dispense;
                   foundDrug.consumed +=
                     consultation.drugsObject[index].quantity;
                   foundDrug.save(err => {
@@ -637,7 +637,7 @@ router.post("/dispense-drug", middleware.isLoggedIn, (req, res, next) => {
                     .json("Sorry, the balance in the dispensary is Zero or less than the quantity to be dispensed");
                 } else {
                   gottenDrug.balance =
-                    foundDrug.quantity - consultation.drugsObject[index].quantity;
+                    foundDrug.quantity - consultation.drugsObject[index].dispense;
                   gottenDrug.consumed +=
                     consultation.drugsObject[index].quantity;
                   gottenDrug.save(err => {

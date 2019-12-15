@@ -118,6 +118,8 @@ const ancSchema = new mongoose.Schema({
     presentpregnancy:[{
         thedate: {type: Date},
         weight: Number,
+        height: Number,
+        bmi: Number,
         urinalysisProtein: String,
         urinalysisGlucose: String,
         bp: String,
@@ -129,7 +131,6 @@ const ancSchema = new mongoose.Schema({
         oedema: String,
         comments: String,
         tcadate: {type: Date},
-        initial: String,
         datetaken: {type: Date, default: Date.now}
     }],
     clinicalnotes: [

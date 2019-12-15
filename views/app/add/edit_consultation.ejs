@@ -121,8 +121,7 @@
                                                             <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].weight %> <span style="color: darkorange">(kg)</span></dd>
                                                             <dt style="font-size:1em" class="col-sm-3">BMI</dt>
                                                             <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].bmi %> <span style="color: darkorange">(kg/m^2)</dd>
-                                                            <dt style="font-size:1em" class="col-sm-3">Heart Rate</dt>
-                                                            <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].heartrate %> <span style="color: darkorange">(B/min)</dd>
+                                                            
                                                             <dt style="font-size:1em" class="col-sm-3">Date Created</dt>
                                                             <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].created.toLocaleString() %></dd>
                                                         </dl>
@@ -145,6 +144,8 @@
                                                                     <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].temperature %> <span style="color: darkorange">(°C)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Respiration</dt>
                                                                     <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].respiration %> <span style="color: darkorange">(C/min)</dd>
+                                                                    <dt style="font-size:1em" class="col-sm-3">Heart Rate</dt>
+                                                                    <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].heartrate %> <span style="color: darkorange">(B/min)</dd>
                                                                     <dt style="font-size:1em" class="col-sm-3">Blood Pressure</dt>
                                                                     <% if(consultation.patient.triages[consultation.patient.triages.length -1].dystolic){ %>
                                                                         <dd class="col-sm-9"><%= consultation.patient.triages[consultation.patient.triages.length -1].dystolic %>/<%= consultation.patient.triages[consultation.patient.triages.length -1].systolic %> <span style="color: darkorange">(mmHg)</dd>
@@ -446,7 +447,8 @@
                                                             <th>Unit Dose</th>
                                                             <th>Frequency</th>
                                                             <th>Duration</th>
-                                                            <th>Total to Dispense</th>
+                                                            <th>Quantity to Dispense</th>
+                                                            <th>Quantity</th>
                                                             <th>Price</th>
                                                             <th>PrescribedBy</th>
                                                             <th>Notes</th>
@@ -478,6 +480,7 @@
                                                             <td> <%= drug.time %></td>
                                                             <td> <%= drug.direction %></td>
                                                             <td> <%= drug.duration %></td>
+                                                            <td> <%= drug.dispense %></td>
                                                             <td> <%= drug.quantity %></td>
                                                             <td> <%= drug.price %></td>
                                                             <% if(drug.prescribedBy){ %>
@@ -557,12 +560,13 @@
                                                                                         <option>Select </option>
                                                                                         <option>im</option>
                                                                                         <option>IV</option>
-                                                                                        <option>Eye</option>
+                                                                                        <option>Ear</option>
                                                                                         <option>SC</option>
                                                                                         <option>PO</option>
-                                                                                        <option>Sublingna</option>
+                                                                                        <option>Sublingual</option>
                                                                                         <option>Rectal</option>
-                                                                                        <option>Ear</option>
+                                                                                        <option>OCC</option>
+                                                                                        <option>GUTT</option>
                                                                                 
                                                                                 </select>
                                                                             </div>
@@ -574,7 +578,7 @@
                                                                         </div>
                                                                     </div> 
                                                                     <div class="form-group row">
-                                                                        <label for="" class="col-sm-3 col-form-label">Frequency</label>
+                                                                        <label for="" class="col-sm-3 col-form-label">Strength</label>
                                                                         <div class="col-sm-2">
                                                                             <input type="text" class="form-control frequency" name="direction" required>
                                                                         </div>
@@ -587,6 +591,10 @@
                                                                                 <option>Suspension</option>
                                                                                 <option>tsp</option>
                                                                                 <option>units</option>
+                                                                                <option>Milligrams</option>
+                                                                                <option>Grams</option>
+                                                                                <option>Ml</option>
+                                                                                <option>units</option>
                                                                                 <option>cream</option>
                                                                                 <option>ointment</option>
                                                                                 <option>gtts(drops)</option>
@@ -596,6 +604,7 @@
                                                                         <div class="col-sm-3">
                                                                             <select name="time" class="form-control time" required onchange="dosageCalc()">
                                                                                 <option>Select</option>
+                                                                                <option value="0">Start</option>
                                                                                 <option value="1">OD</option>
                                                                                 <option value="2">BD</option>
                                                                                 <option value="3">TDS</option>
@@ -608,6 +617,12 @@
                                                                             <label for="" class="col-sm-3 col-form-label">Quantity</label>
                                                                             <div class="col-sm-8">
                                                                                 <input type="text" class="form-control quantity" name="quantity" required readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group row">
+                                                                            <label for="" class="col-sm-3 col-form-label">Quantity to Dispense</label>
+                                                                            <div class="col-sm-8">
+                                                                                <input type="text" class="form-control" name="dispense" required>
                                                                             </div>
                                                                         </div>
                                                                     <div class="form-group row">

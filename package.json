@@ -29,6 +29,7 @@
     "express-flash": "0.0.2",
     "express-session": "^1.15.6",
     "express-validator": "^6.1.1",
+    "method-override": "^3.0.0",
     "mongo": "^0.1.0",
     "mongoose": "^5.7.7",
     "mongoose-deep-populate": "^3.1.1",

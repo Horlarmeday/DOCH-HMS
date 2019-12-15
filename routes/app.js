@@ -143,6 +143,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
         .exec((err, users)=>{
             if(err) return next (err)
             Appointment.find({})
+            .sort('-appointmentdate')
             .populate('patient')
             .exec((err, appointments)=>{
                 var appointmentIsEmpty = true
@@ -191,6 +192,7 @@ router.get('/dashboard', middleware.isLoggedIn, (req, res, next)=>{
                                 'age': age,
                                 'seen': triage.seen,
                                 'taken': triage.taken,
+                                'qms': triage.qms,
                                 'retainershipname': triage.patient.retainershipname
                             })
                         }
@@ -1720,7 +1722,7 @@ router.route('/add-appointment')
                             if (err) return next(err);
                             User.update(
                                 {
-                                    _id: user._id
+                                    _id: appointment.doctor
                                 },
                                 {
                                     $push: { appointments: appointment._id }
@@ -2233,6 +2235,7 @@ router.route('/triage/:id')
             triage.muac = req.body.muac;
             triage.fheartrate = req.body.fheartrate;
             triage.spo2 = req.body.spo2;
+            triage.qms = req.body.qms;
             triage.save((err) => {
                 if (err) { return next (err) }
             })
@@ -3306,6 +3309,7 @@ router.post('/prescription/:id', middleware.isLoggedIn, (req, res, next)=>{
                             nhisdrugs: req.body.nhis_drug_brand,
                             startingdate: req.body.startingdate,
                             quantity: req.body.quantity,
+                            dispense: req.body.dispense,
                             medicineunit: req.body.medicineunit,
                             unit: req.body.unit,
                             dose: req.body.dose,
@@ -5920,24 +5924,24 @@ router.route('/create-ante-natal-patient/:id')
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
         User.findOne({_id: req.params.id}, (err, user)=>{
-            Appointment.findOne({_id: user.appointments[user.appointments.length -1]._id}, function (err, appointment) {
+            Appointment.findOne({_id: user.appointments[user.appointments.length -1]}, function (err, appointment) {
                 if (err) return next (err)
                 const anc = new ANC()
-                anc.creator = req.user._id,
-                anc.patient = req.body.patient,
-                anc.ancId = req.body.ancId,
-                anc.age = req.body.age,
-                anc.occupation = req.body.occupation,
-                anc.gravida = req.body.gravida,
-                anc.parity = req.body.parity,
-                anc.lmp = req.body.lmp,
-                anc.edd = req.body.edd,
-                anc.ecc = req.body.ecc,
-                anc.fetalage = req.body.fetalage,
-                anc.medicalhistory = req.body.medicalhistory,
-                anc.surgicalhistory = req.body.surgicalhistory,
-                anc.bloodtransfusion = req.body.bloodtransfusion,
-                anc.familyhistory = req.body.familyhistory,
+                anc.creator = req.user._id
+                anc.patient = req.body.patient
+                anc.ancId = req.body.ancId
+                anc.age = req.body.age
+                anc.occupation = req.body.occupation
+                anc.gravida = req.body.gravida
+                anc.parity = req.body.parity
+                anc.lmp = req.body.lmp
+                anc.edd = req.body.edd
+                anc.ecc = req.body.ecc
+                anc.fetalage = req.body.fetalage
+                anc.medicalhistory = req.body.medicalhistory
+                anc.surgicalhistory = req.body.surgicalhistory
+                anc.bloodtransfusion = req.body.bloodtransfusion
+                anc.familyhistory = req.body.familyhistory
                 anc.previouspregnancy.push({
                     year: req.body.year,
                     deliveryplace: req.body.deliveryplace,
@@ -6018,6 +6022,8 @@ router.route('/ante-natal/:id')
                        anc.presentpregnancy.push({
                         thedate: req.body.thedate,
                         weight:  req.body.weight,
+                        height:  req.body.height,
+                        bmi:  req.body.bmi,
                         urinalysisGlucose: req.body.urinalysisGlucose,
                         urinalysisProtein: req.body.urinalysisProtein,
                         bp: req.body.bp,
@@ -6029,7 +6035,7 @@ router.route('/ante-natal/:id')
                         oedema: req.body.oedema,
                         comments: req.body.comments,
                         tcadate: req.body.tcadate,
-                        initial: req.body.initial
+                        // initial: req.body.initial
                     })
                     anc.save((err)=>{
                         if(err) return next (err)

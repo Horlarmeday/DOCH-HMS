@@ -10,6 +10,7 @@ const consultationSchema = new mongoose.Schema({
         checked: {type: Boolean, default: false},
         startingdate: Date,
         quantity: String,
+        dispense: String,
         medicineunit: String,
         unit: String,
         dose: String,

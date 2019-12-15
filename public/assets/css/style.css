@@ -7810,8 +7810,8 @@ body.menu-sidebar .navbar-wrapper {
     padding-right: 50px; }
   .right-icon-control .form-icon {
     position: absolute;
-    top: 7px;
-    right: 17px; }
+    top: 1px;
+    right: 1px; }
   .right-icon-control .form-msg-icon {
     position: absolute;
     top: 16px;

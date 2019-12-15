@@ -6,6 +6,7 @@ const mongoose = require('mongoose');
 const cookieParser = require('cookie-parser');
 const session = require('express-session');
 const flash = require('express-flash');
+const methodOverride = require('method-override')
 const MongoStore = require('connect-mongo')(session);
 const passport = require('passport');
 // const passportSocketIo = require("passport.socketio");
@@ -18,8 +19,8 @@ const ajaxRoutes = require('./routes/ajax');
 const config = require('./config/secret');
 const app = express();
 require('dotenv').config()
-// const http = require('http').Server(app);  //Requiring socket.io
-// const io = require('socket.io')(http);
+const http = require('http').Server(app);  //Requiring socket.io
+const io = require('socket.io')(http);
 
 const sessionStore = new MongoStore({ url: config.database, autoReconnect: true });
 
@@ -42,6 +43,7 @@ app.use(compression())
 app.set('view engine', 'ejs');
 app.use(express.static('download'));
 app.use(express.static(__dirname + '/public'));
+app.use(methodOverride('_method'))
 app.use(morgan('dev'));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -100,7 +102,7 @@ app.use(function (req, res, next) {
 
 
 //Server listener
-app.listen(config.port, (err) => {
+http.listen(config.port, (err) => {
   if (err) console.log(err);
   console.log(`Running on port ${config.port}`);
 });

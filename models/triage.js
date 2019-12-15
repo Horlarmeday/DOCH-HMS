@@ -18,6 +18,7 @@ const triageSchema = new mongoose.Schema({
     fheartrate: String,
     spo2: String,
     muac: String,
+    qms: String,
     taken: {type: Boolean, default: false},
     seen: {type: Boolean, default: false},
     created: {type: Date, default: Date.now}

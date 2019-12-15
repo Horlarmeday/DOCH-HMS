@@ -73,12 +73,22 @@
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Date</td>  
-                                                                    <td colspan="5"><input type="date" placeholder="<%= anc.presentpregnancy[0].thedate %>" name="thedate" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].thedate.toLocaleString() %>" name="thedate" id="datetimepicker8" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Weight</td>  
-                                                                    <td colspan="5"><input type="number" step="any" placeholder="<%= anc.presentpregnancy[0].weight %>" name="weight" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="number" step="any" id="weight" placeholder="<%= anc.presentpregnancy[0].weight %>" name="weight" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Height</td>  
+                                                                    <td colspan="5"><input type="number" step="any" id="height" placeholder="<%= anc.presentpregnancy[0].height %>" name="weight" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>BMI</td>  
+                                                                    <td colspan="5"><input type="number" step="any" id="bmi" placeholder="<%= anc.presentpregnancy[0].bmi %>" name="weight" class="form-control"></td>  
                                                                 </tr>
                                                                 <tr>
                                                                         <th></th>  
@@ -161,15 +171,15 @@
                                                                 <tr>
                                                                         <td></td>  
                                                                         <td>TCA Date</td>  
-                                                                        <td colspan="5"><input type="date" placeholder="<%= anc.presentpregnancy[0].tcadate %>" name="tcadate" class="form-control"></td>  
+                                                                        <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].tcadate.toLocaleString() %>" name="tcadate" class="form-control"></td>  
                                                                             
                                                                     </tr>
-                                                                    <tr>
+                                                                    <!-- <tr>
                                                                             <td></td>  
                                                                             <td>Initial</td>  
                                                                             <td colspan="5"><input type="text" placeholder="<%= anc.presentpregnancy[0].initial %>" name="initial" class="form-control"></td>  
                                                                                 
-                                                                        </tr>
+                                                                        </tr> -->
                                                                 <tr>
                                                                     <button type="submit" class="btn btn-success float-right mb-3">Save</button>
                                                                 </tr>
@@ -212,7 +222,17 @@
                                                                 <tr>
                                                                     <td></td>  
                                                                     <td>Weight</td>  
-                                                                    <td colspan="5"><input type="number" step="any" name="weight" class="form-control"></td>  
+                                                                    <td colspan="5"><input type="number" step="any" id="weight" name="weight" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td>  
+                                                                    <td>Height</td>  
+                                                                    <td colspan="5"><input type="number" step="any" id="height" name="height" class="form-control"></td>  
+                                                                </tr>
+                                                                <tr>
+                                                                    <td></td> 
+                                                                    <td>BMI</td>  
+                                                                    <td colspan="5"><input type="number" step="any" id="bmi" name="bmi" class="form-control" readonly></td>  
                                                                 </tr>
                                                                 <tr>
                                                                     <th></th>  
@@ -298,12 +318,12 @@
                                                                         <td colspan="5"><input type="date" name="tcadate" class="form-control"></td>  
                                                                             
                                                                     </tr>
-                                                                    <tr>
+                                                                    <!-- <tr>
                                                                             <td></td>  
                                                                             <td>Initial</td>  
                                                                             <td colspan="5"><input type="text" name="initial" class="form-control"></td>  
                                                                                 
-                                                                        </tr>
+                                                                        </tr> -->
                                                                     
                                                                 <tr>
                                                                     <button type="submit" class="btn btn-success float-right mb-3">Save</button>

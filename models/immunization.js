@@ -7,20 +7,46 @@ const immunizationSchema = new mongoose.Schema({
     patient: {type: mongoose.Schema.Types.ObjectId, ref: "User"},
     name: String,
     dateofbirth: Date,
-    birthweight: String,
     placeofbirth: String,
+    atbirth: [{
+        birthweight: String,
+        atBirth: String,
+    }],
+    at6weeks: [{
+        birthweight: String,
+        at6weeks: String,
+    }],
+    at10weeks: [{
+        birthweight: String,
+        at10weeks: String,
+    }],
+    at14weeks: [{
+        birthweight: String,
+        at14weeks: String,
+    }],
+    at6months: [{
+        birthweight: String,
+        at6months: String,
+    }],
+    at1year: [{
+        birthweight: String,
+        at1year: String,
+    }],
+    at9months: [{
+        birthweight: String,
+        at9months: String,
+    }],
+    at15months: [{
+        birthweight: String,
+        at15months: String,
+    }],
+    at2years: [{
+        birthweight: String,
+        at2years: String,
+    }],
     // mothersname: String,
     // mothersphone: Number,
     address: String,
-    atBirth: String,
-    at6weeks: String,
-    at10weeks: String,
-    at14weeks: String,
-    at6months: String,
-    at9months: String,
-    at1year: String,
-    at15months: String,
-    at2years: String,
     created: {type: Date, default: Date.now}
 });
 

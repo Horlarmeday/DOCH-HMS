@@ -92,8 +92,8 @@
       <link rel="stylesheet" href="/css/toastr.css">
       <script type="text/javascript" src="/js/vue.js"></script>
       <script type="text/javascript" src="/js/axios.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
       
-
   </head>
 
   <body>
@@ -288,22 +288,19 @@
                                 </div>
                                 <div class="main-friend-list">
                                     
-                                    <div class="media userlist-box" data-id="1" data-status="online" data-username="" data-toggle="tooltip" data-placement="left" title="">
+                                    <div class="media userlist-box" data-id="1" data-status="online"
+                                     data-username="Jude" data-toggle="tooltip" data-placement="left" title="Jude">
                                         <a class="media-left" href="#!">
-                                           
-                                           
-                                            <img class="media-object img-circle" src="/assets/images/avatar-1.png" alt="Generic placeholder image">
-                                            
-                                                <img class="media-object img-circle" src="/assets/images/avatar-1.png" alt="Generic placeholder image">
-                                           
+                                            <img width="20" class="media-object img-circle" src="/assets/images/avatar-1.png" alt="Generic placeholder image">
                                             <div class="live-status bg-success"></div>
                                         </a>
                                         <div class="media-body">
-                                            <div class="f-13 chat-header"></div>
+                                            <div class="f-13 chat-header">Jude</div>
                                         </div>
                                     </div>
                                     
-                                    <!-- <div class="media userlist-box" data-id="15" data-status="online" data-username="Lary" data-toggle="tooltip" data-placement="left" title="Lary">
+                                    <div class="media userlist-box" data-id="15" data-status="online" data-username="Lary" 
+                                    data-toggle="tooltip" data-placement="left" title="Lary">
                                         <a class="media-left" href="#!">
                                             <img class="media-object img-circle" src="/assets/images/task/task-u1.jpg" alt="Generic placeholder image">
                                             <div class="live-status bg-success"></div>
@@ -311,7 +308,7 @@
                                         <div class="media-body">
                                             <div class="f-13 chat-header">Lary</div>
                                         </div>
-                                    </div> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -356,11 +353,13 @@
                             <div class="right-icon-control">
                                 <input id="messages" type="text" class="form-control search-text" placeholder="Type Something..." autofocus><span>
                                 <div class="form-icon">
-                                    <button id="sendMessages" type="submit" class="btn btn-sm btn-success"><i class="icofont icofont-paper-plane"></i>Send</button>
+                                    <button id="sendMessages" type="submit" class="btn btn-sm btn-success">
+                                        <i class="icofont icofont-paper-plane"></i>Send
+                                    </button>
                                 </div></span>
                             </div>
                         </form>
                     </div>
             </div>
-                <!-- Sidebar inner chat end-->
+            <!-- Sidebar inner chat end-->
        

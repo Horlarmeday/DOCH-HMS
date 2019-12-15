@@ -223,6 +223,7 @@
                           <th>S/N</th>
                           <th>Patient Name</th>
                           <th>Age</th>
+                          <th>QMS Number</th>
                           <th>Status</th>
                           <th>Actions</th>
                         </tr>
@@ -240,6 +241,12 @@
                             <% } %>
                           </td>
                           <td><%= triage.age %></td>
+                          <% if(triage.qms){ %>
+                            <td><%= triage.qms %></td>
+                          <% } else{ %>
+                            <td>Not Set</td>
+                          <% }%>
+                            
 
                           <% if(triage.taken === true){ %>
                           <td>
