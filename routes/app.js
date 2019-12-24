@@ -1436,6 +1436,93 @@ router.route('/add-patient')
         })
     })
 
+
+//ADD A PATIENT
+router.route('/edit-patient-dependant/:id')
+    .get(middleware.isLoggedIn, (req, res, next)=>{
+        var mysort = { hmoname: 1 };
+        HMO.find({})
+        .sort(mysort)
+        .populate('retainershipname')
+        .exec((err, hmos)=>{
+            if(err) return next (err)
+            
+            User.findOne({_id: req.params.id})
+            .exec((err, patient)=>{
+                if(err) return next (err)
+                res.render('app/add/add_dependants', {hmos, patient})
+            })
+        })
+    })
+    .post(middleware.isLoggedIn, (req, res, next)=>{
+        User.countDocuments({ role: 8 })
+        .exec((err, count)=>{
+            if(err) return next (err)
+            User.findOne({ _id: req.params.id }, function(err, user){
+                upload(req, res, (err) => {
+                    if (err instanceof multer.MulterError) {
+                        req.flash('error', 'Your file is too large, try reducing the size')
+                        return res.redirect('back')
+                    }
+                    else if (err) {
+                        return next(err)
+                    }
+                    else if (req.files == undefined) {
+                        req.flash('error',  'File is undefined.');
+                        return res.redirect('back')
+                    }
+                        else {
+                        async.waterfall([
+                            function (done) {
+                                
+                                user.hmodependant.push({
+                                    names: req.body.dependantname,
+                                    dob: req.body.dependantdate,
+                                    files:  req.files.filename
+                                });
+                                user.save((err) => {
+                                    if (err) { return next(err) }
+                                    done(err, user)
+                                })
+                            },
+                            function name(user, done) {
+                                
+                                if(req.files.length > 0){
+                                    const fullpath = req.files
+                                    const document = {
+                                        name: fullpath,
+                                        creator: req.user._id,
+                                        patient: user._id
+                                    }
+                                    const file = new File(document)
+                                    file.save((err)=> {
+                                        
+                                        User.updateOne(
+                                            {
+                                                _id: user._id
+                                            },
+                                            {
+                                                $push:{files: file._id}
+                                            },function (err, count) {
+                                                req.flash('success', 'Dependants Updated')
+                                                return res.redirect('back');
+                                            }
+                                        )
+                                    })
+                                }else{
+                                    req.flash('success', 'Dependants Updated')
+                                    return res.redirect('back');
+                                }
+                            }
+                        ])
+                        
+                        
+                    }
+                })
+            })
+        })
+    })
+
 // EDIT PATIENT
 
 router.route('/edit-patient/:id')

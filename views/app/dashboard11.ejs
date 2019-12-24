@@ -263,7 +263,11 @@
                                                         <td><%= item.income %></td>
                                                         <td><%= item.received.toDateString() %></td>
                                                         <td><%= item.expiration.toDateString() %></td>
-                                                        <td><a href="/dispense-history/<%= item._id %>" class="btn btn-success">History</a></td>
+                                                        <td>
+                                                            <a href="/edit-pharmacy-item/<%= item._id %>" class="btn btn-info">Edit</a>
+                                                            <a href="/dispense-history/<%= item._id %>" class="btn btn-success">History</a>
+
+                                                        </td>
                                                     </tr>
                                                 <% }) %>
                                             </tbody>
