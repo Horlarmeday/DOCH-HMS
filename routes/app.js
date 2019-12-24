@@ -1482,6 +1482,49 @@ router.route('/edit-patient/:id')
         })
     })
 
+// UPLOAD DEPENDANTS PICS
+router.post('/upload-dependants-pictures/:id', middleware.isLoggedIn, (req, res, next)=>{
+    User.findOne({_id: req.params.id}, (err, user)=>{
+        upload(req, res, (err) => {
+            if (err instanceof multer.MulterError) {
+                req.flash('error', 'Your file is too large, try reducing the size')
+                return res.redirect('back')
+            }
+            else if (err) {
+                return next(err)
+            }
+            else if (req.files == undefined) {
+                req.flash('error',  'File is undefined.');
+                return res.redirect('back')
+            } else {
+                if(req.files.length > 0){
+                    const fullpath = req.files
+                    const document = {
+                        name: fullpath,
+                        creator: req.user._id,
+                        patient: user._id
+                    }
+                    const file = new File(document)
+                    file.save((err)=> {
+                        
+                        User.updateOne(
+                            {
+                                _id: user._id
+                            },
+                            {
+                                $push:{files: file._id}
+                            },function (err, count) {
+                                req.flash('success', 'Image uploaded successfully')
+                                return res.redirect('back');
+                            }
+                        )
+                    })
+                }
+            }
+        })
+    })
+})
+
 //ADD EMERGENCY PATIENT
 router.route('/add-emergency-patient')
 .get(middleware.isLoggedIn, (req, res, next)=>{

@@ -5,6 +5,24 @@
   <div class="pcoded-inner-content">
     <div class="main-body">
       <div class="page-wrapper">
+         <!-- Flash message -->
+         <% if(error && error.length > 0){ %>
+          <div class="alert alert-danger alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+              </button>
+              <%= error %>
+          </div>
+      <% } %>
+      <% if(success && success.length > 0){ %>
+              <div class="alert alert-success alert-dismissible">
+                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <%= success %>
+              </div>
+      <% } %>
+      <!-- Page-header start -->
         <div class="page-body">
           <div class="row">
             <div class="col-sm-12">
@@ -803,6 +821,21 @@
                                                 class="social-user-name b-none p-b-0 text-muted"
                                               >
                                               <%= patient.patientcode %>
+                                              </td>
+                                            </tr>
+                                            <tr>
+                                              <th class="social-label b-none">
+                                                  Upload Dependants Picture
+                                              </th>
+                                              <td
+                                                class="social-user-name b-none p-b-0 text-muted"
+                                              >
+                                              <form action="/upload-dependants-pictures/<%= patient._id %>" method="post" enctype="multipart/form-data">
+                                                <div class="form-group row">
+                                                  <input style="display: inline;" type="file" name="file" id="file" multiple>
+                                                  <button style="display: inline-block;" type="submit" class="btn btn-primary">Upload</button>
+                                                </div>
+                                              </form>
                                               </td>
                                             </tr>
                                             
