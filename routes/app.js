@@ -1455,72 +1455,22 @@ router.route('/edit-patient-dependant/:id')
         })
     })
     .post(middleware.isLoggedIn, (req, res, next)=>{
-        User.countDocuments({ role: 8 })
-        .exec((err, count)=>{
+        User.findOne({ _id: req.params.id }, function(err, user){
             if(err) return next (err)
-            User.findOne({ _id: req.params.id }, function(err, user){
-                upload(req, res, (err) => {
-                    if (err instanceof multer.MulterError) {
-                        req.flash('error', 'Your file is too large, try reducing the size')
-                        return res.redirect('back')
-                    }
-                    else if (err) {
-                        return next(err)
-                    }
-                    else if (req.files == undefined) {
-                        req.flash('error',  'File is undefined.');
-                        return res.redirect('back')
-                    }
-                        else {
-                        async.waterfall([
-                            function (done) {
-                                
-                                user.hmodependant.push({
-                                    names: req.body.dependantname,
-                                    dob: req.body.dependantdate,
-                                    files:  req.files.filename
-                                });
-                                user.save((err) => {
-                                    if (err) { return next(err) }
-                                    done(err, user)
-                                })
-                            },
-                            function name(user, done) {
-                                
-                                if(req.files.length > 0){
-                                    const fullpath = req.files
-                                    const document = {
-                                        name: fullpath,
-                                        creator: req.user._id,
-                                        patient: user._id
-                                    }
-                                    const file = new File(document)
-                                    file.save((err)=> {
-                                        
-                                        User.updateOne(
-                                            {
-                                                _id: user._id
-                                            },
-                                            {
-                                                $push:{files: file._id}
-                                            },function (err, count) {
-                                                req.flash('success', 'Dependants Updated')
-                                                return res.redirect('back');
-                                            }
-                                        )
-                                    })
-                                }else{
-                                    req.flash('success', 'Dependants Updated')
-                                    return res.redirect('back');
-                                }
-                            }
-                        ])
-                        
-                        
-                    }
-                })
-            })
+            if(req.body.retainershipname) user.retainershipname = req.body.retainershipname
+            if(req.body.hmoname) user.hmoname = req.body.hmoname
+            if(req.body.patientcode) user.patientcode = req.body.patientcode
+            user.hmodependant.push({
+                names: req.body.dependantname,
+                dob: req.body.dependantdate,
+            });
+            user.save((err) => {
+                if (err) { return next(err) }
+                req.flash('success', 'Info updated')
+                res.redirect('back')
+            })    
         })
+
     })
 
 // EDIT PATIENT
@@ -1570,45 +1520,55 @@ router.route('/edit-patient/:id')
     })
 
 // UPLOAD DEPENDANTS PICS
-router.post('/upload-dependants-pictures/:id', middleware.isLoggedIn, (req, res, next)=>{
+router.route('/take-dependants-pictures/:id')
+.get(middleware.isLoggedIn, (req, res, next)=>{
+    User.findById(req.params.id, (err, user)=>{
+        res.render('app/add/add_dependant_picture', {user})
+    })
+})
+.post(middleware.isLoggedIn, (req, res, next)=>{
     User.findOne({_id: req.params.id}, (err, user)=>{
-        upload(req, res, (err) => {
-            if (err instanceof multer.MulterError) {
-                req.flash('error', 'Your file is too large, try reducing the size')
-                return res.redirect('back')
+        var matches = req.body.base64.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+        response = {}
+        if(matches.length !== 3){
+            return res.status(400).json('invalid base64 string')
+        }
+    
+        response.type = matches[1];
+        response.data = Buffer.from(matches[2], 'base64');
+        let decodedImg = response;
+        let imageBuffer = decodedImg.data;
+        let type = decodedImg.type;
+        let extension = mime.extension(type);
+        let fileName = 'image' + Date.now() + '.' + extension;
+    
+       
+        fs.writeFile(`./public/uploads/${fileName}`, imageBuffer, 'utf8', function(err) {
+            if(err){
+                  res.status(400).json(err.message);
+                }else{
+                const file = new File({
+                    name: fileName,
+                    creator: req.user._id,
+                    patient: user._id
+                })
+                file.save((err)=>{
+                    if(err) return res.status(500).json({message: 'Error saving picture'})
+                    User.updateOne(
+                        {
+                            _id: req.params.id
+                        },
+                        {
+                            $push: {files: file._id}
+                        },
+                        function(err, count){
+                            if(err) return res.status(500).json({message: 'Error saving picture'})
+                            res.status(200).json({message: 'Picture taken successfully'})
+                        }
+                    )
+                })
             }
-            else if (err) {
-                return next(err)
-            }
-            else if (req.files == undefined) {
-                req.flash('error',  'File is undefined.');
-                return res.redirect('back')
-            } else {
-                if(req.files.length > 0){
-                    const fullpath = req.files
-                    const document = {
-                        name: fullpath,
-                        creator: req.user._id,
-                        patient: user._id
-                    }
-                    const file = new File(document)
-                    file.save((err)=> {
-                        
-                        User.updateOne(
-                            {
-                                _id: user._id
-                            },
-                            {
-                                $push:{files: file._id}
-                            },function (err, count) {
-                                req.flash('success', 'Image uploaded successfully')
-                                return res.redirect('back');
-                            }
-                        )
-                    })
-                }
-            }
-        })
+        });
     })
 })
 
@@ -5147,6 +5107,7 @@ router.route('/edit-pharmacy-item/:id')
             if (req.body.income) item.income = req.body.income;
             if (req.body.productcode) item.productcode = req.body.productcode;
             if (req.body.shelf) item.shelf = req.body.shelf;
+            if (req.body.shelfno) item.shelf = req.body.shelfno;
             if (req.body.voucher) item.voucher = req.body.voucher;
             if (req.body.batch) item.batch = req.body.batch;
             if (req.body.loss) item.loss = req.body.loss;
@@ -5170,7 +5131,7 @@ router.route('/edit-pharmacy-item/:id')
                         if(err) return next (err)
                     })
                 }else{
-                    req.flash('error', 'Item not updated in the Outpatient Dsipensary, Please check!')
+                    req.flash('success', 'Item saved, but not found in the Outpatient Dsipensary, Please check!')
                     res.redirect('back') 
                 }
                 InPatient.findOne({name: req.params.id}, (err, inDrug)=>{
@@ -5183,7 +5144,7 @@ router.route('/edit-pharmacy-item/:id')
                             res.redirect('back') 
                         })
                     }else{
-                        req.flash('error', 'Item not updated in the Inpatient Dispensary, Please check!')
+                        req.flash('success', 'Item saved, but not found in the Inpatient Dispensary, Please check!')
                         res.redirect('back') 
                     }
                 })

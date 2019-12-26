@@ -825,17 +825,12 @@
                                             </tr>
                                             <tr>
                                               <th class="social-label b-none">
-                                                  Upload Dependants Picture
+                                                  Take Dependants Picture
                                               </th>
                                               <td
                                                 class="social-user-name b-none p-b-0 text-muted"
                                               >
-                                              <form action="/upload-dependants-pictures/<%= patient._id %>" method="post" enctype="multipart/form-data">
-                                                <div class="form-group row">
-                                                  <input style="display: inline;" type="file" name="file" id="file" multiple>
-                                                  <button style="display: inline-block;" type="submit" class="btn btn-primary">Upload</button>
-                                                </div>
-                                              </form>
+                                              <a class="btn btn-info" href="/take-dependants-pictures/<%= patient._id %>">Take Picture</a>
                                               </td>
                                             </tr>
                                             
@@ -881,8 +876,8 @@
                                                       </td>
                                                       <td>
                                                           <% if(patient.files.length > 0){ %>
-                                                            <% patient.files[0].name.forEach((file)=>{ %>
-                                                              <p><a href="/uploads/<%= file.filename %>">View</a></p>
+                                                            <% patient.files.forEach((file)=>{ %>
+                                                              <a target="_blank" href="/uploads/<%= file.name %>">View</a>
                                                             <% }) %>
                                                           <% } %>
                                                       </td>

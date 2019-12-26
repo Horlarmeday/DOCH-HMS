@@ -1,0 +1,148 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+        <div class="pcoded-inner-content">
+            <!-- Flash message -->
+            <% if(error && error.length > 0){ %>
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <%= error %>
+                </div>
+            <% } %>
+            <% if(success && success.length > 0){ %>
+                    <div class="alert alert-success alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <%= success %>
+                    </div>
+            <% } %>
+
+            <!-- Main-body start -->
+            <div class="main-body">
+                <div class="page-wrapper">
+                    <!-- Page header start -->
+                    <div class="page-header">
+                        <div class="page-header-title">
+                            <h4>Update Patient</h4>
+                            
+                        </div>
+                        <div class="page-header-breadcrumb">
+                            <ul class="breadcrumb-title">
+                                <li class="breadcrumb-item">
+                                    <a href="/dashboard">
+                                        <i class="icofont icofont-home"></i>
+                                    </a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="/patients">Patients</a>
+                                </li>
+                                <li class="breadcrumb-item"><a href="#!">Create Patient</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <!-- Page header end -->
+                    <!-- Page body start -->
+                    <div class="page-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <!-- Basic Form Inputs card start -->
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5>Update Patient</h5>
+                                    </div>
+                                    <div class="card-block">
+                                        <div class="row">
+                                            <div class="col-sm-12 mobile-inputs">
+                                                <form method="POST">
+                                                
+                                                    <div class="form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label>Retainership/Insurance</label>
+                                                            <select name="retainership" class="form-control" required>
+                                                                <option selected disabled>Select</option>
+                                                                <option value="Yes"<%= patient.retainership ? 'selected' : '' %>><%= patient.retainership %></option>
+                                                                <option value="No"<%= patient.retainership ? 'selected' : '' %>><%= patient.retainership %></option>
+                                                                
+                                                            </select>
+                                                        </div>
+                                                        <div  class="col-sm-6">
+                                                            <label>Retainership Name</label>
+                                                            <select id="hmos" name="retainershipname" 
+                                                            class="form-control retainershipname js-example-basic-single" onchange="gethmo()">
+                                                                <option selected disabled>Select</option>
+                                                                <% hmos.forEach((hmo)=>{ %>
+                                                                    <option value="<%= hmo._id %>" <%= patient.retainershipname.hmoname ? 'selected' : '' %>><%= hmo.hmoname %></option>
+                                                                <% }) %>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row">
+                                                            <div  class="col-sm-6">
+                                                                <label>Enrollees</label>
+                                                                <select id="mySelect" name="hmoname" 
+                                                                class="form-control js-example-basic-single hmoname" onchange="openPatientId()">
+                                                                    <option>Select</option>
+                                                                   
+                                                                </select>
+                                                                
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <label for="">Enrollee ID</label>
+                                                                <input type="text" class="form-control hmocode" value="<%= patient.patientcode  %>" name="patientcode" placeholder="Enrollee ID">
+                                                            </div>
+                                                    </div>
+                                                    <h5 style="color:dodgerblue" class="page-title">Dependants</h5><br><br>
+                                                    <div id="example-2"  data-mfield-options='{"section": ".group","btnAdd":"#btnAdd","btnRemove":".btnRemove"}'>
+                                                        <div >
+                                                            <button type="button" id="btnAdd" class="btn btn-primary">Add</button>
+                                                        </div><br>
+                                                        <div class="form-group row group">
+                                                                <div class="col-sm-6">
+                                                                    <label for="">Name</label>
+                                                                    <input type="text" name="dependantname" class="form-control dependanname" placeholder="Dependant Name">
+                                                                </div>
+                                                                <div class="col-sm-5">
+                                                                    <label for="">Date of Birth</label>
+                                                                    <input type="date" name="dependantdate" class="form-control dependandate">
+                                                                </div>
+                                                                
+                                                                <div class="col-sm-1">
+                                                                    <button style="margin-top: 32px" type="button" class="btn btn-danger btnRemove">Remove</button>
+                                                                </div>
+                                                        </div>
+                                                        
+                                                    </div>
+                                                    <div class="depend form-group row">
+                                                        <div class="col-sm-6">
+                                                            <label for="">Picture</label><br>
+                                                            <small style="color: red;">Please choose multiple pictures if applicable</small>
+                                                            <input type="file" name="file" class="form-control dependanfile file-size" multiple>
+                                                        </div>
+                                                    </div>
+                                                       
+                                                    
+                                                    <button type="submit" class="btn btn-info float-right">Update</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- Basic Form Inputs card end -->
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Page body end -->
+                </div>
+            </div>
+            <!-- Main-body end -->
+            <!-- <div id="styleSelector">
+
+            </div> -->
+        </div>
+    </div>
+
+<% include ../../partials/footerCopy %>

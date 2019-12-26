@@ -1,0 +1,118 @@
+<% include ../../partials/header %>
+<% include ../../partials/sidebarCopy %>
+
+<div class="pcoded-content">
+    <div class="pcoded-inner-content">
+            <div class="main-body">
+                    <div class="page-wrapper">
+                            <div class="page-body">
+                                    <div class="row">
+                                        <div class="col-sm-8 offset-2">
+                                                <div class="card">
+                                                        <div class="card-header">
+                                                                <h5>Capture Dependants Picture</h5>
+                                                        </div>
+                                                    <div class="card-block">
+                                                        <div class="row">
+                                                            <!-- Streem a video wrap -->
+                                                            <div style="text-align: center; margin-left: 20px;" class="video-wrap">
+                                                                <video id="video" playsinline autoplay></video>
+                                                                <div class="controller">
+                                                                    <!-- Button to captire image -->
+                                                                    <button class="btn btn-primary" id="snap">Capture</button>
+                                                                    <button class="btn btn-success" id="upload">Upload</button>
+                                                                </div>    
+                                                            </div>
+
+                                                            <!-- Display captured snaps -->
+                                                            <canvas style="margin-left: 20px;" width="400" height="345" id="canvas"></canvas>
+
+                                                            
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <a href="/patient/<%= user._id %>">Go Back</a>
+                                                </div>
+                                        </div>
+                                    </div>
+                            </div>
+                    </div>
+            </div>
+    </div>
+</div>
+
+<script src="../js/toastr.min.js" type="text/javascript"></script>
+<script>
+'use strict';
+
+const video = document.getElementById('video')
+const snap = document.getElementById('snap')
+const canvas = document.getElementById('canvas')
+const upload = document.getElementById('upload')
+const errMsg = document.getElementById('span#ErrorMsg')
+
+
+const constraints = {
+    audio: false,
+    video: {
+        width: 400,
+        height: 345
+    }
+};
+
+async function init() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
+        handleSuccess(stream)
+    } catch (error) {
+        errorMsgElement.innerHTML = `navigator.mediaDevices.error:${error.toString()}`;
+    }
+}
+
+// success
+function handleSuccess(stream) {
+    window.stream = stream;
+    video.srcObject = stream;
+}
+
+// Init
+init();
+
+// Draw image
+var context = canvas.getContext('2d');
+snap.addEventListener('click', function () {
+    context.drawImage(video, 0, 0, 400, 345);
+})
+
+// Izitoast seettings
+ iziToast.settings({
+    timeout: 6000, // default timeout
+      resetOnHover: true,
+      transitionIn: 'flipInX',
+      transitionOut: 'flipOutX',
+      position: 'topRight', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter, center
+      onOpen: function () {
+        console.log('callback abriu!');
+      },
+      onClose: function () {
+        console.log("callback fechou!");
+      }
+});
+
+upload.addEventListener('click', function () {
+    let imageCaptureUrl = '/take-dependants-pictures/'+ '<%= user._id %>'
+    let data = {
+        base64: canvas.toDataURL()
+    }
+    axios.post(imageCaptureUrl, data)
+        .then(function (response) {
+            iziToast.success({position: "topRight", title: 'Success!', message: response.data.message});
+        })
+        .catch(function (error) {
+            iziToast.error({position: "topRight", title: 'Error!', message: error.response.data});
+        })
+})
+
+</script>
+
+<% include ../../partials/footerCopy %>
